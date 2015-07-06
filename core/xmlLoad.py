@@ -216,14 +216,14 @@ class Instrument:
                     parameter_tooltip = parameter.findtext('Tooltip')
                     self.logger.debug('Command parameter tooltip %s' % parameter_tooltip)
 
-                    tmp_parameter = []
+                    # tmp_parameter = []
 
-                    tmp_parameter.append(parameter_units)
-                    tmp_parameter.append(parameter_choices)
-                    tmp_parameter.append(parameter_regex)
-                    tmp_parameter.append(parameter_tooltip)
+                    tmp_command.append(parameter_units)
+                    tmp_command.append(parameter_choices)
+                    tmp_command.append(parameter_regex)
+                    tmp_command.append(parameter_tooltip)
 
-                    tmp_command.append(tmp_parameter)
+                    # tmp_command.append(tmp_parameter)
 
                 for response in command.iter('Response'):
 
@@ -234,13 +234,13 @@ class Instrument:
                     response_regex = response.findtext('Regex')
                     self.logger.debug('Command response regex %s' % response_regex)
 
-                    tmp_response = []
+                    # tmp_response = []
 
-                    tmp_response.append(response_datatype)
-                    tmp_response.append(response_units)
-                    tmp_response.append(response_regex)
+                    tmp_command.append(response_datatype)
+                    tmp_command.append(response_units)
+                    tmp_command.append(response_regex)
 
-                    tmp_command.append(tmp_response)
+                    # tmp_command.append(tmp_response)
 
                 self.logger.debug('Appending command to plugin list.')
                 self.logger.debug('------')
@@ -250,31 +250,31 @@ class Instrument:
 
         # This bit was for testing but I'll leave it here as a reference.
 
-        # print('Number of plugins %s' % len(self.instrument_mc_list))
-        #
-        # for i in range(len(self.instrument_mc_list)):  # For each plugin.
-        #     print('\nPlugin ident %s' % self.instrument_mc_list[i][0])
-        #     print('Plugin desc %s' % self.instrument_mc_list[i][1])
-        #     print('Plugin CB %s' % self.instrument_mc_list[i][2])
-        #
-        #     # next iter over the commands.
-        #     command_list_length = len(self.instrument_mc_list[i])
-        #
-        #     for n in range(3, command_list_length):  # Commands start after the first 4 items.
-        #         print('\nCommand ident %s' % self.instrument_mc_list[i][n][0])
-        #         print('Command CC %s' % self.instrument_mc_list[i][n][1])
-        #         print('Command CV %s' % self.instrument_mc_list[i][n][2])
-        #         print('Command desc %s' % self.instrument_mc_list[i][n][3])
-        #         print('Command stp %s' % self.instrument_mc_list[i][n][4])
-        #         print('Command blkCmd %s' % self.instrument_mc_list[i][n][5])
-        #         print('Command stepCmd %s' % self.instrument_mc_list[i][n][6])
-        #         print('Parameter Units %s' % self.instrument_mc_list[i][n][7][0])
-        #         print('Parameter Choices %s' % self.instrument_mc_list[i][n][7][1])
-        #         print('Parameter Regex %s' % self.instrument_mc_list[i][n][7][2])
-        #         print('Parameter Tooltip %s' % self.instrument_mc_list[i][n][7][3])
-        #         print('Response DataTypeName %s' % self.instrument_mc_list[i][n][8][0])
-        #         print('Response Units %s' % self.instrument_mc_list[i][n][8][1])
-        #         print('Response Regex %s' % self.instrument_mc_list[i][n][8][2])
-        #
-        # for data in self.instrument_metadata:
-        #     print(data)
+        print('Number of plugins %s' % len(self.instrument_mc_list))
+
+        for i in range(len(self.instrument_mc_list)):  # For each plugin.
+            print('\nPlugin ident %s' % self.instrument_mc_list[i][0])
+            print('Plugin desc %s' % self.instrument_mc_list[i][1])
+            print('Plugin CB %s' % self.instrument_mc_list[i][2])
+
+            # next iter over the commands.
+            command_list_length = len(self.instrument_mc_list[i])
+
+            for n in range(3, command_list_length):  # Commands start after the first 4 items.
+                print('\nCommand ident %s' % self.instrument_mc_list[i][n][0])
+                print('Command CC %s' % self.instrument_mc_list[i][n][1])
+                print('Command CV %s' % self.instrument_mc_list[i][n][2])
+                print('Command desc %s' % self.instrument_mc_list[i][n][3])
+                print('Command stp %s' % self.instrument_mc_list[i][n][4])
+                print('Command blkCmd %s' % self.instrument_mc_list[i][n][5])
+                print('Command stepCmd %s' % self.instrument_mc_list[i][n][6])
+                print('Parameter Units %s' % self.instrument_mc_list[i][n][7])
+                print('Parameter Choices %s' % self.instrument_mc_list[i][n][8])
+                print('Parameter Regex %s' % self.instrument_mc_list[i][n][9])
+                print('Parameter Tooltip %s' % self.instrument_mc_list[i][n][10])
+                print('Response DataTypeName %s' % self.instrument_mc_list[i][n][11])
+                print('Response Units %s' % self.instrument_mc_list[i][n][12])
+                print('Response Regex %s' % self.instrument_mc_list[i][n][13])
+
+        for data in self.instrument_metadata:
+            print(data)
