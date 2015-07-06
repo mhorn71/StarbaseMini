@@ -1,0 +1,108 @@
+<?xml version="1.0" standalone="yes"?>
+
+<Instrument>
+    <Identifier>Staribus4ChannelLogger</Identifier>
+    <Name>Staribus 4 Channel Logger</Name>
+    <Description>A Staribus 4 Channel Data Logger</Description>
+    <StaribusAddress>None</StaribusAddress>
+    <StarinetAddress>192.168.1.10</StarinetAddress>
+    <StarinetPort>1206</StarinetPort>
+    <NumberOfChannels>5</NumberOfChannels>
+
+    <Plugin>
+        <!-- A virtual Plugin -->
+        <Identifier>MarkPlugin</Identifier>
+        <Description>The Mark Plugin Module</Description>
+        <!-- The DataProcessor Plugin is always CommandCodeBase 50 -->
+        <CommandCodeBase>04</CommandCodeBase>
+
+        <Command>
+            <Identifier>getTemperature</Identifier>
+            <CommandCode>05</CommandCode>
+            <CommandVariant>0000</CommandVariant>
+            <Description>Gets the Temperature of the Controller</Description>
+            <SendToPort>True</SendToPort>
+            <BlockedDataCommand>04,05</BlockedDataCommand>
+            <SteppedDataCommand>None</SteppedDataCommand>
+            <Parameter>
+                <Units>None</Units>
+                <Choices>None</Choices>
+                <Regex>None</Regex>
+                <Tooltip>None</Tooltip>
+            </Parameter>
+            <Response>
+                <DataTypeName>DecimalFloat</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
+                <Units>Celsius</Units>  # Any string you like this is displayed in the statusMessage after the response.
+                <Regex>^(-|\+)?\d*(\.\d+)?$</Regex> # Regex of response can be ACK if response is ACK
+            </Response>
+        </Command>
+    </Plugin>
+
+
+    <!-- Plugins are loaded in order or appearance.  Core normally resides after all other plugins. -->
+
+    <Plugin>
+        <Identifier>Core</Identifier>
+        <Description>The Core Module</Description>
+        <!-- The DataCapture Plugin is always CommandCodeBase 50 -->
+        <CommandCodeBase>03</CommandCodeBase>
+
+        <Command>
+            <Identifier>getTemperature</Identifier>
+            <CommandCode>04</CommandCode>
+            <CommandVariant>0000</CommandVariant>
+            <Description>Gets the Temperature of the Controller</Description>
+            <SendToPort>True</SendToPort>
+            <BlockedDataCommand>1234</BlockedDataCommand>
+            <SteppedDataCommand>5678</SteppedDataCommand>
+            <Parameter>
+                <Units>UnitsOne</Units>
+                <Choices>ChoicesOne</Choices>
+                <Regex>RegexOne</Regex>
+                <Tooltip>TooltipOne</Tooltip>
+            </Parameter>
+            <Response>
+                <DataTypeName>DecimalFloat</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
+                <Units>Celsius</Units>  # Any string you like this is displayed in the statusMessage after the response.
+                <Regex>^(-|\+)?\d*(\.\d+)?$</Regex> # Regex of response can be ACK if response is ACK
+            </Response>
+        </Command>
+
+        <Command>
+            <Identifier>getData</Identifier>
+            <CommandCode>03</CommandCode>
+            <CommandVariant>0000</CommandVariant>
+            <Description>Gets the data from the Controller</Description>
+            <SendToPort>True</SendToPort>
+            <BlockedDataCommand>03,04</BlockedDataCommand>
+            <SteppedDataCommand>None</SteppedDataCommand>
+            <Parameter>
+                <Units>mV</Units>
+                <Choices>None</Choices>
+                <Regex>None</Regex>
+                <Tooltip>None</Tooltip>
+            </Parameter>
+            <Response>
+                <DataTypeName>String</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
+                <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
+                <Regex>^(-|\+)?\d*(\.\d+)?$</Regex> # Regex of response can be ACK if response is ACK
+            </Response>
+        </Command>
+    </Plugin>
+
+    <Metadata>
+        <YaxisLabel>mv</YaxisLabel>
+        <XaxisLabel>Time (UTC)</XaxisLabel>
+        <Channel0Label>Temperature</Channel0Label>
+        <Channel0Colour>Red</Channel0Colour>
+        <Channel1Label>Channel 1</Channel1Label>
+        <Channel1Colour>Blue</Channel1Colour>
+        <Channel2Label>Channel 2</Channel2Label>
+        <Channel2Colour>Yellow</Channel2Colour>
+        <Channel3Label>Channel 3</Channel3Label>
+        <Channel3Colour>Green</Channel3Colour>
+        <Channel4Label>Channel 4</Channel4Label>
+        <Channel4Colour>Black</Channel4Colour>
+    </Metadata>
+
+</Instrument>

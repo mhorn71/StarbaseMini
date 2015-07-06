@@ -1,0 +1,27 @@
+Notes.
+
+Application config and logs
+---------------------------
+The Application configuration and logs are stored in the user home directory in either of the following locations.
+
+Linux / Mac OSX : /Users/<username>/.starbasemini
+
+Windows :  C:\users\<username>\AppData\Local\StarbaseMini\
+
+Instrument Config
+-----------------
+
+The Instrument configuration is stored within the application folders instrument directory in XML.
+
+    Instrument XML Keys
+    -------------------
+    If you add additional XML keys you'll need to adjust xmlLoad.py and loader.py.  Be careful adding new XML as xmlLoad
+    returns a list which is used to populate the GUI combo boxes, button etc.
+
+To load the instrument add the instrument to instrumentChooser.py note the names must match name set in .conf and
+include the path relative to application base path.
+
+User Interface
+--------------
+Note the user interface is built using QT 4 and qt-designer
+
