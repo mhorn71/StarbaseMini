@@ -21,7 +21,7 @@ def exit_message(message):
 
 def ip_checker(ip):
     '''
-    Checks IP address looks for correct it' 100% full proof but should be fine on Win, Linux, OSX
+    Checks IP address looks for correct it's not 100% full proof but should be fine on Win, Linux, OSX
     :param ip: IPv4 Address
     :return: True or False
     '''
@@ -48,6 +48,7 @@ def port_checker(port):
         return True
     else:
         return False
+    
 
 response_message_status = [('SUCCESS', b'0000'),
                            ('TIMEOUT', b'0001'),
