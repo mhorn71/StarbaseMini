@@ -3,11 +3,17 @@ __author__ = 'mark'
 import socket
 import re
 import sys
+import glob
+import logging
+
 import crcmod
+import serial
 
 # Set crc16 parameters to polynomial 8408, initial value 0xffff, reversed True, Final XOR value 0x00
 crc16 = crcmod.mkCrcFun(0x018408, 0xFFFF, True, 0x0000)
 
+# Set logger
+logger = logging.getLogger('core.utilities')
 
 def exit_message(message):
     '''
@@ -48,7 +54,7 @@ def port_checker(port):
         return True
     else:
         return False
-    
+
 
 response_message_status = [('SUCCESS', b'0000'),
                            ('TIMEOUT', b'0001'),
@@ -155,3 +161,43 @@ def crc_create(buffer0):
     datacrc = str(hex(crc16(buffer0)).replace('x', '')[1:].zfill(4)).upper()
 
     return datacrc
+
+
+def serial_ports():
+    """Lists serial ports
+
+    :raises EnvironmentError:
+        On unsupported or unknown platforms
+    :returns:
+        A list of available serial ports or None.
+    """
+
+    if sys.platform.startswith('win'):
+        ports = ['COM' + str(i + 1) for i in range(256)]
+
+    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+        # this is to exclude your current terminal "/dev/tty"
+        ports = glob.glob('/dev/tty[A-Za-z]*')
+
+    elif sys.platform.startswith('darwin'):
+        ports = glob.glob('/dev/tty.usb*')
+    else:
+        return None
+        # raise EnvironmentError('Unsupported platform', str(sys.platform))
+
+    result = []
+    for port in ports:
+        try:
+            s = serial.Serial(port)
+            s.close()
+            result.append(port)
+        except (OSError, serial.SerialException):
+            pass
+
+    if len(result) is 0:
+        logger.warning('No serial ports found!!')
+        return None
+    else:
+        logger.info('%s %s', 'Serial ports found', str(result))
+
+    return result
