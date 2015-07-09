@@ -25,6 +25,15 @@ version = '0.0.18'
 class Main(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
+        # Base attributes.
+        self.saved_data_state = False
+        self.command_base = 'None'
+        self.command_code = 'None'
+        self.command_variant = 'None'
+        self.command_name = 'None'
+        self.parameter_units = 'None'
+        self.parameter_regex = 'None'
+
         # Initialise configuration will auto generate user configuration if missing.
         self.config = confLoader()
 
@@ -48,12 +57,18 @@ class Main(QtGui.QMainWindow):
         self.ui.actionManual.triggered.connect(self.help_manual_triggered)
         self.ui.actionAbout.triggered.connect(self.help_about_triggered)
 
-        self.ui.moduleCombobox.currentIndexChanged.connect(self.module_combo_triggered)
+        # Disable Parameter Entry, Choices Combobox and Execute Button
+        self.ui.executeButton.setEnabled(False)
+        self.ui.commandParameter.setEnabled(False)
+        self.ui.choicesComboBox.setEnabled(False)
 
-        self.saved_data_state = False
-        self.command_base = ''
-        self.command_code = ''
-        self.command_variant = ''
+        # Module, Command and Choices ComboBox Triggers.
+        self.ui.moduleCombobox.currentIndexChanged.connect(self.module_combo_triggered)
+        self.ui.commandCombobox.currentIndexChanged.connect(self.command_parameter_populate)
+
+        # Parameter entry emit and connect signals
+        self.ui.commandParameter.textChanged.connect(self.parameter_check_state)
+        self.ui.commandParameter.textChanged.emit(self.ui.commandParameter.text())
 
         # If StarinetConnector is set then initialise starinetConnector.
         if self.config.get('StarinetConnector', 'active') == 'True':
@@ -68,7 +83,7 @@ class Main(QtGui.QMainWindow):
                 self.ui_message('Starinet Connect Port Malformed')
 
             # Disable Normal GUI Operation as we're acting as Starinet Connector.
-            self.disable()
+            self.disable_all()
 
             connector = starinetConnector.connector(self)
 
@@ -88,7 +103,7 @@ class Main(QtGui.QMainWindow):
             self.logger.critical('Unable to parse configuration for StarinetConnector.')
             utils.exit_message('Unable to parse configuration for StarinetConnector.')
 
-    def disable(self):
+    def disable_all(self):
         self.ui.moduleCombobox.setEnabled(False)
         self.logger.debug('Module Combo box set False')
         self.ui.commandCombobox.setEnabled(False)
@@ -124,9 +139,55 @@ class Main(QtGui.QMainWindow):
         for plugin in self.instrument.instrument_mc_list:
             if self.command_base in plugin:
                 for command in plugin[3:]:
-                    self.ui.commandCombobox.addItem(command[0], (command[1], command[2]))
+                    self.ui.commandCombobox.addItem(command[0])
                     self.ui.commandCombobox.setItemData(index, command[3], QtCore.Qt.ToolTipRole)
-                    # We need some bits in here to look for choices or parameters.
+
+                    index += 1
+
+        self.command_parameter_populate()
+
+    # Get the command parameters for the current set command.
+    def command_parameter_populate(self):
+        # Find the current set module in the instrument_mc_list
+        for plugin in self.instrument.instrument_mc_list:
+            if plugin[0] == self.ui.moduleCombobox.currentText():
+                # Find the current set command in the instrument_mc_list plugin command lists.
+                for command_list in plugin:
+                    if command_list[0] == self.ui.commandCombobox.currentText():
+                        self.command_name = command_list[0]
+                        self.command_code = command_list[1]
+                        self.command_variant = command_list[2]
+
+                        # Check if command has choices.
+                        if command_list[7] == 'None':
+                            self.ui.choicesComboBox.clear()
+                            self.ui.choicesComboBox.setEnabled(False)
+                            self.ui.executeButton.setEnabled(True)
+                        else:
+                            self.ui.choicesComboBox.clear()
+                            self.ui.choicesComboBox.setEnabled(True)
+                            self.ui.executeButton.setEnabled(True)
+                            choices = command_list[7].split(',')  # Split the choices up into list.
+                            self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
+
+                            # Add choices tool tips to combo box.
+                            for i in range(len(choices)):
+                                self.ui.choicesComboBox.setItemData(i, command_list[9], QtCore.Qt.ToolTipRole)
+
+                        # Check if command has parameters.
+                        if command_list[8] == 'None':
+                            self.ui.commandParameter.clear()
+                            self.ui.commandParameter.setEnabled(False)
+                            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
+                        else:
+                            self.ui.commandParameter.setEnabled(True)
+                            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+                            self.ui.executeButton.setEnabled(False)
+                            self.ui.commandParameter.setToolTip(command_list[9])
+                            self.parameter_regex = command_list[8]
+                            regexp = QtCore.QRegExp(self.parameter_regex)
+                            validator = QtGui.QRegExpValidator(regexp)
+                            self.ui.commandParameter.setValidator(validator)
 
     def module_combo_triggered(self):
         # Module Combo Box Changed, set new command_base
@@ -135,8 +196,58 @@ class Main(QtGui.QMainWindow):
 
         self.populate_ui_command()
 
-    # Just a break for space. ;-))
+    def parameter_check_state(self, *args, **kwargs):
 
+        self.logger.debug('################ PARAMETER CHECK STATE ################')
+
+        self.logger.debug('%s %s', 'Check state function run for command', self.command_name)
+
+        # This bit is a bit of bodge as parameter check state will trigger when loading and raise
+        # AttributeError so we just ignore it, not ideal!
+
+        try:
+            sender = self.sender()
+            validator = sender.validator()
+            state = validator.validate(sender.text(), 0)[0]
+        except AttributeError:
+            pass
+
+        if self.parameter_regex == 'None':
+
+            self.logger.debug('Command parameters regex is None setting parameter entry box to gray')
+            sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+
+            self.logger.debug('Enabling execute button')
+            self.ui.executeButton.setEnabled(True)
+
+        else:
+
+            self.ui.executeButton.setEnabled(False)
+
+            if state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) == 0:
+
+                sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+
+            elif state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) > 0:
+
+                color = '#c4df9b'  # green
+                sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+                self.ui.executeButton.setEnabled(True)
+
+            elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) == 0:
+
+                sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+
+            elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) > 0:
+
+                color = '#fff79a'  # yellow
+                sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+
+            else:
+
+                sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+
+    # Just a break for space. ;-))
 
     def ui_message(self, message):
         message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' | ' + message
