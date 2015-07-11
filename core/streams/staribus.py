@@ -7,12 +7,15 @@ import logging
 import datetime
 from core.configLoader import confLoader
 
-class Serial():
+logger = logging.getLogger('core.streams.staribus')
+
+
+class Serial:
     def __init__(self, parent):
         '''initialise serial port
             raises: IOError'''
 
-        self.logger = logging.getLogger('core.streams.staribus')
+        # logger = logging.getLogger('core.streams.staribus')
         self.config = confLoader()
         self.parent = parent
 
@@ -33,13 +36,13 @@ class Serial():
             ser.open()
             ser.close()
         except IOError as msg:
-            self.logger.critical("%s %s", "Unable to initialise serial port -", msg)
+            logger.critical("%s %s", "Unable to initialise serial port -", msg)
             raise IOError(msg)
         except ValueError as msg:
-            self.logger.critical("%s %s", "Unable to initialise serial port -", msg)
+            logger.critical("%s %s", "Unable to initialise serial port -", msg)
             raise IOError(msg)
         else:
-            self.logger.info("Serial port %s initialised.", ser.name)
+            logger.info("Serial port %s initialised.", ser.name)
 
     def stream(self, message):
         '''
@@ -56,24 +59,24 @@ class Serial():
          Raises: IOError
         '''
 
-        self.logger.info('%s %s', 'stream has been handed', message.strip('\r\n'))
+        logger.info('%s %s', 'stream has been handed', message.strip('\r\n'))
 
         try:
             ser.open()
-            self.logger.debug('Serial port opened')
+            logger.debug('Serial port opened')
 
             ser.flushInput()  # flush input buffer, discarding all its contents
-            self.logger.debug('Serial port input buffer flushed')
+            logger.debug('Serial port input buffer flushed')
 
             ser.flushOutput()  # flush output buffer, aborting current output
-            self.logger.debug('Serial port output buffer flushed')
+            logger.debug('Serial port output buffer flushed')
 
             message = message.encode()
 
-            self.logger.info("Sending data to staribus instrument")
-            self.logger.debug("%s %s", 'Serial port raw message encoded utf-8', repr(message))
+            logger.info("Sending data to staribus instrument")
+            logger.debug("%s %s", 'Serial port raw message encoded utf-8', repr(message))
             ser.write(message)  # write message to serial port, preceded
-            self.logger.debug('Serial port message sent to controller')
+            logger.debug('Serial port message sent to controller')
             # time.sleep(float(self.config.get('serialport', 'pauseforresponse'))) # give the serial port
             # sometime to receive the data we don't need this now as we have a timeout which will pause
             # for 500m/s
@@ -85,12 +88,12 @@ class Serial():
 
             inbuff = 0
 
-            self.logger.debug('Starting new serial port receive loop')
+            logger.debug('Starting new serial port receive loop')
 
             # serial port receive loop
 
             while True:
-                self.logger.debug("%s %s", "Serial port input buffer data - ", inbuff)
+                logger.debug("%s %s", "Serial port input buffer data - ", inbuff)
 
                 if timeout_time >= datetime.datetime.now():
                     time.sleep(0.5)  # we sleep to stop race condition.
@@ -105,29 +108,29 @@ class Serial():
                     pass
                 elif inbuff > 0:  # If inbuff has data proceed
 
-                    self.logger.debug("%s %s", "Serial port inbuffer size - ", inbuff)
+                    logger.debug("%s %s", "Serial port inbuffer size - ", inbuff)
 
                     received = ser.readline()
 
-                    self.logger.info("Data received from staribus instrument")
-                    self.logger.debug("%s %s", "Serial port received rawdata  -", repr(received))
+                    logger.info("Data received from staribus instrument")
+                    logger.debug("%s %s", "Serial port received rawdata  -", repr(received))
 
                     received = received.decode('utf-8').strip('\x16\x02\x04\x0D\x0A')
 
-                    self.logger.debug("%s %s", "Serial port message decoded - ", repr(received))
+                    logger.debug("%s %s", "Serial port message decoded - ", repr(received))
 
                     ser.close()
 
-                    self.logger.debug('Serial port closed')
+                    logger.debug('Serial port closed')
 
                     return received  # This returns the received response from the controller minus ctrl chars
 
         except IOError as msg:
-            self.logger.critical('Serial IO Error - %s', msg)
+            logger.critical('Serial IO Error - %s', msg)
             raise IOError()
         except TypeError as msg:
-            self.logger.debug('Serial TypeError check the controller is connected? - %s', msg)
-            self.logger.critical('Serial port error check the controller is connected?')
+            logger.debug('Serial TypeError check the controller is connected? - %s', msg)
+            logger.critical('Serial port error check the controller is connected?')
             raise IOError()
 
 
@@ -137,20 +140,20 @@ class Serial():
          Currently doesn't work so don't use it unless you want to fix it. ;-))
         '''
 
-        self.logger.info('ctrlB')
+        logger.info('ctrlB')
 
         try:
             ser.open()
-            self.logger.debug('Serial port opened')
+            logger.debug('Serial port opened')
             ser.flushInput()  # flush input buffer, discarding all its contents
-            self.logger.debug('Serial port input buffer flushed')
+            logger.debug('Serial port input buffer flushed')
             ser.flushOutput()  # flush output buffer, aborting current output
-            self.logger.debug('Serial port output buffer flushed')
+            logger.debug('Serial port output buffer flushed')
             message = b'\x04\x04\x04\x04\x04\x04\x04\x04\x04\x04'
-            self.logger.info("Sending data to staribus instrument")
-            self.logger.debug("%s %s", 'Serial port raw message encoded utf-8', repr(message))
+            logger.info("Sending data to staribus instrument")
+            logger.debug("%s %s", 'Serial port raw message encoded utf-8', repr(message))
             ser.write(message)  # write message to serial port, preceded
-            self.logger.debug('Serial port message sent to controller')
+            logger.debug('Serial port message sent to controller')
             time.sleep(float(self.config.get('serialport', 'pauseforresponse'))) # give the serial port
             #  sometime to receive the data
 
@@ -161,44 +164,44 @@ class Serial():
             ## http://stackoverflow.com/questions/22275079/pyserial-write-wont-take-my-string
 
             while 1:
-                self.logger.debug("%s %s", "Serial port input buffer data - ", inbuff)
-                self.logger.debug('Starting new serial port receive loop')
+                logger.debug("%s %s", "Serial port input buffer data - ", inbuff)
+                logger.debug('Starting new serial port receive loop')
 
                 inbuff = ser.inWaiting()  # Wait for data
 
                 if inbuff > 0:  # If inbuff has data proceed
 
-                    self.logger.debug("%s %s", "Serial port inbuffer size - ", inbuff)
+                    logger.debug("%s %s", "Serial port inbuffer size - ", inbuff)
 
                     received = ser.readline()
 
-                    self.logger.info("Data received from staribus instrument")
-                    self.logger.debug("%s %s", "Serial port received rawdata  -", repr(received))
+                    logger.info("Data received from staribus instrument")
+                    logger.debug("%s %s", "Serial port received rawdata  -", repr(received))
 
                     received = received.decode('utf-8').strip('\x16\x02\x04\x0D\x0A')
 
-                    self.logger.debug("%s %s", "Serial port message decoded - ", repr(received))
+                    logger.debug("%s %s", "Serial port message decoded - ", repr(received))
 
                     self.parent.statusMessage.setText(repr(received))
 
                     ser.close()
 
-                    self.logger.debug('Serial port closed')
+                    logger.debug('Serial port closed')
 
                     return (received)  # This returns the received response from the controller minus ctrl chars
                 else:
-                    self.logger.debug("Serial port buffer empty - exiting serial port receive loop")
+                    logger.debug("Serial port buffer empty - exiting serial port receive loop")
 
                     ser.close()
 
-                    self.logger.debug('Serial port closed')
+                    logger.debug('Serial port closed')
 
                     self.parent.statusMessage.setText('Error - Serial Port Timeout!!')
 
         except IOError as msg:
-            self.logger.critical('Serial IO Error - %s', msg)
+            logger.critical('Serial IO Error - %s', msg)
             raise IOError()
         except TypeError as msg:
-            self.logger.debug('Serial TypeError check the controller is connected? - %s', msg)
-            self.logger.critical('Serial port error check the controller is connected?')
+            logger.debug('Serial TypeError check the controller is connected? - %s', msg)
+            logger.critical('Serial port error check the controller is connected?')
             raise IOError()

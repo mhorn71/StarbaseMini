@@ -13,7 +13,7 @@ except ImportError:
     QString = str
 
 import core.utilities as utils
-import core.starinetConnector as starinetConnector
+import core.streams.starinetConnector as starinetConnector
 from core.configLoader import confLoader
 from core.ui.mainwindow import Ui_MainWindow
 from core.xmlLoad import Instrument
@@ -75,17 +75,23 @@ class Main(QtGui.QMainWindow):
 
             self.logger.info('Initialising StarinetConnector')
 
+            ip = self.config.get('StarinetConnector', 'address')
+            port = self.config.get('StarinetConnector', 'port')
+
             # Check IP and Port look sane.
-            if utils.ip_checker(self.config.get('StarinetConnector', 'address')):
+            if utils.ip_checker(ip):
                 self.ui_message('Starinet Connector Address Malformed!!')
 
-            if utils.port_checker(self.config.get('StarinetConnector', 'port')):
+            if utils.port_checker(port):
                 self.ui_message('Starinet Connect Port Malformed')
 
             # Disable Normal GUI Operation as we're acting as Starinet Connector.
             self.disable_all()
 
             connector = starinetConnector.connector(self)
+            # t = threading.Thread(target=connector)
+            # t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
+            # t.start()
 
         elif self.config.get('StarinetConnector', 'active') == 'False':
 
