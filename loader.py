@@ -22,6 +22,7 @@ from core.instrumentChooser import selectedInstrument
 
 version = '0.0.18'
 
+
 class Main(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
@@ -88,7 +89,7 @@ class Main(QtGui.QMainWindow):
             # Disable Normal GUI Operation as we're acting as Starinet Connector.
             self.disable_all()
 
-            connector = starinetConnector.connector(self)
+            starinetConnector.Connector(self)
             # t = threading.Thread(target=connector)
             # t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
             # t.start()
@@ -120,7 +121,7 @@ class Main(QtGui.QMainWindow):
         self.logger.debug('Choices Combo box set False')
         self.ui.executeButton.setEnabled(False)
         self.logger.debug('Execute Button set False')
-        self.ui_message('StarinetConnector Mode | Instrument Control Panel Disabled.')
+        self.ui_message('StarinetConnector Mode :: Instrument Control Panel Disabled.')
 
     def populate_ui_module(self):
         # populate module combobox.
@@ -256,7 +257,7 @@ class Main(QtGui.QMainWindow):
     # Just a break for space. ;-))
 
     def ui_message(self, message):
-        message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' | ' + message
+        message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' :: ' + message
         self.ui.statusMessage.setText(message)
 
     def configuration_triggered(self):
