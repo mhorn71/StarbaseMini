@@ -80,30 +80,12 @@ class Connector:
                 logging.debug('%s %s', 'Raw Data received from Staribus client -', repr(data.decode()))
                 logging.debug('%s %s', 'Memory usage (bytes) -', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
-                # Create command timeout encase we need it.
-                command = re.match('\x02([0-9a-zA-Z]{14,14})\x04|\x02([0-9a-zA-Z]{10,10})\x1f', data.decode())
-
-                command = command.group(0)  # get first match which should be the command.
-
-                command = command.strip('\x02\x1F')  # strip control characters from command string.
-
-                if len(command) == 10:  # Command has parameter.
-                    timeout_base = '\x02' + command + '0001'
-                    crc = utils.crc_create(timeout_base)
-                    timeout_return_str = timeout_base + crc + '\x04\x0D\x0A'
-                    logging.debug('%s %s', 'Return Timeout set to', repr(timeout_return_str))
-                elif len(command) == 15:  # Command has no parameter.
-                    timeout_base = '\x02' + command[:-5] + '0001'
-                    crc = utils.crc_create(timeout_base)
-                    timeout_return_str = timeout_base + crc + '\x04\x0D\x0A'
-                    logging.debug('%s %s', 'Return Timeout set to', repr(timeout_return_str))
-                else:
-                    logging.critical('Unable to parse command')
-
                 # A simple timeout
                 timeout = self.parent.config.get('StaribusPort', 'timeout')
                 current_time = datetime.datetime.now()
                 timeout_time = current_time + datetime.timedelta(0, int(timeout))
+
+                self.ser.close()
 
                 try:
                     logging.debug('Opening serial port')
@@ -126,8 +108,7 @@ class Connector:
                             pass
                         else:
                             self.ser.close()
-                            logging.debug('%s %s', 'Return Timeout being sent to', addr)
-                            self.sock.sendto(timeout_return_str.encode(), addr)  # Send data back to Staribus client.
+                            logging.warning('Timed out waiting for response from controller.')
                             break
 
                         inbuff = self.ser.inWaiting()  # Wait for data
@@ -138,7 +119,7 @@ class Connector:
                             logging.debug('%s %s', 'Serial port inbuffer - ', inbuff)
                             received = self.ser.readline()
 
-                            logging.info('%s %s', 'Data received from Staribus client -', received)
+                            logging.info('%s %s', 'Data received from controller -', received)
                             logging.debug('%s %s', 'Received data in hex -', repr(received))
 
                             received = received.decode()
@@ -146,6 +127,8 @@ class Connector:
                             rt_data = received.strip('\x16')  # strip DLE
 
                             self.sock.sendto(rt_data.encode(), addr)  # Send data back to Staribus client.
+                            logging.debug('We\'re past self.sock.sendto')
+                            break
 
                 except serial.SerialException as msg:
                     logging.critical("%s %s", "Critical serial port error - ", msg)
