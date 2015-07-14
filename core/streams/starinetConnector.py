@@ -119,6 +119,7 @@ class StaribusPort(threading.Thread):
         logging.debug("Process run initialised.")
 
         while True:
+
             buffer3 = self.my_queue.get()
 
             if buffer3 is not None:
@@ -167,7 +168,7 @@ class StaribusPort(threading.Thread):
                             rt_data = received.strip('\x16')  # strip DLE
 
                             if rt_data.startswith('\x02') and rt_data.endswith('\x04\r\n'):
-                                self.parent.sock.sendto(rt_data.encode(), buffer3[1])  # Send data back to client.
+                                self.parent.sock.sendto(rt_data.encode('utf-8'), buffer3[1])  # Send data back to client.
                                 logging.info('Sending data back to ' + str(buffer3[1]))
                                 self.my_queue.task_done()
                                 break
