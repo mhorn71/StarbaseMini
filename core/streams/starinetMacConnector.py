@@ -47,7 +47,7 @@ class Connector:
                 self.ser.xonxoff = False
                 self.ser.rtscts = False
                 self.ser.dsrdtr = False
-                self.ser.writeTimeout = float(self.parent.config.get('StaribusPort', 'write_timeout'))
+                # self.ser.writeTimeout = float(self.parent.config.get('StaribusPort', 'write_timeout'))
             except serial.SerialException as msg:
                 logging.critical('%s %s', 'Unable to initialise serial port -', msg)
                 self.parent.ui_message('Unable to initialise Staribus port' + str(msg))
@@ -56,7 +56,7 @@ class Connector:
                 self.parent.ui_message('Unable to initialise Staribus port' + str(msg))
 
             self.ser_io = io.TextIOWrapper(io.BufferedReader(self.ser, 1), encoding='utf-8', newline='\n',
-                                           line_buffering=True)
+                                           line_buffering=False)
 
             # Try to open serial port and close it.
             try:
@@ -96,7 +96,7 @@ class ReadFromUDPSocket(threading.Thread):
             if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
                 logging.info("%s %s %s",  'Starinet UDP Packet received from', address, repr(buffer1))
                 logging.debug('%s %s', 'Memory usage (bytes) -', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
+                
                 self.my_queue.put((buffer1, address))
                 self.my_queue.join()
 
@@ -119,6 +119,7 @@ class StaribusPort(threading.Thread):
         logging.debug("Process run initialised.")
 
         while True:
+
             buffer3 = self.my_queue.get()
 
             if buffer3 is not None:
@@ -126,33 +127,35 @@ class StaribusPort(threading.Thread):
                 timeout = self.parent.timeout
                 current_time = datetime.datetime.now()
                 timeout_time = current_time + datetime.timedelta(0, int(timeout))
-
+    
                 self.parent.ser.close()
-
+    
                 try:
-
+    
                     logging.debug('Opening serial port')
                     self.parent.ser.open()
-                    self.parent.ser.flushInput()  # flush input buffer, discarding all its contents
-                    logging.debug('Flushing serial port input buffer')
-                    self.parent.ser.flushOutput()  # flush output buffer, aborting current output
-                    logging.debug('Flushing serial port output buffer')
+                    # self.parent.ser.flushInput()  # flush input buffer, discarding all its contents
+                    # logging.debug('Flushing serial port input buffer')
+                    # self.parent.ser.flushOutput()  # flush output buffer, aborting current output
+                    # logging.debug('Flushing serial port output buffer')
                     logging.info('Sending data to Staribus port')
                     self.parent.ser.write(buffer3[0])  # write message to serial port, preceded
-
+    
                     # serial port receive loop
 
+                    data = []
+    
                     while True:
 
                         if timeout_time >= datetime.datetime.now():
-                            time.sleep(0.5)
+                            # time.sleep(0.5)
                             pass
                         else:
                             self.parent.ser.close()
                             logging.warning('Timed out waiting for response from controller.')
                             self.my_queue.task_done()
                             break
-
+    
                         inbuff = self.parent.ser.inWaiting()  # Wait for data
 
                         if inbuff == 0:
@@ -160,17 +163,28 @@ class StaribusPort(threading.Thread):
                         elif inbuff > 0:
 
                             logging.debug('%s %s', 'Serial port buffer length - ', inbuff)
-                            received = self.parent.ser_io.readline()
-
+                            received = self.parent.ser_io.read()
+    
                             logging.info('%s %s', 'Data received from controller -', repr(received))
 
-                            rt_data = received.strip('\x16')  # strip DLE
+                            # rt_data = received #.strip('\x16')  # strip DLE
 
-                            if rt_data.startswith('\x02') and rt_data.endswith('\x04\r\n'):
-                                self.parent.sock.sendto(rt_data.encode(), buffer3[1])  # Send data back to client.
-                                logging.info('Sending data back to ' + str(buffer3[1]))
-                                self.my_queue.task_done()
-                                break
+                            if received is None:
+                                pass
+                            else:
+                                data.append(received)
+
+                            datastring = ''.join(data)
+
+                            if datastring is None:
+                                pass
+                            else:
+                                if datastring.startswith('\x16') and datastring.endswith('\n'):
+                                    logging.debug('%s %s', 'Found data to return ', repr(datastring))
+                                    self.parent.sock.sendto(datastring.encode('utf-8'), buffer3[1])  # Send data back to client.
+                                    logging.info('Sending data back to ' + str(buffer3[1]))
+                                    self.my_queue.task_done()
+                                    break
 
                 except serial.SerialException as msg:
                     logging.critical("%s %s", "Critical serial port error - ", msg)

@@ -96,7 +96,7 @@ class ReadFromUDPSocket(threading.Thread):
             if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
                 logging.info("%s %s %s",  'Starinet UDP Packet received from', address, repr(buffer1))
                 logging.debug('%s %s', 'Memory usage (bytes) -', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-                
+
                 self.my_queue.put((buffer1, address))
                 self.my_queue.join()
 
@@ -119,7 +119,6 @@ class StaribusPort(threading.Thread):
         logging.debug("Process run initialised.")
 
         while True:
-
             buffer3 = self.my_queue.get()
 
             if buffer3 is not None:
@@ -127,11 +126,11 @@ class StaribusPort(threading.Thread):
                 timeout = self.parent.timeout
                 current_time = datetime.datetime.now()
                 timeout_time = current_time + datetime.timedelta(0, int(timeout))
-    
+
                 self.parent.ser.close()
-    
+
                 try:
-    
+
                     logging.debug('Opening serial port')
                     self.parent.ser.open()
                     self.parent.ser.flushInput()  # flush input buffer, discarding all its contents
@@ -140,9 +139,9 @@ class StaribusPort(threading.Thread):
                     logging.debug('Flushing serial port output buffer')
                     logging.info('Sending data to Staribus port')
                     self.parent.ser.write(buffer3[0])  # write message to serial port, preceded
-    
+
                     # serial port receive loop
-    
+
                     while True:
 
                         if timeout_time >= datetime.datetime.now():
@@ -153,7 +152,7 @@ class StaribusPort(threading.Thread):
                             logging.warning('Timed out waiting for response from controller.')
                             self.my_queue.task_done()
                             break
-    
+
                         inbuff = self.parent.ser.inWaiting()  # Wait for data
 
                         if inbuff == 0:
@@ -162,13 +161,13 @@ class StaribusPort(threading.Thread):
 
                             logging.debug('%s %s', 'Serial port buffer length - ', inbuff)
                             received = self.parent.ser_io.readline()
-    
+
                             logging.info('%s %s', 'Data received from controller -', repr(received))
 
                             rt_data = received.strip('\x16')  # strip DLE
 
                             if rt_data.startswith('\x02') and rt_data.endswith('\x04\r\n'):
-                                self.parent.sock.sendto(rt_data.encode('utf-8'), buffer3[1])  # Send data back to client.
+                                self.parent.sock.sendto(rt_data.encode(), buffer3[1])  # Send data back to client.
                                 logging.info('Sending data back to ' + str(buffer3[1]))
                                 self.my_queue.task_done()
                                 break

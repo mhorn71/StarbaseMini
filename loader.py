@@ -14,6 +14,7 @@ except ImportError:
 
 import core.utilities as utils
 import core.streams.starinetConnector as starinetConnector
+import core.streams.starinetMacConnector as starinetMacConnector
 from core.configLoader import confLoader
 from core.ui.mainwindow import Ui_MainWindow
 from core.xmlLoad import Instrument
@@ -89,10 +90,10 @@ class Main(QtGui.QMainWindow):
             # Disable Normal GUI Operation as we're acting as Starinet Connector.
             self.disable_all()
 
-            starinetConnector.Connector(self)
-            # t = threading.Thread(target=connector)
-            # t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
-            # t.start()
+            if sys.platform.startswith('darwin'):
+                starinetMacConnector.Connector(self)
+            else:
+                starinetConnector.Connector(self)
 
         elif self.config.get('StarinetConnector', 'active') == 'False':
 
