@@ -10,7 +10,7 @@ import serial
 import io
 
 
-udp_buffer = 570
+udp_buffer = 700
 my_queue = queue.Queue()
 
 logging = logging.getLogger('core.starinetConnector')
@@ -72,7 +72,7 @@ class Connector:
 
             # Instantiate & start threads
             server = ReadFromUDPSocket(my_queue, self)
-            interpreter = Process(my_queue, self)
+            interpreter = StaribusPort(my_queue, self)
             server.setDaemon(True)
             interpreter.setDaemon(True)
 
@@ -89,24 +89,23 @@ class ReadFromUDPSocket(threading.Thread):
         self.parent = parent
 
     def run(self):
-        logging.debug("ReadFromUDPSocket run initialised.")
         while True:
             buffer1, address = self.parent.sock.recvfrom(udp_buffer)
             logging.debug("%s %s", "received data - ", repr(buffer1))
 
             if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
-                logging.debug("%s %s %s",  'Starinet UDP Packet received from', address, repr(buffer1))
+                logging.info("%s %s %s",  'Starinet UDP Packet received from', address, repr(buffer1))
                 logging.debug('%s %s', 'Memory usage (bytes) -', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
                 
                 self.my_queue.put((buffer1, address))
                 self.my_queue.join()
 
 
-class Process(threading.Thread):
+class StaribusPort(threading.Thread):
 
     def __init__(self, my_queue, parent):
 
-        logging.info("Process __init__ initialised.")
+        logging.info("StaribusPort translator __init__ initialised.")
 
         threading.Thread.__init__(self)
         self.my_queue = my_queue
@@ -138,7 +137,7 @@ class Process(threading.Thread):
                     logging.debug('Flushing serial port input buffer')
                     self.parent.ser.flushOutput()  # flush output buffer, aborting current output
                     logging.debug('Flushing serial port output buffer')
-                    logging.debug('%s %s', 'Sending data to Staribus port ', buffer3[0])
+                    logging.info('Sending data to Staribus port')
                     self.parent.ser.write(buffer3[0])  # write message to serial port, preceded
     
                     # serial port receive loop
@@ -146,7 +145,7 @@ class Process(threading.Thread):
                     while True:
 
                         if timeout_time >= datetime.datetime.now():
-                            time.sleep(0.2)
+                            time.sleep(0.5)
                             pass
                         else:
                             self.parent.ser.close()
@@ -160,22 +159,19 @@ class Process(threading.Thread):
                             pass
                         elif inbuff > 0:
 
-                            logging.debug('%s %s', 'Serial port buffer - ', inbuff)
+                            logging.debug('%s %s', 'Serial port buffer length - ', inbuff)
                             received = self.parent.ser_io.readline()
     
-                            logging.info('%s %s', 'Data received from controller -', received)
-                            logging.debug('%s %s', 'Received data in hex -', repr(received))
+                            logging.info('%s %s', 'Data received from controller -', repr(received))
 
                             rt_data = received.strip('\x16')  # strip DLE
 
                             if rt_data.startswith('\x02') and rt_data.endswith('\x04\r\n'):
                                 self.parent.sock.sendto(rt_data.encode(), buffer3[1])  # Send data back to client.
-                                logging.debug('Sending data to ' + str(buffer3[1]))
+                                logging.info('Sending data back to ' + str(buffer3[1]))
                                 self.my_queue.task_done()
                                 break
-                            else:
-                                pass
-    
+
                 except serial.SerialException as msg:
                     logging.critical("%s %s", "Critical serial port error - ", msg)
                     self.parent.parent.ui_message('Staribus port exception ' + str(msg))
