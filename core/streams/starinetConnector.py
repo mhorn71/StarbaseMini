@@ -43,7 +43,7 @@ class Connector:
                 self.ser.bytesize = serial.SEVENBITS
                 self.ser.parity = serial.PARITY_EVEN
                 self.ser.stopbits = serial.STOPBITS_ONE
-                self.ser.timeout = 3
+                self.ser.timeout = 0
                 self.ser.xonxoff = False
                 self.ser.rtscts = False
                 self.ser.dsrdtr = False
@@ -55,7 +55,8 @@ class Connector:
                 logging.critical('%s %s', "Unable to initialise serial port -", msg)
                 self.parent.ui_message('Unable to initialise Staribus port' + str(msg))
 
-            self.ser_io = io.TextIOWrapper(io.BufferedRWPair(self.ser, self.ser, 1), newline='\n', line_buffering=True)
+            self.ser_io = io.TextIOWrapper(io.BufferedReader(self.ser, 1), encoding='utf-8', newline='\n',
+                                           line_buffering=True)
 
             # Try to open serial port and close it.
             try:
@@ -172,6 +173,8 @@ class Process(threading.Thread):
                                 logging.debug('Sending data to ' + str(buffer3[1]))
                                 self.my_queue.task_done()
                                 break
+                            else:
+                                pass
     
                 except serial.SerialException as msg:
                     logging.critical("%s %s", "Critical serial port error - ", msg)
