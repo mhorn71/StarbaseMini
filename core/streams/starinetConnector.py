@@ -119,6 +119,7 @@ class StaribusPort(threading.Thread):
         logging.debug("Process run initialised.")
 
         while True:
+
             buffer3 = self.my_queue.get()
 
             if buffer3 is not None:
