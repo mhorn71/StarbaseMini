@@ -91,8 +91,10 @@ class Main(QtGui.QMainWindow):
             self.disable_all()
 
             if sys.platform.startswith('darwin'):
+                logging.debug('Detected Mac OSX using starinetMacConnector')
                 starinetMacConnector.Connector(self)
             else:
+                logging.debug('Detected Non Mac OSX using starinetConnector')
                 starinetConnector.Connector(self)
 
         elif self.config.get('StarinetConnector', 'active') == 'False':
