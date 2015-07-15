@@ -71,7 +71,7 @@ class confLoader:
                 self.config.add_section('StarinetConnector')
                 self.config.set('StarinetConnector', 'active', 'False')
                 self.config.set('StarinetConnector', 'address', '192.168.1.10')
-                self.config.set('StarinetConnector', 'port', '1206')
+                self.config.set('StarinetConnector', 'port', '1205')
 
                 # Add ObservatoryMetadata section.
                 self.config.add_section('ObservatoryMetadata')
@@ -114,7 +114,7 @@ class confLoader:
                 self.config.add_section('handler_hand0')
                 self.config.set('handler_hand0', 'class', 'handlers.RotatingFileHandler')
                 logfile = self.config_home + 'starbaseMini.log'
-                args = (logfile, 'a', 512000, 6, 'utf8')
+                args = (logfile, 'a', 1500000, 6, 'utf8')
                 self.config.set('handler_hand0', 'args', args)
                 self.config.set('handler_hand0', 'formatter', 'mine')
 
