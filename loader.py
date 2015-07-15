@@ -13,8 +13,8 @@ except ImportError:
     QString = str
 
 import core.utilities as utils
-import core.streams.starinetConnector as starinetConnector
-import core.streams.starinetMacConnector as starinetMacConnector
+import core.streams.starinetConnectorMK2 as starinetConnector
+import core.streams.starinetConnectorMK2 as starinetMacConnector
 from core.configLoader import confLoader
 from core.ui.mainwindow import Ui_MainWindow
 from core.xmlLoad import Instrument
@@ -92,10 +92,10 @@ class Main(QtGui.QMainWindow):
 
             if sys.platform.startswith('darwin'):
                 logging.debug('Detected Mac OSX using starinetMacConnector')
-                starinetMacConnector.Connector(self)
+                starinetMacConnector
             else:
                 logging.debug('Detected Non Mac OSX using starinetConnector')
-                starinetConnector.Connector(self)
+                starinetConnector
 
         elif self.config.get('StarinetConnector', 'active') == 'False':
 
