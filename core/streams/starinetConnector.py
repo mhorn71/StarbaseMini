@@ -112,7 +112,7 @@ class StaribusPort(threading.Thread):
                                 if datastring.startswith('\x02') and datastring.endswith('\n'):
                                     logging.debug('%s %s', 'Found data to return ', repr(datastring))
                                     sock.sendto(datastring.encode('utf-8'), buffer3[1])  # Send data back to client.
-                                    logging.info('Sending recieved data from controller to' + str(buffer3[1]))
+                                    logging.info('Sending received data from controller to' + str(buffer3[1]))
                                     self.my_queue.task_done()
                                     break
 
