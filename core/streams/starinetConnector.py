@@ -7,6 +7,7 @@ import threading
 import datetime
 import queue
 import io
+import time
 
 import serial
 
@@ -14,7 +15,7 @@ from core.configLoader import confLoader
 
 config = confLoader()
 
-udp_buffer = 700
+udp_buffer = 600
 my_queue = queue.Queue()
 timeout = config.get('StaribusPort', 'timeout')
 
@@ -82,7 +83,7 @@ class StaribusPort(threading.Thread):
                     while True:
 
                         if timeout_time >= datetime.datetime.now():
-                            pass
+                            time.sleep(0.01)
                         else:
                             logging.warning('Timed out waiting for response from controller.')
                             self.my_queue.task_done()
@@ -128,7 +129,6 @@ if config.get('StaribusPort', 'port') == 'None':
     logging.critical('No Staribus port set.')
 else:
     # Create socket (IPv4 protocol, datagram (UDP)) and bind to addressess
-    # initialise network
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind((config.get('StarinetConnector', 'address'),
@@ -157,7 +157,7 @@ except ValueError as msg:
 ser_io = io.TextIOWrapper(io.BufferedReader(ser), encoding='utf-8', newline='\n', line_buffering=True)
 
 # Try to open serial port and close it.
-logging.debug('Attempting to open serial port')
+logging.debug('Opening serial port')
 try:
     ser.open()
 except serial.SerialException as msg:
@@ -168,6 +168,5 @@ else:
     interpreter = StaribusPort(my_queue)
     server.setDaemon(True)
     interpreter.setDaemon(True)
-
     server.start()
     interpreter.start()

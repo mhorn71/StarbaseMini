@@ -13,7 +13,6 @@ except ImportError:
     QString = str
 
 import core.utilities as utils
-import core.streams.starinetConnector as starinetConnector
 from core.configLoader import confLoader
 from core.ui.mainwindow import Ui_MainWindow
 from core.xmlLoad import Instrument
@@ -89,7 +88,11 @@ class Main(QtGui.QMainWindow):
             # Disable Normal GUI Operation as we're acting as Starinet Connector.
             self.disable_all()
 
-            starinetConnector
+            # Load the starinetConnector
+            try:
+                import core.streams.starinetConnector
+            except Exception:
+                pass
 
         elif self.config.get('StarinetConnector', 'active') == 'False':
 
@@ -108,6 +111,7 @@ class Main(QtGui.QMainWindow):
             utils.exit_message('Unable to parse configuration for StarinetConnector.')
 
     def disable_all(self):
+        self.logger.info('Disabling all UI input widgets.')
         self.ui.moduleCombobox.setEnabled(False)
         self.logger.debug('Module Combo box set False')
         self.ui.commandCombobox.setEnabled(False)
