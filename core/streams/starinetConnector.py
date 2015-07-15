@@ -18,7 +18,7 @@ udp_buffer = 700
 my_queue = queue.Queue()
 timeout = config.get('StaribusPort', 'timeout')
 
-logging = logging.getLogger('core.starinetConnectorMK2')
+logging = logging.getLogger('core.starinetConnector')
 
 
 class ReadFromUDPSocket(threading.Thread):
@@ -34,7 +34,8 @@ class ReadFromUDPSocket(threading.Thread):
             logging.debug("%s %s", "received data - ", repr(buffer1))
 
             if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
-                logging.info("%s %s %s",  'Starinet UDP Packet received from', address, repr(buffer1))
+                logging.info('%s %s',  'Starinet UDP Packet received from', address)
+                logging.debug('%s %s',  'Starinet UDP Packet', repr(buffer1))
                 logging.debug('%s %s', 'Memory usage (bytes) -', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
                 self.my_queue.put((buffer1, address))
@@ -111,7 +112,7 @@ class StaribusPort(threading.Thread):
                                 if datastring.startswith('\x02') and datastring.endswith('\n'):
                                     logging.debug('%s %s', 'Found data to return ', repr(datastring))
                                     sock.sendto(datastring.encode('utf-8'), buffer3[1])  # Send data back to client.
-                                    logging.info('Sending data back to ' + str(buffer3[1]))
+                                    logging.info('Sending recieved data from controller to' + str(buffer3[1]))
                                     self.my_queue.task_done()
                                     break
 
