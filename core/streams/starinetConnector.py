@@ -8,7 +8,6 @@ import datetime
 import queue
 import io
 import time
-
 import serial
 
 from core.configLoader import confLoader
@@ -80,10 +79,12 @@ class StaribusPort(threading.Thread):
 
                     data = []
 
+                    # time.sleep(0.2)
+
                     while True:
 
                         if timeout_time >= datetime.datetime.now():
-                            time.sleep(0.01)
+                            pass
                         else:
                             logging.warning('Timed out waiting for response from controller.')
                             self.my_queue.task_done()
@@ -154,7 +155,7 @@ except serial.SerialException as msg:
 except ValueError as msg:
     logging.critical('%s %s', "Unable to initialise serial port -", msg)
 
-ser_io = io.TextIOWrapper(io.BufferedReader(ser), encoding='utf-8', newline='\n', line_buffering=True)
+ser_io = io.TextIOWrapper(io.BufferedReader(ser), encoding='utf-8', newline='\n', line_buffering=False)
 
 # Try to open serial port and close it.
 logging.debug('Opening serial port')

@@ -5,10 +5,28 @@ import core.utilities as utils
 import xml.etree.ElementTree as eTree
 import re
 
+
+class Instruments:
+    def __init__(self):
+        self.logger = logging.getLogger('core.xmlLoad.Instruments')
+
+        # Create an xml dom object for Instruments XML.
+        try:
+
+            # The tree root is the top level Instruments tag.
+            self.xmldom = eTree.parse('instruments/instruments.xml')  # Open and parse xml document.
+            self.logger.debug('Created XML Dom for Instrument.')
+
+        except FileNotFoundError:
+
+            self.logger.critical("Fatal Error - Missing Instrument XML.")
+            utils.exit_message('Missing Instrument XML.')
+
+
 class Instrument:
     def __init__(self, xml_file):
 
-        self.logger = logging.getLogger('xmlLoad')
+        self.logger = logging.getLogger('core.xmlLoad.Instrument')
 
         # The instrument module and command list see below for format etc ...
         self.instrument_mc_list = []

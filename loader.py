@@ -26,6 +26,7 @@ class Main(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Base attributes.
+        self.transport = None
         self.saved_data_state = False
         self.command_base = 'None'
         self.command_code = 'None'
@@ -38,7 +39,7 @@ class Main(QtGui.QMainWindow):
         self.config = confLoader()
 
         #  Load and initialise logging configuration from user configuration file.
-        logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
+        logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
         self.logger = logging.getLogger('loader')
         self.logger.info('-------------- APPLICATION STARTUP --------------')
 
@@ -56,6 +57,9 @@ class Main(QtGui.QMainWindow):
         self.ui.actionMetadataEditor.triggered.connect(self.metadata_editor_triggered)
         self.ui.actionManual.triggered.connect(self.help_manual_triggered)
         self.ui.actionAbout.triggered.connect(self.help_about_triggered)
+
+        # Button connectors
+        self.ui.executeButton.clicked.connect(self.execute_triggered)
 
         # Disable Parameter Entry, Choices Combobox and Execute Button
         self.ui.executeButton.setEnabled(False)
@@ -80,13 +84,22 @@ class Main(QtGui.QMainWindow):
 
             # Check IP and Port look sane.
             if utils.ip_checker(ip):
+                pass
+            else:
+                self.logger.critical('Starinet Connector Address Malformed!!')
                 self.ui_message('Starinet Connector Address Malformed!!')
 
             if utils.port_checker(port):
+                pass
+            else:
+                self.logger.critical('Starinet Connect Port Malformed')
                 self.ui_message('Starinet Connect Port Malformed')
 
             # Disable Normal GUI Operation as we're acting as Starinet Connector.
             self.disable_all()
+            self.ui_message('StarinetConnector Mode :: Instrument Control Panel Disabled.')
+
+            connectorBool = True
 
             # Load the starinetConnector
             try:
@@ -105,10 +118,24 @@ class Main(QtGui.QMainWindow):
             # Populate the UI Combo boxes and set initial state.
             self.populate_ui_module()
 
+            connectorBool = False
+
         else:
 
             self.logger.critical('Unable to parse configuration for StarinetConnector.')
             utils.exit_message('Unable to parse configuration for StarinetConnector.')
+
+        # Check if connector is being used.
+        if connectorBool:
+            pass
+        else:
+            # Check is staribus address is set and if so initiate Starbus transport.
+            if self.instrument.instrument_staribus_address != 'None':
+                self.ui_message('Staribus instrument initialised.')
+            elif self.instrument.instrument_starinet_address != 'None':
+                self.ui_message('Starinet instrument initialised.')
+            else:
+                self.ui_message('Unable to parse either Staribus or Starinet instrument.  Check log file.')
 
     def disable_all(self):
         self.logger.info('Disabling all UI input widgets.')
@@ -122,7 +149,6 @@ class Main(QtGui.QMainWindow):
         self.logger.debug('Choices Combo box set False')
         self.ui.executeButton.setEnabled(False)
         self.logger.debug('Execute Button set False')
-        self.ui_message('StarinetConnector Mode :: Instrument Control Panel Disabled.')
 
     def populate_ui_module(self):
         # populate module combobox.
@@ -135,8 +161,6 @@ class Main(QtGui.QMainWindow):
             self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
 
             index += 1
-
-        self.ui_message('Instrument PopulateUI')
 
     def populate_ui_command(self):
 
@@ -256,6 +280,9 @@ class Main(QtGui.QMainWindow):
                 sender.setStyleSheet('QLineEdit { background-color: #f6989d')
 
     # Just a break for space. ;-))
+
+    def execute_triggered(self):
+        self.transport.stream()
 
     def ui_message(self, message):
         message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' :: ' + message
