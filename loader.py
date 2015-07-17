@@ -16,10 +16,10 @@ import core.utilities as utils
 from core.configLoader import confLoader
 from core.ui.mainwindow import Ui_MainWindow
 from core.xmlLoad import Instrument
-from core.instrumentChooser import selectedInstrument
+from core.xmlLoad import Instruments
 
 
-version = '0.0.18'
+version = '0.0.19'
 
 
 class Main(QtGui.QMainWindow):
@@ -113,7 +113,9 @@ class Main(QtGui.QMainWindow):
             self.logger.info('Initialising Instrument.')
 
             # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
-            self.instrument = Instrument(selectedInstrument(self))
+            my_instrument = Instruments()
+            file_name = my_instrument.get_file(self.config.get('Application', 'instrument_name'))
+            self.instrument = Instrument(file_name)
 
             # Populate the UI Combo boxes and set initial state.
             self.populate_ui_module()

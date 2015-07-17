@@ -1,9 +1,12 @@
 __author__ = 'mark'
 
 import logging
-import core.utilities as utils
+import sys
+
 import xml.etree.ElementTree as eTree
 import re
+
+import core.utilities as utils
 
 
 class Instruments:
@@ -15,12 +18,44 @@ class Instruments:
 
             # The tree root is the top level Instruments tag.
             self.xmldom = eTree.parse('instruments/instruments.xml')  # Open and parse xml document.
-            self.logger.debug('Created XML Dom for Instrument.')
+            self.logger.debug('Created XML Dom for Instruments.')
 
         except FileNotFoundError:
 
-            self.logger.critical("Fatal Error - Missing Instrument XML.")
-            utils.exit_message('Missing Instrument XML.')
+            self.logger.critical("Fatal Error - instruments.xml missing.")
+            utils.exit_message('instruments.xml missing.')
+
+        if sys.platform.startswith('win32'):
+            self.sep = '\\'
+        else:
+            self.sep = '/'
+
+    def get_names(self):
+        '''
+        Gets a list of instrument names from instruments.xml
+        :return: list of names.
+        '''
+        tmp_names = []
+        for instrument in self.xmldom.findall('Instrument'):
+            name = instrument.findtext('Name')
+            self.logger.debug('%s %s', 'Appending instrument to list', name)
+            tmp_names.append(name)
+
+        self.logger.debug('%s %s', 'Returning list', str(tmp_names))
+        return tmp_names
+
+    def get_file(self, instrument_name):
+        '''
+        get the xml file name for the instrument name supplied.
+        :param instrument_name:
+        :return: xml file name including path (string)
+        '''
+
+        for instrument in self.xmldom.findall('Instrument'):
+            if instrument.findtext('Name') == instrument_name:
+                return_name = 'instruments' + self.sep + instrument.findtext('File')
+                self.logger.debug('%s %s', 'Instrument XML file and path', return_name)
+                return return_name
 
 
 class Instrument:

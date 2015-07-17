@@ -3,24 +3,24 @@
 <Instruments>
     <!-- Instrument Name and File Name are case sensitive -->
 
-    <InstrumentXML>
+    <Instrument>
         <Name>Staribus 4 Channel Logger</Name>
         <File>staribus-4ch-logger.xml</File>
-    </InstrumentXML>
+    </Instrument>
 
-    <InstrumentXML>
+    <Instrument>
         <Name>Staribus 8 Channel Logger</Name>
         <File>staribus-8ch-logger.xml</File>
-    </InstrumentXML>
+    </Instrument>
 
-    <InstrumentXML>
+    <Instrument>
         <Name>Staribus VLF Instrument</Name>
         <File>staribus-vlf.xml</File>
-    </InstrumentXML>
+    </Instrument>
 
-    <InstrumentXML>
+    <Instrument>
         <Name>Staribus Magnetometer</Name>
         <File>staribus-magnetometer.xml</File>
-    </InstrumentXML>
+    </Instrument>
 
 </Instruments>
