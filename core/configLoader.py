@@ -57,7 +57,7 @@ class confLoader:
                 # Add Application Data Save Path
                 self.config.add_section('Application')
                 self.config.set('Application', 'save_path', 'None')
-                self.config.set('Application', 'instrument_type', 'Staribus4ChLogger')
+                self.config.set('Application', 'instrument_name', 'Staribus4ChLogger')
                 self.config.set('Application', 'detect_staribus_port', 'True')
 
                 # Add Staribus Port section
