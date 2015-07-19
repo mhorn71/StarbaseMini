@@ -14,6 +14,7 @@ except ImportError:
 
 import core.utilities as utils
 from core.configLoader import confLoader
+import core.staribusPortDetect as staribusPortDetect
 from core.ui.mainwindow import Ui_MainWindow
 from core.xmlLoad import Instrument
 from core.xmlLoad import Instruments
@@ -40,7 +41,7 @@ class Main(QtGui.QMainWindow):
 
         #  Load and initialise logging configuration from user configuration file.
         logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
-        self.logger = logging.getLogger('loader')
+        self.logger = logging.getLogger('main')
         self.logger.info('-------------- APPLICATION STARTUP --------------')
 
         # Load Ui Components we need to do this before we check for connector or we won't be able to disable the UI
@@ -73,6 +74,20 @@ class Main(QtGui.QMainWindow):
         # Parameter entry emit and connect signals
         self.ui.commandParameter.textChanged.connect(self.parameter_check_state)
         self.ui.commandParameter.textChanged.emit(self.ui.commandParameter.text())
+
+        # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
+        my_instrument = Instruments()
+        file_name = my_instrument.get_file(self.config.get('Application', 'instrument_name'))
+        self.instrument = Instrument(file_name)
+
+        if self.config.get('Application', 'detect_staribus_port') == 'True' and \
+                self.instrument.instrument_staribus_address != 'None':
+            self.logger.debug('Attempting to autodetect the Staribus bus port')
+            address = self.instrument.instrument_staribus_address
+            baudrate = self.config.get('StaribusPort', 'baudrate')
+            staribusPortDetect.autodetect(address, baudrate)
+
+        self.config = confLoader()
 
         # If StarinetConnector is set then initialise starinetConnector.
         if self.config.get('StarinetConnector', 'active') == 'True':
@@ -111,11 +126,6 @@ class Main(QtGui.QMainWindow):
 
             # Initialise instrument configuration.
             self.logger.info('Initialising Instrument.')
-
-            # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
-            my_instrument = Instruments()
-            file_name = my_instrument.get_file(self.config.get('Application', 'instrument_name'))
-            self.instrument = Instrument(file_name)
 
             # Populate the UI Combo boxes and set initial state.
             self.populate_ui_module()
