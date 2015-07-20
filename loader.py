@@ -39,9 +39,6 @@ class Main(QtGui.QMainWindow):
         # Initialise configuration will auto generate user configuration if missing.
         self.config = confLoader()
 
-        # Initialise configurationManager
-        self.configurationManager = configManager()
-
         #  Load and initialise logging configuration from user configuration file.
         logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
         self.logger = logging.getLogger('main')
@@ -160,6 +157,9 @@ class Main(QtGui.QMainWindow):
                 self.ui_message('Starinet instrument initialised.')
             else:
                 self.ui_message('Unable to parse either Staribus or Starinet instrument.  Check log file.')
+
+        # Initialise configurationManager
+        self.configurationManager = configManager()
 
     def disable_all(self):
         self.logger.info('Disabling all UI input widgets.')

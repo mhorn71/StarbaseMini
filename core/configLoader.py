@@ -56,13 +56,13 @@ class confLoader:
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')
-                self.config.set('Application', 'save_path', 'None')
+                self.config.set('Application', 'save_path', '')
                 self.config.set('Application', 'instrument_name', 'Staribus 4 Channel Logger')
                 self.config.set('Application', 'detect_staribus_port', 'True')
 
                 # Add Staribus Port section
                 self.config.add_section('StaribusPort')
-                self.config.set('StaribusPort', 'port', 'None')
+                self.config.set('StaribusPort', 'port', '')
                 self.config.set('StaribusPort', 'baudrate', '57600')
                 self.config.set('StaribusPort', 'write_timeout', '0.2')
                 self.config.set('StaribusPort', 'timeout', '30')

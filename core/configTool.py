@@ -112,7 +112,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         # if len(starinetConnector_port) != 0:
         self.portLineEdit.setText(starinetConnector_port)
 
-        # Load Observatory Tab
+        # Load Observatory Metadata Tab
 
         OyName = self.application_conf.get('ObservatoryMetadata', 'name')
         self.OyNameLineEdit.setText(OyName)
@@ -155,6 +155,29 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         OyHASL = self.application_conf.get('ObservatoryMetadata', 'hasl')
         self.OyHaslLineEdit.setText(OyHASL)
+
+        # Load Observer Metadata Tab.
+
+        ObName = self.application_conf.get('ObserverMetadata', 'name')
+        self.ObNameLineEdit.setText(ObName)
+
+        ObDescription = self.application_conf.get('ObserverMetadata', 'description')
+        self.ObDescriptionLineEdit.setText(ObDescription)
+
+        ObEmail = self.application_conf.get('ObserverMetadata', 'contact_email')
+        self.ObEmailLineEdit.setText(ObEmail)
+
+        ObTelephone = self.application_conf.get('ObserverMetadata', 'contact_telephone')
+        self.ObTelephoneLineEdit.setText(ObTelephone)
+
+        ObURL = self.application_conf.get('ObserverMetadata', 'contact_url')
+        self.ObUrlLineEdit.setText(ObURL)
+
+        ObCountry = self.application_conf.get('ObserverMetadata', 'country')
+        self.ObCountryLineEdit.setText(ObCountry)
+
+        ObNotes = self.application_conf.get('ObserverMetadata', 'notes')
+        self.ObNotesLineEdit.setText(ObNotes)
 
     def exit_triggered(self):
         self.close()
