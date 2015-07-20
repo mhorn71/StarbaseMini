@@ -138,14 +138,17 @@ def check_port(address, baudrate, result):
                         received = received.strip('\x16\x02\x04\x0D\x0A')
 
                     if utils.crc_check(received) is True:
-                        # The length of ping packet response. This is a bodge in case a loopback device is found.
+                        # The length of ping packet response. This is a bodge in case a loop back device is found.
+                        # The current UKRAA controller will return the sent message with a status of success, which
+                        # once you strip off the beginning and end control characters the message length should be 25
+                        # chars long, if it isn't the device is probably a loop back device.
                         if inbuff == 25:
                             logger.debug('Appending %s to staribus port list' % port)
                             staribus_ports.append(port)
                             s.close()
                             break
                         else:
-                            logger.debug('%s %s', 'Looks like a loopback dropping', port)
+                            logger.debug('%s %s', 'Looks like a loop back device dropping', port)
                             s.close()
                             break
 
@@ -154,18 +157,18 @@ def check_port(address, baudrate, result):
 
     logger.debug('Number of Staribus Ports found %s' % str(len(staribus_ports)))
     if len(staribus_ports) == 0:
-        logger.warning('Staribus Port Autodetect - No instrument found on port.')
+        logger.critical('Staribus Port Autodetect - No instrument found on port.')
     elif len(staribus_ports) == 1:
         logger.info('%s %s', 'Staribus instrument found on port', str(staribus_ports))
-        realport = str(staribus_ports).strip('[\']')
-        logger.debug('Writing port %s to configuration file', realport)
-        config.set('StaribusPort', 'port', realport)
+        real_port = str(staribus_ports).strip('[\']')
+        logger.debug('Writing port %s to configuration file', real_port)
+        config.set('StaribusPort', 'port', real_port)
     elif len(staribus_ports) > 1:
         logger.info('%s %s', 'Multiple instruments found on ports', str(staribus_ports))
         logger.info('%s %s', 'Setting instrument to use first valid port', str(staribus_ports[0]))
-        realport = str(staribus_ports[0]).strip('[\']')
-        logger.debug('Writing port %s to configuration file', realport)
-        config.set('StaribusPort', 'port', realport)
+        real_port = str(staribus_ports[0]).strip('[\']')
+        logger.debug('Writing port %s to configuration file', real_port)
+        config.set('StaribusPort', 'port', real_port)
 
 
 

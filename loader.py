@@ -14,6 +14,7 @@ except ImportError:
 
 import core.utilities as utils
 from core.configLoader import confLoader
+from core.configTool import configManager
 import core.staribusPortDetect as staribusPortDetect
 from core.ui.mainwindow import Ui_MainWindow
 from core.xmlLoad import Instrument
@@ -27,7 +28,6 @@ class Main(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Base attributes.
-        self.transport = None
         self.saved_data_state = False
         self.command_base = 'None'
         self.command_code = 'None'
@@ -38,6 +38,9 @@ class Main(QtGui.QMainWindow):
 
         # Initialise configuration will auto generate user configuration if missing.
         self.config = confLoader()
+
+        # Initialise configurationManager
+        self.configurationManager = configManager()
 
         #  Load and initialise logging configuration from user configuration file.
         logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
@@ -82,17 +85,18 @@ class Main(QtGui.QMainWindow):
 
         if self.config.get('Application', 'detect_staribus_port') == 'True' and \
                 self.instrument.instrument_staribus_address != 'None':
-            self.logger.debug('Attempting to autodetect the Staribus bus port')
             address = self.instrument.instrument_staribus_address
             baudrate = self.config.get('StaribusPort', 'baudrate')
             staribusPortDetect.autodetect(address, baudrate)
-
-        self.config = confLoader()
 
         # If StarinetConnector is set then initialise starinetConnector.
         if self.config.get('StarinetConnector', 'active') == 'True':
 
             self.logger.info('Initialising StarinetConnector')
+
+            if len(self.config.get('StaribusPort', 'port')) == 0:
+                self.logger.critical('No Staribus port set.')
+                critical = True
 
             ip = self.config.get('StarinetConnector', 'address')
             port = self.config.get('StarinetConnector', 'port')
@@ -102,17 +106,21 @@ class Main(QtGui.QMainWindow):
                 pass
             else:
                 self.logger.critical('Starinet Connector Address Malformed!!')
-                self.ui_message('Starinet Connector Address Malformed!!')
+                critical = True
 
             if utils.port_checker(port):
                 pass
             else:
                 self.logger.critical('Starinet Connect Port Malformed')
-                self.ui_message('Starinet Connect Port Malformed')
+                critical = True
 
             # Disable Normal GUI Operation as we're acting as Starinet Connector.
             self.disable_all()
-            self.ui_message('StarinetConnector Mode :: Instrument Control Panel Disabled.')
+
+            if critical is True:
+                self.ui_message('Check log file critical error has occured.')
+            else:
+                self.ui_message('StarinetConnector Mode :: Instrument Control Panel Disabled.')
 
             connectorBool = True
 
@@ -294,14 +302,15 @@ class Main(QtGui.QMainWindow):
     # Just a break for space. ;-))
 
     def execute_triggered(self):
-        self.transport.stream()
+        print(self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()))
 
     def ui_message(self, message):
         message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' :: ' + message
         self.ui.statusMessage.setText(message)
 
     def configuration_triggered(self):
-        pass
+        self.logger.info('Calling configuration tool.')
+        self.configurationManager.exec_()
 
     def metadata_editor_triggered(self):
         pass

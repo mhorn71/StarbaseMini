@@ -141,7 +141,7 @@ class confLoader:
 
         :param section: Configuration Section
         :param option: Section Parameter
-        :return: Parameter Value
+        :return: Parameter Value or None
         :raises: ValueError
         '''
         

@@ -2,11 +2,19 @@ Notes.
 
 Application config and logs
 ---------------------------
-The Application configuration and logs are stored in the user home directory in either of the following locations.
+The Application configuration is stored in the user home directory in one of the following locations.
 
-Linux / Mac OSX : /Users/<username>/.starbasemini
+Mac OSX : /Users/<username>/.starbasemini/starbaseMini.conf
 
-Windows :  C:\users\<username>\AppData\Local\StarbaseMini\
+Linux : /home/<username>/.starbasemini/starbaseMini.conf
+
+Windows :  C:\users\<username>\AppData\Local\StarbaseMini\starbaseMini.conf
+
+logfile rotation is enabled and will rotate a log once is 1.5MB in size, and keep a maximum of 6 log files not
+including the current log being written too.
+
+Logs are kept in the same folder as the configuration above, they are plain text so can be opened with any text editor
+for reading.
 
 Instrument Config
 -----------------
@@ -18,8 +26,9 @@ The Instrument configuration is stored within the application folders instrument
     If you add additional XML keys you'll need to adjust xmlLoad.py and loader.py.  Be careful adding new XML as xmlLoad
     returns a list which is used to populate the GUI combo boxes, button etc.
 
-To load the instrument add the instrument to instrumentChooser.py note the names must match name set in .conf and
-include the path relative to application base path.
+To load the instrument, add the instrument to instruments.xml, the Name in instruments is used is to select the
+instrument in the configuration manager tool.
+
 
 User Interface
 --------------
