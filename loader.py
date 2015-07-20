@@ -118,7 +118,7 @@ class Main(QtGui.QMainWindow):
             self.disable_all()
 
             if critical is True:
-                self.ui_message('Check log file critical error has occured.')
+                self.ui_message('Check log file critical error has occurred.')
             else:
                 self.ui_message('StarinetConnector Mode :: Instrument Control Panel Disabled.')
 
@@ -151,7 +151,11 @@ class Main(QtGui.QMainWindow):
         else:
             # Check is staribus address is set and if so initiate Starbus transport.
             if self.instrument.instrument_staribus_address != 'None':
-                self.ui_message('Staribus instrument initialised.')
+                if len(self.config.get('StaribusPort', 'port')) == 0:
+                    self.logger.critical('No Staribus port set.')
+                    self.ui_message('Check log file critical error has occurred.')
+                else:
+                    self.ui_message('Staribus instrument initialised.')
             elif self.instrument.instrument_starinet_address != 'None':
                 self.ui_message('Starinet instrument initialised.')
             else:
