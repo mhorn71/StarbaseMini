@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_ConfigurationDialog(object):
     def setupUi(self, ConfigurationDialog):
         ConfigurationDialog.setObjectName(_fromUtf8("ConfigurationDialog"))
-        ConfigurationDialog.resize(701, 565)
+        ConfigurationDialog.resize(701, 619)
         self.gridLayout = QtGui.QGridLayout(ConfigurationDialog)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.verticalLayout = QtGui.QVBoxLayout()
@@ -211,9 +211,9 @@ class Ui_ConfigurationDialog(object):
         self.label_11 = QtGui.QLabel(self.tab_2)
         self.label_11.setObjectName(_fromUtf8("label_11"))
         self.horizontalLayout_10.addWidget(self.label_11)
-        self.QyEmailLineEdit = QtGui.QLineEdit(self.tab_2)
-        self.QyEmailLineEdit.setObjectName(_fromUtf8("QyEmailLineEdit"))
-        self.horizontalLayout_10.addWidget(self.QyEmailLineEdit)
+        self.OyEmailLineEdit = QtGui.QLineEdit(self.tab_2)
+        self.OyEmailLineEdit.setObjectName(_fromUtf8("OyEmailLineEdit"))
+        self.horizontalLayout_10.addWidget(self.OyEmailLineEdit)
         self.gridLayout_6.addLayout(self.horizontalLayout_10, 2, 0, 1, 1)
         self.horizontalLayout_11 = QtGui.QHBoxLayout()
         self.horizontalLayout_11.setObjectName(_fromUtf8("horizontalLayout_11"))

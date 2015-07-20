@@ -121,7 +121,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.OyDescriptionLineEdit.setText(OyDescription)
 
         OyEmail = self.application_conf.get('ObservatoryMetadata', 'contact_email')
-        self.QyEmailLineEdit.setText(OyEmail)
+        self.OyEmailLineEdit.setText(OyEmail)
 
         OyTelephone = self.application_conf.get('ObservatoryMetadata', 'contact_telephone')
         self.OyTelephoneLineEdit.setText(OyTelephone)
