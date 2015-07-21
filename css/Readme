@@ -1,0 +1,14 @@
+To set CSS for a widget.
+
+QPushButton {
+    color: red;
+}
+
+To set CSS for a particular widget, you must set both the ObjectName and possibly, on
+certain platforms, the AccessibleName.
+
+QPushButton#MyPushButtonName {
+    color: red;
+}
+
+For further information read docs at http://doc.qt.io/qt-4.8/stylesheet-syntax.html
