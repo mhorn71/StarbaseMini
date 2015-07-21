@@ -29,17 +29,7 @@
          <item row="1" column="0">
           <widget class="QGroupBox" name="groupBox_2">
            <property name="styleSheet">
-            <string notr="true">QGroupBox {
-    border: 1px solid gray;
-    border-radius: 9px;
-    margin-top: 0.5em;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 3px 0 3px;
-}</string>
+            <string notr="true"/>
            </property>
            <property name="title">
             <string>Staribus Port</string>
@@ -153,17 +143,7 @@ QGroupBox::title {
          <item row="0" column="0">
           <widget class="QGroupBox" name="groupBox">
            <property name="styleSheet">
-            <string notr="true">QGroupBox {
-    border: 1px solid gray;
-    border-radius: 9px;
-    margin-top: 0.5em;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 3px 0 3px;
-}</string>
+            <string notr="true"/>
            </property>
            <property name="title">
             <string>General</string>
@@ -243,17 +223,7 @@ QGroupBox::title {
          <item row="2" column="0">
           <widget class="QGroupBox" name="groupBox_3">
            <property name="styleSheet">
-            <string notr="true">QGroupBox {
-    border: 1px solid gray;
-    border-radius: 9px;
-    margin-top: 0.5em;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 3px 0 3px;
-}</string>
+            <string notr="true"/>
            </property>
            <property name="title">
             <string>Staribus/ Starinet Relay</string>

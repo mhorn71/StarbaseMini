@@ -2,7 +2,8 @@
 
 # Form implementation generated from reading ui file 'configuration.ui'
 #
-# Created by: PyQt4 UI code generator 4.11.4
+# Created: Tue Jul 21 23:01:49 2015
+#      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -37,17 +38,7 @@ class Ui_ConfigurationDialog(object):
         self.gridLayout_4 = QtGui.QGridLayout(self.tab)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
         self.groupBox_2 = QtGui.QGroupBox(self.tab)
-        self.groupBox_2.setStyleSheet(_fromUtf8("QGroupBox {\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 9px;\n"
-"    margin-top: 0.5em;\n"
-"}\n"
-"\n"
-"QGroupBox::title {\n"
-"    subcontrol-origin: margin;\n"
-"    left: 10px;\n"
-"    padding: 0 3px 0 3px;\n"
-"}"))
+        self.groupBox_2.setStyleSheet(_fromUtf8(""))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.gridLayout_3 = QtGui.QGridLayout(self.groupBox_2)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
@@ -95,17 +86,7 @@ class Ui_ConfigurationDialog(object):
         self.gridLayout_3.addLayout(self.horizontalLayout_6, 2, 0, 1, 1)
         self.gridLayout_4.addWidget(self.groupBox_2, 1, 0, 1, 1)
         self.groupBox = QtGui.QGroupBox(self.tab)
-        self.groupBox.setStyleSheet(_fromUtf8("QGroupBox {\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 9px;\n"
-"    margin-top: 0.5em;\n"
-"}\n"
-"\n"
-"QGroupBox::title {\n"
-"    subcontrol-origin: margin;\n"
-"    left: 10px;\n"
-"    padding: 0 3px 0 3px;\n"
-"}"))
+        self.groupBox.setStyleSheet(_fromUtf8(""))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.gridLayout_2 = QtGui.QGridLayout(self.groupBox)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
@@ -142,17 +123,7 @@ class Ui_ConfigurationDialog(object):
         self.gridLayout_2.addLayout(self.horizontalLayout_22, 2, 0, 1, 1)
         self.gridLayout_4.addWidget(self.groupBox, 0, 0, 1, 1)
         self.groupBox_3 = QtGui.QGroupBox(self.tab)
-        self.groupBox_3.setStyleSheet(_fromUtf8("QGroupBox {\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 9px;\n"
-"    margin-top: 0.5em;\n"
-"}\n"
-"\n"
-"QGroupBox::title {\n"
-"    subcontrol-origin: margin;\n"
-"    left: 10px;\n"
-"    padding: 0 3px 0 3px;\n"
-"}"))
+        self.groupBox_3.setStyleSheet(_fromUtf8(""))
         self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
         self.gridLayout_5 = QtGui.QGridLayout(self.groupBox_3)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
@@ -180,9 +151,6 @@ class Ui_ConfigurationDialog(object):
         self.gridLayout_4.addWidget(self.groupBox_3, 2, 0, 1, 1)
         spacerItem5 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_4.addItem(spacerItem5, 3, 0, 1, 1)
-        self.groupBox.raise_()
-        self.groupBox_2.raise_()
-        self.groupBox_3.raise_()
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
