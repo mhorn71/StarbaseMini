@@ -39,17 +39,7 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">QGroupBox {
-    border: 1px solid gray;
-    border-radius: 9px;
-    margin-top: 0.5em;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 3px 0 3px;
-}</string>
+       <string notr="true"/>
       </property>
       <property name="title">
        <string>Status</string>
@@ -89,17 +79,7 @@ QGroupBox::title {
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">QGroupBox {
-    border: 1px solid gray;
-    border-radius: 9px;
-    margin-top: 0.5em;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 3px 0 3px;
-}</string>
+       <string notr="true"/>
       </property>
       <property name="title">
        <string>Control Panel</string>
@@ -213,13 +193,6 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </property>
               </widget>
              </item>
-             <item row="8" column="0">
-              <widget class="QPushButton" name="abortButton">
-               <property name="text">
-                <string>Abort</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </widget>
           </widget>
@@ -228,8 +201,8 @@ QToolBox::tab:selected { /* italicize selected tabs */
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <attribute name="label">
@@ -251,17 +224,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
        </sizepolicy>
       </property>
       <property name="styleSheet">
-       <string notr="true">QGroupBox {
-    border: 1px solid gray;
-    border-radius: 9px;
-    margin-top: 0.5em;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 3px 0 3px;
-}</string>
+       <string notr="true"/>
       </property>
       <property name="title">
        <string>Chart</string>
@@ -276,13 +239,7 @@ QGroupBox::title {
           </sizepolicy>
          </property>
          <property name="styleSheet">
-          <string notr="true">QWidget {color:
-qlineargradient(spread:pad, x1:0.497872, y1:0, x2:0.485106, y2:1, stop:0 rgba(0, 67, 191, 255), stop:1 rgba(0, 0, 0, 255));
-background: qlineargradient( x1:0.497872, y1:0, x2:0.485106, y2:1, stop:0 #000, stop:1 #0043BF);
-background-image: url(images/background.png);
-background-position:center;
-background-repeat:no-repeat;
-}</string>
+          <string notr="true"/>
          </property>
          <layout class="QVBoxLayout" name="mplvl"/>
         </widget>

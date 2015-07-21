@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Jul  1 14:03:07 2015
-#      by: PyQt4 UI code generator 4.11.3
+# Created: Tue Jul 21 22:51:46 2015
+#      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -37,17 +37,7 @@ class Ui_MainWindow(object):
         self.groupBox_3 = QtGui.QGroupBox(self.centralwidget)
         self.groupBox_3.setMinimumSize(QtCore.QSize(621, 61))
         self.groupBox_3.setMaximumSize(QtCore.QSize(16777215, 61))
-        self.groupBox_3.setStyleSheet(_fromUtf8("QGroupBox {\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 9px;\n"
-"    margin-top: 0.5em;\n"
-"}\n"
-"\n"
-"QGroupBox::title {\n"
-"    subcontrol-origin: margin;\n"
-"    left: 10px;\n"
-"    padding: 0 3px 0 3px;\n"
-"}"))
+        self.groupBox_3.setStyleSheet(_fromUtf8(""))
         self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
         self.gridLayout_3 = QtGui.QGridLayout(self.groupBox_3)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
@@ -65,17 +55,7 @@ class Ui_MainWindow(object):
         self.groupBox_2.setSizePolicy(sizePolicy)
         self.groupBox_2.setMinimumSize(QtCore.QSize(147, 0))
         self.groupBox_2.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.groupBox_2.setStyleSheet(_fromUtf8("QGroupBox {\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 9px;\n"
-"    margin-top: 0.5em;\n"
-"}\n"
-"\n"
-"QGroupBox::title {\n"
-"    subcontrol-origin: margin;\n"
-"    left: 10px;\n"
-"    padding: 0 3px 0 3px;\n"
-"}"))
+        self.groupBox_2.setStyleSheet(_fromUtf8(""))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.layoutWidget = QtGui.QWidget(self.groupBox_2)
         self.layoutWidget.setGeometry(QtCore.QRect(10, 20, 131, 581))
@@ -104,7 +84,7 @@ class Ui_MainWindow(object):
 "}"))
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.UserCtrl = QtGui.QWidget()
-        self.UserCtrl.setGeometry(QtCore.QRect(0, 0, 129, 529))
+        self.UserCtrl.setGeometry(QtCore.QRect(0, 0, 129, 521))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -112,7 +92,7 @@ class Ui_MainWindow(object):
         self.UserCtrl.setSizePolicy(sizePolicy)
         self.UserCtrl.setObjectName(_fromUtf8("UserCtrl"))
         self.layoutWidget1 = QtGui.QWidget(self.UserCtrl)
-        self.layoutWidget1.setGeometry(QtCore.QRect(0, 0, 131, 226))
+        self.layoutWidget1.setGeometry(QtCore.QRect(0, 0, 131, 259))
         self.layoutWidget1.setObjectName(_fromUtf8("layoutWidget1"))
         self.gridLayout = QtGui.QGridLayout(self.layoutWidget1)
         self.gridLayout.setMargin(0)
@@ -143,7 +123,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.executeButton, 7, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, _fromUtf8(""))
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 100, 30))
         self.UserInst.setObjectName(_fromUtf8("UserInst"))
         self.toolBox.addItem(self.UserInst, _fromUtf8(""))
         self.verticalLayout.addWidget(self.toolBox)
@@ -154,17 +134,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
-        self.groupBox.setStyleSheet(_fromUtf8("QGroupBox {\n"
-"    border: 1px solid gray;\n"
-"    border-radius: 9px;\n"
-"    margin-top: 0.5em;\n"
-"}\n"
-"\n"
-"QGroupBox::title {\n"
-"    subcontrol-origin: margin;\n"
-"    left: 10px;\n"
-"    padding: 0 3px 0 3px;\n"
-"}"))
+        self.groupBox.setStyleSheet(_fromUtf8(""))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.gridLayout_4 = QtGui.QGridLayout(self.groupBox)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
@@ -174,13 +144,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.mplwindow.sizePolicy().hasHeightForWidth())
         self.mplwindow.setSizePolicy(sizePolicy)
-        self.mplwindow.setStyleSheet(_fromUtf8("QWidget {color:\n"
-"qlineargradient(spread:pad, x1:0.497872, y1:0, x2:0.485106, y2:1, stop:0 rgba(0, 67, 191, 255), stop:1 rgba(0, 0, 0, 255));\n"
-"background: qlineargradient( x1:0.497872, y1:0, x2:0.485106, y2:1, stop:0 #000, stop:1 #0043BF);\n"
-"background-image: url(images/background.png);\n"
-"background-position:center;\n"
-"background-repeat:no-repeat;\n"
-"}"))
+        self.mplwindow.setStyleSheet(_fromUtf8(""))
         self.mplwindow.setObjectName(_fromUtf8("mplwindow"))
         self.mplvl = QtGui.QVBoxLayout(self.mplwindow)
         self.mplvl.setMargin(0)
@@ -189,7 +153,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.groupBox, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 905, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 905, 23))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
