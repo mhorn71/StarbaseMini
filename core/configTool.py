@@ -17,6 +17,23 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
 
+         # Style sheets
+        stylebool = False
+
+        if sys.platform.startswith('darwin'):
+            stylesheet = 'css/macStyle.css'
+            stylebool = True
+        elif sys.platform.startswith('win32'):
+            stylesheet = 'css/winStyle.css'
+            stylebool = True
+        elif sys.platform.startswith('linux'):
+            stylesheet = 'css/nixStyle.css'
+            stylebool = True
+
+        if stylebool:
+            with open(stylesheet, 'r') as style:
+                self.setStyleSheet(style.read())
+
         logger.info('Started')
 
         self.application_conf = confLoader()
