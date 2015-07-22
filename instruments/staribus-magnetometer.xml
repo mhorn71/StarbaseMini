@@ -488,21 +488,37 @@
         </Command>
     </Plugin>
 
-    <Metadata>
+    <ChartMetadata>
         <YaxisLabel>mv</YaxisLabel>
         <YaxisRange>0,2500</YaxisRange>
         <YaxisScale>Lin</YaxisScale>
         <XaxisLabel>Time (UTC)</XaxisLabel>
-        <Channel0Label>Temperature</Channel0Label>
-        <Channel0Colour>Red</Channel0Colour>
-        <Channel1Label>Channel 1</Channel1Label>
-        <Channel1Colour>Blue</Channel1Colour>
-        <Channel2Label>Channel 2</Channel2Label>
-        <Channel2Colour>Yellow</Channel2Colour>
-        <Channel3Label>Channel 3</Channel3Label>
-        <Channel3Colour>Green</Channel3Colour>
-        <Channel4Label>Channel 4</Channel4Label>
-        <Channel4Colour>Black</Channel4Colour>
-    </Metadata>
+    </ChartMetadata>
+
+    <ChannelMetadata>
+        <ChannelLabel>Temperature</ChannelLabel>
+        <ChannelColour>Red</ChannelColour>
+    </ChannelMetadata>
+
+    <ChannelMetadata>
+        <ChannelLabel>Channel 1</ChannelLabel>
+        <ChannelColour>Blue</ChannelColour>
+    </ChannelMetadata>
+
+    <ChannelMetadata>
+        <ChannelLabel>Channel 2</ChannelLabel>
+        <ChannelColour>Yellow</ChannelColour>
+    </ChannelMetadata>
+
+    <ChannelMetadata>
+        <ChannelLabel>Channel 3</ChannelLabel>
+        <ChannelColour>Green</ChannelColour>
+    </ChannelMetadata>
+
+    <ChannelMetadata>
+        <ChannelLabel>Channel 4</ChannelLabel>
+        <ChannelColour>Black</ChannelColour>
+    </ChannelMetadata>
+
 
 </Instrument>
