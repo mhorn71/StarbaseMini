@@ -43,7 +43,13 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.baudrates = ['9600', '57600', '115200']
         self.timeouts = ['20', '30', '40', '50', '60']
 
-        # Setup signal for button box save
+        # Setup checkbox slots.
+        self.dectectInstrumentPortCheckBox.stateChanged.connect(self.instrument_port_checkbox_triggered)
+        self.baudrateDefaultCheckBox.stateChanged.connect(self.baudrate_checkbox_triggered)
+        self.serialPortTimeoutCheckBox.stateChanged.connect(self.timeout_checkbox_triggered)
+        self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
+
+        # Setup slots for button box save
         self.cancelButton.clicked.connect(self.exit_triggered)
         self.saveButton.clicked.connect(self.save_triggered)
 
@@ -389,23 +395,44 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
             pass
 
         if state == QtGui.QValidator.Acceptable and len(sender.text()) == 0:
-
             color = '#ffffff'  # white
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
         elif state == QtGui.QValidator.Acceptable:
-
             color = '#c4df9b'  # green
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
         elif state == QtGui.QValidator.Intermediate:
-
             color = '#fff79a'  # yellow
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
         else:
-
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+
+    def instrument_port_checkbox_triggered(self):
+        if self.dectectInstrumentPortCheckBox.checkState():
+            self.serialPortLineEdit.setEnabled(False)
+        else:
+            self.serialPortLineEdit.setEnabled(True)
+
+    def baudrate_checkbox_triggered(self):
+        if self.baudrateDefaultCheckBox.checkState():
+            self.baudrateComboBox.setEnabled(False)
+            self.baudrateComboBox.setCurrentIndex(self.baudrates.index('57600'))
+        else:
+            self.baudrateComboBox.setEnabled(True)
+
+    def timeout_checkbox_triggered(self):
+        if self.serialPortTimeoutCheckBox.checkState():
+            self.timeoutComboBox.setEnabled(False)
+            self.timeoutComboBox.setCurrentIndex(self.timeouts.index('30'))
+        else:
+            self.timeoutComboBox.setEnabled(True)
+
+    def relay_checkbox_triggered(self):
+        if self.relayCheckBox.checkState():
+            self.ipAddressLineEdit.setEnabled(True)
+            self.portLineEdit.setEnabled(True)
+        else:
+            self.ipAddressLineEdit.setEnabled(False)
+            self.portLineEdit.setEnabled(False)
 
     def save_triggered(self):
         print('Save triggered')
