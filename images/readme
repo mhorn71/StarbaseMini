@@ -2,7 +2,6 @@ background image max dimension 400 x 400 in size.
 Colour Space : sRGB.
 Image should be transparent.
 
-The background gradient is set within mainwindow.py in ui it's the only one.  You shouldn't really edit that file by
-hand as it's generated from the qt-designer .ui file located in the same directory using pyuic4
+The background image and colour gradient are set via the cascading stylesheets located in the css folder.
 
-pyuic -o mainwindow.py mainwindow.ui
+Look for the QWidget#mplwindow tag.
