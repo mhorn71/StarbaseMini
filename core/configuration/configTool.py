@@ -62,7 +62,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.timeouts = ['20', '30', '40', '50', '60']
 
         # Setup checkbox slots.
-        self.dectectInstrumentPortCheckBox.stateChanged.connect(self.instrument_port_checkbox_triggered)
+        self.detectInstrumentPortCheckBox.stateChanged.connect(self.instrument_port_checkbox_triggered)
         self.baudrateDefaultCheckBox.stateChanged.connect(self.baudrate_checkbox_triggered)
         self.serialPortTimeoutCheckBox.stateChanged.connect(self.timeout_checkbox_triggered)
         self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
@@ -118,16 +118,16 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         detect_staribus_port = self.application_conf.get('Application', 'detect_staribus_port')
 
         if detect_staribus_port == 'False':
-            self.dectectInstrumentPortCheckBox.setChecked(False)
+            self.detectInstrumentPortCheckBox.setChecked(False)
         elif detect_staribus_port == 'True':
-            self.dectectInstrumentPortCheckBox.setChecked(True)
+            self.detectInstrumentPortCheckBox.setChecked(True)
             self.serialPortLineEdit.setEnabled(False)  # Disable port entry box if auto detect is true.
         else:
             logger.warning('Unable to detect staribus port check state, setting to default \'False\'.')
             self.application_conf.set('Application', 'detect_staribus_port', 'False')
-            self.dectectInstrumentPortCheckBox.setChecked(False)
+            self.detectInstrumentPortCheckBox.setChecked(False)
 
-        self.dectectInstrumentPortCheckBox.setToolTip('Will check each serial ports for the configured instrument'
+        self.detectInstrumentPortCheckBox.setToolTip('Will check each serial ports for the configured instrument'
                                                       '\nNote : The configured instrument must be attached.')
 
         # Set serial port name in entry box.
@@ -425,7 +425,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
 
     def instrument_port_checkbox_triggered(self):
-        if self.dectectInstrumentPortCheckBox.checkState():
+        if self.detectInstrumentPortCheckBox.checkState():
             self.serialPortLineEdit.setEnabled(False)
         else:
             self.serialPortLineEdit.setEnabled(True)

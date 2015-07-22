@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'configuration.ui'
 #
-# Created: Tue Jul 21 23:01:49 2015
+# Created: Wed Jul 22 23:46:54 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -64,9 +64,9 @@ class Ui_ConfigurationDialog(object):
         self.serialPortLineEdit = QtGui.QLineEdit(self.groupBox_2)
         self.serialPortLineEdit.setObjectName(_fromUtf8("serialPortLineEdit"))
         self.horizontalLayout_4.addWidget(self.serialPortLineEdit)
-        self.dectectInstrumentPortCheckBox = QtGui.QCheckBox(self.groupBox_2)
-        self.dectectInstrumentPortCheckBox.setObjectName(_fromUtf8("dectectInstrumentPortCheckBox"))
-        self.horizontalLayout_4.addWidget(self.dectectInstrumentPortCheckBox)
+        self.detectInstrumentPortCheckBox = QtGui.QCheckBox(self.groupBox_2)
+        self.detectInstrumentPortCheckBox.setObjectName(_fromUtf8("detectInstrumentPortCheckBox"))
+        self.horizontalLayout_4.addWidget(self.detectInstrumentPortCheckBox)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem1)
         self.gridLayout_3.addLayout(self.horizontalLayout_4, 0, 0, 1, 1)
@@ -377,7 +377,7 @@ class Ui_ConfigurationDialog(object):
         self.label_5.setText(_translate("ConfigurationDialog", "Baudrate", None))
         self.baudrateDefaultCheckBox.setText(_translate("ConfigurationDialog", "Default", None))
         self.label_3.setText(_translate("ConfigurationDialog", "Serial Port", None))
-        self.dectectInstrumentPortCheckBox.setText(_translate("ConfigurationDialog", "Detect Staribus Port", None))
+        self.detectInstrumentPortCheckBox.setText(_translate("ConfigurationDialog", "Detect Staribus Port", None))
         self.label_6.setText(_translate("ConfigurationDialog", "Timeout", None))
         self.serialPortTimeoutCheckBox.setText(_translate("ConfigurationDialog", "Default", None))
         self.groupBox.setTitle(_translate("ConfigurationDialog", "General", None))

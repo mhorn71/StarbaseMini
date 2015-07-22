@@ -82,7 +82,7 @@
                <widget class="QLineEdit" name="serialPortLineEdit"/>
               </item>
               <item>
-               <widget class="QCheckBox" name="dectectInstrumentPortCheckBox">
+               <widget class="QCheckBox" name="detectInstrumentPortCheckBox">
                 <property name="text">
                  <string>Detect Staribus Port</string>
                 </property>
