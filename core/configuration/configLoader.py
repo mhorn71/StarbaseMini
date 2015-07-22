@@ -3,7 +3,7 @@ __author__ = 'mark'
 # Copyright (C) 2015  Mark Horn
 #
 # This file is part of StarbaseMini.
-# 
+#
 # StarbaseMini is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 2 of the License, or
@@ -21,7 +21,6 @@ import sys
 import configparser
 from os import path, makedirs
 
-from PyQt4 import QtGui, QtCore
 
 class confLoader:
     def __init__(self):
