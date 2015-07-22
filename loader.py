@@ -13,8 +13,8 @@ except ImportError:
     QString = str
 
 import core.utilities as utils
-from core.configLoader import confLoader
-from core.configTool import configManager
+from core.configuration.configLoader import confLoader
+from core.configuration.configTool import configManager
 import core.staribusPortDetect as staribusPortDetect
 from core.ui.mainwindow import Ui_MainWindow
 from core.xmlLoad import Instrument

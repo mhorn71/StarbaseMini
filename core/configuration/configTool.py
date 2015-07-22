@@ -3,11 +3,11 @@ import logging
 import sys
 
 from PyQt4 import QtGui, QtCore
-from core.ui.configuration import Ui_ConfigurationDialog
 
-from core.configLoader import confLoader
+from core.ui.configuration import Ui_ConfigurationDialog
+from core.configuration.configLoader import confLoader
 from core.xmlLoad import Instruments
-import core.configToolRegex as configRegex
+import core.configuration.configToolRegex as configRegex
 
 logger = logging.getLogger('core.configTool')
 

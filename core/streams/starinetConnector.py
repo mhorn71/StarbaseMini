@@ -7,10 +7,10 @@ import threading
 import datetime
 import queue
 import io
-import time
+
 import serial
 
-from core.configLoader import confLoader
+from core.configuration.configLoader import confLoader
 
 config = confLoader()
 

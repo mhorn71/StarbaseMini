@@ -8,7 +8,7 @@ import io
 import serial
 
 import core.utilities as utils
-from core.configLoader import confLoader
+from core.configuration.configLoader import confLoader
 
 config = confLoader()
 
