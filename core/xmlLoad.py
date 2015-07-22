@@ -66,9 +66,6 @@ class Instrument:
         # The instrument module and command list see below for format etc ...
         self.instrument_mc_list = []
 
-        # The instrument metadata list
-        self.instrument_metadata = []
-
         # Create an xml dom object for the Instrument XML.
         try:
 
@@ -183,17 +180,6 @@ class Instrument:
 
             self.logger.critical("Unable to parse XML")
             utils.exit_message('Missing Instrument XML Attribute.')
-
-        # A bit of a bodge below the first item returned when iterating over metadata is the metadata dom object
-        # So first off we append all the data returned to tmp_data and then iter over that and slice the first item.
-        tmp_metadata = []
-
-        for metadata in self.xmldom.find('Metadata').iter():
-            tmp_metadata.append(metadata.text)
-
-        for item in tmp_metadata[1:]:
-            self.logger.debug('Appending metadata item \'%s\' to self.instrument_metadata' % item)
-            self.instrument_metadata.append(item)
 
         # First check we have plugins.
         if len(self.xmldom.findall('Plugin')) == 0:
@@ -318,3 +304,37 @@ class Instrument:
         #
         # for data in self.instrument_metadata:
         #     print(data)
+
+
+class Metadata:
+    def __init__(self, xml_file):
+        self.logger = logging.getLogger('core.xmlLoad.Metadata')
+
+        # The metadata channel list see below for format etc ...
+        self.channel_names = []
+
+        # The metadata channel colour list
+        self.channel_colours = []
+
+        # Create an xml dom object for the Instrument XML.
+        try:
+
+            # The tree root is the top level Instrument tag.
+            self.xmldom = eTree.parse(xml_file)  # Open and parse xml document.
+            self.logger.debug('Created XML Dom for Metadata')
+
+        except FileNotFoundError:
+
+            self.logger.critical("Fatal Error - Missing Metadata XML.")
+            utils.exit_message('Missing Metadata XML.')
+
+        chart_metadata_dom = self.xmldom.find('ChartMetadata')
+
+        self.YaxisLabel = chart_metadata_dom.findtext('YaxisLabel')
+        self.YaxisRange = chart_metadata_dom.findtext('YaxisRange')
+        self.YaxisScale = chart_metadata_dom.findtext('YaxisScale')
+        self.XaxisLabel = chart_metadata_dom.findtext('XaxisLabel')
+
+        for channel_metadata in self.xmldom.findall('ChannelMetadata'):
+            self.channel_names.append(channel_metadata.findtext('ChannelLabel'))
+            self.channel_colours.append(channel_metadata.findtext('ChannelColour'))
