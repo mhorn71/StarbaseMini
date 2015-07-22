@@ -15,7 +15,9 @@ crc16 = crcmod.mkCrcFun(0x018408, 0xFFFF, True, 0x0000)
 # Set logger
 logger = logging.getLogger('core.utilities')
 
+
 def exit_message(message):
+
     '''
     Display CmdLine Message then sys.exit(1).
     :param message: string
@@ -25,7 +27,34 @@ def exit_message(message):
     sys.exit(1)
 
 
+# http://stackoverflow.com/questions/214359/converting-hex-color-to-rgb-and-vice-versa
+# Thanks to Jeremy Cantrell
+def hex_to_rgb(value):
+
+    '''
+    Convert Hex colour to RGB
+    :param value: '#FFFFFF'
+    :return: (255, 255, 255)
+    '''
+
+    value = value.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
+
+def rgb_to_hex(rgb):
+
+    '''
+    Convert RGB Colour to Hex Colour.
+    :param rgb: ((255, 255, 255))
+    :return: '#FFFFFF'
+    '''
+
+    return '#%02x%02x%02x' % rgb
+
+
 def ip_checker(ip):
+
     '''
     Checks IP address looks for correct it's not 100% full proof but should be fine on Win, Linux, OSX
     :param ip: IPv4 Address
@@ -44,6 +73,7 @@ def ip_checker(ip):
 
 
 def port_checker(port):
+
     '''
     Check network port range is between 1 - 65535
     :param port:
@@ -76,6 +106,7 @@ response_message_status = [('SUCCESS', b'0000'),
 
 
 def staribus_error(error_name):
+
     '''
     :param error_name: [SUCCESS, ABORT, CRC_ERROR] etc ...
     :return: byte string error code. e.g. b'8000'
@@ -123,14 +154,12 @@ def staribus_status(message):
 
 
 def crc_check(buffer0):
+
     '''
      checks a received staribus message checksum.
-
      Note: the staribus protocol is used minus \x02\x04\x0D\x0A e.g. 010001000000200A80
-
      Returns: True if success or False if failure.
     '''
-
 
     buffer0 = buffer0.encode('UTF-8')
 
@@ -140,8 +169,7 @@ def crc_check(buffer0):
 
     newrxcrc = newrxcrc.encode('UTF-8')
 
-
-    #### Check old and new crc's match if they don't return string with 0200 crc error
+    # Check old and new crc's match if they don't return string with 0200 crc error
     if newrxcrc != rxcrc:
         return False
     else:
