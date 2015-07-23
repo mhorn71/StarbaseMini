@@ -58,7 +58,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.instruments = Instruments()
         
         self.loglevels = ['INFO', 'DEBUG']
-        self.baudrates = ['2400', '4800', '9600', '19200', '38400', '57600', '115200']
+        self.baudrates = ['9600', '19200', '38400', '57600', '115200']
         self.timeouts = ['20', '30', '40', '50', '60']
 
         # Setup checkbox slots.
