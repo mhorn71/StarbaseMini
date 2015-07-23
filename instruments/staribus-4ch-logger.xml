@@ -495,29 +495,31 @@
         <XaxisLabel>Time (UTC)</XaxisLabel>
     </ChartMetadata>
 
+    <!-- Colours are from http://www.mulinblog.com/a-color-palette-optimized-for-data-visualization/ -->
+
     <ChannelMetadata>
         <ChannelLabel>Temperature</ChannelLabel>
-        <ChannelColour>Red</ChannelColour>
+        <ChannelColour>#F15854</ChannelColour>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 1</ChannelLabel>
-        <ChannelColour>Blue</ChannelColour>
+        <ChannelColour>#5DA5DA</ChannelColour>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 2</ChannelLabel>
-        <ChannelColour>Yellow</ChannelColour>
+        <ChannelColour>#DECF3F</ChannelColour>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 3</ChannelLabel>
-        <ChannelColour>Green</ChannelColour>
+        <ChannelColour>#60BD68</ChannelColour>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 4</ChannelLabel>
-        <ChannelColour>Black</ChannelColour>
+        <ChannelColour>#B2912F</ChannelColour>
     </ChannelMetadata>
 
 </Instrument>
