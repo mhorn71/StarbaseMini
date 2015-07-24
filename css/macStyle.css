@@ -18,3 +18,30 @@ QWidget#mplwindow {color:
     background-position:center;
     background-repeat:no-repeat;
 }
+
+QPushButton {
+    border-width: 1px;
+    border-color: #339;
+    border-style: solid;
+    border-radius: 4;
+    padding: 3px;
+    font-size: 14px;
+    padding-left: 5px;
+    padding-right: 5px;
+    min-width: 100px;
+    max-width: 200px;
+    min-height: 13px;
+    max-height: 13px;
+}
+
+QPushButton {
+    background-color: #FFFFFF;
+}
+
+QPushButton:pressed {
+    background-color: #FFFF00;
+}
+
+QPushButton:hover:!pressed {
+    background-color: #DDDDEE;
+}

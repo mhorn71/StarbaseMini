@@ -32,11 +32,11 @@ except ImportError:
 import core.utilities as utils
 from core.configuration.configLoader import confLoader
 from core.configuration.configTool import configManager
-import core.staribusPortDetect as staribusPortDetect
+import core.utilities.staribusPortDetect as staribusPortDetect
 from core.ui.mainwindow import Ui_MainWindow
-from core.xmlLoad import Instrument
-from core.xmlLoad import Instruments
-from core.xmlLoad import Metadata
+from core.xml.xmlLoader import Instrument
+from core.xml.xmlLoader import Instruments
+# from core.xmlLoad import Instrument
 
 
 version = '0.0.19'
@@ -116,8 +116,8 @@ class Main(QtGui.QMainWindow):
         file_name = my_instrument.get_file(self.config.get('Application', 'instrument_name'))
         self.instrument = Instrument(file_name)
 
-        # Load instrument Metadata
-        self.metadata = Metadata(file_name)
+        # Load instrument Instrument
+        self.Instrument = Instrument(file_name)
 
         if self.config.get('Application', 'detect_staribus_port') == 'True' and \
                 self.instrument.instrument_staribus_address != 'None':
@@ -359,8 +359,8 @@ class Main(QtGui.QMainWindow):
         self.ui.channel8Button.setEnabled(False)
     
         if numChannels == '2':
-            self.ui.channel0Button.setText(self.metadata.channel_names[0])
-            self.ui.channel1Button.setText(self.metadata.channel_names[1])
+            self.ui.channel0Button.setText(self.Instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.Instrument.channel_names[1])
             self.ui.channel2Button.setVisible(False)
             self.ui.channel3Button.setVisible(False)
             self.ui.channel4Button.setVisible(False)
@@ -369,9 +369,9 @@ class Main(QtGui.QMainWindow):
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
         elif numChannels == '3':
-            self.ui.channel0Button.setText(self.metadata.channel_names[0])
-            self.ui.channel1Button.setText(self.metadata.channel_names[1])
-            self.ui.channel2Button.setText(self.metadata.channel_names[2])
+            self.ui.channel0Button.setText(self.Instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.Instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.Instrument.channel_names[2])
             self.ui.channel3Button.setVisible(False)
             self.ui.channel4Button.setVisible(False)
             self.ui.channel5Button.setVisible(False)
@@ -379,65 +379,65 @@ class Main(QtGui.QMainWindow):
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
         elif numChannels == '4':
-            self.ui.channel0Button.setText(self.metadata.channel_names[0])
-            self.ui.channel1Button.setText(self.metadata.channel_names[1])
-            self.ui.channel2Button.setText(self.metadata.channel_names[2])
-            self.ui.channel3Button.setText(self.metadata.channel_names[3])
+            self.ui.channel0Button.setText(self.Instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.Instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.Instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.Instrument.channel_names[3])
             self.ui.channel4Button.setVisible(False)
             self.ui.channel5Button.setVisible(False)
             self.ui.channel6Button.setVisible(False)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
         elif numChannels == '5':
-            self.ui.channel0Button.setText(self.metadata.channel_names[0])
-            self.ui.channel1Button.setText(self.metadata.channel_names[1])
-            self.ui.channel2Button.setText(self.metadata.channel_names[2])
-            self.ui.channel3Button.setText(self.metadata.channel_names[3])
-            self.ui.channel4Button.setText(self.metadata.channel_names[4])
+            self.ui.channel0Button.setText(self.Instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.Instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.Instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.Instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.Instrument.channel_names[4])
             self.ui.channel5Button.setVisible(False)
             self.ui.channel6Button.setVisible(False)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
         elif numChannels == '6':
-            self.ui.channel0Button.setText(self.metadata.channel_names[0])
-            self.ui.channel1Button.setText(self.metadata.channel_names[1])
-            self.ui.channel2Button.setText(self.metadata.channel_names[2])
-            self.ui.channel3Button.setText(self.metadata.channel_names[3])
-            self.ui.channel4Button.setText(self.metadata.channel_names[4])
-            self.ui.channel5Button.setText(self.metadata.channel_names[5])
+            self.ui.channel0Button.setText(self.Instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.Instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.Instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.Instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.Instrument.channel_names[4])
+            self.ui.channel5Button.setText(self.Instrument.channel_names[5])
             self.ui.channel6Button.setVisible(False)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
         elif numChannels == '7':
-            self.ui.channel0Button.setText(self.metadata.channel_names[0])
-            self.ui.channel1Button.setText(self.metadata.channel_names[1])
-            self.ui.channel2Button.setText(self.metadata.channel_names[2])
-            self.ui.channel3Button.setText(self.metadata.channel_names[3])
-            self.ui.channel4Button.setText(self.metadata.channel_names[4])
-            self.ui.channel5Button.setText(self.metadata.channel_names[5])
-            self.ui.channel6Button.setText(self.metadata.channel_names[6])
+            self.ui.channel0Button.setText(self.Instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.Instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.Instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.Instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.Instrument.channel_names[4])
+            self.ui.channel5Button.setText(self.Instrument.channel_names[5])
+            self.ui.channel6Button.setText(self.Instrument.channel_names[6])
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
         elif numChannels == '8':
-            self.ui.channel0Button.setText(self.metadata.channel_names[0])
-            self.ui.channel1Button.setText(self.metadata.channel_names[1])
-            self.ui.channel2Button.setText(self.metadata.channel_names[2])
-            self.ui.channel3Button.setText(self.metadata.channel_names[3])
-            self.ui.channel4Button.setText(self.metadata.channel_names[4])
-            self.ui.channel5Button.setText(self.metadata.channel_names[5])
-            self.ui.channel6Button.setText(self.metadata.channel_names[6])
-            self.ui.channel7Button.setText(self.metadata.channel_names[7])
+            self.ui.channel0Button.setText(self.Instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.Instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.Instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.Instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.Instrument.channel_names[4])
+            self.ui.channel5Button.setText(self.Instrument.channel_names[5])
+            self.ui.channel6Button.setText(self.Instrument.channel_names[6])
+            self.ui.channel7Button.setText(self.Instrument.channel_names[7])
             self.ui.channel8Button.setVisible(False)
         elif numChannels == '9':
-            self.ui.channel0Button.setText(self.metadata.channel_names[0])
-            self.ui.channel1Button.setText(self.metadata.channel_names[1])
-            self.ui.channel2Button.setText(self.metadata.channel_names[2])
-            self.ui.channel3Button.setText(self.metadata.channel_names[3])
-            self.ui.channel4Button.setText(self.metadata.channel_names[4])
-            self.ui.channel5Button.setText(self.metadata.channel_names[5])
-            self.ui.channel6Button.setText(self.metadata.channel_names[6])
-            self.ui.channel7Button.setText(self.metadata.channel_names[7])
-            self.ui.channel8Button.setText(self.metadata.channel_names[8])
+            self.ui.channel0Button.setText(self.Instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.Instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.Instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.Instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.Instrument.channel_names[4])
+            self.ui.channel5Button.setText(self.Instrument.channel_names[5])
+            self.ui.channel6Button.setText(self.Instrument.channel_names[6])
+            self.ui.channel7Button.setText(self.Instrument.channel_names[7])
+            self.ui.channel8Button.setText(self.Instrument.channel_names[8])
 
     # Just a break for space. ;-))
 

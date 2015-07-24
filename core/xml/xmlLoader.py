@@ -103,9 +103,6 @@ class Instrument:
             self.instrument_identifier = self.xmldom.findtext('Identifier')
             self.logger.debug('Instrument Identifier = %s' % self.instrument_identifier)
 
-            self.instrument_name = self.xmldom.findtext('Name')
-            self.logger.info('Instrument Name = %s' % self.instrument_name)
-
             self.instrument_description = self.xmldom.findtext('Description')
             self.logger.debug('Instrument Description = %s' % self.instrument_description)
 
@@ -318,32 +315,12 @@ class Instrument:
         #         print('Response DataTypeName %s' % self.instrument_mc_list[i][n][10])
         #         print('Response Units %s' % self.instrument_mc_list[i][n][11])
         #         print('Response Regex %s' % self.instrument_mc_list[i][n][12])
-        #
-        # for data in self.instrument_metadata:
-        #     print(data)
-
-
-class Metadata:
-    def __init__(self, xml_file):
-        self.logger = logging.getLogger('core.xmlLoad.Metadata')
 
         # The metadata channel list see below for format etc ...
         self.channel_names = []
 
         # The metadata channel colour list
         self.channel_colours = []
-
-        # Create an xml dom object for the Instrument XML.
-        try:
-
-            # The tree root is the top level Instrument tag.
-            self.xmldom = eTree.parse(xml_file)  # Open and parse xml document.
-            self.logger.debug('Created XML Dom for Metadata')
-
-        except FileNotFoundError:
-
-            self.logger.critical("Fatal Error - Missing Metadata XML.")
-            utils.exit_message('Missing Metadata XML.')
 
         chart_metadata_dom = self.xmldom.find('ChartMetadata')
 
@@ -355,3 +332,8 @@ class Metadata:
         for channel_metadata in self.xmldom.findall('ChannelMetadata'):
             self.channel_names.append(channel_metadata.findtext('ChannelLabel'))
             self.channel_colours.append(channel_metadata.findtext('ChannelColour'))
+
+        Boolean = self.xmldom.find('BooleanMetadata')
+
+        self.boolean_true = Boolean.findtext('True')
+        self.boolean_false = Boolean.findtext('False')

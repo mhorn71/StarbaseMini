@@ -2,7 +2,6 @@
 
 <Instrument>
     <Identifier>Staribus VLF Receiver</Identifier>
-    <Name>Staribus VLF Receiver</Name>
     <Description>Staribus VLF Receiver Instrument</Description>
     <StaribusAddress>003</StaribusAddress>
     <StarinetAddress>None</StarinetAddress>
@@ -520,5 +519,9 @@
         <ChannelColour>Black</ChannelColour>
     </ChannelMetadata>
 
+    <BooleanMetadata>
+        <True>Y</True>
+        <False>N</False>
+    </BooleanMetadata>
 
 </Instrument>

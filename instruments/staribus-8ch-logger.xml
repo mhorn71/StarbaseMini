@@ -2,7 +2,6 @@
 
 <Instrument>
     <Identifier>Staribus8ChannelLogger</Identifier>
-    <Name>Staribus 8 Channel Logger</Name>
     <Description>A Staribus 8 Channel Data Logger</Description>
     <StaribusAddress>002</StaribusAddress>
     <StarinetAddress>None</StarinetAddress>
@@ -520,5 +519,9 @@
         <ChannelColour>Black</ChannelColour>
     </ChannelMetadata>
 
+    <BooleanMetadata>
+        <True>Y</True>
+        <False>N</False>
+    </BooleanMetadata>
 
 </Instrument>

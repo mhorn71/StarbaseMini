@@ -2,7 +2,6 @@
 
 <Instrument>
     <Identifier>Staribus4ChannelLogger</Identifier>
-    <Name>Staribus 4 Channel Logger</Name>
     <Description>A Staribus 4 Channel Data Logger</Description>
     <StaribusAddress>001</StaribusAddress>
     <StarinetAddress>None</StarinetAddress>
@@ -483,7 +482,7 @@
             <Response>
                 <DataTypeName>String</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
                 <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
-                <Regex>A^(Ver:\s[A-Z]*\d*\s*)$</Regex> # Regex of response can be ACK if response is ACK
+                <Regex>^(Ver:\s[A-Z]*\d*\s*)$</Regex> # Regex of response can be ACK if response is ACK
             </Response>
         </Command>
     </Plugin>
@@ -521,5 +520,10 @@
         <ChannelLabel>Channel 4</ChannelLabel>
         <ChannelColour>#B2912F</ChannelColour>
     </ChannelMetadata>
+
+    <BooleanMetadata>
+        <True>Y</True>
+        <False>N</False>
+    </BooleanMetadata>
 
 </Instrument>

@@ -12,3 +12,41 @@ QPushButton#MyPushButtonName {
 }
 
 For further information read docs at http://doc.qt.io/qt-4.8/stylesheet-syntax.html
+Nice tutorial at http://thesmithfam.org/blog/2009/09/10/qt-stylesheets-tutorial/
+
+
+QLineEdit {
+    padding: 1px;
+    border-style: solid;
+    border: 2px solid gray;
+    border-radius: 8px;
+}
+
+QPushButton {
+    color: white;
+    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #88d, stop: 0.1 #99e, stop: 0.49 #77c, stop: 0.5 #66b, stop: 1 #77c);
+    border-width: 1px;
+    border-color: #339;
+    border-style: solid;
+    border-radius: 7;
+    padding: 3px;
+    font-size: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    min-width: 100px;
+    max-width: 200px;
+    min-height: 13px;
+    max-height: 13px;
+}
+
+QPushButton#executeButton {
+    background-color: #FFFFFF;
+}
+
+QPushButton#executeButton:pressed {
+    background-color: #FFFF00
+}
+
+QPushButton#executeButton:hover:!pressed {
+    background-color: #DDDDEE
+}
