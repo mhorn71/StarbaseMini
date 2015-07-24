@@ -26,6 +26,7 @@ from core.ui.configuration import Ui_ConfigurationDialog
 from core.configuration.configLoader import confLoader
 from core.xml.xmlLoader import Instruments
 import core.configuration.configToolRegex as configRegex
+import core.utilities.utilities as utilities
 
 logger = logging.getLogger('core.configTool')
 
@@ -68,6 +69,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
 
         # Setup slots for button box save
+        self.chooserButton.clicked.connect(self.chooser_triggered)
         self.cancelButton.clicked.connect(self.exit_triggered)
         self.saveButton.clicked.connect(self.save_triggered)
 
@@ -85,8 +87,8 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         loglevel = self.application_conf.get('logger_root', 'level')
 
         # Data save path show blank if set to None.
-        if data_save_path == 'None':
-            self.savepathLineEdit.setText('WARNING: Please set a path to save exported data too.')
+        if len(data_save_path) == 0:
+            self.savepathLineEdit.setText('Warning: Please set path for exported data.')
         else:
             self.savepathLineEdit.setText(data_save_path)
 
@@ -453,7 +455,67 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.portLineEdit.setEnabled(False)
 
     def save_triggered(self):
-        print('Save triggered')
+
+        # Application
+        self.application_conf.set('Application', 'save_path', self.savepathLineEdit.text())
+
+        self.application_conf.set('Application', 'instrument_name',
+                                  self.instrumentComboBox.itemText(self.instrumentComboBox.currentIndex()))
+
+        if self.detectInstrumentPortCheckBox.checkState():
+            self.application_conf.set('Application', 'detect_staribus_port', 'True')
+        else:
+            self.application_conf.set('Application', 'detect_staribus_port', 'False')
+
+
+        # StaribusPort
+        self.application_conf.set('StaribusPort', 'port', self.serialPortLineEdit.text())
+
+        self.application_conf.set('StaribusPort', 'baudrate',
+                                  self.baudrateComboBox.itemText(self.baudrateComboBox.currentIndex()))
+
+        self.application_conf.set('StaribusPort', 'timeout',
+                                  self.timeoutComboBox.itemText(self.baudrateComboBox.currentIndex()))
+
+        # StarinetConnector
+        if self.relayCheckBox.checkState():
+            self.application_conf.set('StarinetConnector', 'active', 'True')
+        else:
+            self.application_conf.set('StarinetConnector', 'active', 'False')
+
+        self.application_conf.set('StarinetConnector', 'address', self.ipAddressLineEdit.text())
+        self.application_conf.set('StarinetConnector', 'port', self.portLineEdit.text())
+
+        # ObservatoryMetadata
+        self.application_conf.set('ObservatoryMetadata', 'name', self.OyNameLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'description', self.OyDescriptionLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'contact_email', self.OyEmailLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'contact_telephone', self.OyTelephoneLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'contact_url', self.OyUrlLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'country', self.OyCountryLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'timezone', self.OyTimezoneLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'geomagnetic_latitude', self.OyMagLatitudeLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'geomagnetic_longitude', self.OyMagLongitudeLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'latitude', self.OyLatitudeLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'longitude', self.OyLongitudeLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'hasl', self.OyHaslLineEdit.text())
+
+        # ObserverMetadata
+        self.application_conf.set('ObserverMetadata', 'name', self.ObNameLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'description', self.ObDescriptionLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'contact_email', self.ObEmailLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'contact_telephone', self.ObTelephoneLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'contact_url', self.ObUrlLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'country', self.ObCountryLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'notes', self.ObNotesLineEdit.text())
+
+        self.close()
+
+    def chooser_triggered(self):
+
+        file = str(QtGui.QFileDialog.getExistingDirectory(QtGui.QFileDialog(), "Select Directory"))
+        self.savepathLineEdit.setText(file)
+
 
     def exit_triggered(self):
         self.close()
