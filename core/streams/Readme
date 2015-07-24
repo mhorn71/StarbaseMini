@@ -1,0 +1,13 @@
+Notes:
+
+To change the controller speed of the UKRAA Futurlec controller you need to send,
+
+10 * Ctrl-B
+
+It'll responded with a menu where the following menu item are available,
+
+Press 1 9600
+Press 2 19200
+Press 3 38400
+Press 4 57600
+Press 5 115200
