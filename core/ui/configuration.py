@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'configuration.ui'
 #
-# Created: Fri Jul 24 18:53:30 2015
+# Created: Fri Jul 24 16:04:12 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -84,6 +84,9 @@ class Ui_ConfigurationDialog(object):
         self.savepathLineEdit = QtGui.QLineEdit(self.groupBox)
         self.savepathLineEdit.setObjectName(_fromUtf8("savepathLineEdit"))
         self.horizontalLayout_2.addWidget(self.savepathLineEdit)
+        self.chooserButton = QtGui.QPushButton(self.groupBox)
+        self.chooserButton.setObjectName(_fromUtf8("chooserButton"))
+        self.horizontalLayout_2.addWidget(self.chooserButton)
         self.gridLayout_2.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
@@ -387,6 +390,7 @@ class Ui_ConfigurationDialog(object):
         self.label_8.setText(_translate("ConfigurationDialog", "Port", None))
         self.groupBox.setTitle(_translate("ConfigurationDialog", "General", None))
         self.label.setText(_translate("ConfigurationDialog", "Data Save Path", None))
+        self.chooserButton.setText(_translate("ConfigurationDialog", "Chooser", None))
         self.label_2.setText(_translate("ConfigurationDialog", "Instrument", None))
         self.label_30.setText(_translate("ConfigurationDialog", "Log Level", None))
         self.groupBox_2.setTitle(_translate("ConfigurationDialog", "Staribus Port", None))

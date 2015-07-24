@@ -127,6 +127,13 @@
               <item>
                <widget class="QLineEdit" name="savepathLineEdit"/>
               </item>
+              <item>
+               <widget class="QPushButton" name="chooserButton">
+                <property name="text">
+                 <string>Chooser</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item row="1" column="0">
