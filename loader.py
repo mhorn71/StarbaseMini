@@ -29,14 +29,14 @@ try:
 except ImportError:
     QString = str
 
-import core.utilities as utils
+import core.utilities.utilities as utils
 from core.configuration.configLoader import confLoader
 from core.configuration.configTool import configManager
 import core.utilities.staribusPortDetect as staribusPortDetect
 from core.ui.mainwindow import Ui_MainWindow
-from core.xml.xmlLoader import Instrument
 from core.xml.xmlLoader import Instruments
-# from core.xmlLoad import Instrument
+from core.xml.xmlLoader import Instrument
+
 
 
 version = '0.0.19'

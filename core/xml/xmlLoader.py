@@ -23,7 +23,7 @@ import sys
 import xml.etree.ElementTree as eTree
 import re
 
-import core.utilities as utils
+import core.utilities.utilities as utils
 
 
 class Instruments:
