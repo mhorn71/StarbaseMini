@@ -1,17 +1,28 @@
 xmlLoader returns the following attributes and lists.
 
-instrument_identifier
-instrument_description
-instrument_staribus_address
-instrument_starinet_address
-instrument_starinet_port
+instrument()
 
-instrument_mc_list : list of Modules and Commands along with Command attributes.
+    loads the relevant instrument XML from <ROOT>instruments/<INSTRUMENT>.xml
 
-YaxisLabel
-YaxisRange
-YaxisScale : lin or log
-XaxisLabel
+    instrument_identifier
+    instrument_description
+    instrument_staribus_address
+    instrument_starinet_address
+    instrument_starinet_port
 
-channel_names : list (FIFO)
-channel_colours : list (FIFO)
+    instrument_mc_list : list of Modules and Commands along with Command attributes.
+
+    YaxisLabel
+    YaxisRange
+    YaxisScale : lin or log
+    XaxisLabel
+
+    channel_names : list (FIFO)
+    channel_colours : list (FIFO)
+
+instruments()
+
+    loads the instrument names and file names for the instruments specified in <Root>instruments/instruments.xml
+
+    get_file(Instrument_Identifier) :  filename and relative path to instrument XML
+    get_names : list of available instrument identifiers (names).
