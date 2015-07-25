@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentBuilder.ui'
 #
-# Created: Sat Jul 25 22:50:47 2015
+# Created: Sat Jul 25 23:01:08 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -715,7 +715,7 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.instrumentBuilderTabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(Dialog)
-        self.instrumentBuilderTabWidget.setCurrentIndex(0)
+        self.instrumentBuilderTabWidget.setCurrentIndex(5)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -742,7 +742,7 @@ class Ui_Dialog(object):
         self.label_33.setText(_translate("Dialog", "Min", None))
         self.label_34.setText(_translate("Dialog", "Max", None))
         self.label_14.setText(_translate("Dialog", "Help", None))
-        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_2), _translate("Dialog", "ChartMetadata", None))
+        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_2), _translate("Dialog", "Chart", None))
         self.label_24.setText(_translate("Dialog", "Channel", None))
         self.label_25.setText(_translate("Dialog", "Label", None))
         self.label_26.setText(_translate("Dialog", "Hex Colour", None))
@@ -765,7 +765,7 @@ class Ui_Dialog(object):
         self.label_23.setText(_translate("Dialog", "Channel 8", None))
         self.pushButton_9.setText(_translate("Dialog", "Colour Chooser", None))
         self.label_27.setText(_translate("Dialog", "Help", None))
-        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_3), _translate("Dialog", "ChannelMetadata", None))
+        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_3), _translate("Dialog", "Channel", None))
         self.label_29.setText(_translate("Dialog", "False", None))
         self.checkBox_2.setText(_translate("Dialog", "Default", None))
         self.label_31.setText(_translate("Dialog", "String", None))
@@ -773,12 +773,12 @@ class Ui_Dialog(object):
         self.label_28.setText(_translate("Dialog", "True", None))
         self.checkBox.setText(_translate("Dialog", "Default", None))
         self.label_30.setText(_translate("Dialog", "String", None))
-        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_4), _translate("Dialog", "BooleanMetadata", None))
+        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_4), _translate("Dialog", "Boolean", None))
         self.label_35.setText(_translate("Dialog", "Identifier", None))
         self.label_36.setText(_translate("Dialog", "Description", None))
         self.label_37.setText(_translate("Dialog", "Code Base", None))
         self.label_38.setText(_translate("Dialog", "Help", None))
-        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_5), _translate("Dialog", "PluginMetadata", None))
+        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_5), _translate("Dialog", "Plugin", None))
         self.label_39.setText(_translate("Dialog", "Identifier", None))
         self.label_40.setText(_translate("Dialog", "Command Code", None))
         self.label_41.setText(_translate("Dialog", "Command Variant", None))
@@ -795,6 +795,6 @@ class Ui_Dialog(object):
         self.label_52.setText(_translate("Dialog", "Units", None))
         self.label_53.setText(_translate("Dialog", "Regex", None))
         self.label_54.setText(_translate("Dialog", "Help", None))
-        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_6), _translate("Dialog", "CommandMetadata", None))
+        self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_6), _translate("Dialog", "Command", None))
         self.instrumentBuilderTabWidget.setTabText(self.instrumentBuilderTabWidget.indexOf(self.tab_7), _translate("Dialog", "Help", None))
 

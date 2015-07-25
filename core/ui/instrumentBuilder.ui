@@ -70,7 +70,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="instrumentBuilderTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -362,7 +362,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>ChartMetadata</string>
+       <string>Chart</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
@@ -555,7 +555,7 @@
      </widget>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>ChannelMetadata</string>
+       <string>Channel</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
@@ -1122,7 +1122,7 @@
      </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
-       <string>BooleanMetadata</string>
+       <string>Boolean</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="3" column="0">
@@ -1254,7 +1254,7 @@
      </widget>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
-       <string>PluginMetadata</string>
+       <string>Plugin</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
@@ -1390,7 +1390,7 @@
      </widget>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
-       <string>CommandMetadata</string>
+       <string>Command</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_9">
        <item row="0" column="0">
