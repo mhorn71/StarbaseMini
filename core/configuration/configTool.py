@@ -36,7 +36,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
 
-         # Style sheets
+        # Style sheets
         stylebool = False
 
         if sys.platform.startswith('darwin'):

@@ -32,6 +32,8 @@ except ImportError:
 import core.utilities.utilities as utils
 from core.configuration.configLoader import confLoader
 from core.configuration.configTool import configManager
+from core.instbuilder.builder import instrumentBuilder
+from core.Futurlec.baudrate import Baudrate as Baudrate
 import core.utilities.staribusPortDetect as staribusPortDetect
 from core.ui.mainwindow import Ui_MainWindow
 from core.xml.xmlLoader import Instruments
@@ -91,7 +93,8 @@ class Main(QtGui.QMainWindow):
         self.logger.debug('Setting menu item triggers.')
         self.ui.actionExit.triggered.connect(self.exit)
         self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
-        self.ui.actionMetadataEditor.triggered.connect(self.metadata_editor_triggered)
+        self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
+        self.ui.actionControllerEditor.triggered.connect(self.futurlec_tool_triggered)
         self.ui.actionManual.triggered.connect(self.help_manual_triggered)
         self.ui.actionAbout.triggered.connect(self.help_about_triggered)
 
@@ -196,6 +199,12 @@ class Main(QtGui.QMainWindow):
 
         # Initialise configurationManager
         self.configurationManager = configManager()
+
+        # Initialise instrumentBuilder
+        self.instrumentBuilder = instrumentBuilder()
+
+        # Initialise Futurlec Baudrate tool
+        self.futurlec_tool = Baudrate()
 
         # Initialise Chart Control Panel
         self.chart_control_panel_populate()
@@ -449,8 +458,13 @@ class Main(QtGui.QMainWindow):
         self.logger.info('Calling configuration tool.')
         self.configurationManager.exec_()
 
-    def metadata_editor_triggered(self):
-        pass
+    def instrument_builder_triggered(self):
+        self.logger.info('Calling instrument builder.')
+        self.instrumentBuilder.exec_()
+
+    def futurlec_tool_triggered(self):
+        self.logger.info('Calling futurlec baudrate configuration tool.')
+        self.futurlec_tool.exec_()
 
     def help_manual_triggered(self):
         pass

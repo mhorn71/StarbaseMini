@@ -19,29 +19,12 @@ QWidget#mplwindow {color:
     background-repeat:no-repeat;
 }
 
-QPushButton {
-    border-width: 1px;
-    border-color: #339;
-    border-style: solid;
-    border-radius: 4;
-    padding: 3px;
-    font-size: 14px;
-    padding-left: 5px;
-    padding-right: 5px;
-    min-width: 100px;
-    max-width: 200px;
-    min-height: 13px;
-    max-height: 13px;
+QTabWidget::pane {
+    border: 1px solid gray;
+    border-radius: 9px;
 }
 
-QPushButton {
-    background-color: #FFFFFF;
+QTextBrowser {
+    border: 1px solid gray;
 }
 
-QPushButton:pressed {
-    background-color: #FFFF00;
-}
-
-QPushButton:hover:!pressed {
-    background-color: #DDDDEE;
-}
