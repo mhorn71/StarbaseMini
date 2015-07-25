@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>811</width>
+    <width>943</width>
     <height>682</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>811</width>
+    <width>943</width>
     <height>682</height>
    </size>
   </property>
@@ -483,7 +483,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_28"/>
+          <widget class="QLineEdit" name="lineEdit_28">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_33">
@@ -493,7 +500,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_29"/>
+          <widget class="QLineEdit" name="lineEdit_29">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_34">
@@ -550,7 +564,7 @@
           <widget class="QLabel" name="label_24">
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>140</width>
              <height>16777215</height>
             </size>
            </property>
@@ -561,6 +575,12 @@
          </item>
          <item>
           <widget class="QLabel" name="label_25">
+           <property name="maximumSize">
+            <size>
+             <width>142</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Label</string>
            </property>
@@ -579,16 +599,36 @@
         <layout class="QHBoxLayout" name="horizontalLayout_13">
          <item>
           <widget class="QLabel" name="label_15">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 0</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_8"/>
+          <widget class="QLineEdit" name="lineEdit_8">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_17"/>
+          <widget class="QLineEdit" name="lineEdit_17">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton">
@@ -597,22 +637,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_17">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item row="2" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_14">
          <item>
           <widget class="QLabel" name="label_16">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 1</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_9"/>
+          <widget class="QLineEdit" name="lineEdit_9">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_18"/>
+          <widget class="QLineEdit" name="lineEdit_18">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_2">
@@ -621,22 +694,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_20">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item row="3" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_15">
          <item>
           <widget class="QLabel" name="label_17">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 2</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_10"/>
+          <widget class="QLineEdit" name="lineEdit_10">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_19"/>
+          <widget class="QLineEdit" name="lineEdit_19">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_3">
@@ -645,22 +751,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_22">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item row="4" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_16">
          <item>
           <widget class="QLabel" name="label_18">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 3</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_11"/>
+          <widget class="QLineEdit" name="lineEdit_11">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_20"/>
+          <widget class="QLineEdit" name="lineEdit_20">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_4">
@@ -669,22 +808,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_23">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item row="5" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_17">
          <item>
           <widget class="QLabel" name="label_19">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 4</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_12"/>
+          <widget class="QLineEdit" name="lineEdit_12">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_21"/>
+          <widget class="QLineEdit" name="lineEdit_21">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_5">
@@ -693,22 +865,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_24">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item row="6" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_18">
          <item>
           <widget class="QLabel" name="label_20">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 5</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_13"/>
+          <widget class="QLineEdit" name="lineEdit_13">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_22"/>
+          <widget class="QLineEdit" name="lineEdit_22">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_6">
@@ -717,22 +922,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_25">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item row="7" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_19">
          <item>
           <widget class="QLabel" name="label_21">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 6</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_14"/>
+          <widget class="QLineEdit" name="lineEdit_14">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_23"/>
+          <widget class="QLineEdit" name="lineEdit_23">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_7">
@@ -741,22 +979,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_26">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item row="8" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_20">
          <item>
           <widget class="QLabel" name="label_22">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 7</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_15"/>
+          <widget class="QLineEdit" name="lineEdit_15">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_24"/>
+          <widget class="QLineEdit" name="lineEdit_24">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_8">
@@ -765,22 +1036,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_29">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item row="9" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_21">
          <item>
           <widget class="QLabel" name="label_23">
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Channel 8</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_16"/>
+          <widget class="QLineEdit" name="lineEdit_16">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_25"/>
+          <widget class="QLineEdit" name="lineEdit_25">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_9">
@@ -788,6 +1092,19 @@
             <string>Colour Chooser</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_30">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>
@@ -1096,19 +1413,6 @@
            <item>
             <widget class="QLineEdit" name="lineEdit_32"/>
            </item>
-           <item>
-            <spacer name="horizontalSpacer_17">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
           </layout>
          </item>
          <item>
@@ -1160,7 +1464,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_33"/>
+            <widget class="QLineEdit" name="lineEdit_33">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="horizontalSpacer_19">
