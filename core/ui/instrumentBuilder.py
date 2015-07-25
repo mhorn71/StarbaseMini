@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentBuilder.ui'
 #
-# Created: Sat Jul 25 23:01:08 2015
+# Created: Sat Jul 25 23:05:00 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -715,7 +715,7 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.instrumentBuilderTabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(Dialog)
-        self.instrumentBuilderTabWidget.setCurrentIndex(5)
+        self.instrumentBuilderTabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):

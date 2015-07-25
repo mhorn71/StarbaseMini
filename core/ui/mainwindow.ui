@@ -233,8 +233,8 @@ QToolBox::tab:selected { /* italicize selected tabs */
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>129</width>
-             <height>521</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <attribute name="label">
@@ -343,7 +343,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
      <x>0</x>
      <y>0</y>
      <width>905</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -355,9 +355,10 @@ QToolBox::tab:selected { /* italicize selected tabs */
    </widget>
    <widget class="QMenu" name="menuMetadata">
     <property name="title">
-     <string>Metadata</string>
+     <string>Tools</string>
     </property>
-    <addaction name="actionMetadataEditor"/>
+    <addaction name="actionControllerEditor"/>
+    <addaction name="actionInstrumentBuilder"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -380,9 +381,9 @@ QToolBox::tab:selected { /* italicize selected tabs */
     <string>Configuration</string>
    </property>
   </action>
-  <action name="actionMetadataEditor">
+  <action name="actionControllerEditor">
    <property name="text">
-    <string>Editor</string>
+    <string>Futurlec Controller</string>
    </property>
   </action>
   <action name="actionObserveratory">
@@ -398,6 +399,11 @@ QToolBox::tab:selected { /* italicize selected tabs */
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionInstrumentBuilder">
+   <property name="text">
+    <string>Instrument Builder</string>
    </property>
   </action>
  </widget>

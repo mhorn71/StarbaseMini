@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Jul 22 23:43:32 2015
+# Created: Sat Jul 25 23:05:21 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -146,7 +146,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.executeButton, 7, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, _fromUtf8(""))
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.UserInst.setObjectName(_fromUtf8("UserInst"))
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 0, 131, 521))
@@ -188,7 +188,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.groupBox_2, 0, 1, 2, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 905, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 905, 25))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -201,17 +201,20 @@ class Ui_MainWindow(object):
         self.actionExit.setObjectName(_fromUtf8("actionExit"))
         self.actionConfiguration = QtGui.QAction(MainWindow)
         self.actionConfiguration.setObjectName(_fromUtf8("actionConfiguration"))
-        self.actionMetadataEditor = QtGui.QAction(MainWindow)
-        self.actionMetadataEditor.setObjectName(_fromUtf8("actionMetadataEditor"))
+        self.actionControllerEditor = QtGui.QAction(MainWindow)
+        self.actionControllerEditor.setObjectName(_fromUtf8("actionControllerEditor"))
         self.actionObserveratory = QtGui.QAction(MainWindow)
         self.actionObserveratory.setObjectName(_fromUtf8("actionObserveratory"))
         self.actionManual = QtGui.QAction(MainWindow)
         self.actionManual.setObjectName(_fromUtf8("actionManual"))
         self.actionAbout = QtGui.QAction(MainWindow)
         self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
+        self.actionInstrumentBuilder = QtGui.QAction(MainWindow)
+        self.actionInstrumentBuilder.setObjectName(_fromUtf8("actionInstrumentBuilder"))
         self.menuFile.addAction(self.actionConfiguration)
         self.menuFile.addAction(self.actionExit)
-        self.menuMetadata.addAction(self.actionMetadataEditor)
+        self.menuMetadata.addAction(self.actionControllerEditor)
+        self.menuMetadata.addAction(self.actionInstrumentBuilder)
         self.menuHelp.addAction(self.actionManual)
         self.menuHelp.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
@@ -244,12 +247,13 @@ class Ui_MainWindow(object):
         self.channel8Button.setText(_translate("MainWindow", "PushButton", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.UserInst), _translate("MainWindow", "Chart Control", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
-        self.menuMetadata.setTitle(_translate("MainWindow", "Metadata", None))
+        self.menuMetadata.setTitle(_translate("MainWindow", "Tools", None))
         self.menuHelp.setTitle(_translate("MainWindow", "Help", None))
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
         self.actionConfiguration.setText(_translate("MainWindow", "Configuration", None))
-        self.actionMetadataEditor.setText(_translate("MainWindow", "Editor", None))
+        self.actionControllerEditor.setText(_translate("MainWindow", "Futurlec Controller", None))
         self.actionObserveratory.setText(_translate("MainWindow", "Observeratory", None))
         self.actionManual.setText(_translate("MainWindow", "Manual", None))
         self.actionAbout.setText(_translate("MainWindow", "About", None))
+        self.actionInstrumentBuilder.setText(_translate("MainWindow", "Instrument Builder", None))
 
