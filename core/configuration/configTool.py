@@ -475,7 +475,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
                                   self.baudrateComboBox.itemText(self.baudrateComboBox.currentIndex()))
 
         self.application_conf.set('StaribusPort', 'timeout',
-                                  self.timeoutComboBox.itemText(self.baudrateComboBox.currentIndex()))
+                                  self.timeoutComboBox.itemText(self.timeoutComboBox.currentIndex()))
 
         # StarinetConnector
         if self.relayCheckBox.checkState():
@@ -514,7 +514,11 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
     def chooser_triggered(self):
 
         file = str(QtGui.QFileDialog.getExistingDirectory(QtGui.QFileDialog(), "Select Directory"))
-        self.savepathLineEdit.setText(file)
+
+        if len(file) == 0:
+            pass
+        else:
+            self.savepathLineEdit.setText(file)
 
 
     def exit_triggered(self):
