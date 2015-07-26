@@ -34,7 +34,7 @@ from core import ConfigLoader
 from core import ConfigManager
 from core import InstrumentBuilder
 from core import Baudrate
-import core.utilities.staribusPortDetect as staribusPortDetect
+from core import StaribusPortDetect
 from core import Ui_MainWindow
 from core import Instruments
 from core import Instrument
@@ -123,7 +123,8 @@ class Main(QtGui.QMainWindow):
                 self.instrument.instrument_staribus_address != 'None':
             address = self.instrument.instrument_staribus_address
             baudrate = self.config.get('StaribusPort', 'baudrate')
-            staribusPortDetect.autodetect(address, baudrate)
+            port_detect = StaribusPortDetect()
+            port_detect.autodetect(address, baudrate)
 
         # If StarinetConnector is set then initialise starinetConnector.
         if self.config.get('StarinetConnector', 'active') == 'True':
