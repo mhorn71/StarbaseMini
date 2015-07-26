@@ -35,7 +35,7 @@ from core import ConfigManager
 from core import InstrumentBuilder
 from core import Baudrate
 import core.utilities.staribusPortDetect as staribusPortDetect
-from core.ui.mainwindow import Ui_MainWindow
+from core import Ui_MainWindow
 from core.xml.xmlLoader import Instruments
 from core.xml.xmlLoader import Instrument
 
