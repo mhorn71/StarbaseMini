@@ -24,7 +24,7 @@ from PyQt4 import QtGui, QtCore
 
 from core.ui.configuration import Ui_ConfigurationDialog
 from core.configuration.configuration_loader import ConfigLoader
-from core.xml.xmlLoader import Instruments
+from core.xml.instruments_loader import Instruments
 import core.configuration.configuration_regex as configRegex
 
 logger = logging.getLogger('core.configTool')
