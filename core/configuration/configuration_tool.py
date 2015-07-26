@@ -23,7 +23,7 @@ import sys
 from PyQt4 import QtGui, QtCore
 
 from core.ui.configuration import Ui_ConfigurationDialog
-from core.configuration.configuration_loader import confLoader
+from core.configuration.configuration_loader import ConfigLoader
 from core.xml.xmlLoader import Instruments
 import core.configuration.configuration_regex as configRegex
 import core.utilities.utilities as utilities
@@ -31,7 +31,7 @@ import core.utilities.utilities as utilities
 logger = logging.getLogger('core.configTool')
 
 
-class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
+class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
@@ -55,7 +55,7 @@ class configManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         logger.info('Started')
 
-        self.application_conf = confLoader()
+        self.application_conf = ConfigLoader()
         self.instruments = Instruments()
         
         self.loglevels = ['INFO', 'DEBUG']

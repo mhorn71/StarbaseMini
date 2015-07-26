@@ -20,7 +20,7 @@ __author__ = 'Mark'
 import asyncio
 import logging
 
-from core.configuration.configuration_loader import confLoader
+from core.configuration.configuration_loader import ConfigLoader
 
 logger = logging.getLogger('core.streams.starinet')
 
@@ -30,7 +30,7 @@ class UdpStream:
 
     def __init__(self, message, loop):
 
-        self.config = confLoader()
+        self.config = ConfigLoader()
         self.message = message
         self.loop = loop
         self.transport = None

@@ -30,8 +30,8 @@ except ImportError:
     QString = str
 
 import core.utilities.utilities as utils
-from core.configuration.configuration_loader import confLoader
-from core.configuration.configuration_tool import configManager
+from core.configuration.configuration_loader import ConfigLoader
+from core.configuration.configuration_tool import ConfigManager
 from core.instbuilder.builder import instrumentBuilder
 from core.Futurlec.baudrate import Baudrate as Baudrate
 import core.utilities.staribusPortDetect as staribusPortDetect
@@ -57,7 +57,7 @@ class Main(QtGui.QMainWindow):
         self.parameter_regex = 'None'
 
         # Initialise configuration will auto generate user configuration if missing.
-        self.config = confLoader()
+        self.config = ConfigLoader()
 
         #  Load and initialise logging configuration from user configuration file.
         logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
@@ -198,7 +198,7 @@ class Main(QtGui.QMainWindow):
                 self.ui_message('Unable to parse either Staribus or Starinet instrument.  Check log file.')
 
         # Initialise configurationManager
-        self.configurationManager = configManager()
+        self.configurationManager = ConfigManager()
 
         # Initialise instrumentBuilder
         self.instrumentBuilder = instrumentBuilder()

@@ -24,9 +24,9 @@ import datetime
 
 import serial
 
-from core.configuration.configuration_loader import confLoader
+from core.configuration.configuration_loader import ConfigLoader
 
-config = confLoader()
+config = ConfigLoader()
 logger = logging.getLogger('core.streams.staribus')
 timeout = config.get('StaribusPort', 'timeout')
 

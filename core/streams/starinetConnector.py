@@ -27,9 +27,9 @@ import io
 
 import serial
 
-from core.configuration.configuration_loader import confLoader
+from core.configuration.configuration_loader import ConfigLoader
 
-config = confLoader()
+config = ConfigLoader()
 
 udp_buffer = 600
 my_queue = queue.Queue()

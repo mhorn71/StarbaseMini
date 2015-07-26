@@ -22,7 +22,7 @@ import configparser
 from os import path, makedirs
 
 
-class confLoader:
+class ConfigLoader:
     def __init__(self):
         # Some basic attributes.
 
@@ -203,4 +203,4 @@ class confLoader:
             raise IOError(msg)
 
 if __name__ == '__main__':
-    x = confLoader()
+    x = ConfigLoader()
