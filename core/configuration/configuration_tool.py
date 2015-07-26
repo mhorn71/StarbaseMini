@@ -26,7 +26,6 @@ from core.ui.configuration import Ui_ConfigurationDialog
 from core.configuration.configuration_loader import ConfigLoader
 from core.xml.xmlLoader import Instruments
 import core.configuration.configuration_regex as configRegex
-import core.utilities.utilities as utilities
 
 logger = logging.getLogger('core.configTool')
 
