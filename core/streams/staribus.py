@@ -24,7 +24,7 @@ import datetime
 
 import serial
 
-from core.configuration.configLoader import confLoader
+from core.configuration.configuration_loader import confLoader
 
 config = confLoader()
 logger = logging.getLogger('core.streams.staribus')

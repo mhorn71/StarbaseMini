@@ -30,8 +30,8 @@ except ImportError:
     QString = str
 
 import core.utilities.utilities as utils
-from core.configuration.configLoader import confLoader
-from core.configuration.configTool import configManager
+from core.configuration.configuration_loader import confLoader
+from core.configuration.configuration_tool import configManager
 from core.instbuilder.builder import instrumentBuilder
 from core.Futurlec.baudrate import Baudrate as Baudrate
 import core.utilities.staribusPortDetect as staribusPortDetect

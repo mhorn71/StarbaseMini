@@ -20,7 +20,7 @@ __author__ = 'Mark'
 import asyncio
 import logging
 
-from core.configuration.configLoader import confLoader
+from core.configuration.configuration_loader import confLoader
 
 logger = logging.getLogger('core.streams.starinet')
 

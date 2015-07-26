@@ -27,7 +27,7 @@ import io
 
 import serial
 
-from core.configuration.configLoader import confLoader
+from core.configuration.configuration_loader import confLoader
 
 config = confLoader()
 
