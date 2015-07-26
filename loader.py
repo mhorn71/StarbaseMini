@@ -32,8 +32,8 @@ except ImportError:
 import core.utilities.utilities as utils
 from core import ConfigLoader
 from core import ConfigManager
-from core.instbuilder.builder import instrumentBuilder
-from core.Futurlec.baudrate import Baudrate as Baudrate
+from core import InstrumentBuilder
+from core import Baudrate
 import core.utilities.staribusPortDetect as staribusPortDetect
 from core.ui.mainwindow import Ui_MainWindow
 from core.xml.xmlLoader import Instruments
@@ -201,7 +201,7 @@ class Main(QtGui.QMainWindow):
         self.configurationManager = ConfigManager()
 
         # Initialise instrumentBuilder
-        self.instrumentBuilder = instrumentBuilder()
+        self.instrumentBuilder = InstrumentBuilder()
 
         # Initialise Futurlec Baudrate tool
         self.futurlec_tool = Baudrate()

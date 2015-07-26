@@ -27,7 +27,7 @@ from core.ui.instrumentBuilder import Ui_Dialog
 logger = logging.getLogger('core.configTool')
 
 
-class instrumentBuilder(QtGui.QDialog, Ui_Dialog):
+class InstrumentBuilder(QtGui.QDialog, Ui_Dialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
