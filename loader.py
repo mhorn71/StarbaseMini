@@ -39,8 +39,6 @@ from core import Ui_MainWindow
 from core import Instruments
 from core import Instrument
 
-
-
 version = '0.0.19'
 
 
