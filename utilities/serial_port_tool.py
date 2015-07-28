@@ -26,6 +26,8 @@ def serial_port_scanner():
     """Lists serial ports
     :returns:
         A list of available serial ports or None.
+
+    Note:  Some Linux distributions require the user to be a member of the dialout group.
     """
 
     if sys.platform.startswith('win'):

@@ -25,7 +25,7 @@ def check_ip(ip):
 
     '''
     Checks IP address looks for correct it's not 100% full proof but should be fine on Win, Linux, OSX
-    :param ip: IPv4 Address
+    :param: IPv4 Address string
     :return: True or False
     '''
 
@@ -44,9 +44,14 @@ def check_starinet_port(port):
 
     '''
     Check network port range is between 1 - 65535
-    :param port:
+    :param: string port number
     :return: True or False
     '''
+
+    if port is str:
+        pass
+    else:
+        port = str(port)
 
     if re.match('^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$', port):
         return True
