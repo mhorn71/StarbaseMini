@@ -46,7 +46,7 @@ if utilities.check_ip('192.168.1.1'):
 else:
     print('Starinet Address : invalid')
 
-if utilities.check_staribus_address('254'):
+if utilities.check_staribus_address('253'):
     print('Staribus Address : valid')
 else:
     print('Staribus Address : invalid')
