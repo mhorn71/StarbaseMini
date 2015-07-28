@@ -17,9 +17,9 @@ print('Hex Colour to RGB : ' + repr(rgbcolour))
 print('RGB Colour to Hex : ' + repr(hexcolour))
 
 if utilities.check_starinet_port('1205'):
-    print('Starinet Port is valid')
+    print('Starinet Port : valid')
 else:
-    print('Starinet Port is invalid')
+    print('Starinet Port : invalid')
 
 if utilities.check_ip('192.168.1.1'):
     print('Starinet Address : valid')
