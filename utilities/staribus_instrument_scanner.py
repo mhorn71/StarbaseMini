@@ -30,10 +30,10 @@ def check_serial_port_staribus_instrument(address, ports, baudrate):
 
     '''
     Checks supplied serial ports for staribus instrument
-    :param address: Staribus address 000 - 253
+    :param address: Staribus address 000 - 253 
     :param ports: serial port or list of serial ports
     :param baudrate: serial port baudrate.
-    :return:
+    :return: list of ports if more than one instrument found or None.
     '''
 
     address = address.lstrip()  # Strip leading zeros
