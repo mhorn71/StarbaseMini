@@ -46,6 +46,11 @@ if utilities.check_ip('192.168.1.1'):
 else:
     print('Starinet Address : invalid')
 
+if utilities.check_staribus_address('254'):
+    print('Staribus Address : valid')
+else:
+    print('Staribus Address : invalid')
+
 serial_port = utilities.serial_port_scanner()
 
 if serial_port is not None:
