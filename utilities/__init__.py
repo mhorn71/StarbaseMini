@@ -8,3 +8,4 @@ from utilities.crc_tool import create_crc
 from utilities.ipv4_tools import check_ip
 from utilities.ipv4_tools import check_starinet_port
 from utilities.serial_port_tool import serial_port_scanner
+from utilities.staribus_instrument_scanner import check_serial_port_staribus_instrument
