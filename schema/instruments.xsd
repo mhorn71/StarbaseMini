@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' elementFormDefault='qualified'>
+    <xs:element name='Instruments'>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs='unbounded' ref='Instrument'/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name='Instrument'>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref='Name'/>
+                <xs:element ref='File'/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name='Name' type='xs:string'/>
+    <xs:element name='File' type='xs:NCName'/>
+</xs:schema>
