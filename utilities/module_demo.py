@@ -10,11 +10,14 @@ status_message = utilities.staribus_status_str2b('TIMEOUT')
 print('Staribus Bytes to String : ' + response)
 print('Staribus String to Bytes : ' + repr(status_message))
 
-rgbcolour = utilities.hex2rgb('#FFFF33')
-hexcolour = utilities.rgb2hex((255, 255, 51))
-
-print('Hex Colour to RGB : ' + repr(rgbcolour))
-print('RGB Colour to Hex : ' + repr(hexcolour))
+try:
+    rgbcolour = utilities.hex2rgb('#FFFFFF')
+    hexcolour = utilities.rgb2hex((255, 255, 255))
+except ValueError as msg:
+    print(msg)
+else:
+    print('Hex Colour to RGB : ' + repr(rgbcolour))
+    print('RGB Colour to Hex : ' + repr(hexcolour))
 
 if utilities.check_starinet_port('1205'):
     print('Starinet Port : valid')

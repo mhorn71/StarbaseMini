@@ -27,9 +27,20 @@ def hex2rgb(value):
     Convert Hex colour to RGB
     :param value: '#FFFFFF'
     :return: (255, 255, 255)
+    :raises: ValueError
     '''
 
+
+
     value = value.lstrip('#')
+
+    hex_value = '0x' + value
+
+    integer = int(hex_value, 16)
+
+    if integer > 16777215:
+        raise ValueError('Hex value out of range.')
+
     lv = len(value)
     return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
@@ -40,6 +51,11 @@ def rgb2hex(rgb):
     Convert RGB Colour to Hex Colour.
     :param rgb: ((255, 255, 255))
     :return: '#FFFFFF'
+    :raises: ValueError
     '''
+
+    for i in rgb:
+        if i > 255:
+            raise ValueError('RGB value out of range.')
 
     return '#%02X%02X%02X' % rgb
