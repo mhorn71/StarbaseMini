@@ -24,7 +24,8 @@ class Instruments:
     def __init__(self, instrument_xml_file):
         '''
         Initialise Instruments Class
-        :param instrument_xml_file: relative path and instrument xml
+        :param instrument_xml_file: include the relative path in relationship to this module
+        and instrument xml file name.
         :return: object instance.
         '''
         # Create an xml dom object for Instruments XML.
