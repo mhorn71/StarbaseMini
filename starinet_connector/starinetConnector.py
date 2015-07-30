@@ -27,33 +27,45 @@ import io
 
 import serial
 
-from core.configuration.configuration_loader import ConfigLoader
 
-config = ConfigLoader()
-
-udp_buffer = 600
+udp_buffer = 1024
 my_queue = queue.Queue()
-timeout = config.get('StaribusPort', 'timeout')
+ser = None
+ser_io = None
+timeout = None
+sock = None
 
-logging = logging.getLogger('core.starinetConnector')
+logger = logging.getLogger('StarinetConnector')
+logger.setLevel(logging.INFO)
+
+handler = logging.FileHandler('StarinetConnector.log')
+handler.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+logger.addHandler(handler)
 
 
 class ReadFromUDPSocket(threading.Thread):
 
     def __init__(self, my_queue):
-        logging.info("ReadFromUDPSocket __init__ initialised.")
+        logger.info("Read from UDP socket initialised.")
         threading.Thread.__init__(self)
         self.my_queue = my_queue
 
     def run(self):
+
+        global sock
+
         while True:
             buffer1, address = sock.recvfrom(udp_buffer)
-            logging.debug("%s %s", "received data - ", repr(buffer1))
+            logger.debug("%s %s", "received data - ", repr(buffer1))
 
             if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
-                logging.info('%s %s',  'Starinet UDP Packet received from', address)
-                logging.debug('%s %s',  'Starinet UDP Packet', repr(buffer1))
-                logging.debug('%s %s', 'Memory usage (bytes) -', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+                logger.info('%s %s',  'Starinet UDP Packet received from', address)
+                logger.debug('%s %s',  'Starinet UDP Packet', repr(buffer1))
+                logger.debug('%s %s', 'Memory usage (bytes) -', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
                 self.my_queue.put((buffer1, address))
                 self.my_queue.join()
@@ -63,7 +75,7 @@ class StaribusPort(threading.Thread):
 
     def __init__(self, my_queue):
 
-        logging.info("StaribusPort translator __init__ initialised.")
+        logger.info("StaribusPort translator initialised.")
 
         threading.Thread.__init__(self)
         self.my_queue = my_queue
@@ -72,7 +84,9 @@ class StaribusPort(threading.Thread):
 
     def run(self):
 
-        logging.debug("Process run initialised.")
+        global ser, serial_timeout
+
+        logger.debug("Process run initialised.")
 
         while True:
             buffer3 = self.my_queue.get()
@@ -85,11 +99,11 @@ class StaribusPort(threading.Thread):
                 try:
 
                     ser.flushInput()  # flush input buffer, discarding all its contents
-                    logging.debug('Flushing serial port input buffer')
+                    logger.debug('Flushing serial port input buffer')
                     ser.flushOutput()  # flush output buffer, aborting current output
-                    logging.debug('Flushing serial port output buffer')
+                    logger.debug('Flushing serial port output buffer')
 
-                    logging.info('Sending data to Staribus port')
+                    logger.info('Sending data to Staribus port')
                     ser.write(buffer3[0])  # write message to serial port, preceded
 
                     # serial port receive loop
@@ -143,48 +157,53 @@ class StaribusPort(threading.Thread):
                 logging.critical('Queue is empty which it never should be, run with debug enabled and try again.')
                 self.my_queue.task_done()
 
-if config.get('StaribusPort', 'port') == 'None':
-    logging.critical('No Staribus port set.')
-else:
-    # Create socket (IPv4 protocol, datagram (UDP)) and bind to addressess
-    try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind((config.get('StarinetConnector', 'address'),
-                   int(config.get('StarinetConnector', 'port'))))
-    except socket.error as msg:
-        logging.critical('%s %s', 'Unable to initialise Starinet network port - ', msg)
 
-# initialise serial port
-try:
-    ser = serial.Serial()
-    ser.port = config.get('StaribusPort', 'port')
-    ser.baudrate = int(config.get('StaribusPort', 'baudrate'))
-    ser.bytesize = serial.SEVENBITS
-    ser.parity = serial.PARITY_EVEN
-    ser.stopbits = serial.STOPBITS_ONE
-    ser.timeout = 0
-    ser.xonxoff = False
-    ser.rtscts = False
-    ser.dsrdtr = False
-    ser.writeTimeout = float(config.get('StaribusPort', 'write_timeout'))
-except serial.SerialException as msg:
-    logging.critical('%s %s', 'Unable to initialise serial port -', msg)
-except ValueError as msg:
-    logging.critical('%s %s', "Unable to initialise serial port -", msg)
+class StarinetConnectorStart:
+    def __init__(self,starinet_ipv4, starinet_port, serial_port, serial_baudrate, serial_timeout):
 
-ser_io = io.TextIOWrapper(io.BufferedReader(ser), encoding='utf-8', newline='\n', line_buffering=False)
+        global sock, ser, ser_io, timeout
 
-# Try to open serial port and close it.
-logging.debug('Opening serial port')
-try:
-    ser.open()
-except serial.SerialException as msg:
-    logging.critical('%s %s', 'Error opening serial port - ', msg)
-else:
-    # Instantiate & start threads
-    server = ReadFromUDPSocket(my_queue)
-    interpreter = StaribusPort(my_queue)
-    server.setDaemon(True)
-    interpreter.setDaemon(True)
-    server.start()
-    interpreter.start()
+        timeout = serial_timeout
+
+        # Create socket (IPv4 protocol, datagram (UDP)) and bind to addressess
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.bind(starinet_ipv4, int(starinet_port))
+        except socket.error as msg:
+            logging.critical('%s %s', 'Unable to initialise Starinet network port - ', msg)
+
+
+        # initialise serial port
+        try:
+            ser = serial.Serial()
+            ser.port = serial_port
+            ser.baudrate = serial_baudrate
+            ser.bytesize = serial.SEVENBITS
+            ser.parity = serial.PARITY_EVEN
+            ser.stopbits = serial.STOPBITS_ONE
+            ser.timeout = 0
+            ser.xonxoff = False
+            ser.rtscts = False
+            ser.dsrdtr = False
+            ser.writeTimeout = 0.5
+        except serial.SerialException as msg:
+            logging.critical('%s %s', 'Unable to initialise serial port -', msg)
+        except ValueError as msg:
+            logging.critical('%s %s', "Unable to initialise serial port -", msg)
+
+        ser_io = io.TextIOWrapper(io.BufferedReader(ser), encoding='utf-8', newline='\n', line_buffering=False)
+
+        # Try to open serial port and close it.
+        logging.debug('Opening serial port')
+        try:
+            ser.open()
+        except serial.SerialException as msg:
+            logging.critical('%s %s', 'Error opening serial port - ', msg)
+        else:
+            # Instantiate & start threads
+            server = ReadFromUDPSocket(my_queue)
+            interpreter = StaribusPort(my_queue)
+            server.setDaemon(True)
+            interpreter.setDaemon(True)
+            server.start()
+            interpreter.start()
