@@ -30,10 +30,6 @@ import serial
 
 udp_buffer = 1024
 my_queue = queue.Queue()
-ser = None
-ser_io = None
-timeout = None
-sock = None
 
 logger = logging.getLogger('StarinetConnector')
 
@@ -46,8 +42,6 @@ class ReadFromUDPSocket(threading.Thread):
         self.my_queue = my_queue
 
     def run(self):
-
-        global sock
 
         while True:
             buffer1, address = sock.recvfrom(udp_buffer)
@@ -75,8 +69,6 @@ class StaribusPort(threading.Thread):
 
     def run(self):
 
-        global ser, serial_timeout
-
         logger.debug("Process run initialised.")
 
         while True:
@@ -100,8 +92,6 @@ class StaribusPort(threading.Thread):
                     # serial port receive loop
 
                     data = []
-
-                    # time.sleep(0.2)
 
                     while True:
 
@@ -188,7 +178,6 @@ class StarinetConnectorStart:
             sock.bind((starinet_ipv4, int(starinet_port)))
         except socket.error as msg:
             logging.critical('%s %s', 'Unable to initialise Starinet network port - ', msg)
-
 
         # initialise serial port
         try:
