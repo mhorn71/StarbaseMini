@@ -20,9 +20,9 @@ __author__ = 'mark'
 import sys
 import logging
 
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui
 
-from core.ui.futurlecBaudrateTool import Ui_Dialog
+from ui import Ui_Dialog
 
 logger = logging.getLogger('core.configTool')
 

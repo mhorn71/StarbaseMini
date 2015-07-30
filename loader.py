@@ -29,7 +29,7 @@ try:
 except ImportError:
     QString = str
 
-import core.utilities.utilities as utils
+import utilities
 from core import ConfigLoader
 from core import ConfigManager
 from core import InstrumentBuilder
@@ -137,13 +137,13 @@ class Main(QtGui.QMainWindow):
             port = self.config.get('StarinetConnector', 'port')
 
             # Check IP and Port look sane.
-            if utils.ip_checker(ip):
+            if utilities.check_ip(ip):
                 pass
             else:
                 self.logger.critical('Starinet Connector Address Malformed!!')
                 critical = True
 
-            if utils.port_checker(port):
+            if utilities.check_starinet_port(port):
                 pass
             else:
                 self.logger.critical('Starinet Connect Port Malformed')
@@ -178,7 +178,7 @@ class Main(QtGui.QMainWindow):
         else:
 
             self.logger.critical('Unable to parse configuration for StarinetConnector.')
-            utils.exit_message('Unable to parse configuration for StarinetConnector.')
+            # utils.exit_message('Unable to parse configuration for StarinetConnector.')
 
         # Check if connector is being used.
         if connectorBool:
