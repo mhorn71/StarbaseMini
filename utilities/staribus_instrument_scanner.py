@@ -20,10 +20,13 @@ __author__ = 'mark'
 import datetime
 import io
 import time
+import logging
 
 import serial
 
 import utilities.crc_tool as crc_tool
+
+logger = logging.getLogger('check_serial_port_staribus_instrument')
 
 
 def check_serial_port_staribus_instrument(address, ports, baudrate):
@@ -42,11 +45,15 @@ def check_serial_port_staribus_instrument(address, ports, baudrate):
 
     address = address.zfill(2)  # Pad address to two places with leading zero.
 
+    logger.debug('%s %s', 'Constructing Staribus message for address :', address)
+
     staribus_message = address + '00010000'
 
     checksum = crc_tool.create_crc(staribus_message)
 
     staribus_port_message = ('\x02' + staribus_message + checksum + '\x04\x0D\x0A').encode('utf-8')
+
+    logger.debug('%s %s', 'Message to be sent to port :', repr(staribus_port_message.decode()))
 
     staribus_ports = []
 
@@ -72,6 +79,7 @@ def check_serial_port_staribus_instrument(address, ports, baudrate):
 
             ser_io = io.TextIOWrapper(io.BufferedReader(s), encoding='utf-8', newline='\n', line_buffering=False)
 
+            logger.debug('Flushing input and output buffers.')
             s.flushInput()  # flush input buffer, discarding all its contents
             s.flushOutput()  # flush output buffer, aborting current output
 
@@ -94,6 +102,7 @@ def check_serial_port_staribus_instrument(address, ports, baudrate):
                     received = ser_io.readline()
 
                     if received is not None:
+                        logger.debug('%s %s', 'Message received :', repr(received))
                         received = received.strip('\x16\x02\x04\x0D\x0A')
 
                     if crc_tool.check_crc(received) is True:
@@ -110,7 +119,7 @@ def check_serial_port_staribus_instrument(address, ports, baudrate):
                             break
 
         except serial.SerialException:
-            pass
+            logger.critical('%s %s', 'Unable to open port ', str(port))
 
     if len(staribus_ports) == 0:
         return None
