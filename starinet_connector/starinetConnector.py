@@ -140,7 +140,7 @@ class StaribusPort(threading.Thread):
 
 
 class StarinetConnectorStart:
-    def __init__(self,starinet_ipv4, starinet_port, serial_port, serial_baudrate, serial_timeout, loglevel, logpath):
+    def __init__(self,starinet_ipv4, starinet_port, serial_port, serial_baudrate, serial_timeout):
 
         '''
         StarinetConnectorStart initialises and starts the starinet to staribus relay service.
@@ -149,28 +149,11 @@ class StarinetConnectorStart:
         :param serial_port: string
         :param serial_baudrate: string
         :param serial_timeout: string
-        :param loglevel: INFO or DEBUG
-        :param logpath: The path where you wish to store log files relative to the module.
         '''
 
         global sock, ser, ser_io, timeout
 
         timeout = serial_timeout
-
-        if loglevel == 'DEBUG':
-            logger.setLevel(logging.DEBUG)
-        else:
-            logger.setLevel(logging.INFO)
-
-        logfile = logpath + 'StarinetConnector.log'
-
-        handler = logging.FileHandler(logfile)
-
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-        handler.setFormatter(formatter)
-
-        logger.addHandler(handler)
 
         # Create socket (IPv4 protocol, datagram (UDP)) and bind to addressess
         try:
