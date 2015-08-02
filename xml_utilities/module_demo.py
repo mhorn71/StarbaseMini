@@ -30,16 +30,88 @@ except FileNotFoundError as msg:
 else:
     try:
         for name in instruments_xml.get_names():
-            print('Instrument Name : ' + name)
+            print('Instruments Name : ' + name)
     except AttributeError as msg:
-        print('Instrument Name Attribute Error : ' + str(msg))
+        print('Instruments Name Attribute Error : ' + str(msg))
     except IndexError as msg:
-        print('Instrumet Name Index Error : ' + str(msg))
+        print('Instruments Name Index Error : ' + str(msg))
     else:
         try:
             filename = instruments_xml.get_file(instruments_xml.get_names()[0])
-            print('Filename for Instrument at index 0 : ' + filename)
+            print('Filename for Instruments at index 0 : ' + filename)
         except AttributeError as msg:
-            print('Filename Attribute Error : ' + str(msg))
+            print('Instruments Filename Attribute Error : ' + str(msg))
+        finally:
+            print('----------------------------------------------------')
 
+try:
+    filename = '..' + os.path.sep + 'instruments' + os.path.sep + filename
+    instrument = xml_utilities.instrument_loader.Instrument(filename)
+except FileNotFoundError:
+    print('File Not Found : %s' % filename)
+except LookupError as msg:
+    print('Look up error : %s' % str(msg))
+except ValueError as msg:
+    print('Value Error : %s' % str(msg))
+else:
+    print('Instrument Attributes :')
+    print('Instrument Identifier : %s' % instrument.instrument_identifier)
+    print('Instrument Description : %s' % instrument.instrument_description)
+    print('Instrument Staribus Address : %s' % instrument.instrument_staribus_address)
+    print('Instrument Starinet Address : %s' % instrument.instrument_starinet_address)
+    print('Instrument Starinet Port : %s' % instrument.instrument_starinet_port)
+    print('Instrument Number of Channel : %s' % instrument.instrument_number_of_channels)
+    print('----------------------------------------------------')
+    print('Channel Names list :')
+    print(instrument.channel_names)
+    print('Channel Colours list :')
+    print(instrument.channel_colours)
+    print('----------------------------------------------------')
+    print('Chart Attributes :')
+    print('Y Axis Label : %s' % instrument.YaxisLabel)
+    print('Y Axis Range : %s' % instrument.YaxisRange)
+    print('Y Axis Scale : %s' % instrument.YaxisScale)
+    print('----------------------------------------------------')
+    print('Boolean Attributes :')
+    print('Boolean True : %s' % instrument.boolean_true)
+    print('Boolean False : %s' % instrument.boolean_false)
+    print('----------------------------------------------------')
+    print('Module list :')
+    print(instrument.module_list)
+    print('----------------------------------------------------')
+    print('Command list :')
+    print(instrument.command_list)
+    print('----------------------------------------------------')
 
+    i = instrument.command_list[0][0]
+
+    CB = instrument.command_dict[i]['Base']
+    CC = instrument.command_dict[i]['Code']
+    CV = instrument.command_dict[i]['Variant']
+    DESC = instrument.command_dict[i]['Description']
+    STP = instrument.command_dict[i]['SendToPort']
+    BLK = instrument.command_dict[i]['BlockedData']
+    STC = instrument.command_dict[i]['SteppedData']
+    PCH = instrument.command_dict[i]['Parameters']['Choices']
+    PRX = instrument.command_dict[i]['Parameters']['Regex']
+    PTT = instrument.command_dict[i]['Parameters']['Tooltip']
+    RDT = instrument.command_dict[i]['Response']['DataType']
+    RUT = instrument.command_dict[i]['Response']['Units']
+    RRX = instrument.command_dict[i]['Response']['Regex']
+
+    print('Command Name : %s' % i)
+    print('Command Base : %s' % CB)
+    print('Command Code : %s' % CC)
+    print('Command Variant : %s' % CV)
+    print('Command Description : %s' % DESC)
+    print('Command Send To Port : %s' % STP)
+    print('Command Blocked Data : %s' % BLK)
+    print('Command Stepped Data : %s' % STC)
+    print('\tParameter :')
+    print('\t\t\tChoices : %s' % PCH)
+    print('\t\t\tRegex : %s' % PRX)
+    print('\t\t\tTooltip : %s' % PTT)
+    print('\tResponse :')
+    print('\t\t\tDataType : %s' % RDT)
+    print('\t\t\tUnit : %s' % RUT)
+    print('\t\t\tRegex : %s' % RRX)
