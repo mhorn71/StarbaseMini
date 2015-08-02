@@ -27,6 +27,7 @@ import core.utilities.utilities as utils
 class Instrument:
     def __init__(self, xml_file):
 
+
         self.logger = logging.getLogger('core.xmlLoad.Instrument')
 
         # The instrument module and command list see below for format etc ...
@@ -72,7 +73,7 @@ class Instrument:
                 utils.exit_message('Both Starinet Address and Staribus Addresses set.')
 
             elif self.instrument_starinet_address == 'None' and self.instrument_staribus_address == 'None':
-                
+
                 self.logger.critical('Instrument XML has neither Staribus nor Starinet Defined.'
                                      ' Please fix before running software.')
                 utils.exit_message('Neither Starinet Address nor Staribus Addresses set.')
@@ -121,7 +122,7 @@ class Instrument:
                 else:
 
                     self.logger.critical('Starbus Address out of range (001 - 255) currently set to %s',
-                                             self.instrument_staribus_address)
+                                         self.instrument_staribus_address)
                     utils.exit_message('Staribus Address out of range.')
 
             self.instrument_number_of_channels = self.xmldom.findtext('NumberOfChannels')
@@ -179,6 +180,9 @@ class Instrument:
             tmp_plugin.append(plugin_cmdbase)
 
             self.logger.debug('Searching for plugin commands.')
+
+            # The below bit needs changing to a dict which would make more sense.
+            # This will also break the ui loader.
 
             for command in plugin.iter('Command'):
 
