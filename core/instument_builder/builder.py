@@ -22,12 +22,12 @@ import logging
 
 from PyQt4 import QtGui
 
-from ui.instrumentBuilder import Ui_Dialog
+from ui import Ui_InstrumentBuilderDialog
 
 logger = logging.getLogger('core.configTool')
 
 
-class InstrumentBuilder(QtGui.QDialog, Ui_Dialog):
+class InstrumentBuilder(QtGui.QDialog, Ui_InstrumentBuilderDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
