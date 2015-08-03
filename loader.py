@@ -18,6 +18,7 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import os
 import logging.config
 import logging
 import datetime
@@ -30,14 +31,12 @@ except ImportError:
     QString = str
 
 import utilities
-from core import ConfigLoader
-from core import ConfigManager
 from core import InstrumentBuilder
 from core import Baudrate
-from core import StaribusPortDetect
-from core import Ui_MainWindow
-from core import Instruments
-from core import Instrument
+from ui import Ui_MainWindow
+import xml_utilities
+import config_utilities
+
 
 version = '0.0.19'
 
@@ -55,7 +54,7 @@ class Main(QtGui.QMainWindow):
         self.parameter_regex = 'None'
 
         # Initialise configuration will auto generate user configuration if missing.
-        self.config = ConfigLoader()
+        self.config = config_utilities.ConfigTool()
 
         #  Load and initialise logging configuration from user configuration file.
         logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
@@ -113,16 +112,36 @@ class Main(QtGui.QMainWindow):
         self.ui.commandParameter.textChanged.emit(self.ui.commandParameter.text())
 
         # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
-        my_instrument = Instruments()
-        file_name = my_instrument.get_file(self.config.get('Application', 'instrument_name'))
-        self.instrument = Instrument(file_name)
+        try:
+            instruments = 'instruments' + os.path.sep + 'instruments.xml'
+            my_instruments = xml_utilities.Instruments(instruments)
+        except FileNotFoundError as msg:
+            self.logger.critical('Unable to load instruments.xml %s' % str(msg))
+            print('Unable to load instruments.xml %s' % str(msg))
+            sys.exit(1)
+        else:
+            try:
+                file_name = my_instruments.get_file(self.config.get('Application', 'instrument_name'))
+                file_name = 'instruments' + os.path.sep + file_name
+                self.instrument = xml_utilities.Instrument(file_name)
+            except FileNotFoundError as msg:
+                self.logger.critical('Unable to load instrument xml %s' % str(msg))
+                print('Unable to load instrument xml %s' % str(msg))
+                sys.exit(1)
 
         if self.config.get('Application', 'detect_staribus_port') == 'True' and \
                 self.instrument.instrument_staribus_address != 'None':
             address = self.instrument.instrument_staribus_address
             baudrate = self.config.get('StaribusPort', 'baudrate')
-            port_detect = StaribusPortDetect()
-            port_detect.autodetect(address, baudrate)
+            ports = utilities.serial_port_scanner()
+
+            if ports is not None:
+                instrument_port = utilities.check_serial_port_staribus_instrument(address, ports, baudrate)
+
+                if instrument_port > 1:
+                    self.logger.warn('More than one instrument found please set serial port by hand.')
+
+            # Need bit here to set instrument port in configuration.
 
         # If StarinetConnector is set then initialise starinetConnector.
         if self.config.get('StarinetConnector', 'active') == 'True':
@@ -197,7 +216,7 @@ class Main(QtGui.QMainWindow):
                 self.ui_message('Unable to parse either Staribus or Starinet instrument.  Check log file.')
 
         # Initialise configurationManager
-        self.configurationManager = ConfigManager()
+        self.configurationManager = config_utilities.ConfigManager()
 
         # Initialise instrumentBuilder
         self.instrumentBuilder = InstrumentBuilder()
@@ -227,7 +246,7 @@ class Main(QtGui.QMainWindow):
 
         index = 0
 
-        for plugin in self.instrument.instrument_mc_list:
+        for plugin in self.instrument.module_list:
             self.ui.moduleCombobox.addItem(plugin[0], plugin[2])
             self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
 
@@ -235,19 +254,26 @@ class Main(QtGui.QMainWindow):
 
     def populate_ui_command(self):
 
+        plugin_index = self.ui.moduleCombobox.currentIndex()
+
         self.ui.commandCombobox.clear()
+
+        print(self.instrument.command_list[plugin_index])
 
         index = 0
 
-        for plugin in self.instrument.instrument_mc_list:
-            if self.command_base in plugin:
-                for command in plugin[3:]:
-                    self.ui.commandCombobox.addItem(command[0])
-                    self.ui.commandCombobox.setItemData(index, command[3], QtCore.Qt.ToolTipRole)
-
-                    index += 1
-
-        self.command_parameter_populate()
+        # for cmd in self.instrument.command_list[plugin_index]:
+        #     self.ui.commandCombobox.addItem(cmd[0])
+        #
+        # for plugin in self.instrument.instrument_mc_list:
+        #     if self.command_base in plugin:
+        #         for command in plugin[3:]:
+        #             self.ui.commandCombobox.addItem(command[0])
+        #             self.ui.commandCombobox.setItemData(index, command[3], QtCore.Qt.ToolTipRole)
+        #
+        #             index += 1
+        #
+        # self.command_parameter_populate()
 
     # Get the command parameters for the current set command.
     def command_parameter_populate(self):
