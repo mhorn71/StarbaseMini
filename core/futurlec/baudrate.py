@@ -22,12 +22,12 @@ import logging
 
 from PyQt4 import QtGui
 
-from ui import Ui_Dialog
+from ui import Ui_FuturlecDialog
 
 logger = logging.getLogger('core.configTool')
 
 
-class Baudrate(QtGui.QDialog, Ui_Dialog):
+class Baudrate(QtGui.QDialog, Ui_FuturlecDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
