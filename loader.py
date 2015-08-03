@@ -258,22 +258,14 @@ class Main(QtGui.QMainWindow):
 
         self.ui.commandCombobox.clear()
 
-        print(self.instrument.command_list[plugin_index])
-
         index = 0
 
-        # for cmd in self.instrument.command_list[plugin_index]:
-        #     self.ui.commandCombobox.addItem(cmd[0])
-        #
-        # for plugin in self.instrument.instrument_mc_list:
-        #     if self.command_base in plugin:
-        #         for command in plugin[3:]:
-        #             self.ui.commandCombobox.addItem(command[0])
-        #             self.ui.commandCombobox.setItemData(index, command[3], QtCore.Qt.ToolTipRole)
-        #
-        #             index += 1
-        #
-        # self.command_parameter_populate()
+        for cmd in self.instrument.command_list[plugin_index]:
+            self.ui.commandCombobox.addItem(cmd)
+            self.ui.commandCombobox.setItemData(index, self.instrument.command_dict[cmd]['Description'],
+                                                QtCore.Qt.ToolTipRole)
+
+            index += 1
 
     # Get the command parameters for the current set command.
     def command_parameter_populate(self):
