@@ -19,6 +19,7 @@ __author__ = 'mark'
 
 import logging
 import sys
+import os
 
 from PyQt4 import QtGui, QtCore
 
@@ -54,7 +55,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         logger.info('Started')
 
         self.application_conf = config_utilities.ConfigTool()
-        self.instruments = xml_utilities.Instruments()
+        instruments = 'instruments' + os.path.sep + 'instruments.xml'
+        self.instruments = xml_utilities.Instruments(instruments)
         
         self.loglevels = ['INFO', 'DEBUG']
         self.baudrates = ['9600', '19200', '38400', '57600', '115200']

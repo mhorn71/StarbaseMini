@@ -57,6 +57,9 @@ def check_serial_port_staribus_instrument(address, ports, baudrate):
 
     staribus_ports = []
 
+    if ports is None:
+        raise OSError('No serial ports supplied.')
+
     for port in ports:
 
         current_time = datetime.datetime.now()
