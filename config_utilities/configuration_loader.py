@@ -203,4 +203,4 @@ class ConfigTool:
             raise IOError(msg)
 
 if __name__ == '__main__':
-    x = ConfigLoader()
+    x = ConfigTool()
