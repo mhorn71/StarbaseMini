@@ -46,12 +46,6 @@ class Main(QtGui.QMainWindow):
 
         # Base attributes.
         self.saved_data_state = False
-        self.command_base = 'None'
-        self.command_code = 'None'
-        self.command_variant = 'None'
-        self.command_name = 'None'
-        self.parameter_units = 'None'
-        self.parameter_regex = 'None'
 
         # Initialise configuration will auto generate user configuration if missing.
         self.config = config_utilities.ConfigTool()
@@ -104,7 +98,7 @@ class Main(QtGui.QMainWindow):
         self.ui.choicesComboBox.setEnabled(False)
 
         # Module, Command and Choices ComboBox Triggers.
-        self.ui.moduleCombobox.currentIndexChanged.connect(self.module_combo_triggered)
+        self.ui.moduleCombobox.currentIndexChanged.connect(self.populate_ui_command)
         self.ui.commandCombobox.currentIndexChanged.connect(self.command_parameter_populate)
 
         # Parameter entry emit and connect signals
@@ -269,53 +263,49 @@ class Main(QtGui.QMainWindow):
 
     # Get the command parameters for the current set command.
     def command_parameter_populate(self):
-        # Find the current set module in the instrument_mc_list
-        for plugin in self.instrument.instrument_mc_list:
-            if plugin[0] == self.ui.moduleCombobox.currentText():
-                # Find the current set command in the instrument_mc_list plugin command lists.
-                for command_list in plugin:
-                    if command_list[0] == self.ui.commandCombobox.currentText():
-                        self.command_name = command_list[0]
-                        self.command_code = command_list[1]
-                        self.command_variant = command_list[2]
 
-                        # Check if command has choices.
-                        if command_list[7] == 'None':
-                            self.ui.choicesComboBox.clear()
-                            self.ui.choicesComboBox.setEnabled(False)
-                            self.ui.executeButton.setEnabled(True)
-                        else:
-                            self.ui.choicesComboBox.clear()
-                            self.ui.choicesComboBox.setEnabled(True)
-                            self.ui.executeButton.setEnabled(True)
-                            choices = command_list[7].split(',')  # Split the choices up into list.
-                            self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
+        # self.command_name = self.ui.commandCombobox.currentText()
+        # self.command_base = self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Base']
+        # self.command_code = self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Code']
+        # self.command_variant = self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Variant']
 
-                            # Add choices tool tips to combo box.
-                            for i in range(len(choices)):
-                                self.ui.choicesComboBox.setItemData(i, command_list[9], QtCore.Qt.ToolTipRole)
+        # Check if command has choices.
+        if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'] == 'None':
+            self.ui.choicesComboBox.clear()
+            self.ui.choicesComboBox.setEnabled(False)
+            self.ui.executeButton.setEnabled(True)
+        else:
+            self.ui.choicesComboBox.clear()
+            self.ui.choicesComboBox.setEnabled(True)
+            self.ui.executeButton.setEnabled(True)
 
-                        # Check if command has parameters.
-                        if command_list[8] == 'None':
-                            self.ui.commandParameter.clear()
-                            self.ui.commandParameter.setEnabled(False)
-                            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
-                        else:
-                            self.ui.commandParameter.setEnabled(True)
-                            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-                            self.ui.executeButton.setEnabled(False)
-                            self.ui.commandParameter.setToolTip(command_list[9])
-                            self.parameter_regex = command_list[8]
-                            regexp = QtCore.QRegExp(self.parameter_regex)
-                            validator = QtGui.QRegExpValidator(regexp)
-                            self.ui.commandParameter.setValidator(validator)
+            # Split the choices up into list.
+            choices = \
+                self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'].split(',')
+            self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
 
-    def module_combo_triggered(self):
-        # Module Combo Box Changed, set new command_base
-        self.command_base = self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())
-        self.logger.debug('Command base set to %s' % self.command_base)
+            # Add choices tool tips to combo box.
+            for i in range(len(choices)):
+                self.ui.choicesComboBox.setItemData(i,
+                                                    self.instrument.command_dict[self.ui.commandCombobox.currentText()]
+                                                    ['Parameters']['Tooltip'], QtCore.Qt.ToolTipRole)
 
-        self.populate_ui_command()
+        # Check if command has parameters.
+        if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
+            self.ui.commandParameter.clear()
+            self.ui.commandParameter.setEnabled(False)
+            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
+        else:
+            self.ui.commandParameter.setEnabled(True)
+            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+            self.ui.executeButton.setEnabled(False)
+            self.ui.commandParameter.setToolTip(self.instrument.command_dict[self.ui.commandCombobox.currentText()]
+                                                ['Parameters']['Tooltip'])
+            self.parameter_regex = \
+                self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex']
+            regexp = QtCore.QRegExp(self.parameter_regex)
+            validator = QtGui.QRegExpValidator(regexp)
+            self.ui.commandParameter.setValidator(validator)
 
     def parameter_check_state(self, *args, **kwargs):
 
@@ -462,10 +452,8 @@ class Main(QtGui.QMainWindow):
             self.ui.channel7Button.setText(self.instrument.channel_names[7])
             self.ui.channel8Button.setText(self.instrument.channel_names[8])
 
-    # Just a break for space. ;-))
-
     def execute_triggered(self):
-        print(self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()))
+        print(self.ui.commandCombobox.currentText())
 
     def ui_message(self, message):
         message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' :: ' + message
