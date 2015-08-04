@@ -75,22 +75,21 @@ class ConfigTool:
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')
-                self.config.set('Application', 'save_path', '')
-                self.config.set('Application', 'instrument_name', 'Staribus 4 Channel Logger')
-                self.config.set('Application', 'detect_staribus_port', 'True')
+                self.config.set('Application', 'instrument_data_path', '')
+                self.config.set('Application', 'instrument_identifier', 'Staribus 4 Channel Logger')
+                self.config.set('Application', 'instrument_autodetect', 'True')
 
                 # Add Staribus Port section
                 self.config.add_section('StaribusPort')
                 self.config.set('StaribusPort', 'port', '')
                 self.config.set('StaribusPort', 'baudrate', '57600')
-                self.config.set('StaribusPort', 'write_timeout', '0.2')
                 self.config.set('StaribusPort', 'timeout', '30')
 
                 # Add StarinetConnector section.
-                self.config.add_section('StarinetConnector')
-                self.config.set('StarinetConnector', 'active', 'False')
-                self.config.set('StarinetConnector', 'address', '192.168.1.10')
-                self.config.set('StarinetConnector', 'port', '1205')
+                self.config.add_section('StarinetRelay')
+                self.config.set('StarinetRelay', 'active', 'False')
+                self.config.set('StarinetRelay', 'address', '192.168.1.10')
+                self.config.set('StarinetRelay', 'port', '1205')
 
                 # Add ObservatoryMetadata section.
                 self.config.add_section('ObservatoryMetadata')

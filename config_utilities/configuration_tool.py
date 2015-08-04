@@ -82,8 +82,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Load 'General' Tab
 
-        data_save_path = self.application_conf.get('Application', 'save_path')
-        instrument_name = self.application_conf.get('Application', 'instrument_name')
+        data_save_path = self.application_conf.get('Application', 'instrument_data_path')
+        instrument_name = self.application_conf.get('Application', 'instrument_identifier')
         loglevel = self.application_conf.get('logger_root', 'level')
 
         # Data save path show blank if set to None.
@@ -117,7 +117,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         #  Set Detect staribus port checkbox
 
-        detect_staribus_port = self.application_conf.get('Application', 'detect_staribus_port')
+        detect_staribus_port = self.application_conf.get('Application', 'instrument_autodetect')
 
         if detect_staribus_port == 'False':
             self.detectInstrumentPortCheckBox.setChecked(False)
@@ -126,7 +126,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.serialPortLineEdit.setEnabled(False)  # Disable port entry box if auto detect is true.
         else:
             logger.warning('Unable to detect staribus port check state, setting to default \'False\'.')
-            self.application_conf.set('Application', 'detect_staribus_port', 'False')
+            self.application_conf.set('Application', 'instrument_autodetect', 'False')
             self.detectInstrumentPortCheckBox.setChecked(False)
 
         self.detectInstrumentPortCheckBox.setToolTip('Will check each serial ports for the configured instrument'
@@ -172,7 +172,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.timeoutComboBox.setCurrentIndex(self.timeouts.index(timeout))
 
         # Set starinetConnector (Relay) check box and line edits.
-        starinetConnector_active = self.application_conf.get('StarinetConnector', 'active')
+        starinetConnector_active = self.application_conf.get('StarinetRelay', 'active')
 
         if starinetConnector_active == 'True':
             self.relayCheckBox.setChecked(True)
@@ -180,7 +180,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.ipAddressLineEdit.setEnabled(False)
             self.portLineEdit.setEnabled(False)
 
-        starinetConnector_address = self.application_conf.get('StarinetConnector', 'address')
+        starinetConnector_address = self.application_conf.get('StarinetRelay', 'address')
         self.ipAddressLineEdit.setText(starinetConnector_address)
         self.ipAddressLineEdit.setToolTip('IPv4 Address only IPv6 not supported.')
         ipAddressLineEditRegexp = QtCore.QRegExp(config_utilities.starinet_ip)
@@ -189,7 +189,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.ipAddressLineEdit.textChanged.connect(self.parameter_check_state)
         self.ipAddressLineEdit.textChanged.emit(self.ipAddressLineEdit.text())
 
-        starinetConnector_port = self.application_conf.get('StarinetConnector', 'port')
+        starinetConnector_port = self.application_conf.get('StarinetRelay', 'port')
         self.portLineEdit.setText(starinetConnector_port)
         self.portLineEdit.setToolTip('Port can be in the range 1 - 65535, default is 1205')
         portLineEditRegexp = QtCore.QRegExp(config_utilities.starinet_port)
@@ -457,15 +457,15 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
     def save_triggered(self):
 
         # Application
-        self.application_conf.set('Application', 'save_path', self.savepathLineEdit.text())
+        self.application_conf.set('Application', 'instrument_data_path', self.savepathLineEdit.text())
 
-        self.application_conf.set('Application', 'instrument_name',
+        self.application_conf.set('Application', 'instrument_identifier',
                                   self.instrumentComboBox.itemText(self.instrumentComboBox.currentIndex()))
 
         if self.detectInstrumentPortCheckBox.checkState():
-            self.application_conf.set('Application', 'detect_staribus_port', 'True')
+            self.application_conf.set('Application', 'instrument_autodetect', 'True')
         else:
-            self.application_conf.set('Application', 'detect_staribus_port', 'False')
+            self.application_conf.set('Application', 'instrument_autodetect', 'False')
 
 
         # StaribusPort
@@ -479,12 +479,12 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # StarinetConnector
         if self.relayCheckBox.checkState():
-            self.application_conf.set('StarinetConnector', 'active', 'True')
+            self.application_conf.set('StarinetRelay', 'active', 'True')
         else:
-            self.application_conf.set('StarinetConnector', 'active', 'False')
+            self.application_conf.set('StarinetRelay', 'active', 'False')
 
-        self.application_conf.set('StarinetConnector', 'address', self.ipAddressLineEdit.text())
-        self.application_conf.set('StarinetConnector', 'port', self.portLineEdit.text())
+        self.application_conf.set('StarinetRelay', 'address', self.ipAddressLineEdit.text())
+        self.application_conf.set('StarinetRelay', 'port', self.portLineEdit.text())
 
         # ObservatoryMetadata
         self.application_conf.set('ObservatoryMetadata', 'name', self.OyNameLineEdit.text())
@@ -519,7 +519,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             pass
         else:
             self.savepathLineEdit.setText(file)
-
 
     def exit_triggered(self):
         self.close()
