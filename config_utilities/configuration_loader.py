@@ -24,6 +24,12 @@ from os import path, makedirs
 
 class ConfigTool:
     def __init__(self):
+        '''
+        :return: ConfigTool Instance.
+        :raises: FileNotFoundError, OSError,
+
+            gives access to configuration file home and name via config_home
+        '''
         # Some basic attributes.
 
         self.config_file = 'starbaseMini.conf'
@@ -33,8 +39,7 @@ class ConfigTool:
         home = path.expanduser("~")
 
         if not path.isdir(home):
-            print("Fatal error unable to detect user home!!\nContact developer for help.")
-            sys.exit(1)
+            raise FileNotFoundError("Fatal error unable to detect user home!!\nContact developer for help.")
 
         if sys.platform.startswith('win32'):
             home += '\\AppData\\Local\\StarbaseMini\\'
@@ -45,20 +50,18 @@ class ConfigTool:
             try:
                 makedirs(home)
             except OSError as msg:
-                print("Unable to create missing configuration folder - ", home)
-                print("Contact developer or manually create missing folder.")
-                sys.exit(1)
+                raise OSError(msg)
             else:
-                print("Created configuration home - ", home)
                 self.config_home = home
         else:
             self.config_home = home
 
         self.conf_file = self.config_home + self.config_file
 
-        self.check_conf_exists()
-
     def check_conf_exists(self):
+        '''
+        :raises: IOError in the event it can't find or write to configuration file.
+        '''
         
         self.conf_file = self.config_home + self.config_file
 
@@ -66,8 +69,7 @@ class ConfigTool:
             try:
                 open(self.conf_file, 'a').close()
             except IOError as msg:
-                print('Fatal error unable to create config file -', msg)
-                sys.exit(1)
+                raise IOError(msg)
             else:
                 self.config.read(self.conf_file)
 
@@ -146,8 +148,7 @@ class ConfigTool:
                         self.config.write(conffile)
                         conffile.close()
                 except IOError as msg:
-                    print('Fatal error unable to write configuration file - ', msg)
-                    sys.exit(1)
+                    raise IOError(msg)
 
     def get(self, section, option):
 
