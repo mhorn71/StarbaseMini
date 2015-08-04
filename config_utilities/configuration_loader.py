@@ -88,7 +88,7 @@ class ConfigTool:
                 # Add StarinetConnector section.
                 self.config.add_section('StarinetRelay')
                 self.config.set('StarinetRelay', 'active', 'False')
-                self.config.set('StarinetRelay', 'address', '')
+                self.config.set('StarinetRelay', 'address', '0.0.0.0')
                 self.config.set('StarinetRelay', 'port', '1205')
 
                 # Add ObservatoryMetadata section.
