@@ -142,14 +142,14 @@ class Main(QtGui.QMainWindow):
                         self.logger.warning('Staribus instrument not found for address %s' %
                                             self.instrument.instrument_staribus_address)
                         instrument_autodetect_boolean = False
-                    elif type(instrument_port) is list:
+                    elif len(instrument_port) > 1:
                         self.logger.warning('Multiple Staribus instruments found defaulting to first.')
                         self.logger.info('Setting serial port to %s' % instrument_port[0])
                         serial_port = instrument_port[0]
                         instrument_autodetect_boolean = True
                     else:
                         self.logger.info('Setting serial port to %s' % instrument_port)
-                        serial_port = instrument_port
+                        serial_port = instrument_port[0]
                         instrument_autodetect_boolean = True
 
             if instrument_autodetect_boolean is True:
@@ -160,7 +160,7 @@ class Main(QtGui.QMainWindow):
                     print('Fatal Error Unable to set serial port : %s exiting.' % msg)
                     sys.exit(1)
 
-
+        # Initialise Starinet relay.
 
         # Style sheets
         stylebool = False
