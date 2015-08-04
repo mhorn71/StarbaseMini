@@ -36,6 +36,7 @@ import xml_utilities
 import config_utilities
 import starinet_connector
 import futurlec
+import instument_builder
 
 version = '0.0.2'
 
@@ -193,11 +194,14 @@ class Main(QtGui.QMainWindow):
         # Initialise Futurlec Baudrate tool
         self.futurlec_baudrate_tool = futurlec.FuturlecBaudrate()
 
+        # Initialise instrumentBuilder
+        self.instrumentBuilder = instument_builder.InstrumentBuilder()
+
         # Menu items
         self.logger.debug('Setting menu item triggers.')
-        # self.ui.actionExit.triggered.connect(self.exit)
-        # self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
-        # self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
+        self.ui.actionExit.triggered.connect(self.exit_triggered)
+        self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
+        self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
         self.ui.actionControllerEditor.triggered.connect(self.futurlec_baudrate_tool_triggered)
         # self.ui.actionManual.triggered.connect(self.help_manual_triggered)
         # self.ui.actionAbout.triggered.connect(self.help_about_triggered)
@@ -206,6 +210,9 @@ class Main(QtGui.QMainWindow):
         self.ui.executeButton.setEnabled(False)
         self.ui.commandParameter.setEnabled(False)
         self.ui.choicesComboBox.setEnabled(False)
+
+        # Button connectors
+        self.ui.executeButton.clicked.connect(self.execute_triggered)
 
         # Module, Command and Choices ComboBox Triggers.
         self.ui.moduleCombobox.currentIndexChanged.connect(self.populate_ui_command)
@@ -494,9 +501,38 @@ class Main(QtGui.QMainWindow):
     # Menu trigger methods.
     # ----------------------------------------
 
+    def configuration_triggered(self):
+        self.logger.info('Calling configuration tool.')
+        self.configurationManager.exec_()
+
     def futurlec_baudrate_tool_triggered(self):
         self.logger.debug('Calling futurlec baudrate configuration tool.')
         self.futurlec_baudrate_tool.exec_()
+
+    def instrument_builder_triggered(self):
+        self.logger.info('Calling instrument builder.')
+        self.instrumentBuilder.exec_()
+
+    def execute_triggered(self):
+        print(self.ui.commandCombobox.currentText())
+
+    def exit_triggered(self):
+        # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
+        if self.saved_data_state is False:
+            message = 'Are you sure you want to quit?'
+        else:
+            message = 'WARNING:  You have unsaved data.\nAre you sure you want to quit?'
+
+        reply = QtGui.QMessageBox.question(self, 'Message',
+            message, QtGui.QMessageBox.Yes |
+            QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+
+        if reply == QtGui.QMessageBox.Yes:
+            self.logger.info('Client exit')
+            sys.exit(0)
+
+    # todo Add UI Status bar update method. Move Status bar from QLineEdit to QTextEdit
+
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
