@@ -55,7 +55,7 @@ class Instruments:
         else:
             return tmp_names
 
-    def get_file(self, instrument_name):
+    def get_filename(self, instrument_name):
         '''
         get the xml file name for the instrument name supplied.
         :param instrument_name:
