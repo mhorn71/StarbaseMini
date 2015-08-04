@@ -88,7 +88,7 @@ class ConfigTool:
                 # Add StarinetConnector section.
                 self.config.add_section('StarinetRelay')
                 self.config.set('StarinetRelay', 'active', 'False')
-                self.config.set('StarinetRelay', 'address', '192.168.1.10')
+                self.config.set('StarinetRelay', 'address', '')
                 self.config.set('StarinetRelay', 'port', '1205')
 
                 # Add ObservatoryMetadata section.
@@ -170,7 +170,10 @@ class ConfigTool:
         except configparser.NoOptionError as msg:
             raise ValueError(msg)
         else:
-            return get_response
+            if len(get_response) == 0:
+                return None
+            else:
+                return get_response
 
     def set(self, section, option, value):
 
