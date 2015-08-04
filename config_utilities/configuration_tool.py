@@ -87,7 +87,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         loglevel = self.application_conf.get('logger_root', 'level')
 
         # Data save path show blank if set to None.
-        if len(data_save_path) == 0:
+        if data_save_path is None:
             self.savepathLineEdit.setText('Warning: Please set path for exported data.')
         else:
             self.savepathLineEdit.setText(data_save_path)
