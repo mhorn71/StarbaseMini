@@ -177,6 +177,7 @@ class Main(QtGui.QMainWindow):
         elif starinet_relay_boolean =='True':
             if serial_port is None:
                 # todo UI status message.
+                self.disable_all()
                 self.logger.critical('Starinet relay cannot initialise as serial port isn\'t set.')
             else:
                 # todo UI status message.
@@ -184,6 +185,22 @@ class Main(QtGui.QMainWindow):
                 starinet_connector.StarinetConnectorStart(starinet_address, starinet_port, serial_port, serial_baudrate,
                                                           serial_port_timeout)
                 self.logger.info('Starinet relay initialised.')
+
+        # Initialise configurationManager
+        self.configurationManager = config_utilities.ConfigManager()
+
+        # Disable Parameter Entry, Choices Combobox and Execute Button
+        self.ui.executeButton.setEnabled(False)
+        self.ui.commandParameter.setEnabled(False)
+        self.ui.choicesComboBox.setEnabled(False)
+
+        # Module, Command and Choices ComboBox Triggers.
+        self.ui.moduleCombobox.currentIndexChanged.connect(self.populate_ui_command)
+        self.ui.commandCombobox.currentIndexChanged.connect(self.command_parameter_populate)
+
+        # Parameter entry emit and connect signals
+        self.ui.commandParameter.textChanged.connect(self.parameter_check_state)
+        self.ui.commandParameter.textChanged.emit(self.ui.commandParameter.text())
 
         # Style sheets
         style_boolean = False
@@ -204,6 +221,248 @@ class Main(QtGui.QMainWindow):
 
         # Base attributes.
         self.saved_data_state = False
+
+        # Fire populate_ui_module for the first time.
+        self.populate_ui_module()
+
+        # Initialise Chart Control Panel
+        self.chart_control_panel_populate()
+
+    # ----------------------------------------
+    # For here on is the UI populate methods.
+    # ----------------------------------------
+
+    def populate_ui_module(self):
+        # populate module combobox.
+        self.logger.debug('Populating module combobox')
+
+        index = 0
+
+        for plugin in self.instrument.module_list:
+            self.logger.debug('Populate module combobox with : %s' % str(plugin))
+            self.ui.moduleCombobox.addItem(plugin[0], plugin[2])
+            self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
+
+            index += 1
+
+    def populate_ui_command(self):
+        self.logger.debug('Populating command combobox.')
+        plugin_index = self.ui.moduleCombobox.currentIndex()
+
+        self.ui.commandCombobox.clear()
+
+        index = 0
+
+        for cmd in self.instrument.command_list[plugin_index]:
+            self.logger.debug('Populate command combobox with : %s' % str(cmd))
+            self.ui.commandCombobox.addItem(cmd)
+            self.ui.commandCombobox.setItemData(index, self.instrument.command_dict[cmd]['Description'],
+                                                QtCore.Qt.ToolTipRole)
+
+            index += 1
+
+    # Get the command parameters for the current set command.
+    def command_parameter_populate(self):
+
+        # Check if command has choices.
+        if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'] == 'None':
+            self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
+            self.ui.choicesComboBox.clear()
+            self.ui.choicesComboBox.setEnabled(False)
+            self.ui.executeButton.setEnabled(True)
+        else:
+            self.ui.choicesComboBox.clear()
+            self.ui.choicesComboBox.setEnabled(True)
+            self.ui.executeButton.setEnabled(True)
+
+            # Split the choices up into list.
+            choices = \
+                self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'].split(',')
+            self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :', str(choices))
+            self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
+
+            # Add choices tool tips to combo box.
+            for i in range(len(choices)):
+                self.ui.choicesComboBox.setItemData(i,
+                                                    self.instrument.command_dict[self.ui.commandCombobox.currentText()]
+                                                    ['Parameters']['Tooltip'], QtCore.Qt.ToolTipRole)
+
+        # Check if command has parameters.
+        if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
+            self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
+            self.ui.commandParameter.clear()
+            self.ui.commandParameter.setEnabled(False)
+            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
+        else:
+            self.ui.commandParameter.setEnabled(True)
+            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+            self.ui.executeButton.setEnabled(False)
+            self.ui.commandParameter.setToolTip(self.instrument.command_dict[self.ui.commandCombobox.currentText()]
+                                                ['Parameters']['Tooltip'])
+            self.parameter_regex = \
+                self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex']
+
+            self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex :',
+                              self.parameter_regex)
+
+            regexp = QtCore.QRegExp(self.parameter_regex)
+            validator = QtGui.QRegExpValidator(regexp)
+            self.ui.commandParameter.setValidator(validator)
+
+    def chart_control_panel_populate(self):
+        numChannels = self.instrument.instrument_number_of_channels
+
+        self.ui.channel0Button.setEnabled(False)
+        self.ui.channel1Button.setEnabled(False)
+        self.ui.channel2Button.setEnabled(False)
+        self.ui.channel3Button.setEnabled(False)
+        self.ui.channel4Button.setEnabled(False)
+        self.ui.channel5Button.setEnabled(False)
+        self.ui.channel6Button.setEnabled(False)
+        self.ui.channel7Button.setEnabled(False)
+        self.ui.channel8Button.setEnabled(False)
+
+        if numChannels == '2':
+            self.ui.channel0Button.setText(self.instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.instrument.channel_names[1])
+            self.ui.channel2Button.setVisible(False)
+            self.ui.channel3Button.setVisible(False)
+            self.ui.channel4Button.setVisible(False)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+        elif numChannels == '3':
+            self.ui.channel0Button.setText(self.instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.instrument.channel_names[2])
+            self.ui.channel3Button.setVisible(False)
+            self.ui.channel4Button.setVisible(False)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+        elif numChannels == '4':
+            self.ui.channel0Button.setText(self.instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.instrument.channel_names[3])
+            self.ui.channel4Button.setVisible(False)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+        elif numChannels == '5':
+            self.ui.channel0Button.setText(self.instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.instrument.channel_names[4])
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+        elif numChannels == '6':
+            self.ui.channel0Button.setText(self.instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.instrument.channel_names[4])
+            self.ui.channel5Button.setText(self.instrument.channel_names[5])
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+        elif numChannels == '7':
+            self.ui.channel0Button.setText(self.instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.instrument.channel_names[4])
+            self.ui.channel5Button.setText(self.instrument.channel_names[5])
+            self.ui.channel6Button.setText(self.instrument.channel_names[6])
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+        elif numChannels == '8':
+            self.ui.channel0Button.setText(self.instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.instrument.channel_names[4])
+            self.ui.channel5Button.setText(self.instrument.channel_names[5])
+            self.ui.channel6Button.setText(self.instrument.channel_names[6])
+            self.ui.channel7Button.setText(self.instrument.channel_names[7])
+            self.ui.channel8Button.setVisible(False)
+        elif numChannels == '9':
+            self.ui.channel0Button.setText(self.instrument.channel_names[0])
+            self.ui.channel1Button.setText(self.instrument.channel_names[1])
+            self.ui.channel2Button.setText(self.instrument.channel_names[2])
+            self.ui.channel3Button.setText(self.instrument.channel_names[3])
+            self.ui.channel4Button.setText(self.instrument.channel_names[4])
+            self.ui.channel5Button.setText(self.instrument.channel_names[5])
+            self.ui.channel6Button.setText(self.instrument.channel_names[6])
+            self.ui.channel7Button.setText(self.instrument.channel_names[7])
+            self.ui.channel8Button.setText(self.instrument.channel_names[8])
+
+    # ----------------------------------------
+    # Parameter check state method.
+    # ----------------------------------------
+
+    def parameter_check_state(self, *args, **kwargs):
+
+        self.logger.debug('################ PARAMETER CHECK STATE ################')
+
+        # This bit is a bit of bodge as parameter check state will trigger when loading and raise
+        # AttributeError so we just ignore it, not ideal!
+
+        try:
+            sender = self.sender()
+            validator = sender.validator()
+            state = validator.validate(sender.text(), 0)[0]
+        except AttributeError:
+            pass
+
+        try:
+            if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
+
+                self.logger.debug('Command parameters regex is None setting parameter entry box to gray')
+                sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+
+                self.logger.debug('Enabling execute button')
+                self.ui.executeButton.setEnabled(True)
+
+            else:
+
+                self.ui.executeButton.setEnabled(False)
+
+                if state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) == 0:
+
+                    sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+
+                elif state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) > 0:
+
+                    color = '#c4df9b'  # green
+                    sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+                    self.ui.executeButton.setEnabled(True)
+
+                elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) == 0:
+
+                    sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+
+                elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) > 0:
+
+                    color = '#fff79a'  # yellow
+                    sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+
+                else:
+
+                    sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+        except KeyError:
+            self.logger.debug('Command parameters key error setting parameter entry box to gray')
+            sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+
+    # ----------------------------------------
+    # Disable ui controls method.
+    # ----------------------------------------
 
     def disable_all(self):
         self.logger.info('Disabling all UI input widgets.')
