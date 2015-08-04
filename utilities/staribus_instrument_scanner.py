@@ -127,6 +127,5 @@ def check_serial_port_staribus_instrument(address, ports, baudrate):
     if len(staribus_ports) == 0:
         return None
     elif len(staribus_ports) >= 1:
-        real_port = str(staribus_ports).strip('[\']')
-        return real_port
+        return staribus_ports
 
