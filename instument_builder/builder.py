@@ -24,7 +24,7 @@ from PyQt4 import QtGui
 
 from ui import Ui_InstrumentBuilderDialog
 
-logger = logging.getLogger('core.configTool')
+logger = logging.getLogger('instrument.builder')
 
 
 class InstrumentBuilder(QtGui.QDialog, Ui_InstrumentBuilderDialog):
