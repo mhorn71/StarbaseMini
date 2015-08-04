@@ -41,28 +41,30 @@ version = '0.0.1'
 class Main(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
+        # Initialise UI
+        QtGui.QMainWindow.__init__(self, parent)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+
         # Initialise configuration.
         try:
             self.config = config_utilities.ConfigTool()
-        except FileNotFoundError as msg:
-            print('Fatal FileNotFoundError : %s' % str(msg))
-            sys.exit(1)
-        except OSError as msg:
-            print('Fatal OSError : %s' % str(msg))
+        except (FileNotFoundError, OSError) as msg:
+            print('Fatal Error : %s exiting.' % str(msg))
             sys.exit(1)
 
         # Generate user configuration if it's missing.
         try:
             self.config.check_conf_exists()
         except IOError as msg:
-            print('Fatal IOError : %s' % str(msg))
+            print('Fatal IOError : %s exiting.' % str(msg))
             sys.exit(1)
 
-        # Get instrument name from configuration.
+        # Get instrument identifier.
         try:
-            self.instrument_name = self.config.get('Application', 'instrument_name')
+            self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
         except ValueError as msg:
-            print('Fatal ValueError : %s' % str(msg))
+            print('Fatal ValueError : %s exiting.' % str(msg))
 
         #  Load and initialise logging configuration from user configuration file.
         logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
@@ -73,44 +75,92 @@ class Main(QtGui.QMainWindow):
         try:
             instruments = 'instruments' + os.path.sep + 'instruments.xml'
             my_instruments = xml_utilities.Instruments(instruments)
-        except FileNotFoundError as msg:
+        except (FileNotFoundError, ValueError, LookupError) as msg:
             self.logger.critical('Unable to load instruments.xml %s' % str(msg))
-            print('Unable to load instruments.xml %s' % str(msg))
-            sys.exit(1)
-        except ValueError as msg:
-            self.logger.critical('Unable to load instruments.xml %s' % str(msg))
-            print('Unable to load instruments.xml %s' % str(msg))
-            sys.exit(1)
-        except LookupError as msg:
-            self.logger.critical('Unable to load instruments.xml %s' % str(msg))
-            print('Unable to load instruments.xml %s' % str(msg))
+            print('Unable to load instruments.xml %s exiting.' % str(msg))
             sys.exit(1)
         else:
             try:
-                file_name = my_instruments.get_file(self.instrument_name)
+                file_name = my_instruments.get_filename(self.instrument_identifier)
                 file_name = 'instruments' + os.path.sep + file_name
                 self.instrument = xml_utilities.Instrument(file_name)
-            except FileNotFoundError as msg:
+            except (FileNotFoundError, ValueError, LookupError) as msg:
                 self.logger.critical('Unable to load instrument xml %s' % str(msg))
-                print('Unable to load instrument xml %s' % str(msg))
-                sys.exit(1)
-            except ValueError as msg:
-                self.logger.critical('Unable to load instrument xml %s' % str(msg))
-                print('Unable to load instrument xml %s' % str(msg))
-                sys.exit(1)
-            except LookupError as msg:
-                self.logger.critical('Unable to load instrument xml %s' % str(msg))
-                print('Unable to load instrument xml %s' % str(msg))
+                print('Unable to load instrument xml %s exiting.' % str(msg))
                 sys.exit(1)
             else:
-                self.logger.info('Instrument XML loaded for %s', self.instrument_name)
+                self.logger.info('Instrument XML loaded for %s', self.instrument_identifier)
 
-        # Load Ui Components we need to do this before we check for connector or we won't be able to disable the UI
-        # components.
+        # Load application parameters.
+        try:
+            instrument_autodetect = self.config.get('Application', 'instrument_autodetect')
+            instrument_data_path = self.config.get('Application', 'instrument_data_path')
+            starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
+            starinet_address = self.config.get('StarinetRelay', 'address')
+            starinet_port = self.config.get('StarinetRelay', 'starinet_port')
+            serial_port = self.config.get('StaribusPort', 'staribus_port')
+            serial_baudrate = self.config.get('StaribusPort', 'baudrate')
+            serial_port_timeout = self.config.get('StaribusPort', 'timeout')
+        except ValueError as msg:
+            self.logger.critical('Configuration ValueError : %s' % str(msg))
+            print('Configuration ValueError : %s exiting.' % str(msg))
+            sys.exit(1)
 
-        QtGui.QMainWindow.__init__(self, parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        # Initialise instrument XML loader.
+        try:
+            instruments_xml = 'instruments' + os.path.sep + 'instruments.xml'
+            instruments = xml_utilities.Instruments(instruments_xml)
+        except (FileNotFoundError, AttributeError, IndexError) as msg:
+            self.logger.critical('Unable to load instruments.xml %s' % str(msg))
+            print('Unable to load instruments.xml %s exiting.' % str(msg))
+            sys.exit(1)
+        else:
+            try:
+                filename = instruments.get_filename(self.config.get('Application', 'instrument_identifier'))
+                filename = 'instruments' + os.path.sep + filename
+                self.instrument = xml_utilities.Instrument(filename)
+            except (FileNotFoundError, LookupError, ValueError) as msg:
+                self.logger.critical('Unable to load instrument xml %s' % str(msg))
+                print('Unable to load instrument xml %s exiting.' % str(msg))
+                sys.exit(1)
+
+        # Instrument autodetect initialisation.
+        if instrument_autodetect == 'True':
+            self.logger.info('Instrument autodetect is True.')
+            if self.instrument.instrument_staribus_address == 'None':
+                self.logger.warning('Instrument autodetect true however instrument appears to be Starinet so passing.')
+                instrument_autodetect_boolean = False
+            else:
+                ports = utilities.serial_port_scanner()
+                if ports is None:
+                    self.logger.warning('No serial ports found to scan for instrument.')
+                    instrument_autodetect_boolean = False
+                else:
+                    instrument_port = utilities.check_serial_port_staribus_instrument(
+                        self.instrument.instrument_staribus_address, ports, serial_baudrate)
+                    if instrument_port is None:
+                        self.logger.warning('Staribus instrument not found for address %s' %
+                                            self.instrument.instrument_staribus_address)
+                        instrument_autodetect_boolean = False
+                    elif type(instrument_port) is list:
+                        self.logger.warning('Multiple Staribus instruments found defaulting to first.')
+                        self.logger.info('Setting serial port to %s' % instrument_port[0])
+                        serial_port = instrument_port[0]
+                        instrument_autodetect_boolean = True
+                    else:
+                        self.logger.info('Setting serial port to %s' % instrument_port)
+                        serial_port = instrument_port
+                        instrument_autodetect_boolean = True
+
+            if instrument_autodetect_boolean is True:
+                try:
+                    self.config.set('StaribusPort', 'staribus_port', serial_port)
+                except (ValueError, IOError) as msg:
+                    self.logger.critical('Fatal Error Unable to set serial port : %s' % msg)
+                    print('Fatal Error Unable to set serial port : %s exiting.' % msg)
+                    sys.exit(1)
+
+
 
         # Style sheets
         stylebool = False
