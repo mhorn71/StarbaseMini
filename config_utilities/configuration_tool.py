@@ -182,7 +182,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         starinetConnector_address = self.application_conf.get('StarinetRelay', 'address')
         self.ipAddressLineEdit.setText(starinetConnector_address)
-        self.ipAddressLineEdit.setToolTip('IPv4 Address only IPv6 not supported.')
+        self.ipAddressLineEdit.setToolTip('IPv4 Address only IPv6 not supported.\n'
+                                          'Default 0.0.0.0 will bind to all IPv4 interfaces.')
         ipAddressLineEditRegexp = QtCore.QRegExp(config_utilities.starinet_ip)
         ipAddressLineEditValidator = QtGui.QRegExpValidator(ipAddressLineEditRegexp)
         self.ipAddressLineEdit.setValidator(ipAddressLineEditValidator)
