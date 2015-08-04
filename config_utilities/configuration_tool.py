@@ -133,7 +133,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
                                                       '\nNote : The configured instrument must be attached.')
 
         # Set serial port name in entry box.
-        port = self.application_conf.get('StaribusPort', 'port')
+        port = self.application_conf.get('StaribusPort', 'staribus_port')
         self.serialPortLineEdit.setText(port)
         serialPortLineEditRegexp = QtCore.QRegExp(config_utilities.staribus_port)
         serialPortLineEditValidator = QtGui.QRegExpValidator(serialPortLineEditRegexp)
@@ -189,7 +189,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.ipAddressLineEdit.textChanged.connect(self.parameter_check_state)
         self.ipAddressLineEdit.textChanged.emit(self.ipAddressLineEdit.text())
 
-        starinetConnector_port = self.application_conf.get('StarinetRelay', 'port')
+        starinetConnector_port = self.application_conf.get('StarinetRelay', 'starinet_port')
         self.portLineEdit.setText(starinetConnector_port)
         self.portLineEdit.setToolTip('Port can be in the range 1 - 65535, default is 1205')
         portLineEditRegexp = QtCore.QRegExp(config_utilities.starinet_port)
@@ -469,7 +469,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
 
         # StaribusPort
-        self.application_conf.set('StaribusPort', 'port', self.serialPortLineEdit.text())
+        self.application_conf.set('StaribusPort', 'staribus_port', self.serialPortLineEdit.text())
 
         self.application_conf.set('StaribusPort', 'baudrate',
                                   self.baudrateComboBox.itemText(self.baudrateComboBox.currentIndex()))
@@ -484,7 +484,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.application_conf.set('StarinetRelay', 'active', 'False')
 
         self.application_conf.set('StarinetRelay', 'address', self.ipAddressLineEdit.text())
-        self.application_conf.set('StarinetRelay', 'port', self.portLineEdit.text())
+        self.application_conf.set('StarinetRelay', 'starinet_port', self.portLineEdit.text())
 
         # ObservatoryMetadata
         self.application_conf.set('ObservatoryMetadata', 'name', self.OyNameLineEdit.text())

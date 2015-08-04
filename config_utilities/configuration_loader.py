@@ -81,7 +81,7 @@ class ConfigTool:
 
                 # Add Staribus Port section
                 self.config.add_section('StaribusPort')
-                self.config.set('StaribusPort', 'port', '')
+                self.config.set('StaribusPort', 'staribus_port', '')
                 self.config.set('StaribusPort', 'baudrate', '57600')
                 self.config.set('StaribusPort', 'timeout', '30')
 
@@ -89,7 +89,7 @@ class ConfigTool:
                 self.config.add_section('StarinetRelay')
                 self.config.set('StarinetRelay', 'active', 'False')
                 self.config.set('StarinetRelay', 'address', '0.0.0.0')
-                self.config.set('StarinetRelay', 'port', '1205')
+                self.config.set('StarinetRelay', 'starinet_port', '1205')
 
                 # Add ObservatoryMetadata section.
                 self.config.add_section('ObservatoryMetadata')
