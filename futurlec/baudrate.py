@@ -24,27 +24,27 @@ from PyQt4 import QtGui
 
 from ui import Ui_FuturlecDialog
 
-logger = logging.getLogger('core.configTool')
+logger = logging.getLogger('futurlec.baudrate')
 
 
-class Baudrate(QtGui.QDialog, Ui_FuturlecDialog):
+class FuturlecBaudrate(QtGui.QDialog, Ui_FuturlecDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
 
         # Style sheets
-        stylebool = False
+        style_boolean = False
 
         if sys.platform.startswith('darwin'):
             stylesheet = 'css/macStyle.css'
-            stylebool = True
+            style_boolean = True
         elif sys.platform.startswith('win32'):
             stylesheet = 'css/winStyle.css'
-            stylebool = True
+            style_boolean = True
         elif sys.platform.startswith('linux'):
             stylesheet = 'css/nixStyle.css'
-            stylebool = True
+            style_boolean = True
 
-        if stylebool:
+        if style_boolean:
             with open(stylesheet, 'r') as style:
                 self.setStyleSheet(style.read())

@@ -30,13 +30,14 @@ try:
 except ImportError:
     QString = str
 
-import utilities
 from ui import Ui_MainWindow
+import utilities
 import xml_utilities
 import config_utilities
 import starinet_connector
+import futurlec
 
-version = '0.0.1'
+version = '0.0.2'
 
 
 class Main(QtGui.QMainWindow):
@@ -188,6 +189,18 @@ class Main(QtGui.QMainWindow):
 
         # Initialise configurationManager
         self.configurationManager = config_utilities.ConfigManager()
+
+        # Initialise Futurlec Baudrate tool
+        self.futurlec_baudrate_tool = futurlec.FuturlecBaudrate()
+
+        # Menu items
+        self.logger.debug('Setting menu item triggers.')
+        # self.ui.actionExit.triggered.connect(self.exit)
+        # self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
+        # self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
+        self.ui.actionControllerEditor.triggered.connect(self.futurlec_baudrate_tool_triggered)
+        # self.ui.actionManual.triggered.connect(self.help_manual_triggered)
+        # self.ui.actionAbout.triggered.connect(self.help_about_triggered)
 
         # Disable Parameter Entry, Choices Combobox and Execute Button
         self.ui.executeButton.setEnabled(False)
@@ -477,6 +490,13 @@ class Main(QtGui.QMainWindow):
         self.ui.executeButton.setEnabled(False)
         self.logger.debug('Execute Button set False')
 
+    # ----------------------------------------
+    # Menu trigger methods.
+    # ----------------------------------------
+
+    def futurlec_baudrate_tool_triggered(self):
+        self.logger.debug('Calling futurlec baudrate configuration tool.')
+        self.futurlec_baudrate_tool.exec_()
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
