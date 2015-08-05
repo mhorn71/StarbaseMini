@@ -21,7 +21,6 @@ import sys
 import os
 import logging.config
 import logging
-import datetime
 
 from PyQt4 import QtGui, QtCore
 
@@ -39,7 +38,7 @@ import futurlec
 import instument_builder
 
 version = '0.0.2'
-
+                                                                                                                        
 
 class Main(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -204,6 +203,10 @@ class Main(QtGui.QMainWindow):
         self.command_parameter_trip = 0
         self.parameter_check_state_trip = 0
 
+        # Parameter / check state, regex parameter.  Added here so we don't get an error in Pycharm about defining
+        # outside scope.
+        self.parameter_regex = '^.*$'
+
         # Menu items
         self.logger.debug('Setting menu item triggers.')
         self.ui.actionExit.triggered.connect(self.exit_triggered)
@@ -327,15 +330,17 @@ class Main(QtGui.QMainWindow):
     
                 # Split the choices up into list.
                 choices = \
-                    self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'].split(',')
-                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :', str(choices))
+                    (self.instrument.command_dict[self.ui.commandCombobox.currentText()]
+                     ['Parameters']['Choices'].split(','))
+                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :',
+                                  str(choices))
                 self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
     
                 # Add choices tool tips to combo box.
                 for i in range(len(choices)):
-                    self.ui.choicesComboBox.setItemData(i,
-                                                        self.instrument.command_dict[self.ui.commandCombobox.currentText()]
-                                                        ['Parameters']['Tooltip'], QtCore.Qt.ToolTipRole)
+                    self.ui.choicesComboBox.setItemData(i, (
+                        self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Tooltip']),
+                                                        QtCore.Qt.ToolTipRole)
     
             # Check if command has parameters.
             if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
