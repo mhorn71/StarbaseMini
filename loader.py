@@ -481,15 +481,14 @@ class Main(QtGui.QMainWindow):
             self.ui.channel8Button.setText(self.instrument.channel_names[8])
         else:
             self.status_message('Error : Number of channels out of bounds.')
-            self.logger.warning('Index Error, Number of channels out of bounds.')
+            self.logger.warning('Index Error, Number of channels out of bounds. %s' %
+                                self.instrument.instrument_number_of_channels)
 
     # ----------------------------------------
     # Parameter check state method.
     # ----------------------------------------
 
     def parameter_check_state(self, *args, **kwargs):
-
-        self.logger.debug('################ PARAMETER CHECK STATE ################')
 
         # This bit is a bit of bodge as parameter check state will trigger when loading and raise
         # AttributeError so we just ignore it, not ideal!
@@ -503,45 +502,29 @@ class Main(QtGui.QMainWindow):
 
         try:
             if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
-
                 self.logger.debug('Command parameters regex is None setting parameter entry box to gray')
                 sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
-
                 self.logger.debug('Enabling execute button')
                 self.ui.executeButton.setEnabled(True)
-
             else:
-
                 self.ui.executeButton.setEnabled(False)
-
                 if state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) == 0:
-
                     sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-
                 elif state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) > 0:
-
                     color = '#c4df9b'  # green
                     sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
                     self.ui.executeButton.setEnabled(True)
-
                 elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) == 0:
-
                     sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-
                 elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) > 0:
-
                     color = '#fff79a'  # yellow
                     sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
                 else:
-
                     sender.setStyleSheet('QLineEdit { background-color: #f6989d')
         except KeyError:
             if self.parameter_check_state_trip == 0:
-                # todo logger warning.
                 pass
             else:
-                # todo UI status message and logger
                 self.logger.debug('Command parameters key error setting parameter entry box to gray')
                 sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
         else:
@@ -569,7 +552,7 @@ class Main(QtGui.QMainWindow):
     # ----------------------------------------
 
     def status_message(self, message):
-        message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' :: ' + message
+        message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' | ' + message
         self.ui.statusMessage.appendPlainText(message)
 
     # ----------------------------------------
@@ -605,8 +588,6 @@ class Main(QtGui.QMainWindow):
         if reply == QtGui.QMessageBox.Yes:
             self.logger.info('Client exit')
             sys.exit(0)
-
-    # todo Add UI Status bar update method. Move Status bar from QLineEdit to QTextEdit
 
 
 if __name__ == '__main__':
