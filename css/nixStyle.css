@@ -10,6 +10,10 @@ QGroupBox::title {
     padding: 0 3px 0 3px;
 }
 
+QPlainTextEdit {
+    background-color: '#FFFFE0';
+}
+
 QWidget#mplwindow {color:
     qlineargradient(spread:pad, x1:0.497872, y1:0, x2:0.485106, y2:1, stop:0 rgba(0, 67, 191, 255), stop:1 rgba(0, 0, 0, 255));
     background: qlineargradient( x1:0.497872, y1:0, x2:0.485106, y2:1, stop:0 #000, stop:1 #0043BF);
