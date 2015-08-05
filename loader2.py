@@ -196,6 +196,13 @@ class Main(QtGui.QMainWindow):
 
         # Initialise instrumentBuilder
         self.instrumentBuilder = instument_builder.InstrumentBuilder()
+        
+        # Trip counters, these are so we ignore dict KeyError's when first populating which seems to differ
+        # from one platform to another and I have no idea why.  Answers on a postcard please. ;-))
+        self.ui_module_trip = 0
+        self.ui_command_trip = 0
+        self.command_parameter_trip = 0
+        self.parameter_check_state_trip = 0
 
         # Menu items
         self.logger.debug('Setting menu item triggers.')
@@ -253,82 +260,114 @@ class Main(QtGui.QMainWindow):
     # ----------------------------------------
 
     def populate_ui_module(self):
-        # populate module combobox.
-        self.logger.debug('Populating module combobox')
-
-        index = 0
-
-        for plugin in self.instrument.module_list:
-            self.logger.debug('Populate module combobox with : %s' % str(plugin))
-            self.ui.moduleCombobox.addItem(plugin[0], plugin[2])
-            self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
-
-            index += 1
+        self.ui_module_trip = 0
+        try:
+            # populate module combobox.
+            self.logger.debug('Populating module combobox')
+    
+            index = 0
+    
+            for plugin in self.instrument.module_list:
+                self.logger.debug('Populate module combobox with : %s' % str(plugin))
+                self.ui.moduleCombobox.addItem(plugin[0], plugin[2])
+                self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
+    
+                index += 1
+        except KeyError:
+            if self.ui_module_trip == 0:
+                # todo logger warning.
+                print('First Run ignore KeyError')
+            else:
+                # todo UI status message and logger.
+                print('This is possibly a real KeyError')
+        else:
+            self.ui_module_trip += 1
 
     def populate_ui_command(self):
-        self.logger.debug('Populating command combobox.')
-        plugin_index = self.ui.moduleCombobox.currentIndex()
-
-        self.ui.commandCombobox.clear()
-
-        index = 0
-
-        for cmd in self.instrument.command_list[plugin_index]:
-            self.logger.debug('Populate command combobox with : %s' % str(cmd))
-            self.ui.commandCombobox.addItem(cmd)
-            self.ui.commandCombobox.setItemData(index, self.instrument.command_dict[cmd]['Description'],
-                                                QtCore.Qt.ToolTipRole)
-
-            index += 1
-
+        self.ui_command_trip = 0
+        try:
+            self.logger.debug('Populating command combobox.')
+            plugin_index = self.ui.moduleCombobox.currentIndex()
+    
+            self.ui.commandCombobox.clear()
+    
+            index = 0
+    
+            for cmd in self.instrument.command_list[plugin_index]:
+                self.logger.debug('Populate command combobox with : %s' % str(cmd))
+                self.ui.commandCombobox.addItem(cmd)
+                self.ui.commandCombobox.setItemData(index, self.instrument.command_dict[cmd]['Description'],
+                                                    QtCore.Qt.ToolTipRole)
+    
+                index += 1
+        except KeyError:
+            if self.ui_command_trip == 0:
+                # todo logger warning.
+                print('First Run ignore KeyError')
+            else:
+                # todo UI status message and logger.
+                print('This is possibly a real KeyError')
+        else:
+            self.ui_command_trip += 1
+            
     # Get the command parameters for the current set command.
     def command_parameter_populate(self):
-
-        # Check if command has choices.
-        if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'] == 'None':
-            self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
-            self.ui.choicesComboBox.clear()
-            self.ui.choicesComboBox.setEnabled(False)
-            self.ui.executeButton.setEnabled(True)
+        self.command_parameter_trip = 0
+        try:
+            # Check if command has choices.
+            if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'] == 'None':
+                self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
+                self.ui.choicesComboBox.clear()
+                self.ui.choicesComboBox.setEnabled(False)
+                self.ui.executeButton.setEnabled(True)
+            else:
+                self.ui.choicesComboBox.clear()
+                self.ui.choicesComboBox.setEnabled(True)
+                self.ui.executeButton.setEnabled(True)
+    
+                # Split the choices up into list.
+                choices = \
+                    self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'].split(',')
+                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :', str(choices))
+                self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
+    
+                # Add choices tool tips to combo box.
+                for i in range(len(choices)):
+                    self.ui.choicesComboBox.setItemData(i,
+                                                        self.instrument.command_dict[self.ui.commandCombobox.currentText()]
+                                                        ['Parameters']['Tooltip'], QtCore.Qt.ToolTipRole)
+    
+            # Check if command has parameters.
+            if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
+                self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
+                self.ui.commandParameter.clear()
+                self.ui.commandParameter.setEnabled(False)
+                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
+            else:
+                self.ui.commandParameter.setEnabled(True)
+                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+                self.ui.executeButton.setEnabled(False)
+                self.ui.commandParameter.setToolTip(self.instrument.command_dict[self.ui.commandCombobox.currentText()]
+                                                    ['Parameters']['Tooltip'])
+                self.parameter_regex = \
+                    self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex']
+    
+                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex :',
+                                  self.parameter_regex)
+    
+                regexp = QtCore.QRegExp(self.parameter_regex)
+                validator = QtGui.QRegExpValidator(regexp)
+                self.ui.commandParameter.setValidator(validator)
+        except KeyError:
+            if self.command_parameter_trip == 0:
+                # todo logger warning.
+                print('First Run ignore KeyError')
+            else:
+                # todo UI status message and logger.
+                print('This is possibly a real KeyError')
         else:
-            self.ui.choicesComboBox.clear()
-            self.ui.choicesComboBox.setEnabled(True)
-            self.ui.executeButton.setEnabled(True)
-
-            # Split the choices up into list.
-            choices = \
-                self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'].split(',')
-            self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :', str(choices))
-            self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
-
-            # Add choices tool tips to combo box.
-            for i in range(len(choices)):
-                self.ui.choicesComboBox.setItemData(i,
-                                                    self.instrument.command_dict[self.ui.commandCombobox.currentText()]
-                                                    ['Parameters']['Tooltip'], QtCore.Qt.ToolTipRole)
-
-        # Check if command has parameters.
-        if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
-            self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
-            self.ui.commandParameter.clear()
-            self.ui.commandParameter.setEnabled(False)
-            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
-        else:
-            self.ui.commandParameter.setEnabled(True)
-            self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-            self.ui.executeButton.setEnabled(False)
-            self.ui.commandParameter.setToolTip(self.instrument.command_dict[self.ui.commandCombobox.currentText()]
-                                                ['Parameters']['Tooltip'])
-            self.parameter_regex = \
-                self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex']
-
-            self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex :',
-                              self.parameter_regex)
-
-            regexp = QtCore.QRegExp(self.parameter_regex)
-            validator = QtGui.QRegExpValidator(regexp)
-            self.ui.commandParameter.setValidator(validator)
-
+            self.command_parameter_trip += 1
+            
     def chart_control_panel_populate(self):
         numChannels = self.instrument.instrument_number_of_channels
 
@@ -477,8 +516,15 @@ class Main(QtGui.QMainWindow):
 
                     sender.setStyleSheet('QLineEdit { background-color: #f6989d')
         except KeyError:
-            self.logger.debug('Command parameters key error setting parameter entry box to gray')
-            sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+            if self.parameter_check_state_trip == 0:
+                # todo logger warning.
+                pass
+            else:
+                # todo UI status message and logger
+                self.logger.debug('Command parameters key error setting parameter entry box to gray')
+                sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+        else:
+            self.parameter_check_state_trip += 1
 
     # ----------------------------------------
     # Disable ui controls method.
