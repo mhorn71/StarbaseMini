@@ -21,6 +21,7 @@ import sys
 import os
 import logging.config
 import logging
+import datetime
 
 from PyQt4 import QtGui, QtCore
 
@@ -48,29 +49,29 @@ class Main(QtGui.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # Set QPlainTextEdit read only.
+        self.ui.statusMessage.setReadOnly(True)
+
         # Initialise configuration.
         try:
             self.config = config_utilities.ConfigTool()
         except (FileNotFoundError, OSError) as msg:
-            print('Fatal Error : %s exiting.' % str(msg))
-            # todo remove sys.exit and add UI status message.
-            sys.exit(1)
+            msg = ('ERROR : Configuration Tool : %s' % str(msg))
+            self.status_message(msg)
 
         # Generate user configuration if it's missing.
         try:
             self.config.check_conf_exists()
         except IOError as msg:
-            print('Fatal IOError : %s exiting.' % str(msg))
-            # todo remove sys.exit and add UI status message.
-            sys.exit(1)
+            msg = ('ERROR : Configuration IOError : %s' % str(msg))
+            self.status_message(msg)
 
         # Get instrument identifier.
         try:
             self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
         except ValueError as msg:
-            print('Fatal ValueError : %s exiting.' % str(msg))
-            # todo remove sys.exit and add UI status message.
-            sys.exit(1)
+            msg = ('ERROR : Instrument Identifier ValueError : %s' % str(msg))
+            self.status_message(msg)
 
         #  Load and initialise logging configuration from user configuration file.
         logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
@@ -83,9 +84,8 @@ class Main(QtGui.QMainWindow):
             my_instruments = xml_utilities.Instruments(instruments)
         except (FileNotFoundError, ValueError, LookupError) as msg:
             self.logger.critical('Unable to load instruments.xml %s' % str(msg))
-            print('Unable to load instruments.xml %s exiting.' % str(msg))
-            # todo remove sys.exit and add UI status message.
-            sys.exit(1)
+            msg = ('ERROR : Unable to load instruments.xml %s exiting.' % str(msg))
+            self.status_message(msg)
         else:
             try:
                 filename = my_instruments.get_filename(self.instrument_identifier)
@@ -93,9 +93,8 @@ class Main(QtGui.QMainWindow):
                 self.instrument = xml_utilities.Instrument(filename)
             except (FileNotFoundError, ValueError, LookupError) as msg:
                 self.logger.critical('Unable to load instrument xml %s' % str(msg))
-                print('Unable to load instrument xml %s exiting.' % str(msg))
-                # todo remove sys.exit and add UI status message.
-                sys.exit(1)
+                msg = ('ERROR : Unable to load instrument xml %s exiting.' % str(msg))
+                self.status_message(msg)
             else:
                 self.logger.debug('Instrument XML found at : %s' % filename)
                 self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
@@ -112,9 +111,8 @@ class Main(QtGui.QMainWindow):
             serial_port_timeout = self.config.get('StaribusPort', 'timeout')
         except ValueError as msg:
             self.logger.critical('Configuration ValueError : %s' % str(msg))
-            print('Configuration ValueError : %s exiting.' % str(msg))
-            # todo remove sys.exit and add UI status message.
-            sys.exit(1)
+            msg = ('ERROR : Configuration ValueError : %s exiting.' % str(msg))
+            self.status_message(msg)
         else:
             self.logger.debug('Initial parameter for instrument_autodetect : %s.' % instrument_autodetect)
             self.logger.debug('Initial parameter for instrument_data_path : %s.' % instrument_data_path)
@@ -128,13 +126,17 @@ class Main(QtGui.QMainWindow):
         # Instrument autodetect initialisation.
         if instrument_autodetect == 'True':
             self.logger.info('Instrument autodetect is True.')
+            self.status_message('INFO : Instrument autodetect is True.')
             if self.instrument.instrument_staribus_address == 'None':
                 self.logger.warning('Instrument autodetect true however instrument appears to be Starinet so passing.')
+                self.status_message('WARNING : Instrument autodetect true however instrument appears to be Starinet so '
+                                    'passing.')
                 instrument_autodetect_status_boolean = False
             else:
                 ports = utilities.serial_port_scanner()
                 if ports is None:
                     self.logger.warning('No serial ports found to scan for instrument.')
+                    self.status_message('WARNING : No serial ports found to scan for instrument.')
                     instrument_autodetect_status_boolean = False
                 else:
                     instrument_port = utilities.check_serial_port_staribus_instrument(
@@ -142,14 +144,20 @@ class Main(QtGui.QMainWindow):
                     if instrument_port is None:
                         self.logger.warning('Staribus instrument not found for address %s' %
                                             self.instrument.instrument_staribus_address)
+                        self.status_message('WARNING : %s instrument not found.' %
+                                            self.instrument.instrument_identifier)
                         instrument_autodetect_status_boolean = False
                     elif len(instrument_port) > 1:
                         self.logger.warning('Multiple Staribus instruments found defaulting to first.')
+                        self.status_message('WARNING : Multiple Staribus instruments found defaulting to first.')
                         self.logger.info('Setting serial port to %s' % instrument_port[0])
+                        self.status_message('INFO : Setting serial port to %s' % instrument_port[0])
                         serial_port = instrument_port[0]
                         instrument_autodetect_status_boolean = True
                     else:
-                        self.logger.info('Setting serial port to %s' % instrument_port)
+                        self.status_message('INFO : %s instrument found.' % self.instrument.instrument_identifier)
+                        self.logger.info('Setting serial port to %s' % instrument_port[0])
+                        self.status_message('INFO : Setting serial port to %s' % instrument_port[0])
                         serial_port = instrument_port[0]
                         instrument_autodetect_status_boolean = True
 
@@ -158,34 +166,39 @@ class Main(QtGui.QMainWindow):
                     self.config.set('StaribusPort', 'staribus_port', serial_port)
                 except (ValueError, IOError) as msg:
                     self.logger.critical('Fatal Error Unable to set serial port : %s' % msg)
-                    print('Fatal Error Unable to set serial port : %s exiting.' % msg)
-                    # todo remove sys.exit and add UI status message.
-                    sys.exit(1)
+                    msg = ('ERROR : Unable to set serial port : %s' % msg)
+                    self.status_message(msg)
 
         # Initialise Starinet relay.
         if starinet_relay_boolean == 'True' and instrument_autodetect == 'True':
             if instrument_autodetect_status_boolean is True:
-                # todo UI status message.
                 self.disable_all()
                 starinet_connector.StarinetConnectorStart(starinet_address, starinet_port, serial_port, serial_baudrate,
                                                           serial_port_timeout)
                 self.logger.info('Starinet relay initialised.')
+                msg = 'INFO : Starinet relay initialised.'
+                self.status_message(msg)
             else:
-                # todo UI status message
                 self.disable_all()
                 self.logger.warning('Starinet relay and Instrument autodetect are True but no Instrument found.')
+                msg = 'WARNING : Starinet relay and Instrument autodetect are True but no Instrument found.'
+                self.status_message(msg)
                 self.logger.critical('Starinet relay cannot initialise as serial port isn\'t set.')
+                msg = 'ERROR : Starinet relay cannot initialise as serial port isn\'t set.'
+                self.status_message(msg)
         elif starinet_relay_boolean =='True':
             if serial_port is None:
-                # todo UI status message.
                 self.disable_all()
                 self.logger.critical('Starinet relay cannot initialise as serial port isn\'t set.')
+                msg = 'ERROR : Starinet relay cannot initialise as serial port isn\'t set.'
+                self.status_message(msg)
             else:
-                # todo UI status message.
                 self.disable_all()
                 starinet_connector.StarinetConnectorStart(starinet_address, starinet_port, serial_port, serial_baudrate,
                                                           serial_port_timeout)
                 self.logger.info('Starinet relay initialised.')
+                msg = 'SUCCESS : Starinet relay initialised.'
+                self.status_message(msg)
 
         # Initialise configurationManager
         self.configurationManager = config_utilities.ConfigManager()
@@ -269,6 +282,9 @@ class Main(QtGui.QMainWindow):
         # Initialise Chart Control Panel
         self.chart_control_panel_populate()
 
+        # Initialisation Statup Finish Status Message.
+        self.status_message('INFO : Instrument Started.')
+
     # ----------------------------------------
     # For here on is the UI populate methods.
     # ----------------------------------------
@@ -287,13 +303,12 @@ class Main(QtGui.QMainWindow):
                 self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
     
                 index += 1
-        except KeyError:
+        except KeyError as msg:
             if self.ui_module_trip == 0:
-                # todo logger warning.
-                print('First Run ignore KeyError : populate_ui_module.')
+                self.logger.warning('First Run ignore KeyError : populate_ui_module : %s' % str(msg))
             else:
-                # todo UI status message and logger.
-                print('This is possibly a real KeyError')
+                self.logger.critical('Populate UI Module KeyError. %s' % str(msg))
+                self.status_message('ERROR : Populate UI Module KeyError. %s' % str(msg))
         else:
             self.ui_module_trip += 1
 
@@ -314,13 +329,12 @@ class Main(QtGui.QMainWindow):
                                                     QtCore.Qt.ToolTipRole)
     
                 index += 1
-        except KeyError:
+        except KeyError as msg:
             if self.ui_command_trip == 0:
-                # todo logger warning.
-                print('First Run ignore KeyError : populate_ui_command.')
+                self.logger.warning('First Run ignore KeyError : populate_ui_command : %s' % str(msg))
             else:
-                # todo UI status message and logger.
-                print('This is possibly a real KeyError')
+                self.logger.critical('Populate UI Command KeyError : %s' % str(msg))
+                self.status_message('ERROR : Populate UI Command KeyError : %s' % str(msg))
         else:
             self.ui_command_trip += 1
             
@@ -374,13 +388,12 @@ class Main(QtGui.QMainWindow):
                 regexp = QtCore.QRegExp(self.parameter_regex)
                 validator = QtGui.QRegExpValidator(regexp)
                 self.ui.commandParameter.setValidator(validator)
-        except KeyError:
+        except KeyError as msg:
             if self.command_parameter_trip == 0:
-                # todo logger warning.
-                print('First Run ignore KeyError : command populate parameters.')
+                self.logger.warning('First Run ignore KeyError : command populate parameters : %s' % str(msg))
             else:
-                # todo UI status message and logger.
-                print('This is possibly a real KeyError')
+                self.logger.critical('ERROR : Command Parameter Populate KeyError : %s' % str(msg))
+                self.status_message('ERROR : Command Parameter KeyError : %s' % str(msg))
         else:
             self.command_parameter_trip += 1
             
@@ -467,7 +480,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel7Button.setText(self.instrument.channel_names[7])
             self.ui.channel8Button.setText(self.instrument.channel_names[8])
         else:
-            # todo UI status message.
+            self.status_message('Error : Number of channels out of bounds.')
             self.logger.warning('Index Error, Number of channels out of bounds.')
 
     # ----------------------------------------
@@ -550,6 +563,14 @@ class Main(QtGui.QMainWindow):
         self.logger.debug('Choices Combo box set False')
         self.ui.executeButton.setEnabled(False)
         self.logger.debug('Execute Button set False')
+
+    # ----------------------------------------
+    # Status Message method.
+    # ----------------------------------------
+
+    def status_message(self, message):
+        message = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' :: ' + message
+        self.ui.statusMessage.appendPlainText(message)
 
     # ----------------------------------------
     # Menu trigger methods.
