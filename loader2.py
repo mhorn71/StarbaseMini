@@ -38,7 +38,7 @@ import futurlec
 import instument_builder
 
 version = '0.0.2'
-                                                                                                                        
+
 
 class Main(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -207,6 +207,17 @@ class Main(QtGui.QMainWindow):
         # outside scope.
         self.parameter_regex = '^.*$'
 
+        # Disable all channel buttons to start with.
+        self.ui.channel0Button.setEnabled(False)
+        self.ui.channel1Button.setEnabled(False)
+        self.ui.channel2Button.setEnabled(False)
+        self.ui.channel3Button.setEnabled(False)
+        self.ui.channel4Button.setEnabled(False)
+        self.ui.channel5Button.setEnabled(False)
+        self.ui.channel6Button.setEnabled(False)
+        self.ui.channel7Button.setEnabled(False)
+        self.ui.channel8Button.setEnabled(False)
+
         # Menu items
         self.logger.debug('Setting menu item triggers.')
         self.ui.actionExit.triggered.connect(self.exit_triggered)
@@ -279,7 +290,7 @@ class Main(QtGui.QMainWindow):
         except KeyError:
             if self.ui_module_trip == 0:
                 # todo logger warning.
-                print('First Run ignore KeyError')
+                print('First Run ignore KeyError : populate_ui_module.')
             else:
                 # todo UI status message and logger.
                 print('This is possibly a real KeyError')
@@ -306,7 +317,7 @@ class Main(QtGui.QMainWindow):
         except KeyError:
             if self.ui_command_trip == 0:
                 # todo logger warning.
-                print('First Run ignore KeyError')
+                print('First Run ignore KeyError : populate_ui_command.')
             else:
                 # todo UI status message and logger.
                 print('This is possibly a real KeyError')
@@ -366,7 +377,7 @@ class Main(QtGui.QMainWindow):
         except KeyError:
             if self.command_parameter_trip == 0:
                 # todo logger warning.
-                print('First Run ignore KeyError')
+                print('First Run ignore KeyError : command populate parameters.')
             else:
                 # todo UI status message and logger.
                 print('This is possibly a real KeyError')
@@ -374,19 +385,8 @@ class Main(QtGui.QMainWindow):
             self.command_parameter_trip += 1
             
     def chart_control_panel_populate(self):
-        numChannels = self.instrument.instrument_number_of_channels
 
-        self.ui.channel0Button.setEnabled(False)
-        self.ui.channel1Button.setEnabled(False)
-        self.ui.channel2Button.setEnabled(False)
-        self.ui.channel3Button.setEnabled(False)
-        self.ui.channel4Button.setEnabled(False)
-        self.ui.channel5Button.setEnabled(False)
-        self.ui.channel6Button.setEnabled(False)
-        self.ui.channel7Button.setEnabled(False)
-        self.ui.channel8Button.setEnabled(False)
-
-        if numChannels == '2':
+        if self.instrument.instrument_number_of_channels == '2':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setVisible(False)
@@ -396,7 +396,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setVisible(False)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
-        elif numChannels == '3':
+        elif self.instrument.instrument_number_of_channels == '3':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
@@ -406,7 +406,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setVisible(False)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
-        elif numChannels == '4':
+        elif self.instrument.instrument_number_of_channels == '4':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
@@ -416,7 +416,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setVisible(False)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
-        elif numChannels == '5':
+        elif self.instrument.instrument_number_of_channels == '5':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
@@ -426,7 +426,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setVisible(False)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
-        elif numChannels == '6':
+        elif self.instrument.instrument_number_of_channels == '6':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
@@ -436,7 +436,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setVisible(False)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
-        elif numChannels == '7':
+        elif self.instrument.instrument_number_of_channels == '7':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
@@ -446,7 +446,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setText(self.instrument.channel_names[6])
             self.ui.channel7Button.setVisible(False)
             self.ui.channel8Button.setVisible(False)
-        elif numChannels == '8':
+        elif self.instrument.instrument_number_of_channels == '8':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
@@ -456,7 +456,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setText(self.instrument.channel_names[6])
             self.ui.channel7Button.setText(self.instrument.channel_names[7])
             self.ui.channel8Button.setVisible(False)
-        elif numChannels == '9':
+        elif self.instrument.instrument_number_of_channels == '9':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
@@ -466,6 +466,9 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setText(self.instrument.channel_names[6])
             self.ui.channel7Button.setText(self.instrument.channel_names[7])
             self.ui.channel8Button.setText(self.instrument.channel_names[8])
+        else:
+            # todo UI status message.
+            self.logger.warning('Index Error, Number of channels out of bounds.')
 
     # ----------------------------------------
     # Parameter check state method.
