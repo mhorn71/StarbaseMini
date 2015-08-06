@@ -117,7 +117,7 @@ class Instrument:
             # Check that we have both Starinet Address and Starinet Port set.
             if self.instrument_starinet_address != 'None' and self.instrument_starinet_port == 'None':
 
-                raise ValueError('Neither Staribus nor Starinet address set.')
+                raise ValueError('Either Starinet port or Starinet address not set set.')
 
             elif self.instrument_starinet_address == 'None' and self.instrument_starinet_port != 'None':
 
