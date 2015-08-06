@@ -17,6 +17,8 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
+import streams
+
 
 class CommandInterpreter:
     def __init__(self, parent, type):
@@ -30,20 +32,53 @@ class CommandInterpreter:
         self.parent = parent
         self.instrument = self.parent.instrument
 
+        self.ident = None
+
         if type == 'Staribus':
-            self.stream = None
+            self.stream = type
         elif type == 'Starinet':
-            self.stream = None
+            self.stream = type
         else:
             raise TypeError('Unrecognised Stream Type, should be Staribus or Starinet not : %s' % type)
 
     def process(self, ident, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter):
-        self.parent.status_message('Ident : %s' % ident)
-        self.parent.status_message('Base : %s' % base)
-        self.parent.status_message('Code : %s' % code)
-        self.parent.status_message('Variant : %s' % variant)
-        self.parent.status_message('Send to Port : %s' % send_to_port)
-        self.parent.status_message('Blocked data : %s' % blocked_data)
-        self.parent.status_message('Stepped data : %s' % stepped_data)
-        self.parent.status_message('Choice : %s' % choice)
-        self.parent.status_message('Parameter : %s' % parameter)
+
+        if blocked_data is None and stepped_data is None:
+            data = self.single(ident, base, code, variant, choice, parameter, send_to_port)
+        elif blocked_data is not None:
+            data = self.blocked(ident, base, code, variant, blocked_data, send_to_port)
+        elif stepped_data is not None:
+            data = self.stepped(ident, base, code, variant, stepped_data, send_to_port)
+        else:
+            data = 'PREMATURE_TERMINATION'
+
+        return data
+
+    def single(self, ident, base, code, variant, choice, parameter, send_to_port):
+
+        command = base + code + variant
+
+        if send_to_port == 'True':
+            if choice is not None:
+                message = command + '\x1F' + choice
+            elif parameter is not None:
+                message = command + '\x1F' + parameter
+            else:
+                message = command
+
+            if self.stream == 'Staribus':
+                data = streams.staribus(message)
+            else:
+                data = streams.starinet(message)
+        else:
+            self.parent.status_message('This command wasn\'t send to port')
+
+        return data
+
+    def blocked(self, ident, base, code, variant, blocked_data, send_to_port):
+        self.parent.status_message('blocked data command')
+        return 'Blocked Yo Yo'
+
+    def stepped(self, ident, base, code, variant, stepped_data, send_to_port):
+        self.parent.status_message('stepped data command')
+        return 'Stepped Yo Yo'
