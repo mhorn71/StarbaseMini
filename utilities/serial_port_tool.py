@@ -56,3 +56,17 @@ def serial_port_scanner():
         return None
     else:
         return result
+
+
+def check_serial_port(port):
+    '''
+    Checks to see if serial port can be opened.
+    :param port:
+    :return: True or False
+    '''
+    try:
+        s = serial.Serial(port)
+        s.close()
+        return True
+    except (OSError, serial.SerialException):
+        return False
