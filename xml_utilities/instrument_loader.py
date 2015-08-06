@@ -106,22 +106,22 @@ class Instrument:
             # Check that either StaribusAddress and StarinetAddress aren't both set if they are exit.
             if self.instrument_starinet_address != 'None' and self.instrument_staribus_address != 'None':
 
-                raise LookupError('Instrument XML has both Staribus and Starinet Defined. Please fix before running '
-                                  'software.')
+                raise LookupError('INVALID_XML : Instrument XML has both Staribus and Starinet Defined. Please fix '
+                                  'before running software.')
 
             elif self.instrument_starinet_address == 'None' and self.instrument_staribus_address == 'None':
 
-                raise ValueError('Instrument XML has neither Staribus nor Starinet Defined.'
+                raise ValueError('INVALID_XML : Instrument XML has neither Staribus nor Starinet Defined.'
                                  ' Please fix before running software.')
 
             # Check that we have both Starinet Address and Starinet Port set.
             if self.instrument_starinet_address != 'None' and self.instrument_starinet_port == 'None':
 
-                raise ValueError('Starinet port not set set.')
+                raise ValueError('INVALID_XML : Starinet port not set set.')
 
             elif self.instrument_starinet_address == 'None' and self.instrument_starinet_port != 'None':
 
-                raise ValueError('Starinet address not set.')
+                raise ValueError('INVALID_XML : Starinet address not set.')
 
             if self.instrument_starinet_address != 'None':
                 # Check for valid IPv4 Address.
@@ -130,16 +130,16 @@ class Instrument:
                     if utilities.check_starinet_port(self.instrument_starinet_port):
                         pass
                     else:
-                        raise ValueError('Starinet port %s out of range.' % self.instrument_starinet_port)
+                        raise ValueError('INVALID_XML : Starinet port %s out of range.' % self.instrument_starinet_port)
                 else:
-                    raise ValueError('Unable to parse Starinet address  %s' % self.instrument_starinet_address)
+                    raise ValueError('INVALID_XML : Unable to parse Starinet address  %s' % self.instrument_starinet_address)
 
             elif self.instrument_staribus_address != 'None':
                 # Check Staribus Address is in range (001 - 254)
                 if utilities.check_staribus_address(self.instrument_staribus_address):
                     pass
                 else:
-                    raise ValueError('Starbus Address out of range (001 - 255) currently set to %s' %
+                    raise ValueError('INVALID_XML : Starbus Address out of range (001 - 255) currently set to %s' %
                                      self.instrument_staribus_address)
 
             self.instrument_number_of_channels = self.xmldom.findtext('NumberOfChannels')
@@ -148,17 +148,17 @@ class Instrument:
             if re.match('^[2-9]$', self.instrument_number_of_channels):
                 pass
             else:
-                raise ValueError('Number of Channels out of range = %s' % self.instrument_number_of_channels)
+                raise ValueError('INVALID_XML : Number of Channels out of range = %s' % self.instrument_number_of_channels)
 
         except IndexError:
-            raise LookupError('Fatal Error - Unable to parse XML')
+            raise LookupError('INVALID_XML : Unable to parse XML')
         except AttributeError:
-            raise LookupError('Fatal Error - Unable to parse XML')
+            raise LookupError('INVALID_XML : Unable to parse XML')
 
         # First check we have plugins.
         core_match = False
         if len(self.xmldom.findall('Plugin')) == 0:
-            raise LookupError('Instrument plugins missing.')
+            raise LookupError('INVALID_XML : Instrument plugins missing.')
         else:
             # Next check the core plugin exists if not exit.
             for plugin in self.xmldom.iter('Plugin'):
@@ -168,7 +168,7 @@ class Instrument:
             if core_match:
                 pass
             else:
-                raise LookupError('Core plugin is missing!!')
+                raise LookupError('INVALID_XML : Core plugin is missing!!')
 
         for plugin in self.xmldom.iter('Plugin'):
 
