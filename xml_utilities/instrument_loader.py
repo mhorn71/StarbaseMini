@@ -130,16 +130,16 @@ class Instrument:
                     if utilities.check_starinet_port(self.instrument_starinet_port):
                         pass
                     else:
-                        raise ValueError('Unable to parse Starinet Port - %s', self.instrument_starinet_port)
+                        raise ValueError('Starinet port %s out of range.' % self.instrument_starinet_port)
                 else:
-                    raise ValueError('Unable to parse Starinet Address - %s', self.instrument_starinet_address)
+                    raise ValueError('Unable to parse Starinet address  %s' % self.instrument_starinet_address)
 
             elif self.instrument_staribus_address != 'None':
                 # Check Staribus Address is in range (001 - 254)
                 if utilities.check_staribus_address(self.instrument_staribus_address):
                     pass
                 else:
-                    raise ValueError('Starbus Address out of range (001 - 255) currently set to %s',
+                    raise ValueError('Starbus Address out of range (001 - 255) currently set to %s' %
                                      self.instrument_staribus_address)
 
             self.instrument_number_of_channels = self.xmldom.findtext('NumberOfChannels')
