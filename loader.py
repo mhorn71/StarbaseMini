@@ -129,6 +129,7 @@ class Main(QtGui.QMainWindow):
             except ValueError as msg:
                 self.logger.critical('Configuration ValueError : %s' % str(msg))
                 msg = ('ERROR : Configuration ValueError : %s exiting.' % str(msg))
+                fatal_error = True
                 self.status_message(msg)
             else:
                 self.logger.debug('Initial parameter for instrument_autodetect : %s.' % instrument_autodetect)
