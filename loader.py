@@ -226,11 +226,11 @@ class Main(QtGui.QMainWindow):
                 if starinet_relay_boolean == 'False':
                     if self.instrument.instrument_staribus_address == 'None':
                         self.logger.info('Initialising Command Interpreter for Starinet')
-                        self.command_interpreter = interpreter.CommandInterpreter('Starinet')
+                        self.command_interpreter = interpreter.CommandInterpreter(self, 'Starinet')
                     elif self.instrument.instrument_staribus_address != 'None':
                         if utilities.check_serial_port(self.config.get('StaribusPort', 'staribus_port')):
                             self.logger.info('Initialising Command Interpreter for Staribus')
-                            self.command_interpreter = interpreter.CommandInterpreter('Staribus')
+                            self.command_interpreter = interpreter.CommandInterpreter(self, 'Staribus')
                         else:
                             self.disable_all()
                             self.status_message('ERROR : Unable to open serial port - UI controls disabled.')
