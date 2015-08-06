@@ -19,12 +19,16 @@ __author__ = 'mark'
 
 
 class CommandInterpreter:
-    def __init__(self, type):
+    def __init__(self, parent, type):
         '''
         Initialise the CommandInterpreter with the stream type.
         :param type: Staribus or Starinet
         :raises: TypeError
         '''
+
+        # Parent object so we can set status messages for blocked and stepped commands.
+        self.parent = parent
+        self.instrument = self.parent.instrument
 
         if type == 'Staribus':
             self.stream = None
@@ -33,5 +37,13 @@ class CommandInterpreter:
         else:
             raise TypeError('Unrecognised Stream Type, should be Staribus or Starinet not : %s' % type)
 
-    def process(self):
-        pass
+    def process(self, ident, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter):
+        self.parent.status_message('Ident : %s' % ident)
+        self.parent.status_message('Base : %s' % base)
+        self.parent.status_message('Code : %s' % code)
+        self.parent.status_message('Variant : %s' % variant)
+        self.parent.status_message('Send to Port : %s' % send_to_port)
+        self.parent.status_message('Blocked data : %s' % blocked_data)
+        self.parent.status_message('Stepped data : %s' % stepped_data)
+        self.parent.status_message('Choice : %s' % choice)
+        self.parent.status_message('Parameter : %s' % parameter)

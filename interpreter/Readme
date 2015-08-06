@@ -1,2 +1,4 @@
 Core module defines the methods used by the commands.
 
+the interpreter need to needs to have access to the loader object to write status messages as well as access to the
+instrument object so we have access to the instrument dictionary.

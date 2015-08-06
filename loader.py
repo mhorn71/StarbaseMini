@@ -621,7 +621,41 @@ class Main(QtGui.QMainWindow):
         self.instrumentBuilder.exec_()
 
     def execute_triggered(self):
-        print(self.ui.commandCombobox.currentText())
+        ident = self.ui.commandCombobox.currentText()
+        base = self.instrument.command_dict[ident]['Base']
+        code = self.instrument.command_dict[ident]['Code']
+        variant = self.instrument.command_dict[ident]['Variant']
+        send_to_port = self.instrument.command_dict[ident]['SendToPort']
+
+        if self.instrument.command_dict[ident]['BlockedData'] == 'None':
+            blocked_data = None
+        else:
+            blocked_data = self.instrument.command_dict[ident]['BlockedData']
+
+        if self.instrument.command_dict[ident]['SteppedData'] == 'None':
+            stepped_data = None
+        else:
+            stepped_data = self.instrument.command_dict[ident]['SteppedData']
+
+        if self.instrument.command_dict[ident]['Parameters']['Choices'] == 'None':
+            choice = None
+        else:
+            choice = self.ui.choicesComboBox.currentText()
+
+            if choice == 'True':
+                choice = self.instrument.boolean_true
+            elif choice == 'False':
+                choice = self.instrument.boolean_false
+            else:
+                pass
+
+        if self.instrument.command_dict[ident]['Parameters']['Regex'] == 'None':
+            parameter = None
+        else:
+            parameter = self.ui.commandParameter.text()
+
+        self.command_interpreter.process(ident, base, code, variant, send_to_port, blocked_data, stepped_data, choice,
+                                         parameter)
 
     def exit_triggered(self):
         # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
