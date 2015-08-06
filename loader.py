@@ -102,7 +102,7 @@ class Main(QtGui.QMainWindow):
             except (FileNotFoundError, ValueError, LookupError) as msg:
                 fatal_error = True
                 self.logger.critical('Unable to load instruments.xml %s' % str(msg))
-                self.status_message(str(msg))
+                self.status_message('ERROR : ' + str(msg))
             else:
                 try:
                     filename = my_instruments.get_filename(self.instrument_identifier)
@@ -111,7 +111,7 @@ class Main(QtGui.QMainWindow):
                 except (FileNotFoundError, ValueError, LookupError) as msg:
                     self.logger.critical('Unable to load instrument xml %s' % str(msg))
                     fatal_error = True
-                    self.status_message(str(msg))
+                    self.status_message('ERROR : ' + str(msg))
                 else:
                     self.logger.debug('Instrument XML found at : %s' % filename)
                     self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
@@ -146,11 +146,9 @@ class Main(QtGui.QMainWindow):
                 self.logger.info('Instrument autodetect is True.')
                 self.status_message('INFO : Instrument autodetect is True.')
                 if self.instrument.instrument_staribus_address == 'None':
-                    self.logger.warning('Instrument autodetect true however instrument appears to be Starinet so '
-                                        'passing.')
+                    self.logger.warning('Instrument autodetect true however instrument appears to be Starinet.')
                     self.status_message('WARNING : Instrument autodetect true however instrument appears to be '
-                                        'Starinet so passing - UI controls disabled.')
-                    self.disable_all()
+                                        'Starinet so passing.')
                     instrument_autodetect_status_boolean = False
                 else:
                     ports = utilities.serial_port_scanner()
