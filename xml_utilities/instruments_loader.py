@@ -46,12 +46,12 @@ class Instruments:
             name = instrument.findtext('Name')
 
             if name is None:
-                raise AttributeError('Name tag missing.')
+                raise AttributeError('INVALID_XML')
             else:
                 tmp_names.append(name)
 
         if len(tmp_names) == 0:
-            raise IndexError('No names to return.')
+            raise IndexError('INVALID_XML')
         else:
             return tmp_names
 
@@ -68,7 +68,7 @@ class Instruments:
             if instrument.findtext('Name') == instrument_name:
                 return_name = instrument.findtext('File')
             else:
-                raise AttributeError('Instrument not found.')
+                raise AttributeError('INVALID_XML Instrument not found.')
 
             if return_name is None:
                 raise AttributeError('Instrument XML file not found.')
