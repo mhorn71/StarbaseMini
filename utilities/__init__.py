@@ -11,4 +11,4 @@ from utilities.serial_port_tool import serial_port_scanner
 from utilities.serial_port_tool import check_serial_port
 from utilities.staribus_instrument_scanner import check_serial_port_staribus_instrument
 from utilities.staribus_address import check_staribus_address
-import utilities.control_characters
+from utilities.control_characters import *
