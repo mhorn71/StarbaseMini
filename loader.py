@@ -658,9 +658,11 @@ class Main(QtGui.QMainWindow):
                                                     stepped_data, choice, parameter)
 
         if response[1] is None:
-            print('No Data')
-        else:
+            print('response 1 is none')
             self.status_message(response[0] + ' : ' + ident)
+        else:
+            print('response 1 has data')
+            self.status_message(response[0] + ' : ' + response[1] + ' : ' + ident)
 
     def exit_triggered(self):
         # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
