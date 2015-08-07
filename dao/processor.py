@@ -15,7 +15,7 @@ __author__ = 'mark'
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
+# along with StarbaseMini.  If not, see <http:#www.gnu.org/licenses/>.
 
 import utilities
 
@@ -24,13 +24,11 @@ def staribus(message):
     message_crc = utilities.create_crc(message)
     message = message + '\x1F' + message_crc
 
-    print(message)
-    return 'Staribus Message was received by processor'
+    return 'SUCCESS', 'Staribus Message was received by processor'
 
 
 def starinet(message):
     message_crc = utilities.create_crc(message)
     message = message + '\x1F' + message_crc
 
-    print(message)
-    return 'Starinet Message was received by processor'
+    return 'Starinet Message was received by processor', None

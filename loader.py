@@ -654,10 +654,13 @@ class Main(QtGui.QMainWindow):
         else:
             parameter = self.ui.commandParameter.text()
 
-        status = self.command_interpreter.process(ident, base, code, variant, send_to_port, blocked_data, stepped_data,
-                                                  choice, parameter)
+        response = self.command_interpreter.process(ident, base, code, variant, send_to_port, blocked_data,
+                                                    stepped_data, choice, parameter)
 
-        self.status_message(status + ' : ' + ident)
+        if response[1] is None:
+            print('No Data')
+        else:
+            self.status_message(response[0] + ' : ' + ident)
 
     def exit_triggered(self):
         # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:

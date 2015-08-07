@@ -17,7 +17,7 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
-import streams
+import dao
 
 
 class CommandInterpreter:
@@ -44,15 +44,15 @@ class CommandInterpreter:
     def process(self, ident, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter):
 
         if blocked_data is None and stepped_data is None:
-            data = self.single(ident, base, code, variant, choice, parameter, send_to_port)
+            response = self.single(ident, base, code, variant, choice, parameter, send_to_port)
         elif blocked_data is not None:
-            data = self.blocked(ident, base, code, variant, blocked_data, send_to_port)
+            response = self.blocked(ident, base, code, variant, blocked_data, send_to_port)
         elif stepped_data is not None:
-            data = self.stepped(ident, base, code, variant, stepped_data, send_to_port)
+            response = self.stepped(ident, base, code, variant, stepped_data, send_to_port)
         else:
-            data = 'PREMATURE_TERMINATION'
+            response = 'PREMATURE_TERMINATION', None
 
-        return data
+        return response
 
     def single(self, ident, base, code, variant, choice, parameter, send_to_port):
 
@@ -67,13 +67,13 @@ class CommandInterpreter:
                 message = command
 
             if self.stream == 'Staribus':
-                data = streams.staribus(message)
+                response = dao.staribus(message)
             else:
-                data = streams.starinet(message)
+                response = dao.starinet(message)
         else:
             self.parent.status_message('This command wasn\'t send to port')
 
-        return data
+        return response
 
     def blocked(self, ident, base, code, variant, blocked_data, send_to_port):
         self.parent.status_message('blocked data command')
