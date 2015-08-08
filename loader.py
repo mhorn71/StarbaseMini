@@ -146,7 +146,7 @@ class Main(QtGui.QMainWindow):
             if instrument_autodetect == 'True':
                 self.logger.info('Instrument autodetect is True.')
                 self.status_message('INFO : Instrument autodetect is True.')
-                if self.instrument.instrument_staribus_address == 'None':
+                if self.instrument.instrument_starinet_address != 'None':
                     self.logger.warning('Instrument autodetect true however instrument appears to be Starinet.')
                     self.status_message('WARNING : Instrument autodetect true however instrument appears to be '
                                         'Starinet so passing.')
@@ -621,6 +621,7 @@ class Main(QtGui.QMainWindow):
         self.instrumentBuilder.exec_()
 
     def execute_triggered(self):
+        addr = self.instrument.instrument_staribus_address
         ident = self.ui.commandCombobox.currentText()
         base = self.instrument.command_dict[ident]['Base']
         code = self.instrument.command_dict[ident]['Code']
@@ -654,14 +655,12 @@ class Main(QtGui.QMainWindow):
         else:
             parameter = self.ui.commandParameter.text()
 
-        response = self.command_interpreter.process(ident, base, code, variant, send_to_port, blocked_data,
+        response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                     stepped_data, choice, parameter)
 
         if response[1] is None:
-            print('response 1 is none')
             self.status_message(response[0] + ' : ' + ident)
         else:
-            print('response 1 has data')
             self.status_message(response[0] + ' : ' + response[1] + ' : ' + ident)
 
     def exit_triggered(self):
