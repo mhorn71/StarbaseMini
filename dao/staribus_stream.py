@@ -29,7 +29,7 @@ class StaribusStream:
     def __init__(self, serial_port, serial_baudrate, serial_timeout):
 
         # initialise the logger
-        self.logger = logging.getLogger('dao.staribus.stream')
+        self.logger = logging.getLogger('dao.StaribusStream')
 
         # initialise serial port
         try:

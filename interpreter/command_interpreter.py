@@ -46,7 +46,7 @@ class CommandInterpreter:
 
         try:
             self.dao_processor = dao.DaoProcessor(staribus_port, staribus_baudrate, staribus_timeout, starinet_address,
-                                                starinet_port, stream)
+                                                  starinet_port, stream)
         except IOError as msg:
             raise IOError(msg)
 
