@@ -20,14 +20,15 @@ __author__ = 'mark'
 import dao
 import logging
 
-logger = logging.getLogger('dao.processor')
-
 
 class DaoProcessor:
     def __init__(self, serial_port, serial_baudrate, serial_timeout, starinet_address,
                  starinet_port, stream):
 
+        self.logger = logging.getLogger('dao.DaoProcessor')
+
         self.command_message = dao.StaribusCommandMessage()
+        self.response_message = dao.StaribusResponseMessage()
 
         starinet_address = starinet_address
         starinet_port = starinet_port
@@ -35,26 +36,42 @@ class DaoProcessor:
         if stream == 'Starinet':
             # todo add Starinet Stream.
             self.stream = None
+            self.logger.debug('Stream set to Starinet')
         else:
             try:
                 self.message_stream = dao.StaribusStream(serial_port, serial_baudrate, serial_timeout)
             except IOError as msg:
                 raise IOError(msg)
+            else:
+                self.logger.debug('Stream set to Staribus')
 
     def star_message(self, addr, base, code, variant, param):
+        '''
+
+        :param addr:
+        :param base:
+        :param code:
+        :param variant:
+        :param param:
+        :return: tuple (status_message, payload)
+                 Error messsages returned : MALFORMED_MESSAGE, ERROR, TIMEOUT
+        '''
 
         # Construct the Staribus Message this works for both Staribus and Starinet.
         constructed_message = self.command_message.construct(addr, base, code, variant, param)
+        self.logger.debug('Message command string : %s' % repr(constructed_message))
 
         if constructed_message == 'MALFORMED_MESSAGE':
             return 'MALFORMED_MESSAGE', None
         else:
-
-            stream_reply = self.message_stream.stream(constructed_message)
+            try:
+                stream_reply = self.message_stream.stream(constructed_message)
+            except IOError as msg:
+                return 'ERROR : %s' % str(msg), None
 
             if stream_reply == 'TIMEOUT':
-                return 'TIMEOUT'
+                return 'TIMEOUT', None
             else:
-                response = stream_reply
+                response = self.response_message.decipher(stream_reply)
 
             return response

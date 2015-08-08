@@ -13,3 +13,7 @@ Press 4 57600
 Press 5 115200
 
 Doing a controller hard reset we think reset the baudrate to 57600???
+
+--------------
+
+Remember to add logger bits.

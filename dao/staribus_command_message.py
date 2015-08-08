@@ -17,6 +17,8 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http:#www.gnu.org/licenses/>.
 
+import logging
+
 import utilities
 import constants
 
@@ -50,6 +52,8 @@ import constants
 
 
 class StaribusCommandMessage:
+    def __init__(self):
+        self.logger = logging.getLogger('dao.StaribusCommandMessage')
 
     def construct(self, addr, base, code, variant, param):
         '''
@@ -64,10 +68,13 @@ class StaribusCommandMessage:
 
         # Check staribus address is correct it should be as we have already checked in instrument loader.
         if utilities.check_staribus_address(addr):
+            self.logger.debug('Message instrument address passed range check.')
             # covert string to int base 16
             addr = int(addr, 16)
+
             # change back to str and make sure length is two chars long padd with leading zero if not.
             addr = str(addr).zfill(2)
+            self.logger.debug('Message instrument address converted to hexbyte : %s' % addr)
         else:
             return 'MALFORMED_MESSAGE'
 
@@ -85,35 +92,48 @@ class StaribusCommandMessage:
             return 'MALFORMED_MESSAGE'
 
         command = addr + base + code + variant
+        self.logger.debug('Message command string : %s' % command)
 
         if param is None:
+            self.logger.debug('Message has no parameter')
 
             CRC = utilities.create_crc(command)
+            self.logger.debug('Message crc is : %s' % CRC)
 
             command = command + CRC
+            self.logger.debug('Message command including crc : %s' % command)
 
             command = constants.STX + command + constants.EOT + constants.CR_LF
+            self.logger.debug('Message string including ctrl chars : %s' % repr(command))
 
             response = command
 
         elif param is not None:
+            self.logger.debug('Message has parameter')
 
             parameters = param.split(',')
+            self.logger.debug('Message parameter is : %s' % repr(parameters))
 
             if len(parameters) == 1:
+                self.logger.debug('Message has single parameter')
 
                 command = command + constants.US + parameters[0]
+                self.logger.debug('Message command string including parameter : %s' % command)
 
                 CRC = utilities.create_crc(command)
+                self.logger.debug('Message crc is : %s' % CRC)
 
                 command = constants.STX + command + constants.US + CRC + \
                     constants.EOT + constants.CR_LF
+                self.logger.debug('Message including crc and ctrl chars : %s' % repr(command))
 
                 response = command
 
             elif len(parameters) > 1:
+                self.logger.debug('Message has multiple parameters')
 
                 parameter_length = len(parameters)
+                self.logger.debug('Message has n number of parameters : %s' % str(parameter_length))
 
                 parameter_construct = ''
 
@@ -124,16 +144,19 @@ class StaribusCommandMessage:
                         parameter_construct = parameter_construct + parameters[i]
 
                 command = command + constants.US + parameter_construct
+                self.logger.debug('Message command string including parameters : %s' % repr(command))
 
                 CRC = utilities.create_crc(command)
+                self.logger.debug('Message crc is : %s' % CRC)
 
                 command = constants.STX + command + constants.US + CRC + \
                     constants.EOT + constants.CR_LF
 
+                self.logger.debug('Message including crc and ctrl chars : %s' % repr(command))
+
                 response = command
 
         else:
-
             response = 'MALFORMED_MESSAGE'
 
         return response
