@@ -28,6 +28,7 @@ def check_crc(buffer0):
     '''
      checks a received staribus message checksum.
      Note: the staribus protocol is used minus \x02\x04\x0D\x0A e.g. 010001000000200A80
+           if the message has parameters strip last \x1F as well.
      Returns: True if success or False if failure.
     '''
 
