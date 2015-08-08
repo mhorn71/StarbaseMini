@@ -21,64 +21,71 @@ import dao
 
 
 class CommandInterpreter:
-    def __init__(self, parent, type):
+    def __init__(self, parent):
         '''
-        Initialise the CommandInterpreter with the stream type.
-        :param type: Staribus or Starinet
-        :raises: TypeError
+        Initialise the CommandInterpreter.
+        :param parent: Parent Object which should be the UI Object.
+        :raises: TypeError and IOError
         '''
 
         # Parent object so we can set status messages for blocked and stepped commands.
         self.parent = parent
         self.instrument = self.parent.instrument
 
-        self.ident = None
+        staribus_port = self.parent.config.get('StaribusPort', 'staribus_port')
+        staribus_baudrate = self.parent.config.get('StaribusPort', 'baudrate')
+        staribus_timeout = self.parent.config.get('StaribusPort', 'timeout')
+        starinet_address = self.instrument.instrument_starinet_address
+        starinet_port = self.instrument.instrument_starinet_port
+        instrument_address = self.instrument.instrument_staribus_address
 
-        if type == 'Staribus':
-            self.stream = type
-        elif type == 'Starinet':
-            self.stream = type
+        if starinet_address == 'None':
+            stream = 'Staribus'
         else:
-            raise TypeError('Unrecognised Stream Type, should be Staribus or Starinet not : %s' % type)
+            stream = 'Starinet'
 
-    def process(self, ident, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter):
+        try:
+            self.dao_processor = dao.DaoProcessor(staribus_port, staribus_baudrate, staribus_timeout, starinet_address,
+                                                starinet_port, stream)
+        except IOError as msg:
+            raise IOError(msg)
+
+    def process_command(self, addr, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter):
 
         if blocked_data is None and stepped_data is None:
-            response = self.single(ident, base, code, variant, choice, parameter, send_to_port)
+            response = self.single(addr, base, code, variant, choice, parameter, send_to_port)
         elif blocked_data is not None:
-            response = self.blocked(ident, base, code, variant, blocked_data, send_to_port)
+            response = self.blocked(addr, base, code, variant, blocked_data, send_to_port)
         elif stepped_data is not None:
-            response = self.stepped(ident, base, code, variant, stepped_data, send_to_port)
+            response = self.stepped(addr, base, code, variant, stepped_data, send_to_port)
         else:
             response = 'PREMATURE_TERMINATION', None
 
         return response
 
-    def single(self, ident, base, code, variant, choice, parameter, send_to_port):
-
-        command = base + code + variant
+    def single(self, addr, base, code, variant, choice, parameter, send_to_port):
 
         if send_to_port == 'True':
             if choice is not None:
-                message = command + '\x1F' + choice
+                param = choice
             elif parameter is not None:
-                message = command + '\x1F' + parameter
+                param = parameter
             else:
-                message = command
+                param = None
 
-            if self.stream == 'Staribus':
-                response = dao.staribus(message)
-            else:
-                response = dao.starinet(message)
+            response = self.dao_processor.star_message(addr, base, code, variant, param)
+
+            return response
+
         else:
-            self.parent.status_message('This command wasn\'t send to port')
+            response = 'This command wasn\'t send to port', None
 
         return response
 
-    def blocked(self, ident, base, code, variant, blocked_data, send_to_port):
+    def blocked(self, addr, base, code, variant, blocked_data, send_to_port):
         self.parent.status_message('blocked data command')
-        return 'Blocked Yo Yo'
+        return 'Blocked Yo Yo', None
 
-    def stepped(self, ident, base, code, variant, stepped_data, send_to_port):
+    def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
         self.parent.status_message('stepped data command')
-        return 'Stepped Yo Yo'
+        return 'Stepped Yo Yo', None
