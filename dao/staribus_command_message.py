@@ -17,7 +17,8 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http:#www.gnu.org/licenses/>.
 
-# todo add imports here.
+import utilities
+import constants
 
 # look at Starbase StaribusCommandMessage.java
 
@@ -46,3 +47,93 @@ __author__ = 'mark'
 # 
 # ***************************************************************************************************
 # StaribusCommandMessage.
+
+
+class StaribusCommandMessage:
+
+    def construct(self, addr, base, code, variant, param):
+        '''
+        Construct staribus message string.
+        :param addr: Instrument Address.
+        :param base: Command Code Base.
+        :param code: Command Code.
+        :param variant: Command Variant.
+        :param param: Command Parameter.
+        :return: Return a single constructed staribus message string including control characters.
+        '''
+
+        # Check staribus address is correct it should be as we have already checked in instrument loader.
+        if utilities.check_staribus_address(addr):
+            # covert string to int base 16
+            addr = int(addr, 16)
+            # change back to str and make sure length is two chars long padd with leading zero if not.
+            addr = str(addr).zfill(2)
+        else:
+            return 'MALFORMED_MESSAGE'
+
+        # The base and code are a hex byte and must be in the range 0x00 - 0xFF
+        # so we'll use the check_staribus address to confirm they're in range.
+
+        if utilities.check_hexbyte_string(base) is not True:
+            return 'MALFORMED_MESSAGE'
+
+        if utilities.check_hexbyte_string(code) is not True:
+            return 'MALFORMED_MESSAGE'
+
+        # Check the command variant is within in range for hex word 0x0000 - 0xFFFF
+        if utilities.check_hexword_string(variant) is not True:
+            return 'MALFORMED_MESSAGE'
+
+        command = addr + base + code + variant
+
+        if param is None:
+
+            CRC = utilities.create_crc(command)
+
+            command = command + CRC
+
+            command = constants.STX + command + constants.EOT + constants.CR_LF
+
+            response = command
+
+        elif param is not None:
+
+            parameters = param.split(',')
+
+            if len(parameters) == 1:
+
+                command = command + constants.US + parameters[0]
+
+                CRC = utilities.create_crc(command)
+
+                command = constants.STX + command + constants.US + CRC + \
+                    constants.EOT + constants.CR_LF
+
+                response = command
+
+            elif len(parameters) > 1:
+
+                parameter_length = len(parameters)
+
+                parameter_construct = ''
+
+                for i in range(parameter_length):
+                    if i < (parameter_length - 1):
+                        parameter_construct = parameter_construct + parameters[i] + constants.US
+                    else:
+                        parameter_construct = parameter_construct + parameters[i]
+
+                command = command + constants.US + parameter_construct
+
+                CRC = utilities.create_crc(command)
+
+                command = constants.STX + command + constants.US + CRC + \
+                    constants.EOT + constants.CR_LF
+
+                response = command
+
+        else:
+
+            response = 'MALFORMED_MESSAGE'
+
+        return response

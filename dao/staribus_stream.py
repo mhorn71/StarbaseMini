@@ -24,44 +24,77 @@ import datetime
 
 import serial
 
-from core.configuration.configuration_loader import ConfigLoader
 
-config = ConfigLoader()
-logger = logging.getLogger('core.streams.staribus')
-timeout = config.get('StaribusPort', 'timeout')
+class StaribusStream:
+    def __init__(self, serial_port, serial_baudrate, serial_timeout):
 
-class Staribus:
-    def __init__(self):
-        pass
+        # initialise the logger
+        self.logger = logging.getLogger('dao.staribus.stream')
 
-    def stream(message):
+        # initialise serial port
+        try:
+            self.staribus_port = serial.Serial()
+            self.staribus_port.port = serial_port
+            self.staribus_port.baudrate = serial_baudrate
+            self.staribus_port.bytesize = serial.SEVENBITS
+            self.staribus_port.parity = serial.PARITY_EVEN
+            self.staribus_port.stopbits = serial.STOPBITS_ONE
+            self.staribus_port.timeout = 0
+            self.staribus_port.xonxoff = False
+            self.staribus_port.rtscts = False
+            self.staribus_port.dsrdtr = False
+            self.staribus_port.writeTimeout = 1.0
+        except serial.SerialException as msg:
+            self.logger.critical('%s %s', 'Unable to initialise serial port -', msg)
+            raise IOError(msg)
+        except ValueError as msg:
+            self.logger.critical('%s %s', "Unable to initialise serial port -", msg)
+            raise IOError(msg)
+
+        self.timeout = serial_timeout
+
+        self.ser_io = io.TextIOWrapper(io.BufferedReader(self.staribus_port), encoding='utf-8',
+                                       newline='\n', line_buffering=True)
+
+        # Try to open serial port
+        self.logger.debug('Opening serial port')
+        try:
+            self.staribus_port.open()
+        except serial.SerialException as msg:
+            self.logger.critical('%s %s', 'Error opening serial port - ', msg)
+            raise IOError(msg)
+
+    def stream(self, message):
         '''
          Will return either a full formed Staribus response or TIMEOUT, PREMATURE_TERMINATION
         '''
 
-        logger.info('%s %s', 'stream has been handed', repr(message))
+        self.logger.info('%s %s', 'stream has been handed', repr(message))
 
         try:
 
-            ser.flushInput()  # flush input buffer, discarding all its contents
-            logger.debug('Serial port input buffer flushed')
-
-            ser.flushOutput()  # flush output buffer, aborting current output
-            logger.debug('Serial port output buffer flushed')
+            # self.staribus_port.flushInput()  # flush input buffer, discarding all its contents
+            # logger.debug('Serial port input buffer flushed')
+            #
+            # self.staribus_port.flushOutput()  # flush output buffer, aborting current output
+            # logger.debug('Serial port output buffer flushed')
 
             message = message.encode()
 
-            logger.info("Sending data to staribus instrument")
-            logger.debug("%s %s", 'Serial port raw message encoded utf-8', repr(message))
+            self.logger.info("Sending data to staribus instrument")
+            self.logger.debug("%s %s", 'Serial port raw message encoded utf-8', repr(message))
 
-            ser.write(message)  # write message to serial port, preceded
-            logger.debug('Serial port message sent to controller')
+            self.staribus_port.write(message)  # write message to serial port, preceded
+            self.logger.debug('Serial port message sent to controller')
 
             # A simple timeout
             current_time = datetime.datetime.now()
-            timeout_time = current_time + datetime.timedelta(0, int(timeout))
+            timeout_time = current_time + datetime.timedelta(0, int(self.timeout))
 
-            logger.debug('Starting new serial port receive loop')
+            # Number of retries.
+            retries = 1
+
+            self.logger.debug('Starting new serial port receive loop')
 
             # serial port receive loop
 
@@ -72,19 +105,24 @@ class Staribus:
                     if timeout_time >= datetime.datetime.now():
                         time.sleep(0.01)
                     else:
-                        logging.warning('Timed out waiting for response from controller.')
-                        return 'TIMEOUT'
+                        if retries < 4:
+                            self.staribus_port.write(message)  # write message to serial port, preceded
+                            self.logger.warning('Serial port send message retry : %s' % str(retries))
+                            retries += 1
+                        else:
+                            self.logger.warning('Timed out waiting for response from controller.')
+                            return 'TIMEOUT'
 
-                    inbuff = ser.inWaiting()  # Wait for data
+                    inbuff = self.staribus_port.inWaiting()  # Wait for data
 
                     if inbuff == 0:
                         pass
                     elif inbuff > 0:
 
-                        logging.debug('%s %s', 'Serial port buffer length - ', inbuff)
-                        received = ser_io.read()
+                        self.logger.debug('%s %s', 'Serial port buffer length - ', inbuff)
+                        received = self.ser_io.read()
 
-                        logging.debug('%s %s', 'Data received from controller -', repr(received))
+                        self.logger.debug('%s %s', 'Data received from controller -', repr(received))
 
                         received = received.strip('\x16')  # strip SYN
 
@@ -97,39 +135,9 @@ class Staribus:
                             datastring = ''.join(data)
 
                             if datastring.startswith('\x02') and datastring.endswith('\n'):
-                                logging.debug('%s %s', 'Found data to return ', repr(datastring))
+                                self.logger.debug('%s %s', 'Found data to return ', repr(datastring))
                                 return received
 
         except serial.SerialException as msg:
-            logger.critical('Serial IO Error - %s', msg)
-            return 'PREMATURE_TERMINATION'
-
-if config.get('StaribusPort', 'port') == 'None':
-    logging.critical('No Staribus port set.')
-else:
-    # initialise serial port
-    try:
-        ser = serial.Serial()
-        ser.port = config.get('StaribusPort', 'port')
-        ser.baudrate = int(config.get('StaribusPort', 'baudrate'))
-        ser.bytesize = serial.SEVENBITS
-        ser.parity = serial.PARITY_EVEN
-        ser.stopbits = serial.STOPBITS_ONE
-        ser.timeout = 0
-        ser.xonxoff = False
-        ser.rtscts = False
-        ser.dsrdtr = False
-        ser.writeTimeout = float(config.get('StaribusPort', 'write_timeout'))
-    except serial.SerialException as msg:
-        logging.critical('%s %s', 'Unable to initialise serial port -', msg)
-    except ValueError as msg:
-        logging.critical('%s %s', "Unable to initialise serial port -", msg)
-
-    ser_io = io.TextIOWrapper(io.BufferedReader(ser), encoding='utf-8', newline='\n', line_buffering=True)
-
-    # Try to open serial port
-    logger.debug('Opening serial port')
-    try:
-        ser.open()
-    except serial.SerialException as msg:
-        logging.critical('%s %s', 'Error opening serial port - ', msg)
+            self.logger.critical('Serial IO Error - %s', msg)
+            raise IOError(msg)

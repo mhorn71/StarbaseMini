@@ -17,18 +17,44 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http:#www.gnu.org/licenses/>.
 
-import utilities
+import dao
+import logging
+
+logger = logging.getLogger('dao.processor')
 
 
-def staribus(message):
-    message_crc = utilities.create_crc(message)
-    message = message + '\x1F' + message_crc
+class DaoProcessor:
+    def __init__(self, serial_port, serial_baudrate, serial_timeout, starinet_address,
+                 starinet_port, stream):
 
-    return 'SUCCESS', 'Staribus Message was received by processor'
+        self.command_message = dao.StaribusCommandMessage()
 
+        starinet_address = starinet_address
+        starinet_port = starinet_port
 
-def starinet(message):
-    message_crc = utilities.create_crc(message)
-    message = message + '\x1F' + message_crc
+        if stream == 'Starinet':
+            # todo add Starinet Stream.
+            self.stream = None
+        else:
+            try:
+                self.message_stream = dao.StaribusStream(serial_port, serial_baudrate, serial_timeout)
+            except IOError as msg:
+                raise IOError(msg)
 
-    return 'Starinet Message was received by processor', None
+    def star_message(self, addr, base, code, variant, param):
+
+        # Construct the Staribus Message this works for both Staribus and Starinet.
+        constructed_message = self.command_message.construct(addr, base, code, variant, param)
+
+        if constructed_message == 'MALFORMED_MESSAGE':
+            return 'MALFORMED_MESSAGE', None
+        else:
+
+            stream_reply = self.message_stream.stream(constructed_message)
+
+            if stream_reply == 'TIMEOUT':
+                return 'TIMEOUT'
+            else:
+                response = stream_reply
+
+            return response
