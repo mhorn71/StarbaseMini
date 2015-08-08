@@ -64,3 +64,18 @@ if serial_port is not None:
         print('Staribus Instrument/s on port/s :' + str(instrument_port))
     else:
         print('No Staribus Instrument attached.')
+
+
+hex_byte = '00'
+
+if utilities.check_hexbyte_string(hex_byte):
+    print('Hex Byte was within Range.')
+else:
+    print('Hex Byte was out of Range.')
+
+hex_word = 'FFF3'
+if utilities.check_hexword_string(hex_word):
+    print('Hex Word was within Range.')
+else:
+    print('Hex Word was out of Range.')
+
