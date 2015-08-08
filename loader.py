@@ -240,6 +240,8 @@ class Main(QtGui.QMainWindow):
                         self.disable_all()
             except (TypeError, IOError) as msg:
                 self.logger.critical(str(msg))
+                self.status_message('ERROR : Please check logfile for further details.')
+                self.disable_all()
 
             # Trip counters, these are so we ignore dict KeyError's when first populating which seems to differ
             # from one platform to another and I have no idea why.  Answers on a postcard please. ;-))
@@ -658,6 +660,7 @@ class Main(QtGui.QMainWindow):
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                     stepped_data, choice, parameter)
 
+        # The below is only for testing.
         if response[1] is None:
             self.status_message(response[0] + ' : ' + ident)
         else:
