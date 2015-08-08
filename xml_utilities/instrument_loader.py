@@ -104,15 +104,15 @@ class Instrument:
             self.instrument_starinet_port = self.xmldom.findtext('StarinetPort')
 
             # Check that either StaribusAddress and StarinetAddress aren't both set if they are exit.
-            if self.instrument_starinet_address != 'None' and self.instrument_staribus_address != 'None':
-
-                raise LookupError('INVALID_XML : Instrument XML has both Staribus and Starinet Defined. Please fix '
-                                  'before running software.')
-
-            elif self.instrument_starinet_address == 'None' and self.instrument_staribus_address == 'None':
-
-                raise ValueError('INVALID_XML : Instrument XML has neither Staribus nor Starinet Defined.'
-                                 ' Please fix before running software.')
+            # if self.instrument_starinet_address != 'None' and self.instrument_staribus_address != 'None':
+            #
+            #     raise LookupError('INVALID_XML : Instrument XML has both Staribus and Starinet Defined. Please fix '
+            #                       'before running software.')
+            #
+            # elif self.instrument_starinet_address == 'None' and self.instrument_staribus_address == 'None':
+            #
+            #     raise ValueError('INVALID_XML : Instrument XML has neither Staribus nor Starinet Defined.'
+            #                      ' Please fix before running software.')
 
             # Check that we have both Starinet Address and Starinet Port set.
             if self.instrument_starinet_address != 'None' and self.instrument_starinet_port == 'None':
@@ -124,6 +124,11 @@ class Instrument:
                 raise ValueError('INVALID_XML : Starinet address not set.')
 
             if self.instrument_starinet_address != 'None':
+                # If we have a Starinet address then the Staribus Address must be 000
+                if self.instrument_staribus_address != '000':
+                    raise ValueError('INVALID_XML : Starbus Address out of range for Starinet instrument, should be'
+                                     ' 000 currently set to %s' % self.instrument_staribus_address)
+
                 # Check for valid IPv4 Address.
                 if utilities.check_ip(self.instrument_starinet_address):
                     # Check port is at least a number.
@@ -134,12 +139,12 @@ class Instrument:
                 else:
                     raise ValueError('INVALID_XML : Unable to parse Starinet address  %s' % self.instrument_starinet_address)
 
-            elif self.instrument_staribus_address != 'None':
-                # Check Staribus Address is in range (001 - 254)
+            elif self.instrument_staribus_address != 'None' and self.instrument_starinet_address == 'None':
+                # Check Staribus Address is in range (001 - 253)
                 if utilities.check_staribus_address(self.instrument_staribus_address):
                     pass
                 else:
-                    raise ValueError('INVALID_XML : Starbus Address out of range (001 - 255) currently set to %s' %
+                    raise ValueError('INVALID_XML : Starbus Address out of range (001 - 253) currently set to %s' %
                                      self.instrument_staribus_address)
 
             self.instrument_number_of_channels = self.xmldom.findtext('NumberOfChannels')
