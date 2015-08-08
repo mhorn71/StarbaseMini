@@ -224,16 +224,16 @@ class Main(QtGui.QMainWindow):
             # Initialise Command Interpreter
             try:
                 if starinet_relay_boolean == 'False':
-                    if self.instrument.instrument_staribus_address == 'None':
+                    if self.instrument.instrument_starinet_address != 'None':
                         self.logger.info('Initialising Command Interpreter for Starinet')
-                        self.command_interpreter = interpreter.CommandInterpreter(self, 'Starinet')
+                        self.command_interpreter = interpreter.CommandInterpreter(self)
                     elif self.instrument.instrument_staribus_address != 'None':
                         if utilities.check_serial_port(self.config.get('StaribusPort', 'staribus_port')):
                             self.logger.info('Initialising Command Interpreter for Staribus')
-                            self.command_interpreter = interpreter.CommandInterpreter(self, 'Staribus')
+                            self.command_interpreter = interpreter.CommandInterpreter(self)
                         else:
                             self.disable_all()
-                            self.status_message('ERROR : Unable to open serial port - UI controls disabled.')
+                            self.status_message('ERROR : Unable to set stream type - UI controls disabled.')
                     else:
                         self.logger.critical('Unable able to determine stream type.')
                         self.status_message('ERROR : Unable able to determine stream type - UI controls disabled.')
