@@ -18,6 +18,7 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import xml.etree.ElementTree as eTree
+import logging
 
 
 class Instruments:
@@ -28,12 +29,16 @@ class Instruments:
         and instrument xml file name.
         :return: object instance.
         '''
+        logger = logging.getLogger('xml_utilities.Instruments')
         # Create an xml dom object for Instruments XML.
         try:
             # The tree root is the top level Instruments tag.
             self.xmldom = eTree.parse(instrument_xml_file)  # Open and parse xml document.
         except FileNotFoundError:
             raise FileNotFoundError(instrument_xml_file)
+            logger.debug('XML File not found : %s' % instrument_xml_file)
+        else:
+            logger.debug('XML File found : %s' % instrument_xml_file)
 
     def get_names(self):
         '''
@@ -41,14 +46,21 @@ class Instruments:
         :return: list of names.
         :raises: AttributeError or IndexError
         '''
+
+        logger = logging.getLogger('xml_utilities.Instruments.get_names')
+
         tmp_names = []
         for instrument in self.xmldom.findall('Instrument'):
+            logger.debug('Instrument Name Object at : %s' % str(instrument))
+
             name = instrument.findtext('Name')
+            logger.debug('Instrument Name Object Name : %s' % instrument.findtext('Name'))
 
             if name is None:
                 raise AttributeError('INVALID_XML')
             else:
                 tmp_names.append(name)
+                logger.debug('Appending Instrument Name to return list : %s' % name)
 
         if len(tmp_names) == 0:
             raise IndexError('INVALID_XML')
@@ -63,16 +75,22 @@ class Instruments:
         :raises: AttributeError
         '''
 
+        logger = logging.getLogger('xml_utilities.Instruments.get_filename')
+
+        logger.debug('Instrument Name : %s' % instrument_name)
+
         for instrument in self.xmldom.findall('Instrument'):
+
+            logger.debug('Instrument Object at : %s' % str(instrument))
+            logger.debug('Instrument Object Name : %s' % instrument.findtext('Name'))
 
             if instrument.findtext('Name') == instrument_name:
                 return_name = instrument.findtext('File')
-            else:
-                raise AttributeError('INVALID_XML Instrument not found.')
+                logger.debug('Instrument Filename : %s' % return_name)
 
-            if return_name is None:
-                raise AttributeError('Instrument XML file not found.')
-            else:
-                return return_name
+        if return_name is None:
+            raise AttributeError('Instrument XML file not found.')
+        else:
+            return return_name
 
 

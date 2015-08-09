@@ -99,7 +99,7 @@ class Main(QtGui.QMainWindow):
             try:
                 instruments = 'instruments' + os.path.sep + 'instruments.xml'
                 my_instruments = xml_utilities.Instruments(instruments)
-            except (FileNotFoundError, ValueError, LookupError) as msg:
+            except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
                 fatal_error = True
                 self.logger.critical('Unable to load instruments.xml %s' % str(msg))
                 self.status_message(str(msg))
@@ -108,7 +108,7 @@ class Main(QtGui.QMainWindow):
                     filename = my_instruments.get_filename(self.instrument_identifier)
                     filename = 'instruments' + os.path.sep + filename
                     self.instrument = xml_utilities.Instrument(filename)
-                except (FileNotFoundError, ValueError, LookupError) as msg:
+                except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
                     self.logger.critical('Unable to load instrument xml %s' % str(msg))
                     fatal_error = True
                     self.status_message(str(msg))
@@ -135,8 +135,8 @@ class Main(QtGui.QMainWindow):
                 self.logger.debug('Initial parameter for instrument_autodetect : %s.' % instrument_autodetect)
                 self.logger.debug('Initial parameter for instrument_data_path : %s.' % instrument_data_path)
                 self.logger.debug('Initial parameter for starinet_relay_boolean : %s.' % starinet_relay_boolean)
-                self.logger.debug('Initial parameter for starinet_address : %s.' % starinet_address)
-                self.logger.debug('Initial parameter for starinet_port : %s.' % starinet_port)
+                self.logger.debug('Initial parameter for starinet_relay_address : %s.' % starinet_address)
+                self.logger.debug('Initial parameter for starinet_relay_port : %s.' % starinet_port)
                 self.logger.debug('Initial parameter for serial_port : %s.' % serial_port)
                 self.logger.debug('Initial parameter for serial_baudrate : %s.' % serial_baudrate)
                 self.logger.debug('Initial parameter for serial_port_timeout : %s.' % serial_port_timeout)

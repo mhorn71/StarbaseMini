@@ -23,4 +23,9 @@
         <File>staribus-magnetometer.xml</File>
     </Instrument>
 
+    <Instrument>
+        <Name>Starinet 4 Channel Beaglebone Logger</Name>
+        <File>starinet-4ch-beagle-logger.xml</File>
+    </Instrument>
+
 </Instruments>

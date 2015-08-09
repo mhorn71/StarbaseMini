@@ -17,39 +17,80 @@ __author__ = 'Mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
-import asyncio
+
 import logging
+import socket
+import datetime
+import time
 
-from core.configuration.configuration_loader import ConfigLoader
-
-logger = logging.getLogger('core.streams.starinet')
+udp_buffer = 1024
 
 
-class UdpStream:
-    # This was lifted directly from https://docs.python.org/3/library/asyncio-protocol.html#udp-echo-client-protocol
+class StarinetStream:
+    def __init__(self, starinet_address, starinet_port, starinet_timeout):
+        self.logger = logging.getLogger('dao.StarinetStream')
 
-    def __init__(self, message, loop):
+        # setup parameters.
+        self.starinet_client_address = starinet_address, int(starinet_port)
+        #self.starinet_client_port = starinet_port
+        self.timeout = starinet_timeout
 
-        self.config = ConfigLoader()
-        self.message = message
-        self.loop = loop
-        self.transport = None
+        # Create socket (IPv4 protocol, datagram (UDP)) and bind to all IPv4 Interfaces.
+        self.logger.debug('Opening UDP interface.')
+        try:
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.sock.setblocking(0)
+            self.sock.bind(('0.0.0.0', int(starinet_port)))
+        except socket.error as msg:
+            self.logger.critical('%s %s', 'Unable to initialise Starinet network port - ', msg)
+            raise IOError(msg)
 
-    def connection_made(self, transport):
-        self.transport = transport
-        print('Send:', self.message)
-        self.transport.sendto(self.message.encode())
+    def stream(self, message):
+        '''
+         Will return either a full formed Staribus/net response or TIMEOUT, PREMATURE_TERMINATION
+        '''
 
-    def datagram_received(self, data, addr):
-        print("Received:", data.decode())
+        self.logger.info('%s %s', 'stream has been handed', repr(message))
 
-        print("Close the socket")
-        self.transport.close()
+        message = message.encode()
 
-    def error_received(self, exc):
-        print('Error received:', exc)
+        self.logger.info("Sending data to starinet instrument")
+        self.logger.debug("%s %s", 'UDP socket raw message encoded utf-8', repr(message))
 
-    def connection_lost(self, exc):
-        print("Socket closed, stop the event loop")
-        loop = asyncio.get_event_loop()
-        loop.stop()
+        self.sock.sendto(message, self.starinet_client_address)
+        self.logger.debug('UDP socket message sent to controller')
+
+        # A simple timeout
+        current_time = datetime.datetime.now()
+        timeout_time = current_time + datetime.timedelta(0, int(self.timeout))
+
+        # Number of retries.
+        retries = 1
+
+        self.logger.debug('Starting new socket receive loop')
+
+        # socket port receive loop
+
+        while True:
+
+            if timeout_time >= datetime.datetime.now():
+                time.sleep(0.01)
+            else:
+                if retries < 4:
+                    # write message to UDP socket.
+                    self.sock.sendto(message, self.starinet_client_address)
+                    self.logger.warning('UDP socket send message retry : %s' % str(retries))
+                    retries += 1
+                else:
+                    self.logger.warning('Timed out waiting for response from controller.')
+                    return 'TIMEOUT'
+
+            buffer1, address = self.sock.recvfrom(udp_buffer)
+            self.logger.debug("%s %s", "received data - ", repr(buffer1))
+
+            if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
+                self.logger.info('%s %s',  'Starinet UDP Packet received from', address)
+                self.logger.debug('%s %s',  'Starinet UDP Packet', repr(buffer1))
+
+
+

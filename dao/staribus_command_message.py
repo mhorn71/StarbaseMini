@@ -66,17 +66,14 @@ class StaribusCommandMessage:
         :return: Return a single constructed staribus message string including control characters.
         '''
 
-        # Check staribus address is correct it should be as we have already checked in instrument loader.
-        if utilities.check_staribus_address(addr):
-            self.logger.debug('Message instrument address passed range check.')
-            # covert string to int base 16
-            addr = int(addr, 16)
+        # Convert staribus address to hexbyte.
+        self.logger.debug('Message instrument address passed range check.')
+        # covert string to int base 16
+        addr = int(addr, 16)
 
-            # change back to str and make sure length is two chars long padd with leading zero if not.
-            addr = str(addr).zfill(2)
-            self.logger.debug('Message instrument address converted to hexbyte : %s' % addr)
-        else:
-            return 'MALFORMED_MESSAGE'
+        # change back to str and make sure length is two chars long padd with leading zero if not.
+        addr = str(addr).zfill(2)
+        self.logger.debug('Message instrument address converted to hexbyte : %s' % addr)
 
         # The base and code are a hex byte and must be in the range 0x00 - 0xFF
         # so we'll use the check_staribus address to confirm they're in range.
