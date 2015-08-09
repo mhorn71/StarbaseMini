@@ -99,7 +99,7 @@ class Main(QtGui.QMainWindow):
             try:
                 instruments = 'instruments' + os.path.sep + 'instruments.xml'
                 my_instruments = xml_utilities.Instruments(instruments)
-            except (FileNotFoundError, ValueError, LookupError) as msg:
+            except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
                 fatal_error = True
                 self.logger.critical('Unable to load instruments.xml %s' % str(msg))
                 self.status_message(str(msg))
@@ -108,7 +108,7 @@ class Main(QtGui.QMainWindow):
                     filename = my_instruments.get_filename(self.instrument_identifier)
                     filename = 'instruments' + os.path.sep + filename
                     self.instrument = xml_utilities.Instrument(filename)
-                except (FileNotFoundError, ValueError, LookupError) as msg:
+                except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
                     self.logger.critical('Unable to load instrument xml %s' % str(msg))
                     fatal_error = True
                     self.status_message(str(msg))
