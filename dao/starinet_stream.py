@@ -32,15 +32,14 @@ class StarinetStream:
 
         # setup parameters.
         self.starinet_client_address = starinet_address, int(starinet_port)
-        #self.starinet_client_port = starinet_port
         self.timeout = starinet_timeout
 
         # Create socket (IPv4 protocol, datagram (UDP)) and bind to all IPv4 Interfaces.
         self.logger.debug('Opening UDP interface.')
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.sock.setblocking(0)
-            self.sock.bind(('0.0.0.0', int(starinet_port)))
+            self.sock.settimeout(int(starinet_timeout))
+            self.sock.bind(('', int(starinet_port)))
         except socket.error as msg:
             self.logger.critical('%s %s', 'Unable to initialise Starinet network port - ', msg)
             raise IOError(msg)
@@ -60,22 +59,16 @@ class StarinetStream:
         self.sock.sendto(message, self.starinet_client_address)
         self.logger.debug('UDP socket message sent to controller')
 
-        # A simple timeout
-        current_time = datetime.datetime.now()
-        timeout_time = current_time + datetime.timedelta(0, int(self.timeout))
-
         # Number of retries.
         retries = 1
-
-        self.logger.debug('Starting new socket receive loop')
 
         # socket port receive loop
 
         while True:
 
-            if timeout_time >= datetime.datetime.now():
-                time.sleep(0.01)
-            else:
+            try:
+                buffer1, address = self.sock.recvfrom(udp_buffer)
+            except socket.timeout:
                 if retries < 4:
                     # write message to UDP socket.
                     self.sock.sendto(message, self.starinet_client_address)
@@ -84,13 +77,8 @@ class StarinetStream:
                 else:
                     self.logger.warning('Timed out waiting for response from controller.')
                     return 'TIMEOUT'
-
-            buffer1, address = self.sock.recvfrom(udp_buffer)
-            self.logger.debug("%s %s", "received data - ", repr(buffer1))
-
-            if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
-                self.logger.info('%s %s',  'Starinet UDP Packet received from', address)
-                self.logger.debug('%s %s',  'Starinet UDP Packet', repr(buffer1))
-
-
-
+            else:
+                if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
+                    self.logger.info('%s %s',  'Starinet UDP Packet received from', address)
+                    self.logger.debug('%s %s',  'Starinet UDP Packet', repr(buffer1))
+                    return buffer1.decode('utf-8')
