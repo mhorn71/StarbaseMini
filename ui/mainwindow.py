@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Aug  5 17:53:34 2015
+# Created: Mon Aug 10 19:16:04 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,11 +41,11 @@ class Ui_MainWindow(object):
         self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
         self.gridLayout_3 = QtGui.QGridLayout(self.groupBox_3)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-        self.statusMessage = QtGui.QPlainTextEdit(self.groupBox_3)
-        self.statusMessage.setMaximumSize(QtCore.QSize(16777215, 82))
+        self.statusMessage = QtGui.QTableWidget(self.groupBox_3)
         self.statusMessage.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.statusMessage.setBackgroundVisible(False)
         self.statusMessage.setObjectName(_fromUtf8("statusMessage"))
+        self.statusMessage.setColumnCount(0)
+        self.statusMessage.setRowCount(0)
         self.gridLayout_3.addWidget(self.statusMessage, 0, 0, 1, 1)
         self.gridLayout_2.addWidget(self.groupBox_3, 0, 0, 1, 1)
         self.groupBox_2 = QtGui.QGroupBox(self.centralwidget)

@@ -46,18 +46,9 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
-        <widget class="QPlainTextEdit" name="statusMessage">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>82</height>
-          </size>
-         </property>
+        <widget class="QTableWidget" name="statusMessage">
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
-         </property>
-         <property name="backgroundVisible">
-          <bool>false</bool>
          </property>
         </widget>
        </item>
