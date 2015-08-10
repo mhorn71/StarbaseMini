@@ -111,44 +111,16 @@ class StaribusCommandMessage:
             parameters = param.split(',')
             self.logger.debug('Message parameter is : %s' % repr(parameters))
 
-            if len(parameters) == 1:
+            for i in range(len(parameters)):
                 self.logger.debug('Message has single parameter')
 
-                command = command + constants.US + parameters[0]
-                self.logger.debug('Message command string including parameter : %s' % command)
+                command = command + constants.US + parameters[i] + constants.US
+                self.logger.debug('Message command string including parameter : %s' % repr(command))
 
                 CRC = utilities.create_crc(command)
                 self.logger.debug('Message crc is : %s' % CRC)
 
-                command = constants.STX + command + constants.US + CRC + \
-                    constants.EOT + constants.CR_LF
-                self.logger.debug('Message including crc and ctrl chars : %s' % repr(command))
-
-                response = command
-
-            elif len(parameters) > 1:
-                self.logger.debug('Message has multiple parameters')
-
-                parameter_length = len(parameters)
-                self.logger.debug('Message has n number of parameters : %s' % str(parameter_length))
-
-                parameter_construct = ''
-
-                for i in range(parameter_length):
-                    if i < (parameter_length - 1):
-                        parameter_construct = parameter_construct + parameters[i] + constants.US
-                    else:
-                        parameter_construct = parameter_construct + parameters[i]
-
-                command = command + constants.US + parameter_construct
-                self.logger.debug('Message command string including parameters : %s' % repr(command))
-
-                CRC = utilities.create_crc(command)
-                self.logger.debug('Message crc is : %s' % CRC)
-
-                command = constants.STX + command + constants.US + CRC + \
-                    constants.EOT + constants.CR_LF
-
+                command = constants.STX + command + CRC + constants.EOT + constants.CR_LF
                 self.logger.debug('Message including crc and ctrl chars : %s' % repr(command))
 
                 response = command
