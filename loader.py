@@ -154,9 +154,9 @@ class Main(QtGui.QMainWindow):
                     ports = utilities.serial_port_scanner()
                     if ports is None:
                         self.logger.warning('No serial ports found to scan for instrument.')
-                        self.status_message('system', 'WARNING', 'No serial ports found, ui controls disabled.', None)
                         instrument_autodetect_status_boolean = False
                         self.disable_all()
+                        self.status_message('system', 'WARNING', 'No serial ports found, ui controls disabled.', None)
                     else:
                         instrument_port = utilities.check_serial_port_staribus_instrument(
                             self.instrument.instrument_staribus_address, ports, serial_baudrate)
@@ -164,6 +164,7 @@ class Main(QtGui.QMainWindow):
                             self.logger.warning('Staribus instrument not found for address %s' %
                                                 self.instrument.instrument_staribus_address)
                             instrument_autodetect_status_boolean = False
+                            print('B')
                         elif len(instrument_port) > 1:
                             self.logger.warning('Multiple Staribus instruments found defaulting to first.')
                             self.status_message('system', 'WARNING',
@@ -621,7 +622,11 @@ class Main(QtGui.QMainWindow):
             self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(units))
 
         self.ui.statusMessage.resizeColumnsToContents()
-        self.ui.statusMessage.scrollToBottom()
+
+        # Bodge : Scroll to bottom, scrolls to bottom of widget not last row so it can appear to be empty on some
+        # platforms
+        if self.statusMessageIndex > 2:
+            self.ui.statusMessage.scrollToBottom()
 
         self.statusMessageIndex += 1
 

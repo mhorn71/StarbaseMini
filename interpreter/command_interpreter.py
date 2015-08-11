@@ -37,7 +37,7 @@ class CommandInterpreter:
         staribus_timeout = self.parent.config.get('StaribusPort', 'timeout')
         starinet_address = self.instrument.instrument_starinet_address
         starinet_port = self.instrument.instrument_starinet_port
-        instrument_address = self.instrument.instrument_staribus_address
+        # instrument_address = self.instrument.instrument_staribus_address
 
         if starinet_address == 'None':
             stream = 'Staribus'
@@ -66,6 +66,7 @@ class CommandInterpreter:
     def single(self, addr, base, code, variant, choice, parameter, send_to_port):
 
         if send_to_port == 'True':
+
             if choice is not None:
                 param = choice
             elif parameter is not None:
@@ -75,17 +76,16 @@ class CommandInterpreter:
 
             response = self.dao_processor.star_message(addr, base, code, variant, param)
 
-            return response
-
         else:
-            response = 'This command wasn\'t send to port', None
+
+            response = 'SUCCESS', 'This command wasn\'t send to port'
 
         return response
 
     def blocked(self, addr, base, code, variant, blocked_data, send_to_port):
-        self.parent.status_message('blocked data command')
-        return 'Blocked Yo Yo', None
+        # self.parent.status_message('blocked data command')
+        return 'SUCCESS', 'blocked data command'
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
-        self.parent.status_message('stepped data command')
-        return 'Stepped Yo Yo', None
+        # self.parent.status_message('stepped data command')
+        return 'SUCCESS', 'stepped data command'

@@ -28,6 +28,10 @@ QTabWidget::pane {
     border-radius: 9px;
 }
 
+QTableWidget {
+    font-size: 12px;
+}
+
 QTextBrowser {
     border: 1px solid gray;
 }
