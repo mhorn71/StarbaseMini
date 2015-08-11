@@ -33,7 +33,7 @@ QTableWidget {
     background-color: '#FFFFE0';
 }
 
-QTextBrowser {
-    border: 1px solid gray;
+QTableWidget::section {
+    background-color: '#FFFFE0'
 }
 
