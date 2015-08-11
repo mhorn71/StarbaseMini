@@ -30,6 +30,7 @@ QTabWidget::pane {
 
 QTableWidget {
     font-size: 12px;
+    background-color: '#FFFFE0';
 }
 
 QTextBrowser {

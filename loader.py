@@ -63,6 +63,9 @@ class Main(QtGui.QMainWindow):
         # Setup QTableWidget
         headers = ['DateTime', 'Identifier', 'Status', 'ResponseValue', 'Units']
         self.ui.statusMessage.setHorizontalHeaderLabels(headers)
+        self.ui.statusMessage.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        self.ui.statusMessage.verticalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
+        self.ui.statusMessage.verticalHeader().setDefaultSectionSize(20)
         self.statusMessageIndex = 0
 
         # Initialise configuration.
@@ -621,7 +624,7 @@ class Main(QtGui.QMainWindow):
         if units is not None:
             self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(units))
 
-        self.ui.statusMessage.resizeColumnsToContents()
+        # self.ui.statusMessage.resizeColumnsToContents()
 
         # Bodge : Scroll to bottom, scrolls to bottom of widget not last row so it can appear to be empty on some
         # platforms
