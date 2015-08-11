@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Mon Aug 10 19:16:04 2015
+# Created: Tue Aug 11 12:04:00 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -43,9 +43,19 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.statusMessage = QtGui.QTableWidget(self.groupBox_3)
         self.statusMessage.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.statusMessage.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.statusMessage.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
+        self.statusMessage.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.statusMessage.setWordWrap(False)
+        self.statusMessage.setColumnCount(5)
         self.statusMessage.setObjectName(_fromUtf8("statusMessage"))
-        self.statusMessage.setColumnCount(0)
         self.statusMessage.setRowCount(0)
+        self.statusMessage.horizontalHeader().setCascadingSectionResizes(True)
+        self.statusMessage.horizontalHeader().setDefaultSectionSize(100)
+        self.statusMessage.horizontalHeader().setMinimumSectionSize(56)
+        self.statusMessage.horizontalHeader().setStretchLastSection(False)
+        self.statusMessage.verticalHeader().setVisible(False)
+        self.statusMessage.verticalHeader().setStretchLastSection(False)
         self.gridLayout_3.addWidget(self.statusMessage, 0, 0, 1, 1)
         self.gridLayout_2.addWidget(self.groupBox_3, 0, 0, 1, 1)
         self.groupBox_2 = QtGui.QGroupBox(self.centralwidget)

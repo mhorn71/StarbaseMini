@@ -60,14 +60,9 @@ class Main(QtGui.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # Set QPlainTextEdit read only.
-        # self.ui.statusMessage.setReadOnly(True)
-
         # Setup QTableWidget
-        self.ui.statusMessage.setColumnCount(5)
-        headers = ['Starscript', 'Status', 'ResponseValue', 'Units', 'DateTime']
+        headers = ['DateTime', 'Identifier', 'Status', 'ResponseValue', 'Units']
         self.ui.statusMessage.setHorizontalHeaderLabels(headers)
-        self.ui.statusMessage.verticalHeader().setVisible(False)
         self.statusMessageIndex = 0
 
         # Initialise configuration.
@@ -610,17 +605,23 @@ class Main(QtGui.QMainWindow):
         dateTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         self.ui.statusMessage.insertRow(self.statusMessageIndex)
-        if ident is not None:
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 0, QtGui.QTableWidgetItem(ident))
-        if status is not None:
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 1, QtGui.QTableWidgetItem(status))
-        if responseValue is not None:
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 2, QtGui.QTableWidgetItem(responseValue))
-        if units is not None:
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 3, QtGui.QTableWidgetItem(units))
 
-        self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(dateTime))
+        self.ui.statusMessage.setItem(self.statusMessageIndex, 0, QtGui.QTableWidgetItem(dateTime))
+
+        if ident is not None:
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 1, QtGui.QTableWidgetItem(ident))
+
+        if status is not None:
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 2, QtGui.QTableWidgetItem(status))
+
+        if responseValue is not None:
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 3, QtGui.QTableWidgetItem(responseValue))
+
+        if units is not None:
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(units))
+
         self.ui.statusMessage.resizeColumnsToContents()
+        self.ui.statusMessage.scrollToBottom()
 
         self.statusMessageIndex += 1
 
