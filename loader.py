@@ -61,13 +61,14 @@ class Main(QtGui.QMainWindow):
         self.ui.setupUi(self)
 
         # Setup QTableWidget
-        headers = ['DateTime', 'Identifier', 'Status', 'ResponseValue', 'Units']
+        headers = ['DateTime', 'Identifier', 'Status', 'Units', 'ResponseValue']
         self.ui.statusMessage.setHorizontalHeaderLabels(headers)
-        self.ui.statusMessage.setColumnWidth(0, 122)
-        # self.ui.statusMessage.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
-        # self.ui.statusMessage.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem.setSizeHint())
+        self.ui.statusMessage.setColumnWidth(0, 115)  # Datetime Column
+        self.ui.statusMessage.setColumnWidth(2, 170)  # Status Column
+        self.ui.statusMessage.setColumnWidth(3, 84)
         self.ui.statusMessage.verticalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
         self.ui.statusMessage.verticalHeader().setDefaultSectionSize(20)
+        self.ui.statusMessage.horizontalHeader().setStretchLastSection(True)
         self.statusMessageIndex = 0
 
         # Initialise configuration.
@@ -614,24 +615,28 @@ class Main(QtGui.QMainWindow):
 
         self.ui.statusMessage.setItem(self.statusMessageIndex, 0, QtGui.QTableWidgetItem(dateTime))
 
+        # status = 'SUCCESS, CAPTURE_ACTIVE'
+        units = 'YYYY-MM-DD'
+
         if ident is not None:
             self.ui.statusMessage.setItem(self.statusMessageIndex, 1, QtGui.QTableWidgetItem(ident))
 
         if status is not None:
             self.ui.statusMessage.setItem(self.statusMessageIndex, 2, QtGui.QTableWidgetItem(status))
 
-        if responseValue is not None:
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 3, QtGui.QTableWidgetItem(responseValue))
-
         if units is not None:
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(units))
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 3, QtGui.QTableWidgetItem(units))
 
-        # self.ui.statusMessage.resizeColumnsToContents()
+        if responseValue is not None:
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(responseValue))
 
         # Bodge : Scroll to bottom, scrolls to bottom of widget not last row so it can appear to be empty on some
         # platforms
-        if self.statusMessageIndex > 2:
-            self.ui.statusMessage.scrollToBottom()
+        # if self.statusMessageIndex > 1:
+        #     self.ui.statusMessage.scrollToBottom()
+
+        item = self.ui.statusMessage.item(self.statusMessageIndex, 0)
+        self.ui.statusMessage.scrollToItem(item, QtGui.QAbstractItemView.EnsureVisible)
 
         self.statusMessageIndex += 1
 
