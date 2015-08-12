@@ -19,7 +19,6 @@ __author__ = 'mark'
 
 import socket
 import logging
-import resource
 import threading
 import datetime
 import queue
@@ -50,7 +49,6 @@ class ReadFromUDPSocket(threading.Thread):
             if buffer1.decode().startswith('\x02') and buffer1.decode().endswith('\x04\r\n'):
                 logger.info('%s %s',  'Starinet UDP Packet received from', address)
                 logger.debug('%s %s',  'Starinet UDP Packet', repr(buffer1))
-                logger.debug('%s %s', 'Memory usage (bytes) -', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
                 self.my_queue.put((buffer1, address))
                 self.my_queue.join()
