@@ -1,3 +1,0 @@
-    QHeaderView *headerView = colorizerTable->horizontalHeader();
-    headerView->setResizeMode(QHeaderView::Stretch);
-    headerView->setResizeMode(1, QHeaderView::Interactive);
