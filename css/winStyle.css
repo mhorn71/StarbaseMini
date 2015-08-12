@@ -7,7 +7,7 @@ QGroupBox {
 QGroupBox::title {
     subcontrol-origin: margin;
     left: 10px;
-    padding: 0 3px 0 3px;
+    padding: 3px 3px 0 3px;
 }
 
 QPlainTextEdit {
@@ -20,4 +20,25 @@ QWidget#mplwindow {color:
     background-image: url(images/background.png);
     background-position:center;
     background-repeat:no-repeat;
+}
+
+QTabWidget::pane {
+    border: 1px solid gray;
+    border-radius: 9px;
+}
+
+QTableWidget {
+    font-size: 11px;
+    background-color: '#FFFFE0';
+}
+
+QTableWidget QHeaderView {
+    font-size: 11px;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+QTableWidget QHeaderView::section {
+    height: 18px;
 }
