@@ -482,8 +482,8 @@
     </ChannelMetadata>
 
     <BooleanMetadata>
-        <True>Y</True>
-        <False>N</False>
+        <True>true</True>
+        <False>false</False>
     </BooleanMetadata>
 
 </Instrument>
