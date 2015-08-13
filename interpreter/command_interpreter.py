@@ -17,6 +17,8 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
+
 import dao
 
 
@@ -31,6 +33,9 @@ class CommandInterpreter:
         # Parent object so we can set status messages for blocked and stepped commands.
         self.parent = parent
         self.instrument = self.parent.instrument
+
+        self.response_regex = None
+        self.check_response_message = 'INVALID_RESPONSE_MESSAGE', None
 
         staribus_port = self.parent.config.get('StaribusPort', 'staribus_port')
         staribus_baudrate = self.parent.config.get('StaribusPort', 'baudrate')
@@ -50,7 +55,10 @@ class CommandInterpreter:
         except IOError as msg:
             raise IOError(msg)
 
-    def process_command(self, addr, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter):
+    def process_command(self, addr, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter,
+                        response_regex):
+
+        self.response_regex = response_regex
 
         if blocked_data is None and stepped_data is None:
             response = self.single(addr, base, code, variant, choice, parameter, send_to_port)
@@ -62,6 +70,16 @@ class CommandInterpreter:
             response = 'PREMATURE_TERMINATION', None
 
         return response
+
+    def check_response(self, response):
+
+        if self.response_regex is not None and self.response_regex != 'ACK':
+            if re.match(self.response_regex, response[1]):
+                return True
+            else:
+                return False
+        else:
+            return True
 
     def single(self, addr, base, code, variant, choice, parameter, send_to_port):
 
@@ -77,15 +95,20 @@ class CommandInterpreter:
             response = self.dao_processor.star_message(addr, base, code, variant, param)
 
         else:
-
+            self.response_regex = None
             response = 'SUCCESS', 'This command wasn\'t send to port'
 
-        return response
+        if self.check_response(response):
+            return response
+        else:
+            return self.check_response_message
 
     def blocked(self, addr, base, code, variant, blocked_data, send_to_port):
         # self.parent.status_message('blocked data command')
+        self.response_regex = None
         return 'SUCCESS', 'blocked data command'
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
         # self.parent.status_message('stepped data command')
+        self.response_regex = None
         return 'SUCCESS', 'stepped data command'
