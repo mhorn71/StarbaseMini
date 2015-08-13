@@ -71,7 +71,7 @@ class DaoProcessor:
             try:
                 stream_reply = self.message_stream.stream(constructed_message)
             except IOError as msg:
-                return 'ERROR : %s' % str(msg), None
+                return 'ERROR', str(msg)
 
             if stream_reply == 'TIMEOUT':
                 return 'TIMEOUT', None
