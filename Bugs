@@ -1,2 +1,3 @@
 Debug not saved though configuration tool it's missing.
 Windows spacing between Instrument control labels and comboboxes huge.
+QTableWidget scroll to item doesn't work on Windows.
