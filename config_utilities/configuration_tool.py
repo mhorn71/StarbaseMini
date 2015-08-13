@@ -469,6 +469,9 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         else:
             self.application_conf.set('Application', 'instrument_autodetect', 'False')
 
+        # Logging Level
+        self.application_conf.set('logger_root', 'level', self.loglevelComboBox.itemText(
+            self.loglevelComboBox.currentIndex()))
 
         # StaribusPort
         self.application_conf.set('StaribusPort', 'staribus_port', self.serialPortLineEdit.text())
