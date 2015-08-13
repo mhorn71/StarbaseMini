@@ -131,10 +131,17 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.detectInstrumentPortCheckBox.setChecked(False)
 
         self.detectInstrumentPortCheckBox.setToolTip('Will check each serial ports for the configured instrument'
-                                                      '\nNote : The configured instrument must be attached.')
+                                                     '\nNote : The configured instrument must be attached.')
 
         # Set serial port name in entry box.
         port = self.application_conf.get('StaribusPort', 'staribus_port')
+
+        if port is None:
+            if self.application_conf.get('Application', 'instrument_autodetect'):
+                port = 'No serial ports detected!!'
+            else:
+                port = 'No serial port set!!'
+
         self.serialPortLineEdit.setText(port)
         serialPortLineEditRegexp = QtCore.QRegExp(constants.staribus_port)
         serialPortLineEditValidator = QtGui.QRegExpValidator(serialPortLineEditRegexp)
@@ -474,7 +481,10 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.loglevelComboBox.currentIndex()))
 
         # StaribusPort
-        self.application_conf.set('StaribusPort', 'staribus_port', self.serialPortLineEdit.text())
+        if self.serialPortLineEdit.text().startswith('No serial'):
+            self.application_conf.set('StaribusPort', 'staribus_port', '')
+        else:
+            self.application_conf.set('StaribusPort', 'staribus_port', self.serialPortLineEdit.text())
 
         self.application_conf.set('StaribusPort', 'baudrate',
                                   self.baudrateComboBox.itemText(self.baudrateComboBox.currentIndex()))
