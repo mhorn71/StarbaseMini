@@ -22,7 +22,6 @@ import os
 import logging.config
 import logging
 import datetime
-import time
 
 from PyQt4 import QtGui, QtCore
 
@@ -39,6 +38,7 @@ import starinet_connector
 import futurlec
 import instument_builder
 import interpreter
+import constants
 
 version = '0.0.2'
 
@@ -65,8 +65,9 @@ class Main(QtGui.QMainWindow):
         headers = ['DateTime', 'Identifier', 'Status', 'Units', 'ResponseValue']
         self.ui.statusMessage.setHorizontalHeaderLabels(headers)
         self.ui.statusMessage.setColumnWidth(0, 115)  # Datetime Column
-        self.ui.statusMessage.setColumnWidth(2, 175)  # Status Column
-        self.ui.statusMessage.setColumnWidth(3, 40)  # Units Column
+        self.ui.statusMessage.setColumnWidth(1, 110)  # Ident Column
+        self.ui.statusMessage.setColumnWidth(2, 182)  # Status Column
+        self.ui.statusMessage.setColumnWidth(3, 56)  # Units Column
         self.ui.statusMessage.verticalHeader().setDefaultSectionSize(20)  # Sets the height of the rows.
         self.ui.statusMessage.horizontalHeader().setStretchLastSection(True)  # Expands section to widget width.
         self.statusMessageIndex = 0
@@ -607,7 +608,7 @@ class Main(QtGui.QMainWindow):
     # Status Message method.
     # ----------------------------------------
 
-    def status_message(self, ident, status, responseValue, units):
+    def status_message(self, ident, status, response_value, units):
 
         dateTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -624,8 +625,9 @@ class Main(QtGui.QMainWindow):
         if units is not None:
             self.ui.statusMessage.setItem(self.statusMessageIndex, 3, QtGui.QTableWidgetItem(units))
 
-        if responseValue is not None:
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(responseValue))
+        if response_value is not None:
+            response_value = response_value.replace(constants.RS, '  ')
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(response_value))
 
         #  Make sure the last item set is visible.
         self.ui.statusMessage.scrollToBottom()
@@ -683,14 +685,20 @@ class Main(QtGui.QMainWindow):
         else:
             parameter = self.ui.commandParameter.text()
 
-        response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
-                                                    stepped_data, choice, parameter)
-
-        # The below is only for testing.
-        if response[1] is None:
-            self.status_message(ident, response[0], None, None)
+        if self.instrument.command_dict[ident]['Response']['Units'] == 'None':
+            units = None
         else:
-            self.status_message(ident, response[0], response[1], None)
+            units = self.instrument.command_dict[ident]['Response']['Units']
+
+        if self.instrument.command_dict[ident]['Response']['Regex'] == 'None':
+            response_regex = None
+        else:
+            response_regex = self.instrument.command_dict[ident]['Response']['Regex']
+
+        response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
+                                                            stepped_data, choice, parameter, response_regex)
+
+        self.status_message(ident, response[0], response[1], units)
 
     def exit_triggered(self):
         # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
@@ -711,7 +719,7 @@ class Main(QtGui.QMainWindow):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     myapp = Main()
-    myapp.setWindowTitle('Starbase-Mini -- Ver %s' % version)
+    myapp.setWindowTitle('StarbaseMini -- Ver %s' % version)
     myapp.showMaximized()
     myapp.show()
     x = app.exec_()
