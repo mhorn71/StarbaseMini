@@ -628,8 +628,6 @@ class Main(QtGui.QMainWindow):
             self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(responseValue))
 
         #  Make sure the last item set is visible.
-        # item = self.ui.statusMessage.item(self.statusMessageIndex, 0)
-        # self.ui.statusMessage.scrollToItem(item, QtGui.QAbstractItemView.PositionAtCenter)
         self.ui.statusMessage.scrollToBottom()
 
         self.statusMessageIndex += 1
