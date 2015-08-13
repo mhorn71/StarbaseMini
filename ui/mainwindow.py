@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Tue Aug 11 12:04:00 2015
+# Created: Thu Aug 13 17:38:25 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,8 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(905, 647)
+        MainWindow.resize(905, 651)
+        MainWindow.setMinimumSize(QtCore.QSize(0, 651))
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
         MainWindow.setAutoFillBackground(False)
         MainWindow.setStyleSheet(_fromUtf8(""))
@@ -66,7 +67,17 @@ class Ui_MainWindow(object):
         self.groupBox_2.setSizePolicy(sizePolicy)
         self.groupBox_2.setMinimumSize(QtCore.QSize(147, 0))
         self.groupBox_2.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.groupBox_2.setStyleSheet(_fromUtf8(""))
+        self.groupBox_2.setStyleSheet(_fromUtf8("QGroupBox {\n"
+"    border: 1px solid gray;\n"
+"    border-radius: 9px;\n"
+"    margin-top: 0.5em;\n"
+"}\n"
+"\n"
+"QGroupBox::title {\n"
+"    subcontrol-origin: margin;\n"
+"    left: 10px;\n"
+"    padding: 3px 3px 0 3px;\n"
+"}"))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.layoutWidget = QtGui.QWidget(self.groupBox_2)
         self.layoutWidget.setGeometry(QtCore.QRect(10, 20, 131, 581))
@@ -132,9 +143,11 @@ class Ui_MainWindow(object):
         self.executeButton = QtGui.QPushButton(self.layoutWidget1)
         self.executeButton.setObjectName(_fromUtf8("executeButton"))
         self.gridLayout.addWidget(self.executeButton, 7, 0, 1, 1)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, _fromUtf8(""))
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 100, 30))
         self.UserInst.setObjectName(_fromUtf8("UserInst"))
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 0, 131, 521))
@@ -169,8 +182,8 @@ class Ui_MainWindow(object):
         self.channel8Button = QtGui.QPushButton(self.layoutWidget2)
         self.channel8Button.setObjectName(_fromUtf8("channel8Button"))
         self.gridLayout_5.addWidget(self.channel8Button, 8, 0, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_5.addItem(spacerItem, 9, 0, 1, 1)
+        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_5.addItem(spacerItem1, 9, 0, 1, 1)
         self.toolBox.addItem(self.UserInst, _fromUtf8(""))
         self.verticalLayout.addWidget(self.toolBox)
         self.gridLayout_2.addWidget(self.groupBox_2, 0, 1, 2, 1)
