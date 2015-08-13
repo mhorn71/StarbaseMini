@@ -65,7 +65,7 @@ class Main(QtGui.QMainWindow):
         headers = ['DateTime', 'Identifier', 'Status', 'Units', 'ResponseValue']
         self.ui.statusMessage.setHorizontalHeaderLabels(headers)
         self.ui.statusMessage.setColumnWidth(0, 115)  # Datetime Column
-        self.ui.statusMessage.setColumnWidth(2, 170)  # Status Column
+        self.ui.statusMessage.setColumnWidth(2, 180)  # Status Column
         self.ui.statusMessage.setColumnWidth(3, 40)  # Units Column
         self.ui.statusMessage.verticalHeader().setDefaultSectionSize(20)  # Sets the height of the rows.
         self.ui.statusMessage.horizontalHeader().setStretchLastSection(True)  # Expands section to widget width.
