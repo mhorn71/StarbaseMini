@@ -112,7 +112,7 @@
             </Parameter>
             <Response>
                 <DataTypeName>DecimalInteger</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
-                <Units>/s</Units>  # Any string you like this is displayed in the statusMessage after the response.
+                <Units>Seconds</Units>  # Any string you like this is displayed in the statusMessage after the response.
                 <Regex>^([0-9][0-9][0-9][0-9])$</Regex>
             </Response>
         </Command>
@@ -132,7 +132,7 @@
             </Parameter>
             <Response>
                 <DataTypeName>None</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
-                <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
+                <Units>Seconds</Units>  # Any string you like this is displayed in the statusMessage after the response.
                 <Regex>ACK</Regex>
             </Response>
         </Command>
