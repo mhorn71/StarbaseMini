@@ -72,12 +72,15 @@ class CommandInterpreter:
         return response
 
     def check_response(self, response):
-
+        #  Not sure this logic makes sense in all cases so beware demons maybe present!!
         if self.response_regex is not None and self.response_regex != 'ACK':
-            if re.match(self.response_regex, response[1]):
-                return True
+            if response[1] is not None:
+                if re.match(self.response_regex, response[1]):
+                    return True
+                else:
+                    return False
             else:
-                return False
+                return True
         else:
             return True
 
