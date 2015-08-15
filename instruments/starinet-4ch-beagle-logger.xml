@@ -439,7 +439,7 @@
             <Response>
                 <DataTypeName>String</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
                 <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
-                <Regex>^(Ver:\s[A-Z]*\d*\s*)$</Regex> # Regex of response can be ACK if response is ACK
+                <Regex>None</Regex> # Regex of response can be ACK if response is ACK
             </Response>
         </Command>
     </Plugin>
