@@ -1,3 +1,103 @@
+Module Overview.
+
+DaoProcessor
+------------
+Initialise DaoProcessor with the following parameters in order:
+
+serial_port = The serial port too which the instrument is attached,as defined in
+              the application configuration.
+
+serial_baudrate = The serial port baudrate as defined in the application
+                  configuration.
+
+serial_timeout = The serial port timeout as defined in the application
+                 configuration this is also used as the Starinet    timeout as
+                 well. It should really be called dao_timeout not serial port.
+
+starinet_address = The IPv4 address of Starinet Instrument as defined in the
+                   Instrument XML.
+
+starinet_port = The network port to send Starinet UDP Packets too, as defined
+                in the Instrument XML.
+
+stream = The type of stream we want to use, i.e Starinet or Staribus.
+
+This raises an IOError in the event the particular set stream can be initialised.
+
+DaoProcessor.star_message
+-------------------------
+The method for sending a Staribus Message to the initialised instrument.
+
+Each time the method is called the following parameter need to be provided.
+
+Instrument address = Both Staribus and Starinet use an instrument address though
+                     Starinet always uses the address 000, Addresses 254 and 255
+                     are reserved for Discovery and Not Assigned respectively.
+
+Command Code Base =  The module base code.
+
+Command Code = The command code itself.
+
+Command Variant = The command variant at present is used internally to the
+                  application but is used by the Instrument controller.  It's
+                  currently used by the UKRAA Futurlec controller to distinguish
+                  the number of channels being sampled.
+
+Command Parameter = The parameter of choice as supplied by the user though the UI
+                    interface as well as Blocked and Stepped Commands.
+
+star_message returns a tuple, (status, payload)
+
+Payload can be None
+
+Status can return the following errors : ERROR, CRC_ERROR, MALFORMED_RESPONSE,
+                                         TIMEOUT
+
+The Module raises IOError in the event of stream error.
+
+================================================================================
+Note these shouldn't be called directly but are described for information only.
+
+StaribusCommandMessage
+----------------------
+
+Constructs a fully formed Staribus message from the following supplied
+parameters.
+
+Instrument Address =  The address supplied in the range 000 - 253 which is
+                      converted to a hex bytes. e.g. 000 = 00
+
+Command Code Base = The command code base which should be a hex byte.
+
+Command Code = The command code which should be a hex byte.
+
+Command Variant = The command variant should be a hex word.
+
+Parameter = The choice or parameter required by the instrument controller.
+
+Returns Staribus message including crc and control characters.
+
+If a message can not be constructed 'MALFORMED_MESSAGE' string will be returned.
+
+See http://www.ukraa.com/www/downloads.html staribus_specification.pdf
+
+StaribusResponseMessage
+-----------------------
+
+Deconstructs a Staribus packet.
+
+The entire packet including control characters is required for decipher to work.
+
+Control characters STX, EOT CRLF are removed.  CRC is checked.
+
+Returns: tuple consisting of Status message string and payload.
+
+Payload can be None.
+
+Will return 'MALFORMED_RESPONSE' string if unable decipher response or CRC_ERROR
+if crc check fails as Status message.
+
+================================================================================
 Notes:
 
 To change the controller speed of the UKRAA Futurlec controller you need to send,
@@ -17,3 +117,5 @@ Doing a controller hard reset we think resets the baudrate to 57600???
 --------------
 
 Probably still need to update docstrings. ;-))
+
+---------------
