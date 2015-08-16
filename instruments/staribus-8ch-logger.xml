@@ -39,7 +39,7 @@
             <CommandCode>01</CommandCode>
             <CommandVariant>0001</CommandVariant>
             <Description>Gets the data produced by the Instrument.</Description>
-            <SendToPort>True</SendToPort>
+            <SendToPort>False</SendToPort>
             <BlockedDataCommand>02,03</BlockedDataCommand>
             <SteppedDataCommand>None</SteppedDataCommand>
             <Parameter>
