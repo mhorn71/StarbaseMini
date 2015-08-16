@@ -58,7 +58,10 @@ class CommandInterpreter:
     def process_command(self, addr, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter,
                         response_regex):
 
-        self.response_regex = response_regex
+        if response_regex is None:
+            self.response_regex = None
+        else:
+            self.response_regex = response_regex
 
         if blocked_data is None and stepped_data is None:
             response = self.single(addr, base, code, variant, choice, parameter, send_to_port)
@@ -98,7 +101,7 @@ class CommandInterpreter:
             response = self.dao_processor.star_message(addr, base, code, variant, param)
 
         else:
-            self.response_regex = None
+
             response = 'SUCCESS', 'This command wasn\'t send to port'
 
         if self.check_response(response):
@@ -107,11 +110,14 @@ class CommandInterpreter:
             return self.check_response_message
 
     def blocked(self, addr, base, code, variant, blocked_data, send_to_port):
-        # self.parent.status_message('blocked data command')
-        self.response_regex = None
-        return 'SUCCESS', 'blocked data command'
+
+        if send_to_port == 'True':
+            return 'INVALID_XML', 'blocked data command, send to port is True!!'
+        else:
+            return 'SUCCESS', 'blocked data command'
+
+
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
         # self.parent.status_message('stepped data command')
-        self.response_regex = None
         return 'SUCCESS', 'stepped data command'
