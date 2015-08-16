@@ -698,6 +698,8 @@ class Main(QtGui.QMainWindow):
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                             stepped_data, choice, parameter, response_regex)
 
+        # todo extra steps depending on what is being done??
+
         self.status_message(ident, response[0], response[1], units)
 
     def exit_triggered(self):
