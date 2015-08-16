@@ -116,6 +116,9 @@ class StaribusResponseMessage:
                 payload = message[14:-4]
                 self.logger.debug('Message payload : %s' % repr(payload))
 
+                # strip US from message.
+                payload = payload.replace(constants.US, '')
+
                 return status, payload
             else:
                 self.logger.debug('Message failed crc check.')
