@@ -18,7 +18,7 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
-import time
+import logging
 
 from PyQt4 import QtGui
 
@@ -32,6 +32,8 @@ class CommandInterpreter:
         :param parent: Parent Object which should be the UI Object.
         :raises: TypeError and IOError
         '''
+
+        self.logger = logging.getLogger('interpreter.CommandInterpreter')
 
         # Parent object so we can set status messages for blocked and stepped commands.
         self.parent = parent
@@ -151,48 +153,70 @@ class CommandInterpreter:
             if secondary_command_key is None:
                 return 'INVALID_XML', 'Secondary command not found'
 
-            sec_variant = self.instrument.command_dict[primary_command_key]['Variant']
-            sec_choice = self.instrument.command_dict[primary_command_key]['Parameters']['Choices']
-            sec_parameter = self.instrument.command_dict[primary_command_key]['Parameters']['Regex']
-            sec_stp = self.instrument.command_dict[primary_command_key]['SendToPort']
-
+            print('Primary Command Ident : %s' % primary_command_key)
+            print('Primary CodeBase : %s' % base)
+            print('Primary CommandCode : %s' % command_codes[0])
+            pri_variant = self.instrument.command_dict[primary_command_key]['Variant']
+            print('Primary variant : %s' % pri_variant)
+            pri_choice = self.instrument.command_dict[primary_command_key]['Parameters']['Choices']
+            print('Primary choices : %s' % pri_choice)
+            pri_parameter = self.instrument.command_dict[primary_command_key]['Parameters']['Regex']
+            print('Primary parameter : %s' % pri_parameter )
+            pri_stp = self.instrument.command_dict[primary_command_key]['SendToPort']
+            print('Primary SendToPort : %s' % pri_stp)
             # if self.instrument.command_dict[primary_command_key]['Response']['Units'] == 'None':
             #     sec_units = None
             # else:
             #     sec_units = self.instrument.command_dict[primary_command_key]['Response']['Units']
 
-            if sec_choice != 'None':
+            if pri_choice != 'None':
                 return 'INVALID_XML', 'Blocked primary command has choices which isn\'t allowed.'
 
-            if sec_parameter != 'None':
+            if pri_parameter != 'None':
                 return 'INVALID_XML', 'Blocked primary command has a parameter which isn\'t allowed.'
 
             self.response_regex = self.instrument.command_dict[primary_command_key]['Response']['Regex']
+            print('Primary response regex : %s' % self.response_regex)
 
-            primary_command_response = self.single(addr, base, command_codes[0], sec_variant, None, None, sec_stp)
+            primary_command_response = self.single(addr, base, command_codes[0], pri_variant, None, None, pri_stp)
+
+            print('Primary response : %s' % repr(primary_command_response))
 
             # Check primary response status starts with SUCCESS.
             if primary_command_response[0].startswith('SUCCESS'):
+                print('Primary command started with SUCCESS')
 
                 # Check primary response is valid
                 if self.check_response(primary_command_response):
+                    print('Primary response passed regex check')
 
                     primary_response = primary_command_response[1]
+
+                    print('Primary command response : %s' % primary_response)
 
                     # # Update the UI with the status of the Primary Command.
                     # self.parent.status_message(primary_command_key, primary_command_response[0],
                     #                            primary_command_response[1], sec_units)
+                else:
+                    print('Primary response failed regex check.')
+                    return primary_command_response
             else:
+                print('Primary response didn\'t start with SUCCESS.')
                 return primary_command_response
 
             # Check primary response will pass secondary parameter check if present.
 
+            print('Secondary Command Ident : %s' % secondary_command_key)
+
             secondary_parameter_regex = self.instrument.command_dict[secondary_command_key]['Parameters']['Regex']
+
+            print('Secondary response regex : %s' % secondary_parameter_regex)
 
             if secondary_parameter_regex == 'None':
                 secondary_parameter_regex = None
 
             if primary_response is None and secondary_parameter_regex is not None:
+                print('PREMATURE_TERMINATION : Secondary command requires a parameter and none is available.')
                 return 'PREMATURE_TERMINATION', 'Secondary command requires a parameter and none is available.'
 
             # reset self.response_regex to secondary command regex
@@ -201,11 +225,15 @@ class CommandInterpreter:
             if re.match(secondary_parameter_regex, primary_response):
                 try:
                     count = int(primary_response, 16)
+                    print('Secondary command iter count : %s' % str(count))
                 except ValueError:
+                    print('PREMATURE_TERMINATION : Secondary command expected iterable primary response')
                     return 'PREMATURE_TERMINATION', 'Secondary command expected iterable primary response'
 
-                pri_variant = self.instrument.command_dict[secondary_command_key]['Variant']
-                pri_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
+                sec_variant = self.instrument.command_dict[secondary_command_key]['Variant']
+                print('Secondary command variant : %s' % sec_variant)
+                sec_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
+                print('Secondary SendToPort : %s' % sec_stp)
 
                 # if self.instrument.command_dict[secondary_command_key]['Response']['Units'] == 'None':
                 #     pri_units = None
@@ -227,7 +255,7 @@ class CommandInterpreter:
                     datafile = hex(i).split('x')[1].upper().zfill(4)  # change count to hex
 
                     secondary_command_response = self.single(addr, base, command_codes[1],
-                                                             pri_variant, None, datafile, pri_stp)
+                                                             sec_variant, None, datafile, sec_stp)
 
                     # Check primary response is valid
                     if self.check_response(secondary_command_response):
