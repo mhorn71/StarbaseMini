@@ -90,8 +90,7 @@
             <Response>
                 <DataTypeName>HexInteger</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
                 <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
-                <Regex>^(((19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01]))\s((([0-1][0-9])|([2][0-3])):
-                    ([0-5][0-9]):([0-5][0-9]))(\s[+\-](\d{3})\s\d{4}\s{3})\d*)$</Regex>
+                <Regex>^(((19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01]))\s((([0-1][0-9])|([2][0-3])):([0-5][0-9]):([0-5][0-9]))(\s[+\-](\d{3})\s\d{4}\s{3})\d*)$</Regex>
             </Response>
         </Command>
 
