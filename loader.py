@@ -53,6 +53,9 @@ class Main(QtGui.QMainWindow):
         # Parameter / check state, regex parameter.
         self.parameter_regex = '^.*$'
 
+        # DataBlock
+        self.DataBlock = []
+
         # Disable UI boolean.
         self.disable_all_boolean = False
 
@@ -697,6 +700,8 @@ class Main(QtGui.QMainWindow):
 
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                             stepped_data, choice, parameter, response_regex)
+
+        print(repr(self.DataBlock))
 
         # todo extra steps depending on what is being done??
 
