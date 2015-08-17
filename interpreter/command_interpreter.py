@@ -245,6 +245,7 @@ class CommandInterpreter:
                 progressDialog = QtGui.QProgressDialog('Downloading data ...',
                                  str("Abort"), 0, count)
                 progressDialog.setWindowTitle('getData')
+                progressDialog.setModal(True)
                 progressDialog.show()
 
                 for i in range(count):
