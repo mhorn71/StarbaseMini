@@ -142,9 +142,11 @@ class CommandInterpreter:
 
             # Iterate over dict keys and get command idents
             for key in self.instrument.command_dict.keys():
-                if self.instrument.command_dict[key]['Code'] == command_codes[0]:
+                if self.instrument.command_dict[key]['Code'] == command_codes[0] and \
+                        self.instrument.command_dict[key]['Base'] == base:
                     primary_command_key = key
-                elif self.instrument.command_dict[key]['Code'] == command_codes[1]:
+                elif self.instrument.command_dict[key]['Code'] == command_codes[1] and \
+                        self.instrument.command_dict[key]['Base'] == base:
                     secondary_command_key = key
 
             if primary_command_key is None:
