@@ -260,6 +260,12 @@ class CommandInterpreter:
                     secondary_command_response = self.single(addr, base, command_codes[1],
                                                              sec_variant, None, datafile, sec_stp)
 
+                    if secondary_command_response[0].startswith('SUCCESS'):
+                        pass
+                    else:
+                        progressDialog.hide()
+                        return secondary_command_response
+
                     # Check primary response is valid
                     if self.check_response(secondary_command_response):
 
