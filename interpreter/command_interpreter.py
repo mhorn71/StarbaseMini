@@ -18,6 +18,9 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
+import time
+
+from PyQt4 import QtGui
 
 import dao
 
@@ -111,12 +114,137 @@ class CommandInterpreter:
 
     def blocked(self, addr, base, code, variant, blocked_data, send_to_port):
 
+        '''
+        Blocked data commands are almost certainly getData Starbase probably does this in a much nicer way.
+        '''
+
         if send_to_port == 'True':
             return 'INVALID_XML', 'blocked data command, send to port is True!!'
         else:
-            return 'SUCCESS', 'blocked data command'
 
+            command_codes = blocked_data.split(',')
 
+            self.parent.DataBlock = []
+
+            primary_command_key = None
+            secondary_command_key = None
+
+            primary_response = None
+            secondary_response = None
+
+            # Blocked commands cant have two sub commands.
+            if len(command_codes) == 2:
+                pass
+            else:
+                return 'INVALID_XML', 'Command should consist of two sub commands only'
+
+            # Iterate over dict keys and get command idents
+            for key in self.instrument.command_dict.keys():
+                if self.instrument.command_dict[key]['Code'] == command_codes[0]:
+                    primary_command_key = key
+                elif self.instrument.command_dict[key]['Code'] == command_codes[1]:
+                    secondary_command_key = key
+
+            if primary_command_key is None:
+                return 'INVALID_XML', 'Primary command not found'
+
+            if secondary_command_key is None:
+                return 'INVALID_XML', 'Secondary command not found'
+
+            sec_variant = self.instrument.command_dict[primary_command_key]['Variant']
+            sec_choice = self.instrument.command_dict[primary_command_key]['Parameters']['Choices']
+            sec_parameter = self.instrument.command_dict[primary_command_key]['Parameters']['Regex']
+            sec_stp = self.instrument.command_dict[primary_command_key]['SendToPort']
+
+            # if self.instrument.command_dict[primary_command_key]['Response']['Units'] == 'None':
+            #     sec_units = None
+            # else:
+            #     sec_units = self.instrument.command_dict[primary_command_key]['Response']['Units']
+
+            if sec_choice != 'None':
+                return 'INVALID_XML', 'Blocked primary command has choices which isn\'t allowed.'
+
+            if sec_parameter != 'None':
+                return 'INVALID_XML', 'Blocked primary command has a parameter which isn\'t allowed.'
+
+            self.response_regex = self.instrument.command_dict[primary_command_key]['Response']['Regex']
+
+            primary_command_response = self.single(addr, base, command_codes[0], sec_variant, None, None, sec_stp)
+
+            # Check primary response status starts with SUCCESS.
+            if primary_command_response[0].startswith('SUCCESS'):
+
+                # Check primary response is valid
+                if self.check_response(primary_command_response):
+
+                    primary_response = primary_command_response[1]
+
+                    # # Update the UI with the status of the Primary Command.
+                    # self.parent.status_message(primary_command_key, primary_command_response[0],
+                    #                            primary_command_response[1], sec_units)
+            else:
+                return primary_command_response
+
+            # Check primary response will pass secondary parameter check if present.
+
+            secondary_parameter_regex = self.instrument.command_dict[secondary_command_key]['Parameters']['Regex']
+
+            if secondary_parameter_regex == 'None':
+                secondary_parameter_regex = None
+
+            if primary_response is None and secondary_parameter_regex is not None:
+                return 'PREMATURE_TERMINATION', 'Secondary command requires a parameter and none is available.'
+
+            # reset self.response_regex to secondary command regex
+            self.response_regex = secondary_parameter_regex
+
+            if re.match(secondary_parameter_regex, primary_response):
+                try:
+                    count = int(primary_response, 16)
+                except ValueError:
+                    return 'PREMATURE_TERMINATION', 'Secondary command expected iterable primary response'
+
+                pri_variant = self.instrument.command_dict[secondary_command_key]['Variant']
+                pri_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
+
+                # if self.instrument.command_dict[secondary_command_key]['Response']['Units'] == 'None':
+                #     pri_units = None
+                # else:
+                #     pri_units = self.instrument.command_dict[secondary_command_key]['Response']['Units']
+
+                progressDialog = QtGui.QProgressDialog('Downloading data ...',
+                                 str("Abort"), 0, count)
+                progressDialog.setWindowTitle('getData')
+                progressDialog.show()
+
+                for i in range(count):
+
+                    progressDialog.setValue(i)
+
+                    if progressDialog.wasCanceled():
+                        return 'ABORT', None
+
+                    datafile = hex(i).split('x')[1].upper().zfill(4)  # change count to hex
+
+                    secondary_command_response = self.single(addr, base, command_codes[1],
+                                                             pri_variant, None, datafile, pri_stp)
+
+                    # Check primary response is valid
+                    if self.check_response(secondary_command_response):
+
+                        secondary_response = secondary_command_response[1]
+
+                        self.parent.DataBlock.append(secondary_response)
+                        #
+                        # # Update the UI with the status of the Primary Command.
+                        # self.parent.status_message(secondary_command_key, secondary_command_response[0],
+                        #                            secondary_command_response[1], sec_units)
+                        # time.sleep(0.1)
+                    else:
+                        progressDialog.hide()
+                        return 'PREMATURE_TERMINATION', 'NODATA'
+
+            return 'SUCCESS', None
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
         # self.parent.status_message('stepped data command')
