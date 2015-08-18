@@ -166,10 +166,6 @@ class CommandInterpreter:
             print('Primary parameter : %s' % pri_parameter )
             pri_stp = self.instrument.command_dict[primary_command_key]['SendToPort']
             print('Primary SendToPort : %s' % pri_stp)
-            # if self.instrument.command_dict[primary_command_key]['Response']['Units'] == 'None':
-            #     sec_units = None
-            # else:
-            #     sec_units = self.instrument.command_dict[primary_command_key]['Response']['Units']
 
             if pri_choice != 'None':
                 return 'INVALID_XML', 'Blocked primary command has choices which isn\'t allowed.'
@@ -196,9 +192,6 @@ class CommandInterpreter:
 
                     print('Primary command response : %s' % primary_response)
 
-                    # # Update the UI with the status of the Primary Command.
-                    # self.parent.status_message(primary_command_key, primary_command_response[0],
-                    #                            primary_command_response[1], sec_units)
                 else:
                     print('Primary response failed regex check.')
                     return primary_command_response
@@ -237,15 +230,12 @@ class CommandInterpreter:
                 sec_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
                 print('Secondary SendToPort : %s' % sec_stp)
 
-                # if self.instrument.command_dict[secondary_command_key]['Response']['Units'] == 'None':
-                #     pri_units = None
-                # else:
-                #     pri_units = self.instrument.command_dict[secondary_command_key]['Response']['Units']
-
                 progressDialog = QtGui.QProgressDialog('Downloading data ...',
                                  str("Abort"), 0, count)
                 progressDialog.setWindowTitle('getData')
                 progressDialog.setModal(True)
+                progressDialog.setStyleSheet("QProgressBar::chunk { height: 5px; width: 20px;  margin: 0.5px; }"
+                                             "QProgressBar { max-height 5px; text-align: center;}")
                 progressDialog.show()
 
                 for i in range(count):
