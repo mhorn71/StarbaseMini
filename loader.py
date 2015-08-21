@@ -338,6 +338,8 @@ class Main(QtGui.QMainWindow):
             with open(self.stylesheet, 'r') as style:
                 self.setStyleSheet(style.read())
 
+        self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
+
     # ----------------------------------------
     # For here on is the UI populate methods.
     # ----------------------------------------

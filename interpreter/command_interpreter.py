@@ -246,6 +246,8 @@ class CommandInterpreter:
                     with open(self.parent.stylesheet, 'r') as style:
                         progressDialog.setStyleSheet(style.read())
 
+                progressDialog.setWindowIcon(QtGui.QIcon('images/starbase.png'))
+
                 progressDialog.show()
 
                 for i in range(count):
