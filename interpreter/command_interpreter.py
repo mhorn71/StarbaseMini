@@ -152,19 +152,19 @@ class CommandInterpreter:
             if secondary_command_key is None:
                 return 'INVALID_XML', 'Secondary command not found'
 
-            print('Primary Command Ident : %s' % primary_command_key)
-            print('Primary CodeBase : %s' % base)
-            print('Primary CommandCode : %s' % command_codes[0])
+            self.logger.debug('Primary Command Ident : %s' % primary_command_key)
+            self.logger.debug('Primary CodeBase : %s' % base)
+            self.logger.debug('Primary CommandCode : %s' % command_codes[0])
             pri_variant = self.instrument.command_dict[primary_command_key]['Variant']
-            print('Primary variant : %s' % pri_variant)
+            self.logger.debug('Primary variant : %s' % pri_variant)
             pri_choice = self.instrument.command_dict[primary_command_key]['Parameters']['Choices']
-            print('Primary choices : %s' % pri_choice)
+            self.logger.debug('Primary choices : %s' % pri_choice)
             pri_parameter = self.instrument.command_dict[primary_command_key]['Parameters']['Regex']
-            print('Primary parameter : %s' % pri_parameter )
+            self.logger.debug('Primary parameter : %s' % pri_parameter )
             pri_stp = self.instrument.command_dict[primary_command_key]['SendToPort']
-            print('Primary SendToPort : %s' % pri_stp)
+            self.logger.debug('Primary SendToPort : %s' % pri_stp)
             pri_datatype = self.instrument.command_dict[primary_command_key]['Response']['DataTypeName']
-            print('Primary DataTypeName : %s' % pri_datatype)
+            self.logger.debug('Primary DataTypeName : %s' % pri_datatype)
 
             if pri_choice != 'None':
                 return 'INVALID_XML', 'Blocked primary command has choices which isn\'t allowed.'
@@ -173,44 +173,44 @@ class CommandInterpreter:
                 return 'INVALID_XML', 'Blocked primary command has a parameter which isn\'t allowed.'
 
             self.response_regex = self.instrument.command_dict[primary_command_key]['Response']['Regex']
-            print('Primary response regex : %s' % self.response_regex)
+            self.logger.debug('Primary response regex : %s' % self.response_regex)
 
             primary_command_response = self.single(addr, base, command_codes[0], pri_variant, None, None, pri_stp)
 
-            print('Primary response : %s' % repr(primary_command_response))
+            self.logger.debug('Primary response : %s' % repr(primary_command_response))
 
             # Check primary response status starts with SUCCESS.
             if primary_command_response[0].startswith('SUCCESS'):
-                print('Primary command started with SUCCESS')
+                self.logger.debug('Primary command started with SUCCESS')
 
                 # Check primary response is valid
                 if self.check_response(primary_command_response):
-                    print('Primary response passed regex check')
+                    self.logger.debug('Primary response passed regex check')
 
                     primary_response = primary_command_response[1]
 
-                    print('Primary command response : %s' % primary_response)
+                    self.logger.debug('Primary command response : %s' % primary_response)
 
                 else:
-                    print('Primary response failed regex check.')
+                    self.logger.debug('Primary response failed regex check.')
                     return primary_command_response
             else:
-                print('Primary response didn\'t start with SUCCESS.')
+                self.logger.debug('Primary response didn\'t start with SUCCESS.')
                 return primary_command_response
 
             # Check primary response will pass secondary parameter check if present.
 
-            print('Secondary Command Ident : %s' % secondary_command_key)
+            self.logger.debug('Secondary Command Ident : %s' % secondary_command_key)
 
             secondary_parameter_regex = self.instrument.command_dict[secondary_command_key]['Parameters']['Regex']
 
-            print('Secondary response regex : %s' % secondary_parameter_regex)
+            self.logger.debug('Secondary response regex : %s' % secondary_parameter_regex)
 
             if secondary_parameter_regex == 'None':
                 secondary_parameter_regex = None
 
             if primary_response is None and secondary_parameter_regex is not None:
-                print('PREMATURE_TERMINATION : Secondary command requires a parameter and none is available.')
+                self.logger.debug('PREMATURE_TERMINATION : Secondary command requires a parameter and none is available.')
                 return 'PREMATURE_TERMINATION', 'Secondary command requires a parameter and none is available.'
 
             # reset self.response_regex to secondary command regex
@@ -224,18 +224,18 @@ class CommandInterpreter:
                     elif pri_datatype == 'HexInteger':
                         count = int(primary_response, 16)
                     else:
-                        print('PREMATURE_TERMINATION : Primary command DataTypeName unknown.')
+                        self.logger.debug('PREMATURE_TERMINATION : Primary command DataTypeName unknown.')
                         return 'PREMATURE_TERMINATION', 'Primary command DataTypeName unknown.'
 
-                    print('Secondary command iter count : %s' % str(count))
+                    self.logger.debug('Secondary command iter count : %s' % str(count))
                 except ValueError:
-                    print('PREMATURE_TERMINATION : Secondary command expected iterable primary response')
+                    self.logger.debug('PREMATURE_TERMINATION : Secondary command expected iterable primary response')
                     return 'PREMATURE_TERMINATION', 'Secondary command expected iterable primary response'
 
                 sec_variant = self.instrument.command_dict[secondary_command_key]['Variant']
-                print('Secondary command variant : %s' % sec_variant)
+                self.logger.debug('Secondary command variant : %s' % sec_variant)
                 sec_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
-                print('Secondary SendToPort : %s' % sec_stp)
+                self.logger.debug('Secondary SendToPort : %s' % sec_stp)
 
                 progressDialog = QtGui.QProgressDialog('Downloading data ...',
                                  str("Abort"), 0, count)
