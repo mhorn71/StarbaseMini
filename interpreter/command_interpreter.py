@@ -20,7 +20,7 @@ __author__ = 'mark'
 import re
 import logging
 
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 
 import dao
 
@@ -131,9 +131,6 @@ class CommandInterpreter:
             primary_command_key = None
             secondary_command_key = None
 
-            primary_response = None
-            secondary_response = None
-
             # Blocked commands cant have two sub commands.
             if len(command_codes) == 2:
                 pass
@@ -166,6 +163,8 @@ class CommandInterpreter:
             print('Primary parameter : %s' % pri_parameter )
             pri_stp = self.instrument.command_dict[primary_command_key]['SendToPort']
             print('Primary SendToPort : %s' % pri_stp)
+            pri_datatype = self.instrument.command_dict[primary_command_key]['Response']['DataTypeName']
+            print('Primary DataTypeName : %s' % pri_datatype)
 
             if pri_choice != 'None':
                 return 'INVALID_XML', 'Blocked primary command has choices which isn\'t allowed.'
@@ -219,7 +218,15 @@ class CommandInterpreter:
 
             if re.match(secondary_parameter_regex, primary_response):
                 try:
-                    count = int(primary_response, 16)
+                    # Check DataTypeName so we know whether to convert to integer or not.
+                    if pri_datatype == 'Integer':
+                        count = primary_response
+                    elif pri_datatype == 'HexInteger':
+                        count = int(primary_response, 16)
+                    else:
+                        print('PREMATURE_TERMINATION : Primary command DataTypeName unknown.')
+                        return 'PREMATURE_TERMINATION', 'Primary command DataTypeName unknown.'
+
                     print('Secondary command iter count : %s' % str(count))
                 except ValueError:
                     print('PREMATURE_TERMINATION : Secondary command expected iterable primary response')
@@ -248,7 +255,11 @@ class CommandInterpreter:
                     if progressDialog.wasCanceled():
                         return 'ABORT', None
 
-                    datafile = hex(i).split('x')[1].upper().zfill(4)  # change count to hex
+                    # if primary response is HexInteger convert integer to hex and fill to four chars with zeros.
+                    if pri_datatype == 'HexInteger':
+                        datafile = hex(i).split('x')[1].upper().zfill(4)  # change count to hex
+                    else:
+                        datafile = i
 
                     secondary_command_response = self.single(addr, base, command_codes[1],
                                                              sec_variant, None, datafile, sec_stp)
@@ -265,11 +276,7 @@ class CommandInterpreter:
                         secondary_response = secondary_command_response[1]
 
                         self.parent.DataBlock.append(secondary_response)
-                        #
-                        # # Update the UI with the status of the Primary Command.
-                        # self.parent.status_message(secondary_command_key, secondary_command_response[0],
-                        #                            secondary_command_response[1], sec_units)
-                        # time.sleep(0.1)
+
                     else:
                         progressDialog.hide()
                         return 'PREMATURE_TERMINATION', 'NODATA'
@@ -277,5 +284,4 @@ class CommandInterpreter:
             return 'SUCCESS', None
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
-        # self.parent.status_message('stepped data command')
         return 'SUCCESS', 'stepped data command'
