@@ -234,8 +234,11 @@ class CommandInterpreter:
                                  str("Abort"), 0, count)
                 progressDialog.setWindowTitle('getData')
                 progressDialog.setModal(True)
-                progressDialog.setStyleSheet("QProgressBar::chunk { height: 5px; width: 20px;  margin: 0.5px; }"
-                                             "QProgressBar { max-height 5px; text-align: center;}")
+
+                if self.parent.style_boolean:
+                    with open(self.parent.stylesheet, 'r') as style:
+                        progressDialog.setStyleSheet(style.read())
+
                 progressDialog.show()
 
                 for i in range(count):

@@ -55,6 +55,7 @@ class Main(QtGui.QMainWindow):
 
         # DataBlock
         self.DataBlock = []
+        self.DataBlockBool = False
 
         # Disable UI boolean.
         self.disable_all_boolean = False
@@ -321,20 +322,20 @@ class Main(QtGui.QMainWindow):
         self.instrumentBuilder = instument_builder.InstrumentBuilder()
 
         # Style sheets
-        style_boolean = False
+        self.style_boolean = False
 
         if sys.platform.startswith('darwin'):
-            stylesheet = 'css/macStyle.css'
-            style_boolean = True
+            self.stylesheet = 'css/macStyle.css'
+            self.style_boolean = True
         elif sys.platform.startswith('win32'):
-            stylesheet = 'css/winStyle.css'
-            style_boolean = True
+            self.stylesheet = 'css/winStyle.css'
+            self.style_boolean = True
         elif sys.platform.startswith('linux'):
-            stylesheet = 'css/nixStyle.css'
-            style_boolean = True
+            self.stylesheet = 'css/nixStyle.css'
+            self.style_boolean = True
 
-        if style_boolean:
-            with open(stylesheet, 'r') as style:
+        if self.style_boolean:
+            with open(self.stylesheet, 'r') as style:
                 self.setStyleSheet(style.read())
 
     # ----------------------------------------
