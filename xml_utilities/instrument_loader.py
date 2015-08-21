@@ -272,7 +272,7 @@ class Instrument:
                                                           'Parameters': {'Choices': parameter_choices,
                                                                          'Regex': parameter_regex,
                                                                          'Tooltip': parameter_tooltip},
-                                                          'Response': {'DataType': response_datatype,
+                                                          'Response': {'DataTypeName': response_datatype,
                                                                        'Units': response_units,
                                                                        'Regex': response_regex}}})
                 logger.debug('Appending to tmp_command list %s' % command_ident)
