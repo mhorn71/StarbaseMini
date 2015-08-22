@@ -42,9 +42,9 @@ class ConfigTool:
             raise FileNotFoundError("Fatal error unable to detect user home!!\nContact developer for help.")
 
         if sys.platform.startswith('win32'):
-            home += '\\AppData\\Local\\StarbaseMini\\'
+            home += path.sep + 'AppData' + path.sep + 'Local' + path.sep + 'StarbaseMini' + path.sep
         else:
-            home += '/.starbasemini/'
+            home += path.sep + '.starbasemini' + path.sep
 
         if not path.isdir(home):
             try:
