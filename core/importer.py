@@ -43,7 +43,6 @@ def importer():
     if fname == '':
         return 'ABORT', None
     else:
-        print(fname)
         return 'SUCCESS', fname
 
 
