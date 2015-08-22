@@ -710,12 +710,14 @@ class Main(QtGui.QMainWindow):
 
         self.status_message(ident, response[0], response[1], units)
 
+    # http://stackoverflow.com/questions/25717048/generating-a-qcloseevent-wont-close-qmainwindow
+
     def exit_triggered(self):
         # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
         if self.saved_data_state is False:
-            message = 'Are you sure you want to quit?'
+            message = 'Are you sure you want to exit?'
         else:
-            message = 'WARNING:  You have unsaved data.\nAre you sure you want to quit?'
+            message = 'WARNING:  You have unsaved data.\nAre you sure you want to exit?'
 
         reply = QtGui.QMessageBox.question(self, 'Message',
             message, QtGui.QMessageBox.Yes |
@@ -724,6 +726,22 @@ class Main(QtGui.QMainWindow):
         if reply == QtGui.QMessageBox.Yes:
             self.logger.info('Client exit')
             sys.exit(0)
+
+    def closeEvent(self,event):
+         # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
+        if self.saved_data_state is False:
+            message = 'Are you sure you want to exit?'
+        else:
+            message = 'WARNING:  You have unsaved data.\nAre you sure you want to exit?'
+
+        result = QtGui.QMessageBox.question(self,
+                      "Confirm Exit...",
+                      message,
+                      QtGui.QMessageBox.Yes| QtGui.QMessageBox.No)
+        event.ignore()
+
+        if result == QtGui.QMessageBox.Yes:
+         event.accept()
 
 
 if __name__ == '__main__':
