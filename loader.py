@@ -81,7 +81,7 @@ class Main(QtGui.QMainWindow):
             self.config = config_utilities.ConfigTool()
         except (FileNotFoundError, OSError) as msg:
             msg = ('Configuration Tool : %s' % str(msg))
-            self.status_message('system', 'ERROR', msg, None)
+            self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
             self.disable_all()
             fatal_error = True
             config_error = True
@@ -91,7 +91,7 @@ class Main(QtGui.QMainWindow):
                 self.config.check_conf_exists()
             except IOError as msg:
                 msg = ('Configuration IOError : %s' % str(msg))
-                self.status_message('system', 'ERROR', msg, None)
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                 fatal_error = True
                 config_error = True
 
@@ -101,7 +101,7 @@ class Main(QtGui.QMainWindow):
                 self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
             except ValueError as msg:
                 msg = ('Instrument Identifier ValueError : %s' % str(msg))
-                self.status_message('system', 'ERROR', msg, None)
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
 
             #  Load and initialise logging configuration from user configuration file.
             logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
@@ -115,7 +115,7 @@ class Main(QtGui.QMainWindow):
             except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
                 fatal_error = True
                 self.logger.critical('Unable to load instruments.xml %s' % str(msg))
-                self.status_message('system', 'ERROR', msg, None)
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
             else:
                 try:
                     filename = my_instruments.get_filename(self.instrument_identifier)
@@ -124,7 +124,7 @@ class Main(QtGui.QMainWindow):
                 except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
                     self.logger.critical('Unable to load instrument xml %s' % str(msg))
                     fatal_error = True
-                    self.status_message('system', 'ERROR', msg, None)
+                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                 else:
                     self.logger.debug('Instrument XML found at : %s' % filename)
                     self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
@@ -143,7 +143,7 @@ class Main(QtGui.QMainWindow):
                 self.logger.critical('Configuration ValueError : %s' % str(msg))
                 msg = ('Configuration ValueError : %s exiting.' % str(msg))
                 fatal_error = True
-                self.status_message('system', 'ERROR', msg, None)
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
             else:
                 self.logger.debug('Initial parameter for instrument_autodetect : %s.' % instrument_autodetect)
                 self.logger.debug('Initial parameter for instrument_data_path : %s.' % instrument_data_path)
@@ -175,7 +175,6 @@ class Main(QtGui.QMainWindow):
                             self.logger.warning('Staribus instrument not found for address %s' %
                                                 self.instrument.instrument_staribus_address)
                             instrument_autodetect_status_boolean = False
-                            print('B')
                         elif len(instrument_port) > 1:
                             self.logger.warning('Multiple Staribus instruments found defaulting to first.')
                             self.status_message('system', 'WARNING',
@@ -196,7 +195,7 @@ class Main(QtGui.QMainWindow):
                     except (ValueError, IOError) as msg:
                         self.logger.critical('Fatal Error Unable to set serial port : %s' % msg)
                         msg = ('Unable to set serial port : %s' % msg)
-                        self.status_message('system', 'ERROR', msg, None)
+                        self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
 
             # Initialise Starinet relay.
             if starinet_relay_boolean == 'True' and instrument_autodetect == 'True':
@@ -250,7 +249,7 @@ class Main(QtGui.QMainWindow):
                         self.disable_all()
             except (TypeError, IOError) as msg:
                 self.logger.critical(str(msg))
-                self.status_message('system', 'ERROR', 'Please check logfile for further details.', None)
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                 self.disable_all()
 
             # Trip counters, these are so we ignore dict KeyError's when first populating which seems to differ
@@ -297,7 +296,7 @@ class Main(QtGui.QMainWindow):
             self.chart_control_panel_populate()
 
             # Initialisation Statup Finish Status Message.
-            self.status_message('system', 'INFO', 'Instrument Started.', None)
+            self.status_message('system', 'INFO', 'Application Started.', None)
 
         elif fatal_error is True:
             self.disable_all()
@@ -704,11 +703,11 @@ class Main(QtGui.QMainWindow):
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                             stepped_data, choice, parameter, response_regex)
 
-        print(repr(self.DataBlock))
-
-        # todo extra steps depending on what is being done??
-
-        self.status_message(ident, response[0], response[1], units)
+        if ident == 'getData' and response[0].startswith('SUCCESS'):
+            print('We should generate a chart at this point.')
+            self.status_message(ident, response[0], response[1], units)
+        else:
+            self.status_message(ident, response[0], response[1], units)
 
     def closeEvent(self,event):
          # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:

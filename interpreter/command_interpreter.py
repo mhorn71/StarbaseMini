@@ -23,6 +23,7 @@ import logging
 from PyQt4 import QtGui, QtCore
 
 import dao
+import core
 
 
 class CommandInterpreter:
@@ -47,7 +48,13 @@ class CommandInterpreter:
         staribus_timeout = self.parent.config.get('StaribusPort', 'timeout')
         starinet_address = self.instrument.instrument_starinet_address
         starinet_port = self.instrument.instrument_starinet_port
-        # instrument_address = self.instrument.instrument_staribus_address
+        instrument_datatranslator = self.instrument.instrument_datatranslator
+
+        # added data translators here.
+        if instrument_datatranslator == 'StaribusBlock':
+            pass
+        else:
+            raise IOError('Unable to locate Instrument DataTranslator')
 
         if starinet_address == 'None':
             stream = 'Staribus'
@@ -107,7 +114,24 @@ class CommandInterpreter:
 
         else:
 
-            response = 'SUCCESS', 'This command wasn\'t send to port'
+            if base == '80' and code == '00':  # Import Local
+                response = core.importer()
+
+                if response[0].startswith('SUCCESS'):
+                    # todo need to add data translator here.
+                    print('Import Local SUCCESS')
+
+            elif base == '81' and code == '00':  # Export RawData
+                response = core.exporter()
+
+                if response[0].startswith('SUCCESS'):
+                    # todo need to add data translator here.
+                    print('Export RawData SUCCESS')
+
+            elif base == '50' and code == '00':  # Segment Time Series.
+                response = 'SUCCESS', 'segmentTimeSeries not yet implemented.'
+            else:
+                response = 'PREMATURE_TERMINATION', 'Unknown command.'
 
         if self.check_response(response):
             return response
@@ -276,6 +300,7 @@ class CommandInterpreter:
                     # Check primary response is valid
                     if self.check_response(secondary_command_response):
 
+                        # todo add data translator decode here.
                         secondary_response = secondary_command_response[1]
 
                         self.parent.DataBlock.append(secondary_response)
