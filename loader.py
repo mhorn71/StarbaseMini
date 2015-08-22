@@ -41,7 +41,7 @@ import interpreter
 import constants
 import datatranslators
 
-version = '0.0.2'
+version = '1.0.256'
 
 
 class Main(QtGui.QMainWindow):
