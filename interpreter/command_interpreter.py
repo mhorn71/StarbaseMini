@@ -247,6 +247,7 @@ class CommandInterpreter:
                         progressDialog.setStyleSheet(style.read())
 
                 progressDialog.setWindowIcon(QtGui.QIcon('images/starbase.png'))
+                progressDialog.resize(300,90)
 
                 progressDialog.show()
 
