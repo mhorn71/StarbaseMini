@@ -22,8 +22,8 @@ import logging
 
 from PyQt4 import QtGui, QtCore
 
-import dao
 import core
+import dao
 
 
 class CommandInterpreter:
@@ -48,13 +48,6 @@ class CommandInterpreter:
         staribus_timeout = self.parent.config.get('StaribusPort', 'timeout')
         starinet_address = self.instrument.instrument_starinet_address
         starinet_port = self.instrument.instrument_starinet_port
-        instrument_datatranslator = self.instrument.instrument_datatranslator
-
-        # added data translators here.
-        if instrument_datatranslator == 'StaribusBlock':
-            pass
-        else:
-            raise IOError('Unable to locate Instrument DataTranslator')
 
         if starinet_address == 'None':
             stream = 'Staribus'
@@ -115,14 +108,14 @@ class CommandInterpreter:
         else:
 
             if base == '80' and code == '00':  # Import Local
-                response = core.importer()
+                response = core.importer(self.parent.datatranslator, self.instrument.instrument_number_of_channels)
 
                 if response[0].startswith('SUCCESS'):
                     # todo need to add data translator here.
                     print('Import Local SUCCESS')
 
             elif base == '81' and code == '00':  # Export RawData
-                response = core.exporter()
+                response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels)
 
                 if response[0].startswith('SUCCESS'):
                     # todo need to add data translator here.
@@ -261,6 +254,9 @@ class CommandInterpreter:
                 sec_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
                 self.logger.debug('Secondary SendToPort : %s' % sec_stp)
 
+                # todo add check to see if data has been cleared before clearing data translator channels
+                self.parent.datatranslator.clear()
+
                 progressDialog = QtGui.QProgressDialog('Downloading data ...',
                                  str("Abort"), 0, count)
                 progressDialog.setWindowTitle('getData')
@@ -300,10 +296,10 @@ class CommandInterpreter:
                     # Check primary response is valid
                     if self.check_response(secondary_command_response):
 
-                        # todo add data translator decode here.
-                        secondary_response = secondary_command_response[1]
-
-                        self.parent.DataBlock.append(secondary_response)
+                        if self.parent.datatranslator.parser(secondary_command_response[1]):
+                            pass
+                        else:
+                            return 'PREMATURE_TERMINATION', 'NODATA'
 
                     else:
                         progressDialog.hide()

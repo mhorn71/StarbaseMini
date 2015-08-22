@@ -39,6 +39,7 @@ import futurlec
 import instument_builder
 import interpreter
 import constants
+import datatranslators
 
 version = '0.0.2'
 
@@ -153,6 +154,15 @@ class Main(QtGui.QMainWindow):
                 self.logger.debug('Initial parameter for serial_port : %s.' % serial_port)
                 self.logger.debug('Initial parameter for serial_baudrate : %s.' % serial_baudrate)
                 self.logger.debug('Initial parameter for serial_port_timeout : %s.' % serial_port_timeout)
+
+        # Initialise datatranslator
+        # added data translators here.
+        if self.instrument.instrument_datatranslator == 'StaribusBlock':
+            self.datatranslator = datatranslators.StaribusBlockParser(self.instrument.instrument_number_of_channels)
+        else:
+            self.logger.critical('Unable to locate Instrument DataTranslator')
+            self.status_message('system', 'CRITICAL_ERROR', 'Unable to locate Instrument DataTranslator', None)
+            fatal_error = True
 
         if fatal_error is False:
             # Instrument autodetect initialisation.
