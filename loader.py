@@ -304,7 +304,7 @@ class Main(QtGui.QMainWindow):
 
         # Menu items
         self.logger.debug('Setting menu item triggers.')
-        self.ui.actionExit.triggered.connect(self.exit_triggered)
+        self.ui.actionExit.triggered.connect(self.close)
         self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
         self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
         self.ui.actionControllerEditor.triggered.connect(self.futurlec_baudrate_tool_triggered)
@@ -710,23 +710,6 @@ class Main(QtGui.QMainWindow):
 
         self.status_message(ident, response[0], response[1], units)
 
-    # http://stackoverflow.com/questions/25717048/generating-a-qcloseevent-wont-close-qmainwindow
-
-    def exit_triggered(self):
-        # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
-        if self.saved_data_state is False:
-            message = 'Are you sure you want to exit?'
-        else:
-            message = 'WARNING:  You have unsaved data.\nAre you sure you want to exit?'
-
-        reply = QtGui.QMessageBox.question(self, 'Message',
-            message, QtGui.QMessageBox.Yes |
-            QtGui.QMessageBox.No, QtGui.QMessageBox.No)
-
-        if reply == QtGui.QMessageBox.Yes:
-            self.logger.info('Client exit')
-            sys.exit(0)
-
     def closeEvent(self,event):
          # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
         if self.saved_data_state is False:
@@ -735,13 +718,13 @@ class Main(QtGui.QMainWindow):
             message = 'WARNING:  You have unsaved data.\nAre you sure you want to exit?'
 
         result = QtGui.QMessageBox.question(self,
-                      "Confirm Exit...",
-                      message,
-                      QtGui.QMessageBox.Yes| QtGui.QMessageBox.No)
+                                            "Confirm Exit...",
+                                            message,
+                                            QtGui.QMessageBox.Yes| QtGui.QMessageBox.No)
         event.ignore()
 
         if result == QtGui.QMessageBox.Yes:
-         event.accept()
+            event.accept()
 
 
 if __name__ == '__main__':
