@@ -7,6 +7,7 @@
     <StarinetAddress>192.168.1.24</StarinetAddress>
     <StarinetPort>1205</StarinetPort>
     <NumberOfChannels>5</NumberOfChannels>
+    <DataTranslator>StaribusBlock</DataTranslator>
 
     <!-- Plugins are loaded in order or appearance.  Core normally resides after all other plugins, well it does -->
     <!-- in Starbase -->

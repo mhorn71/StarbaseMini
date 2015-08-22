@@ -7,6 +7,7 @@
     <StarinetAddress>None</StarinetAddress>
     <StarinetPort>None</StarinetPort>
     <NumberOfChannels>9</NumberOfChannels>
+    <DataTranslator>StaribusBlock</DataTranslator>
 
     <Plugin>
         <!-- A virtual Plugin -->

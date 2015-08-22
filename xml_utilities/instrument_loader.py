@@ -110,6 +110,9 @@ class Instrument:
             self.instrument_starinet_port = self.xmldom.findtext('StarinetPort')
             logger.debug('Instrument starinet network port : %s' % self.instrument_starinet_port)
 
+            self.instrument_datatranslator = self.xmldom.findtext('DataTranslator')
+            logger.debug('Instrument data translator : %s' % self.instrument_datatranslator)
+
             # Check that we have both Starinet Address and Starinet Port set.
             if self.instrument_starinet_address != 'None' and self.instrument_starinet_port == 'None':
                 logger.critical('INVALID_XML : Starinet port not set set.')
