@@ -58,6 +58,7 @@ class Instrument:
                 channel_names: list
                 channel_colours: list
                 channel_datatypename: list
+                channel_units: list
                 YaxisLabel:str
                 YaxisRange:str
                 YaxisScale:str
@@ -292,7 +293,10 @@ class Instrument:
         self.channel_colours = []
 
         # The metadata channel data type name list
-        self.channel_datatypename = []
+        self.channel_datatypenames = []
+
+        # The metadata channel units list
+        self.channel_units = []
 
         chart_metadata_dom = self.xmldom.find('ChartMetadata')
 
@@ -314,8 +318,10 @@ class Instrument:
             logger.debug('Channel Label %s added to channel_names list.' % channel_metadata.findtext('ChannelLabel'))
             self.channel_colours.append(channel_metadata.findtext('ChannelColour'))
             logger.debug('Channel Colour %s added to channel_colour list.' % channel_metadata.findtext('ChannelColour'))
-            self.channel_datatypename.append(channel_metadata.findtext('ChannelDataTypeName'))
-            logger.debug('Channel DataTypeName %s added to channel_datatypename list.' % channel_metadata.findtext('ChannelDataTypeName'))
+            self.channel_datatypenames.append(channel_metadata.findtext('ChannelDataTypeName'))
+            logger.debug('Channel DataTypeName %s added to channel_datatypenames list.' % channel_metadata.findtext('ChannelDataTypeName'))
+            self.channel_datatypenames.append(channel_metadata.findtext('ChannelDataTypeName'))
+            logger.debug('Channel DataTypeName %s added to channel_datatypenames list.' % channel_metadata.findtext('ChannelDataTypeName'))
 
         Boolean = self.xmldom.find('BooleanMetadata')
         logger.debug('Found BooleanMetadata Object : %s' % str(Boolean))

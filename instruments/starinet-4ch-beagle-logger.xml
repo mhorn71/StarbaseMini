@@ -458,35 +458,35 @@
         <ChannelLabel>Temperature</ChannelLabel>
         <ChannelColour>#F15854</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
-        <ChannelUnits>Celsius</ChannelUnits>
+        <ChannelUnit>Celsius</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 1</ChannelLabel>
         <ChannelColour>#5DA5DA</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
-        <ChannelUnits>mV</ChannelUnits>
+        <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 2</ChannelLabel>
         <ChannelColour>#DECF3F</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
-        <ChannelUnits>mV</ChannelUnits>
+        <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 3</ChannelLabel>
         <ChannelColour>#60BD68</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
-        <ChannelUnits>mV</ChannelUnits>
+        <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 4</ChannelLabel>
         <ChannelColour>#B2912F</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
-        <ChannelUnits>mV</ChannelUnits>
+        <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <BooleanMetadata>
