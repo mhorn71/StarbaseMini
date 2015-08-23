@@ -290,6 +290,9 @@ class Instrument:
         # The metadata channel colour list
         self.channel_colours = []
 
+        # The metadata channel data type name list
+        self.channel_datatypename = []
+
         chart_metadata_dom = self.xmldom.find('ChartMetadata')
 
         logger.debug('Found ChartMetadata Object : %s' % str(chart_metadata_dom))
@@ -310,6 +313,8 @@ class Instrument:
             logger.debug('Channel Label %s added to channel_names list.' % channel_metadata.findtext('ChannelLabel'))
             self.channel_colours.append(channel_metadata.findtext('ChannelColour'))
             logger.debug('Channel Colour %s added to channel_colour list.' % channel_metadata.findtext('ChannelColour'))
+            self.channel_datatypename.append(channel_metadata.findtext('ChannelDataTypeName'))
+            logger.debug('Channel DataTypeName %s added to channel_datatypename list.' % channel_metadata.findtext('ChannelDataTypeName'))
 
         Boolean = self.xmldom.find('BooleanMetadata')
         logger.debug('Found BooleanMetadata Object : %s' % str(Boolean))
