@@ -128,7 +128,8 @@ class StaribusBlockParser:
                         self.channel_9.append(int(dat[7]))
 
                     epoch = epoch + datetime.timedelta(seconds=int(data[3]))  # create next sample datetime object.
-        except (ValueError, IndexError):
+        except (ValueError, IndexError) as msg:
+            self.logger.critical(str(msg))
             return 'PREMATURE_TERMINATION', None
         else:
             return True
