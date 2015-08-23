@@ -11,7 +11,7 @@ serial_baudrate = The serial port baudrate as defined in the application
                   configuration.
 
 serial_timeout = The serial port timeout as defined in the application
-                 configuration this is also used as the Starinet    timeout as
+                 configuration this is also used as the Starinet timeout as
                  well. It should really be called dao_timeout not serial port.
 
 starinet_address = The IPv4 address of Starinet Instrument as defined in the
@@ -38,10 +38,10 @@ Command Code Base =  The module base code.
 
 Command Code = The command code itself.
 
-Command Variant = The command variant at present is used internally to the
-                  application but is used by the Instrument controller.  It's
-                  currently used by the UKRAA Futurlec controller to distinguish
-                  the number of channels being sampled.
+Command Variant = The command variant at present isn't used by the application but
+                  is used by the Instrument controller.  It's currently used by the
+                  UKRAA Futurlec controller to distinguish the number of channels
+                  being sampled.
 
 Command Parameter = The parameter of choice as supplied by the user though the UI
                     interface as well as Blocked and Stepped Commands.
