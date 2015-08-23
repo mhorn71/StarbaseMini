@@ -17,6 +17,8 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
+import utilities
+
 
 class MetaData:
     def __init__(self, parent):
@@ -196,6 +198,119 @@ class MetaData:
                 metadata += '\r\n'
 
             metadata += 'Observer.Notes,' + notes + ',String,Dimensionless,The Observer Notes'
+
+        if len(metadata) != 0:
+            return metadata
+        else:
+            return None
+
+    def observation_metadata(self):
+
+        metadata = ''
+
+        title = self.instrument.instrument_description
+        count = self.instrument.instrument_number_of_channels
+        xlabel = self.instrument.XaxisLabel
+        ylabel = self.instrument.YaxisLabel
+
+        if title != 'None':
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observation.Title,' + title + ',String,Dimensionless,The title of the observation.'
+
+        if count != 'None':
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observation.Channel.Count,' + count + ',DecimalInteger,Dimensionless,The number of channels ' \
+                        'of data produced by this Instrument'
+
+        if xlabel != 'None':
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observation.Axis.Label.X,' + xlabel + ',String,Dimensionless,The X Axis Label'
+
+        if ylabel != 'None':
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observation.Axis.Label.Y,' + ylabel + ',String,Dimensionless,The Y Axis Label'
+
+        nameidx = 0
+        for name in self.instrument.channel_names:
+
+            if name != 'None':
+                if len(metadata) != 0:
+                    metadata += '\r\n'
+
+                if nameidx == 0:
+                    chanid = 'Temperature'
+                else:
+                    chanid = str(nameidx - 1)
+
+                metadata += 'Observation.Channel.Name.' + chanid + ',' + name + ',Dimensionless,The name of the ' \
+                            'channel'
+
+                nameidx += 1
+
+        colouridx = 0
+        for colour in self.instrument.channel_colours:
+
+            if colour != 'None':
+                if len(metadata) != 0:
+                    metadata += '\r\n'
+
+                if colouridx == 0:
+                    chanid = 'Temperature'
+                else:
+                    chanid = str(colouridx - 1)
+
+                rgbcolour = utilities.hex2rgb(colour)
+
+                red = str(rgbcolour[0])
+                grn = str(rgbcolour[1])
+                blu = str(rgbcolour[2])
+
+                metadata += 'Observation.Channel.Colour.' + chanid + ',r=' + red + ' g=' + grn + ' b=' + blu + ',' \
+                            'ColourData,Dimensionless,The Colour of the channel graph'
+
+                colouridx += 1
+
+        dataidx = 0
+        for datatype in self.instrument.channel_datatypenames:
+
+            if datatype != 'None':
+                if len(metadata) != 0:
+                    metadata += '\r\n'
+
+                if dataidx == 0:
+                    chanid = 'Temperature'
+                else:
+                    chanid = str(dataidx - 1)
+
+                metadata += 'Observation.Channel.DataType.' + chanid + ',' + datatype + ',DataType,Dimensionless,' \
+                            'The DataType of the channel'
+
+                dataidx += 1
+
+        unitidx = 0
+        for unit in self.instrument.channel_units:
+
+            if unit != 'None':
+                if len(metadata) != 0:
+                    metadata += '\r\n'
+
+                if unitidx == 0:
+                    chanid = 'Temperature'
+                else:
+                    chanid = str(unitidx - 1)
+
+                metadata += 'Observation.Channel.DataType.' + chanid + ',' + unit + ',DataType,Dimensionless,' \
+                            'The Units of the channel'
+
+                unitidx += 1
 
         if len(metadata) != 0:
             return metadata
