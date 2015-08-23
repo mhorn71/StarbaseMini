@@ -40,6 +40,7 @@ import instument_builder
 import interpreter
 import constants
 import datatranslators
+import metadata
 
 version = '1.0.256'
 
@@ -163,6 +164,9 @@ class Main(QtGui.QMainWindow):
             self.logger.critical('Unable to locate Instrument DataTranslator')
             self.status_message('system', 'CRITICAL_ERROR', 'Unable to locate Instrument DataTranslator', None)
             fatal_error = True
+
+        # Initialise metadata
+        self.metadata = metadata.MetaData(self)
 
         if fatal_error is False:
             # Instrument autodetect initialisation.

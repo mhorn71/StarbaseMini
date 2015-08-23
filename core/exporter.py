@@ -25,7 +25,7 @@ from PyQt4 import QtGui
 import config_utilities
 
 
-def exporter(datatranslator, number_of_channels):
+def exporter(datatranslator, number_of_channels, metadata):
 
     # First get instrument data path from configuration.
     App_Config = config_utilities.ConfigTool()

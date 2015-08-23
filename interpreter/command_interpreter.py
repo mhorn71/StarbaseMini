@@ -108,14 +108,16 @@ class CommandInterpreter:
         else:
 
             if base == '80' and code == '00':  # Import Local
-                response = core.importer(self.parent.datatranslator, self.instrument.instrument_number_of_channels)
+                response = core.importer(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
+                                         self.parent.metadata)
 
                 if response[0].startswith('SUCCESS'):
                     # todo need to add data translator here.
                     print('Import Local SUCCESS')
 
             elif base == '81' and code == '00':  # Export RawData
-                response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels)
+                response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
+                                         self.parent.metadata)
 
                 if response[0].startswith('SUCCESS'):
                     # todo need to add data translator here.
