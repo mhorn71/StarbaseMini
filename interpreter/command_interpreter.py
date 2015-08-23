@@ -119,10 +119,6 @@ class CommandInterpreter:
                 response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
                                          self.parent.metadata)
 
-                if response[0].startswith('SUCCESS'):
-                    # todo need to add data translator here.
-                    print('Export RawData SUCCESS')
-
             elif base == '50' and code == '00':  # Segment Time Series.
                 response = 'SUCCESS', 'segmentTimeSeries not yet implemented.'
             else:
