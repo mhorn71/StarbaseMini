@@ -49,5 +49,32 @@ def exporter(datatranslator, number_of_channels, metadata):
     if fname == '':
         return 'ABORT', None
     else:
-        return 'SUCCESS', fname
+
+        # todo add csv creation routine here.
+
+        try:
+            file = open(fname, 'a+')
+        except IOError as msg:
+            return 'PREMATURE_TERMINATION', 'Unable to create file'
+            # todo add logger
+        else:
+            try:
+                observatory_metadata = metadata.observatory_metadata()
+                if observatory_metadata is not None:
+                    file.write(observatory_metadata)
+
+                observer_metadata = metadata.observer_metadata()
+                if observer_metadata is not None:
+                    file.write(observer_metadata)
+
+                observation_metadata = metadata.observation_metadata()
+                if observation_metadata is not None:
+                    file.write(observation_metadata)
+
+                file.close()
+            except IOError as msg:
+                return 'PREMATURE_TERMINATION', 'Unable to create file'
+                # todo add logger
+            else:
+                return 'SUCCESS', fname
 
