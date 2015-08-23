@@ -320,8 +320,8 @@ class Instrument:
             logger.debug('Channel Colour %s added to channel_colour list.' % channel_metadata.findtext('ChannelColour'))
             self.channel_datatypenames.append(channel_metadata.findtext('ChannelDataTypeName'))
             logger.debug('Channel DataTypeName %s added to channel_datatypenames list.' % channel_metadata.findtext('ChannelDataTypeName'))
-            self.channel_datatypenames.append(channel_metadata.findtext('ChannelDataTypeName'))
-            logger.debug('Channel DataTypeName %s added to channel_datatypenames list.' % channel_metadata.findtext('ChannelDataTypeName'))
+            self.channel_units.append(channel_metadata.findtext('ChannelUnit'))
+            logger.debug('Channel Unit %s added to channel_units list.' % channel_metadata.findtext('ChannelUnit'))
 
         Boolean = self.xmldom.find('BooleanMetadata')
         logger.debug('Found BooleanMetadata Object : %s' % str(Boolean))
