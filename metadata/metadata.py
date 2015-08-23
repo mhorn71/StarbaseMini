@@ -20,7 +20,7 @@ __author__ = 'mark'
 import utilities
 
 
-class MetaData:
+class MetaDataCreator:
     def __init__(self, parent):
         self.config = parent.config
         self.instrument = parent.instrument
