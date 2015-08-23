@@ -498,26 +498,31 @@
     <ChannelMetadata>
         <ChannelLabel>Temperature</ChannelLabel>
         <ChannelColour>Red</ChannelColour>
+        <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 1</ChannelLabel>
         <ChannelColour>Blue</ChannelColour>
+        <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 2</ChannelLabel>
         <ChannelColour>Yellow</ChannelColour>
+        <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 3</ChannelLabel>
         <ChannelColour>Green</ChannelColour>
+        <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 4</ChannelLabel>
         <ChannelColour>Black</ChannelColour>
+        <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
     </ChannelMetadata>
 
     <BooleanMetadata>
