@@ -131,9 +131,3 @@ class StaribusBlockParser:
             return 'PREMATURE_TERMINATION', None
         else:
             return True
-
-    def exporter(self, file):
-        pass
-
-    def importer(self, file):
-        pass
