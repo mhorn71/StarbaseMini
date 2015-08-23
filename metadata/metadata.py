@@ -18,38 +18,186 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import utilities
-
 class MetaData:
     def __init__(self, parent):
         self.config = parent.config
         self.instrument = parent.instrument
 
-    def starbase_metadata(self):
-        # self.config.get()
-        pass
-        # Reference
-        # [ObservatoryMetadata]
-        # name = Wards Hill Observatory
-        # description = Radio Telescope
-        # contact_email = someone@wardshillobservatory.com
-        # contact_telephone = +44 123 1234567
-        # contact_url = http://wardshillobservatory.co.uk
-        # country = GB
-        # timezone = UTC
-        # geodetic_datum = WGS84
-        # geomagnetic_latitude = +00:00:00.000
-        # geomagnetic_longitude = +000:00:00.000
-        # geomagnetic_model = IGRF-11
-        # latitude = +00:00:00.000
-        # longitude = +000:00:00.000
-        # hasl = 32.0
-        #
-        # [ObserverMetadata]
-        # name = Oculo Gyric
-        # description = The really observant Observer
-        # contact_email = Oculo@gyric.com
-        # contact_telephone = +44 123 1234567
-        # contact_url = http://github.com/mhorn71/StarbaseMini
-        # country = GB
-        # notes = The Observer Notes
+    def observatory_metadata(self):
+        name = self.config.get('ObservatoryMetadata', 'name')
+        description = self.config.get('ObservatoryMetadata', 'description')
+        email = self.config.get('ObservatoryMetadata', 'contact_email')
+        telephone = self.config.get('ObservatoryMetadata', 'contact_telephone')
+        url = self.config.get('ObservatoryMetadata', 'contact_url')
+        country = self.config.get('ObservatoryMetadata', 'country')
+        timezone = self.config.get('ObservatoryMetadata', 'timezone')
+        datum = self.config.get('ObservatoryMetadata', 'geodetic_datum')
+        maglat = self.config.get('ObservatoryMetadata', 'geomagnetic_latitude')
+        maglon = self.config.get('ObservatoryMetadata', 'geomagnetic_longitude')
+        magmodel = self.config.get('ObservatoryMetadata', 'geomagnetic_model')
+        lat = self.config.get('ObservatoryMetadata', 'latitude')
+        lon = self.config.get('ObservatoryMetadata', 'longitude')
+        hasl = self.config.get('ObservatoryMetadata', 'hasl')
+
+        metadata = ''
+
+        if name is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.Name,' + name + ',String,Dimensionless,The name of the Observatory'
+
+        if description is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.Description,' + description + ',String,Dimensionless,The description of the ' \
+                        'Observatory'
+
+        if email is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.Contact.Email,' + email + ',String,Dimensionless,The email address of the ' \
+                        'Observatory'
+
+        if telephone is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.Contact.Telephone,' + telephone + ',String,Dimensionless,The Observatory ' \
+                        'telephone number'
+
+        if url is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.Contact.URL,' + url + ',URL,Dimensionless,The Observatory website URL'
+
+        if country is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.Country,' + country + ',String,Dimensionless,The Country containing the ' \
+                        'Observatory (ISO 3166)'
+
+        if timezone is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.TimeZone,' + timezone + ',TimeZone,Dimensionless,The TimeZone containing the ' \
+                        'Observatory  GMT-23:59 to GMT+00:00 to GMT+23:59'
+
+        if datum is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.GeodeticDatum,' + datum + ',String,Dimensionless,The GeodeticDatum used by the ' \
+                        'Observatory'
+
+        if maglat is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.GeomagneticLatitude,' + maglat + ',Latitude,DegMinSec,The GeomagneticLatitude ' \
+                        'of the Observatory (North is positive) -89:59:59.9999 to +00:00:00.0000 to +89:59:59.9999'
+
+        if maglon is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.GeomagneticLongitude,' + maglon + ',Longitude,DegMinSec,The GeomagneticLongitude ' \
+                        'of the Observatory (West is positive) -179:59:59.9999 to +000:00:00.0000 to +179:59:59.9999'
+
+        if magmodel is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.GeomagneticModel,' + magmodel + ',String,Dimensionless,The GeomagneticModel ' \
+                        'used by the Observatory'
+
+        if lat is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.Latitude,' + lat + ',Latitude,DegMinSec,The Latitude of the Framework (North is ' \
+                        'positive)  -89:59:59.9999 to +00:00:00.0000 to +89:59:59.9999'
+
+        if lon is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.Longitude,' + lon + ',Longitude,DegMinSec,The Longitude of the Observatory ' \
+                        '(West is positive)  -179:59:59.9999 to +000:00:00.0000 to +179:59:59.9999'
+
+        if hasl is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observatory.HASL,' + hasl + ',DecimalFloat,m,The Height of the Observatory above Sea Level ' \
+                        'in metres'
+
+        if len(metadata) != 0:
+            return metadata
+        else:
+            return None
+
+    def observer_metadata(self):
+        name = self.config.get('ObserverMetadata', 'name')
+        description = self.config.get('ObserverMetadata', 'description')
+        email = self.config.get('ObserverMetadata', 'contact_email')
+        telephone = self.config.get('ObserverMetadata', 'contact_telephone')
+        url = self.config.get('ObserverMetadata', 'contact_url')
+        country = self.config.get('ObserverMetadata', 'country')
+        notes = self.config.get('ObserverMetadata', 'notes')
+
+        metadata = ''
+
+        if name is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observer.Name,' + name + ',String,Dimensionless,The name of the Observer'
+
+        if description is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observer.Description,' + description + ',String,Dimensionless,The description of the ' \
+                        'Observer'
+
+        if email is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observer.Contact.Email,' + email + ',String,Dimensionless,The email address of the Observer'
+
+        if telephone is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observer.Contact.Telephone,' + telephone + ',String,Dimensionless,The Observer ' \
+                        'telephone number'
+
+        if url is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observer.Contact.URL,' + url + ',URL,Dimensionless,The Observer website URL'
+
+        if country is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observer.Country,' + country + ',String,Dimensionless,The Country containing the Observer'
+
+        if notes is not None:
+            if len(metadata) != 0:
+                metadata += '\r\n'
+
+            metadata += 'Observer.Notes,' + notes + ',String,Dimensionless,The Observer Notes'
+
+        if len(metadata) != 0:
+            return metadata
+        else:
+            return None
