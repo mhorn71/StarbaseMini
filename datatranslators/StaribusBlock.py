@@ -21,8 +21,6 @@ import logging
 import datetime
 import re
 
-import constants
-
 
 class StaribusBlockParser:
     def __init__(self, channels):
