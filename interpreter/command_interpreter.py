@@ -150,11 +150,17 @@ class CommandInterpreter:
             primary_command_key = None
             secondary_command_key = None
 
-            # Blocked commands cant have two sub commands.
+            # Blocked commands cant have more than two sub commands.
             if len(command_codes) == 2:
                 pass
             else:
                 return 'INVALID_XML', 'Command should consist of two sub commands only'
+
+            # Iter over dict keys to get ident of parent command.
+            for key in self.instrument.command_dict.keys():
+                if self.instrument.command_dict[key]['Code'] == code and \
+                        self.instrument.command_dict[key]['Base'] == base:
+                    parent_ident = key
 
             # Iterate over dict keys and get command idents
             for key in self.instrument.command_dict.keys():
@@ -261,7 +267,7 @@ class CommandInterpreter:
 
                 progressDialog = QtGui.QProgressDialog('Downloading data ...',
                                  str("Abort"), 0, count)
-                progressDialog.setWindowTitle('getData')
+                progressDialog.setWindowTitle(parent_ident)
                 progressDialog.setModal(True)
 
                 if self.parent.style_boolean:
