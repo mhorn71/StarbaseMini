@@ -57,6 +57,7 @@ class Instrument:
 
                 channel_names: list
                 channel_colours: list
+                channel_datatypename: list
                 YaxisLabel:str
                 YaxisRange:str
                 YaxisScale:str
