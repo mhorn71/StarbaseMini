@@ -140,6 +140,7 @@ class MetaDataCreator:
                         'in metres'
 
         if len(metadata) != 0:
+            metadata += '\r\n'
             return metadata
         else:
             return None
@@ -200,6 +201,7 @@ class MetaDataCreator:
             metadata += 'Observer.Notes,' + notes + ',String,Dimensionless,The Observer Notes'
 
         if len(metadata) != 0:
+            metadata += '\r\n'
             return metadata
         else:
             return None
@@ -313,6 +315,7 @@ class MetaDataCreator:
                 unitidx += 1
 
         if len(metadata) != 0:
+            metadata += '\r\n'
             return metadata
         else:
             return None
