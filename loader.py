@@ -147,14 +147,14 @@ class Main(QtGui.QMainWindow):
                 fatal_error = True
                 self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
             else:
-                self.logger.debug('Initial parameter for instrument_autodetect : %s.' % instrument_autodetect)
-                self.logger.debug('Initial parameter for instrument_data_path : %s.' % instrument_data_path)
-                self.logger.debug('Initial parameter for starinet_relay_boolean : %s.' % starinet_relay_boolean)
-                self.logger.debug('Initial parameter for starinet_relay_address : %s.' % starinet_address)
-                self.logger.debug('Initial parameter for starinet_relay_port : %s.' % starinet_port)
-                self.logger.debug('Initial parameter for serial_port : %s.' % serial_port)
-                self.logger.debug('Initial parameter for serial_baudrate : %s.' % serial_baudrate)
-                self.logger.debug('Initial parameter for serial_port_timeout : %s.' % serial_port_timeout)
+                self.logger.debug('Initial parameter for instrument_autodetect : %s' % instrument_autodetect)
+                self.logger.debug('Initial parameter for instrument_data_path : %s' % instrument_data_path)
+                self.logger.debug('Initial parameter for starinet_relay_boolean : %s' % starinet_relay_boolean)
+                self.logger.debug('Initial parameter for starinet_relay_address : %s' % starinet_address)
+                self.logger.debug('Initial parameter for starinet_relay_port : %s' % starinet_port)
+                self.logger.debug('Initial parameter for serial_port : %s' % serial_port)
+                self.logger.debug('Initial parameter for serial_baudrate : %s' % serial_baudrate)
+                self.logger.debug('Initial parameter for serial_port_timeout : %s' % serial_port_timeout)
 
         # Initialise datatranslator
         # added data translators here.
