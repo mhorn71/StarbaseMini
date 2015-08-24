@@ -27,6 +27,11 @@ import config_utilities
 
 def exporter(datatranslator, number_of_channels, metadata):
 
+    itemcount = len(datatranslator.datetime)
+
+    if itemcount == 0:
+        return 'PREMATURE_TERMINATION', 'No data to export.'
+
     # First get instrument data path from configuration.
     App_Config = config_utilities.ConfigTool()
     data_path = App_Config.get('Application', 'instrument_data_path')
@@ -49,8 +54,14 @@ def exporter(datatranslator, number_of_channels, metadata):
     if fname == '':
         return 'ABORT', None
     else:
+        # Temp CSV Creator.
+        csv = ''
+        for i in range(itemcount):
+            if number_of_channels == '5':
+                date = str(datatranslator.datetime[i]).replace(' ', ',')
+                csv +=  date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
+                ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + str(datatranslator.channel_5[i]) + '\r\n'
 
-        # todo add csv creation routine here.
 
         try:
             file = open(fname, 'a+')
@@ -70,6 +81,8 @@ def exporter(datatranslator, number_of_channels, metadata):
                 observation_metadata = metadata.observation_metadata()
                 if observation_metadata is not None:
                     file.write(observation_metadata)
+
+                file.write(csv)
 
                 file.close()
             except IOError as msg:
