@@ -1,2 +1,2 @@
 __author__ = 'mark'
-from metadata.metadata import StaribusMetaDataCreator
+from metadata.staribus_metadata import StaribusMetaDataCreator
