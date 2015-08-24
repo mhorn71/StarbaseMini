@@ -54,24 +54,27 @@ def importer(datatranslator, number_of_channels, metadata):
             with open(fname) as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
-                    if re.match('^\D+$', row[0]):
-                        metadata.meta_parser(row)
-                    elif re.match('^\d\d\d\d-\d\d-\d\d$', row[0]):
-
-                        if metadata.channel_count is None:
-                            logger.critical('Unable to locate observation channel count')
-                            return 'PREMATURE_TERMINATION', 'Unable to locate observation channel count'
-                        else:
-                            if number_of_channels != metadata.channel_count:
-                                return 'PREMATURE_TERMINATION', 'csv file doesn\'t appear to be the same instrument as the the application'
-
-                        if datatranslator.csv_parser(row):
-                            pass
-                        else:
-                            logger.critical('Unable to parse row :%s' % str(row))
-                            return 'PREMATURE_TERMINATION', 'Unable to parse data'
-                    else:
+                    if len(row) == 0: # bodge for windows as we seems to get a row of zero length sometimes
                         pass
+                    else:
+                        if re.match('^\D+$', row[0]):
+                            metadata.meta_parser(row)
+                        elif re.match('^\d\d\d\d-\d\d-\d\d$', row[0]):
+
+                            if metadata.channel_count is None:
+                                logger.critical('Unable to locate observation channel count')
+                                return 'PREMATURE_TERMINATION', 'Unable to locate observation channel count'
+                            else:
+                                if number_of_channels != metadata.channel_count:
+                                    return 'PREMATURE_TERMINATION', 'csv file doesn\'t appear to be the same instrument as the the application'
+
+                            if datatranslator.csv_parser(row):
+                                pass
+                            else:
+                                logger.critical('Unable to parse row :%s' % str(row))
+                                return 'PREMATURE_TERMINATION', 'Unable to parse data'
+                        else:
+                            pass
 
         except IOError as msg:
             logger.critical(str(msg))
