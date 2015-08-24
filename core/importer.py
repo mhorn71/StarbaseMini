@@ -62,7 +62,8 @@ def importer(datatranslator, number_of_channels, metadata):
                             logger.critical('Unable to locate observation channel count')
                             return 'PREMATURE_TERMINATION', 'Unable to locate observation channel count'
                         else:
-                            datatranslator.number_of_channels = metadata.channel_count
+                            if number_of_channels != metadata.channel_count:
+                                return 'PREMATURE_TERMINATION', 'csv file doesn\'t appear to be the same instrument as the the application'
 
                         if datatranslator.csv_parser(row):
                             pass
