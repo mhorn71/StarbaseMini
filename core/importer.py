@@ -80,7 +80,10 @@ def importer(datatranslator, number_of_channels, metadata):
             logger.critical(str(msg))
             return 'PREMATURE_TERMINATION', 'Unable to open file.'
         else:
-            return 'SUCCESS', fname
+            if (len(datatranslator.datetime)) == 0:
+                return 'PREMATURE_TERMINATION', 'No data found.'
+            else:
+                return 'SUCCESS', fname
 
 
 
