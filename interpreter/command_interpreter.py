@@ -318,7 +318,7 @@ class CommandInterpreter:
             return 'SUCCESS', None
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
-        return 'SUCCESS', 'stepped data command'
+        return 'ABORT', 'stepped data command not yet implemented.'
 
     def data_state(self):
         '''
