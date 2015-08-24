@@ -720,6 +720,9 @@ class Main(QtGui.QMainWindow):
         if ident == 'getData' and response[0].startswith('SUCCESS'):
             print('We should generate a chart at this point.')
             self.status_message(ident, response[0], response[1], units)
+        elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
+            print('We should generate a chart at this point.')
+            self.status_message(ident, response[0], response[1], units)
         else:
             self.status_message(ident, response[0], response[1], units)
 
