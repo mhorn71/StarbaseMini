@@ -19,6 +19,7 @@ __author__ = 'mark'
 
 import os
 import datetime
+import logging
 
 from PyQt4 import QtGui
 
@@ -26,6 +27,8 @@ import config_utilities
 
 
 def exporter(datatranslator, number_of_channels, metadata):
+
+    logger = logging.getLogger('core.exporter')
 
     itemcount = len(datatranslator.datetime)
 
@@ -57,17 +60,47 @@ def exporter(datatranslator, number_of_channels, metadata):
         # Temp CSV Creator.
         csv = ''
         for i in range(itemcount):
-            if number_of_channels == '5':
-                date = str(datatranslator.datetime[i]).replace(' ', ',')
-                csv +=  date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
-                ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + str(datatranslator.channel_5[i]) + '\r\n'
 
+            date = str(datatranslator.datetime[i]).replace(' ', ',')
+
+            if number_of_channels == '2':
+                csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + '\r\n'
+            elif number_of_channels == '3':
+                csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
+                    ',' + str(datatranslator.channel_3[i]) + '\r\n'
+            elif number_of_channels == '4':
+                csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
+                    ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + '\r\n'
+            elif number_of_channels == '5':
+                csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
+                    ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
+                    str(datatranslator.channel_5[i]) + '\r\n'
+            elif number_of_channels == '6':
+                csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
+                    ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
+                    str(datatranslator.channel_5[i]) + str(datatranslator.channel_6[i]) + '\r\n'
+            elif number_of_channels == '7':
+                csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
+                    ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
+                    str(datatranslator.channel_5[i]) + str(datatranslator.channel_6[i]) + \
+                    str(datatranslator.channel_7[i]) + '\r\n'
+            elif number_of_channels == '8':
+                csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
+                    ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
+                    str(datatranslator.channel_5[i]) + str(datatranslator.channel_6[i]) + \
+                    str(datatranslator.channel_7[i]) + str(datatranslator.channel_8[i]) + '\r\n'
+            elif number_of_channels == '8':
+                csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
+                    ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
+                    str(datatranslator.channel_5[i]) + str(datatranslator.channel_6[i]) + \
+                    str(datatranslator.channel_7[i]) + str(datatranslator.channel_7[i]) + \
+                    str(datatranslator.channel_9[i]) + '\r\n'
 
         try:
             file = open(fname, 'a+')
         except IOError as msg:
+            logger.critical(str(msg))
             return 'PREMATURE_TERMINATION', 'Unable to create file'
-            # todo add logger
         else:
             try:
                 observatory_metadata = metadata.observatory_metadata()
@@ -86,8 +119,9 @@ def exporter(datatranslator, number_of_channels, metadata):
 
                 file.close()
             except IOError as msg:
+                logger.critical(str(msg))
                 return 'PREMATURE_TERMINATION', 'Unable to create file'
-                # todo add logger
             else:
+                logger.info('File Exported : %s' % fname)
                 return 'SUCCESS', fname
 

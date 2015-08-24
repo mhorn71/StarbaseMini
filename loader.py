@@ -59,6 +59,9 @@ class Main(QtGui.QMainWindow):
         self.DataBlock = []
         self.DataBlockBool = False
 
+        # Base attributes.
+        self.saved_data_state = False
+
         # Disable UI boolean.
         self.disable_all_boolean = False
 
@@ -160,13 +163,12 @@ class Main(QtGui.QMainWindow):
         # added data translators here.
         if self.instrument.instrument_datatranslator == 'StaribusBlock':
             self.datatranslator = datatranslators.StaribusBlockParser(self.instrument.instrument_number_of_channels)
+            # Initialise metadata
+            self.metadata_creator = metadata.StaribusMetaDataCreator(self)
         else:
             self.logger.critical('Unable to locate Instrument DataTranslator')
             self.status_message('system', 'CRITICAL_ERROR', 'Unable to locate Instrument DataTranslator', None)
             fatal_error = True
-
-        # Initialise metadata
-        self.metadata_creator = metadata.StaribusMetaDataCreator(self)
 
         if fatal_error is False:
             # Instrument autodetect initialisation.
@@ -299,9 +301,6 @@ class Main(QtGui.QMainWindow):
             # Parameter entry emit and connect signals
             self.ui.commandParameter.textChanged.connect(self.parameter_check_state)
             self.ui.commandParameter.textChanged.emit(self.ui.commandParameter.text())
-
-            # Base attributes.
-            self.saved_data_state = False
 
             # Fire populate_ui_module for the first time.
             self.populate_ui_module()
@@ -724,11 +723,10 @@ class Main(QtGui.QMainWindow):
             self.status_message(ident, response[0], response[1], units)
 
     def closeEvent(self,event):
-         # if self.saved_data_state is False and len(self.datastore.raw_datastore) == 0:
         if self.saved_data_state is False:
             message = 'Are you sure you want to exit?'
         else:
-            message = 'WARNING:  You have unsaved data.\nAre you sure you want to exit?'
+            message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to exit?'
 
         result = QtGui.QMessageBox.question(self,
                                             "Confirm Exit...",

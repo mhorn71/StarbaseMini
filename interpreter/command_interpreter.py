@@ -119,6 +119,9 @@ class CommandInterpreter:
                 response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
                                          self.parent.metadata_creator)
 
+                if response[0].startswith('SUCCESS'):
+                    self.parent.saved_data_state = False
+
             elif base == '50' and code == '00':  # Segment Time Series.
                 response = 'SUCCESS', 'segmentTimeSeries not yet implemented.'
             else:
@@ -258,8 +261,22 @@ class CommandInterpreter:
                 sec_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
                 self.logger.debug('Secondary SendToPort : %s' % sec_stp)
 
-                # todo add check to see if data has been cleared before clearing data translator channels
-                self.parent.datatranslator.clear()
+                if self.parent.saved_data_state is False:
+                    self.parent.datatranslator.clear()
+                else:
+                    message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to continue this will ' + \
+                              ' overwrite the unsaved data?'
+                    header = 'Confirm ' + parent_ident + '...'
+
+                    result = QtGui.QMessageBox.question(None,
+                                                        header,
+                                                        message,
+                                                        QtGui.QMessageBox.Yes| QtGui.QMessageBox.No)
+
+                    if result == QtGui.QMessageBox.Yes:
+                        pass
+                    else:
+                        return 'ABORT', None
 
                 progressDialog = QtGui.QProgressDialog('Downloading data ...',
                                  str("Abort"), 0, count)
@@ -309,6 +326,7 @@ class CommandInterpreter:
                         progressDialog.hide()
                         return 'PREMATURE_TERMINATION', 'NODATA'
 
+            self.parent.saved_data_state = True
             return 'SUCCESS', None
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
