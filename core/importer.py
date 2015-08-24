@@ -30,8 +30,7 @@ import config_utilities
 def importer(datatranslator, number_of_channels, metadata):
 
     logger = logging.getLogger('core.importer')
-
-
+    
     # First get instrument data path from configuration.
     App_Config = config_utilities.ConfigTool()
     data_path = App_Config.get('Application', 'instrument_data_path')
