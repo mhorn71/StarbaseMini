@@ -18,6 +18,9 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import csv
+import logging
+import re
 
 from PyQt4 import QtGui
 
@@ -25,6 +28,9 @@ import config_utilities
 
 
 def importer(datatranslator, number_of_channels, metadata):
+
+    logger = logging.getLogger('core.importer')
+
 
     # First get instrument data path from configuration.
     App_Config = config_utilities.ConfigTool()
@@ -43,7 +49,27 @@ def importer(datatranslator, number_of_channels, metadata):
     if fname == '':
         return 'ABORT', None
     else:
-        return 'SUCCESS', fname
+        datatranslator.clear()
+        try:
+            with open(fname) as csvfile:
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    if re.match('^\D+$', row[0]):
+                        metadata.meta_parser(row)
+                    elif re.match('^\d\d\d\d-\d\d-\d\d$', row[0]):
+
+                        if datatranslator.csv_parser(row):
+                            pass
+                        else:
+                            logger.critical('Unable to parse row :%s' % str(row))
+                            return 'PREMATURE_TERMINATION', 'Unable to parse data'
+                    else:
+                        pass
+        except IOError as msg:
+            logger.critical(str(msg))
+            return 'PREMATURE_TERMINATION', 'Unable to open file.'
+        else:
+            return 'SUCCESS', fname
 
 
 

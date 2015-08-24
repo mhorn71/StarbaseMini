@@ -324,3 +324,6 @@ class StaribusMetaDataCreator:
 class StaribusMetaDataDeconstructor:
     def __init__(self, parent):
         pass
+
+    def meta_parser(self,data):
+        print(data)
