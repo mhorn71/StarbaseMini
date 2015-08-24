@@ -252,7 +252,7 @@ class MetaDataCreator:
                 else:
                     chanid = str(nameidx - 1)
 
-                metadata += 'Observation.Channel.Name.' + chanid + ',' + name + ',Dimensionless,The name of the ' \
+                metadata += 'Observation.Channel.Name.' + chanid + ',' + name + ',String,Dimensionless,The name of the ' \
                             'channel'
 
                 nameidx += 1
@@ -271,9 +271,9 @@ class MetaDataCreator:
 
                 rgbcolour = utilities.hex2rgb(colour)
 
-                red = str(rgbcolour[0])
-                grn = str(rgbcolour[1])
-                blu = str(rgbcolour[2])
+                red = str(rgbcolour[0]).zfill(3)
+                grn = str(rgbcolour[1]).zfill(3)
+                blu = str(rgbcolour[2]).zfill(3)
 
                 metadata += 'Observation.Channel.Colour.' + chanid + ',r=' + red + ' g=' + grn + ' b=' + blu + ',' \
                             'ColourData,Dimensionless,The Colour of the channel graph'
@@ -309,7 +309,7 @@ class MetaDataCreator:
                 else:
                     chanid = str(unitidx - 1)
 
-                metadata += 'Observation.Channel.DataType.' + chanid + ',' + unit + ',DataType,Dimensionless,' \
+                metadata += 'Observation.Channel.Units.' + chanid + ',' + unit + ',Units,Dimensionless,' \
                             'The Units of the channel'
 
                 unitidx += 1
