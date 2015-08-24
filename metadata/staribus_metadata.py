@@ -319,3 +319,8 @@ class StaribusMetaDataCreator:
             return metadata
         else:
             return None
+
+
+class StaribusMetaDataDeconstructor:
+    def __init__(self):
+        pass
