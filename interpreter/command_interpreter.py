@@ -271,7 +271,7 @@ class CommandInterpreter:
                     result = QtGui.QMessageBox.question(None,
                                                         header,
                                                         message,
-                                                        QtGui.QMessageBox.Yes| QtGui.QMessageBox.No)
+                                                        QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
                     if result == QtGui.QMessageBox.Yes:
                         pass
