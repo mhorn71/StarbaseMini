@@ -309,7 +309,7 @@ class Instrument:
         self.YaxisScale = chart_metadata_dom.findtext('YaxisScale')
         logger.debug('YaxisScale : %s' % self.YaxisScale)
         self.XaxisLabel = chart_metadata_dom.findtext('XaxisLabel')
-        logger.debug('XaxisScale : %s' % self.XaxisLabel)
+        logger.debug('XaxisLabel : %s' % self.XaxisLabel)
 
         logger.debug('Iterating of channel metadata adding channel labels and colours to respective lists.')
         for channel_metadata in self.xmldom.findall('ChannelMetadata'):

@@ -1,1 +1,0 @@
-Number of channels in importer should check the channels against the instrument selected and abort if not the same.
