@@ -731,7 +731,7 @@ class Main(QtGui.QMainWindow):
         result = QtGui.QMessageBox.question(self,
                                             "Confirm Exit...",
                                             message,
-                                            QtGui.QMessageBox.Yes| QtGui.QMessageBox.No)
+                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         event.ignore()
 
         if result == QtGui.QMessageBox.Yes:
