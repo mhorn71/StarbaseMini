@@ -71,6 +71,7 @@ def importer(datatranslator, number_of_channels, metadata):
                             return 'PREMATURE_TERMINATION', 'Unable to parse data'
                     else:
                         pass
+
         except IOError as msg:
             logger.critical(str(msg))
             return 'PREMATURE_TERMINATION', 'Unable to open file.'

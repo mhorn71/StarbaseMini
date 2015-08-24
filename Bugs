@@ -1,3 +1,1 @@
-Debug not saved though configuration tool it's missing.
-Windows spacing between Instrument control labels and comboboxes huge.
-QTableWidget scroll to item doesn't work on Windows.
+Number of channels in importer should check the channels against the instrument selected and abort if not the same.
