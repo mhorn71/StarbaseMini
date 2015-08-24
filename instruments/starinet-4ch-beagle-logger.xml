@@ -446,10 +446,10 @@
     </Plugin>
 
     <ChartMetadata>
-        <YaxisLabel>mv</YaxisLabel>
+        <YaxisLabel>Multichannel Outputs</YaxisLabel>
         <YaxisRange>0,1800</YaxisRange>
         <YaxisScale>Lin</YaxisScale>
-        <XaxisLabel>Time (UTC)</XaxisLabel>
+        <XaxisLabel>Time (UT)</XaxisLabel>
     </ChartMetadata>
 
     <!-- Colours are from http://www.mulinblog.com/a-color-palette-optimized-for-data-visualization/ -->
