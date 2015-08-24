@@ -238,7 +238,7 @@ class MetaDataCreator:
             if len(metadata) != 0:
                 metadata += '\r\n'
 
-            metadata += 'Observation.Axis.Label.Y,' + ylabel + ',String,Dimensionless,The Y Axis Label'
+            metadata += 'Observation.Axis.Label.Y.0,' + ylabel + ',String,Dimensionless,The Y Axis Label'
 
         nameidx = 0
         for name in self.instrument.channel_names:
