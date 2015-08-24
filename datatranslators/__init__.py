@@ -1,2 +1,2 @@
 __author__ = 'mark'
-from datatranslators.StaribusBlock import StaribusBlockParser
+from datatranslators.Staribus import StaribusBlock
