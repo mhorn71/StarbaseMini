@@ -110,7 +110,7 @@ class CommandInterpreter:
             if base == '80' and code == '00':  # Import Local
 
                 if self.data_state():
-                    response = core.importer(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
+                    response = core.importer(self.parent.datatranslator_csv, self.instrument.instrument_number_of_channels,
                                              self.parent.metadata_deconstructor)
                 else:
                     return 'ABORT', None
