@@ -1,0 +1,2 @@
+The data translator decipher the payload into channel data.  If you write a new translator you'll also need to create
+a new metadata creator.
