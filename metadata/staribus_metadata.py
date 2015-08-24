@@ -328,16 +328,44 @@ class StaribusMetaDataDeconstructor:
         self.parent = parent
         self.instrument = parent.instrument
 
+        self.instrument_identifier = None
+
         self.channel_count = None
+
+        # We'll use the below list to save the channel names and colours and then populate the real lists from this.
+        self.base_channel_names = [None] * 9
+        self.base_channel_colours = [None] * 9
+
+        # The metadata channel list see below for format etc ...
+        self.channel_names = []
+
+        # The metadata channel colour list
+        self.channel_colours = []
+
+        self.YaxisLabel = None
+
+        self.XaxisLabel = None
+
+        self.index = 0
 
     def meta_parser(self, data):
 
         if re.match('Observation.Channel.Count', data[0]):
             self.channel_count = data[1]
 
-    # ['Observation.Title', 'A Staribus 4 Channel Data Logger', 'String', 'Dimensionless', 'The title of the observation.']
-    # ['Observation.Channel.Count', '5', 'DecimalInteger', 'Dimensionless', 'The number of channels of data produced by this Instrument']
-    # ['Observation.Axis.Label.X', 'Time (UT)', 'String', 'Dimensionless', 'The X Axis Label']
+        if re.match('Observation.Title', data[0]):
+            self.instrument_identifier = data[1]
+
+        if re.match('Observation.Axis.Label.X', data[0]):
+            self.XaxisLabel = data[1]
+
+        if re.match('Observation.Axis.Label.Y.0', data[0]):
+            self.YaxisLabel = data[1]
+
+
+        # Channel 1 is the temperature
+
+
     # ['Observation.Channel.Name.Temperature', 'Temperature', 'String', 'Dimensionless', 'The name of the channel']
     # ['Observation.Channel.Colour.Temperature', 'r=241 g=088 b=084', 'ColourData', 'Dimensionless', 'The Colour of the channel graph']
     # ['Observation.Channel.DataType.Temperature', 'DecimalInteger', 'DataType', 'Dimensionless', 'The DataType of the channel']
