@@ -322,5 +322,5 @@ class StaribusMetaDataCreator:
 
 
 class StaribusMetaDataDeconstructor:
-    def __init__(self):
+    def __init__(self, parent):
         pass
