@@ -162,8 +162,7 @@ class Main(QtGui.QMainWindow):
         # Initialise datatranslator
         # added data translators here.
         if self.instrument.instrument_datatranslator == 'StaribusBlock':
-            self.datatranslator = datatranslators.StaribusBlock(self.instrument.instrument_number_of_channels)
-            self.datatranslator_csv = datatranslators.StaribusCsv(self.instrument.instrument_number_of_channels)
+            self.datatranslator = datatranslators.StaribusParser(self.instrument.instrument_number_of_channels)
             # Initialise metadata
             self.metadata_creator = metadata.StaribusMetaDataCreator(self)
             self.metadata_deconstructor = metadata.StaribusMetaDataDeconstructor(self)

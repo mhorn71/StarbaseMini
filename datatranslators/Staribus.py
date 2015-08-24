@@ -22,7 +22,7 @@ import datetime
 import re
 
 
-class StaribusBlock:
+class StaribusParser:
     def __init__(self, channels):
         self.logger = logging.getLogger('datatranslator.StaribusBlock')
 
@@ -42,7 +42,7 @@ class StaribusBlock:
         self.channel_8 = []
         self.channel_9 = []
 
-    def parser(self, data):
+    def block_parser(self, data):
         # First 32 chars are date, time, temp, and sample rate plus spaces.
         # We also need to search of ETX
 
@@ -133,27 +133,7 @@ class StaribusBlock:
             return True
 
 
-class StaribusCsv:
-    def __init__(self, channels):
-        self.logger = logging.getLogger('datatranslator.StaribusCsv')
-
-        self.number_of_channels = channels
-
-        self.clear()
-
-    def clear(self):
-        self.datetime = []
-        self.channel_1 = []
-        self.channel_2 = []
-        self.channel_3 = []
-        self.channel_4 = []
-        self.channel_5 = []
-        self.channel_6 = []
-        self.channel_7 = []
-        self.channel_8 = []
-        self.channel_9 = []
-
-    def parser(self, data):
+    def csv_parser(self, data):
         # First 32 chars are date, time, temp, and sample rate plus spaces.
         # We also need to search of ETX
 
