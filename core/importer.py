@@ -58,6 +58,12 @@ def importer(datatranslator, number_of_channels, metadata):
                         metadata.meta_parser(row)
                     elif re.match('^\d\d\d\d-\d\d-\d\d$', row[0]):
 
+                        if metadata.channel_count is None:
+                            logger.critical('Unable to locate observation channel count')
+                            return 'PREMATURE_TERMINATION', 'Unable to locate observation channel count'
+                        else:
+                            datatranslator.number_of_channels = metadata.channel_count
+
                         if datatranslator.csv_parser(row):
                             pass
                         else:

@@ -17,6 +17,8 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
+
 import utilities
 
 
@@ -323,7 +325,20 @@ class StaribusMetaDataCreator:
 
 class StaribusMetaDataDeconstructor:
     def __init__(self, parent):
-        pass
+        self.parent = parent
+        self.instrument = parent.instrument
 
-    def meta_parser(self,data):
-        print(data)
+        self.channel_count = None
+
+    def meta_parser(self, data):
+
+        if re.match('Observation.Channel.Count', data[0]):
+            self.channel_count = data[1]
+
+    # ['Observation.Title', 'A Staribus 4 Channel Data Logger', 'String', 'Dimensionless', 'The title of the observation.']
+    # ['Observation.Channel.Count', '5', 'DecimalInteger', 'Dimensionless', 'The number of channels of data produced by this Instrument']
+    # ['Observation.Axis.Label.X', 'Time (UT)', 'String', 'Dimensionless', 'The X Axis Label']
+    # ['Observation.Channel.Name.Temperature', 'Temperature', 'String', 'Dimensionless', 'The name of the channel']
+    # ['Observation.Channel.Colour.Temperature', 'r=241 g=088 b=084', 'ColourData', 'Dimensionless', 'The Colour of the channel graph']
+    # ['Observation.Channel.DataType.Temperature', 'DecimalInteger', 'DataType', 'Dimensionless', 'The DataType of the channel']
+    # ['Observation.Channel.Units.Temperature', 'Celsius', 'Units', 'Dimensionless', 'The Units of the channel']
