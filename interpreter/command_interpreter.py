@@ -20,7 +20,7 @@ __author__ = 'mark'
 import re
 import logging
 
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui
 
 import core
 import dao
@@ -261,22 +261,10 @@ class CommandInterpreter:
                 sec_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
                 self.logger.debug('Secondary SendToPort : %s' % sec_stp)
 
-                if self.parent.saved_data_state is False:
+                if self.data_state():
                     self.parent.datatranslator.clear()
                 else:
-                    message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to continue this will ' + \
-                              ' overwrite the unsaved data?'
-                    header = 'Confirm ' + parent_ident + '...'
-
-                    result = QtGui.QMessageBox.question(None,
-                                                        header,
-                                                        message,
-                                                        QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-
-                    if result == QtGui.QMessageBox.Yes:
-                        pass
-                    else:
-                        return 'ABORT', None
+                    return 'ABORT', None
 
                 progressDialog = QtGui.QProgressDialog('Downloading data ...',
                                  str("Abort"), 0, count)
@@ -331,3 +319,25 @@ class CommandInterpreter:
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
         return 'SUCCESS', 'stepped data command'
+
+    def data_state(self):
+        '''
+        :return: True is it's safe to destroy any unsaved data, else False.
+        '''
+        if self.parent.saved_data_state is not False:
+
+            message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to continue this will ' + \
+                      ' overwrite the unsaved data?'
+            header = ''
+
+            result = QtGui.QMessageBox.question(None,
+                                                header,
+                                                message,
+                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+            if result == QtGui.QMessageBox.Yes:
+                return True
+            else:
+                return False
+        else:
+            return True
