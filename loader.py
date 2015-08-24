@@ -166,7 +166,7 @@ class Main(QtGui.QMainWindow):
             fatal_error = True
 
         # Initialise metadata
-        self.metadata = metadata.MetaDataCreator(self)
+        self.metadata_creator = metadata.StaribusMetaDataCreator(self)
 
         if fatal_error is False:
             # Instrument autodetect initialisation.

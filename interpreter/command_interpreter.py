@@ -117,7 +117,7 @@ class CommandInterpreter:
 
             elif base == '81' and code == '00':  # Export RawData
                 response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
-                                         self.parent.metadata)
+                                         self.parent.metadata_creator)
 
             elif base == '50' and code == '00':  # Segment Time Series.
                 response = 'SUCCESS', 'segmentTimeSeries not yet implemented.'
