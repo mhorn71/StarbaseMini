@@ -1,1 +1,3 @@
-When you add a new datatranslator i.e not Staribus Block you will need to add a new metadata creator for that translator
+When you add a new datatranslator i.e not Staribus Block you will need to add a new metadata creator for that translator.
+
+Channel 1 is the temperature while the data channels start from channel 2 but are referenced in metadata as Channels 0 - 8
