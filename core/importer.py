@@ -54,10 +54,10 @@ def importer(datatranslator, number_of_channels, metadata):
             with open(fname) as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
-                    if len(row) == 0: # bodge for windows as we seems to get a row of zero length sometimes
+                    if len(row) == 0:  # bodge for windows as we seems to get a row of zero length sometimes
                         pass
                     else:
-                        if re.match('^\D+$', row[0]):
+                        if row[0].startswith('Obser'):
                             metadata.meta_parser(row)
                         elif re.match('^\d\d\d\d-\d\d-\d\d$', row[0]):
 
@@ -66,7 +66,8 @@ def importer(datatranslator, number_of_channels, metadata):
                                 return 'PREMATURE_TERMINATION', 'Unable to locate observation channel count'
                             else:
                                 if number_of_channels != metadata.channel_count:
-                                    return 'PREMATURE_TERMINATION', 'csv file doesn\'t appear to be the same instrument as the the application'
+                                    return 'PREMATURE_TERMINATION', 'csv file doesn\'t appear to be the same ' \
+                                                                    'instrument as the the application'
 
                             if datatranslator.csv_parser(row):
                                 pass

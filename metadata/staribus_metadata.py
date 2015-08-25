@@ -346,27 +346,203 @@ class StaribusMetaDataDeconstructor:
 
         self.XaxisLabel = None
 
-        self.index = 0
+        self.name_idx = 0
+        self.colour_idx = 0
+
+        self.name_trip = False
+        self.colour_trip = False
+
+    def clear(self):
+
+        self.instrument_identifier = None
+
+        self.channel_count = None
+
+        # We'll use the below list to save the channel names and colours and then populate the real lists from this.
+        self.base_channel_names = [None] * 9
+        self.base_channel_colours = [None] * 9
+
+        # The metadata channel list see below for format etc ...
+        self.channel_names = []
+
+        # The metadata channel colour list
+        self.channel_colours = []
+
+        self.YaxisLabel = None
+
+        self.XaxisLabel = None
+
+        self.name_idx = 0
+        self.colour_idx = 0
+        self.name_trip = False
+        self.colour_trip = False
 
     def meta_parser(self, data):
 
-        if re.match('Observation.Channel.Count', data[0]):
+        if re.match('^Observation\.Channel\.Count$', data[0]):
             self.channel_count = data[1]
 
-        if re.match('Observation.Title', data[0]):
+        if re.match('^Observation\.Title$', data[0]):
             self.instrument_identifier = data[1]
 
-        if re.match('Observation.Axis.Label.X', data[0]):
+        if re.match('^Observation\.Axis\.Label\.X$', data[0]):
             self.XaxisLabel = data[1]
 
-        if re.match('Observation.Axis.Label.Y.0', data[0]):
+        if re.match('^Observation\.Axis\.Label\.Y\.0$', data[0]):
             self.YaxisLabel = data[1]
 
+        # Channel 1 is the temperature while the data channels start from channel 2 but are referenced in metadata as
+        # Channels 0 - 8
 
-        # Channel 1 is the temperature
+        if re.match('^Observation\.Channel\.Name\.Temperature$', data[0]):
+            self.base_channel_names[0] = data[1]
+            self.name_idx += 1
 
+        if re.match('^Observation\.Channel\.Colour\.Temperature$', data[0]):
+            hex_colour = self.colour_setter(data[1])
 
-    # ['Observation.Channel.Name.Temperature', 'Temperature', 'String', 'Dimensionless', 'The name of the channel']
-    # ['Observation.Channel.Colour.Temperature', 'r=241 g=088 b=084', 'ColourData', 'Dimensionless', 'The Colour of the channel graph']
-    # ['Observation.Channel.DataType.Temperature', 'DecimalInteger', 'DataType', 'Dimensionless', 'The DataType of the channel']
-    # ['Observation.Channel.Units.Temperature', 'Celsius', 'Units', 'Dimensionless', 'The Units of the channel']
+            if hex_colour is not None:
+                self.base_channel_colours[0] = hex_colour
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.0$', data[0]):
+            self.base_channel_names[1] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.0$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours[1] = hex_colour
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.1$', data[0]):
+            self.base_channel_names[2] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.1$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours.insert(2, hex_colour)
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.2$', data[0]):
+            self.base_channel_names[3] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.2$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours[3] = hex_colour
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.3$', data[0]):
+            self.base_channel_names[4] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.3$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours[4] = hex_colour
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.4$', data[0]):
+            self.base_channel_names[5] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.4$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours[5] = hex_colour
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.5$', data[0]):
+            self.base_channel_names.insert[6] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.5$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours[6] = hex_colour
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.6$', data[0]):
+            self.base_channel_names[7] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.6$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours[7] = hex_colour
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.7$', data[0]):
+            self.base_channel_names[8] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.7$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours[8] = hex_colour
+
+            self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.Name\.8$', data[0]):
+            self.base_channel_names[9] = data[1]
+            self.name_idx += 1
+
+        if re.match('^Observation\.Channel\.Colour\.8$', data[0]):
+            hex_colour = self.colour_setter(data[1])
+
+            if hex_colour is not None:
+                self.base_channel_colours[9] = hex_colour
+
+            self.colour_idx += 1
+
+        if self.channel_count is not None:
+            if self.colour_idx == int(self.channel_count):
+                if self.colour_trip is not True:
+                    for i in self.base_channel_colours:
+                        if i is not None:
+                            self.channel_colours.append(i)
+                    self.colour_trip = True
+
+            if self.name_idx == int(self.channel_count):
+                if self.name_trip is not True:
+                    for i in self.base_channel_names:
+                        if i is not None:
+                            self.channel_names.append(i)
+                    self.name_trip = True
+
+    def colour_setter(self,rgb):
+        # remove leading spaces.
+        rgb_colour = rgb.lstrip()
+
+        # split colours into tuple
+        rgb_colour = rgb_colour.split(' ')
+
+        if len(rgb_colour) != 3:
+            return None
+
+        r = rgb_colour[0][2:]
+        g = rgb_colour[1][2:]
+        b = rgb_colour[2][3:]
+
+        hex_colour = utilities.rgb2hex((int(r), int(g), int(b)))
+
+        return hex_colour
