@@ -49,6 +49,7 @@ def importer(datatranslator, number_of_channels, metadata):
         return 'ABORT', None
     else:
         datatranslator.clear()
+        metadata.clear()
         try:
             with open(fname) as csvfile:
                 reader = csv.reader(csvfile)
