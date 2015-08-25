@@ -353,6 +353,10 @@ class Main(QtGui.QMainWindow):
 
         self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
 
+        # Setup charting
+        self.mplwindow = self.ui.mplwindow
+        self.mplvl = self.ui.mplvl
+
     # ----------------------------------------
     # For here on is the UI populate methods.
     # ----------------------------------------
@@ -746,7 +750,7 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     myapp = Main()
     myapp.setWindowTitle('StarbaseMini -- Ver %s' % version)
-    myapp.showMaximized()
+    # myapp.showMaximized()
     myapp.show()
     x = app.exec_()
     sys.exit(x)
