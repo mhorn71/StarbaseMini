@@ -7,3 +7,6 @@ Some assumptions are made like  the following,
 
 1.) getData name , Command base and Command Code aren't changed.
 2.) getDataBlockCount and getDataBlock Command base and Command Code aren't changed.
+
+BlockedCommands expect the first command to provide a iterable parameter the second command. This parameter can be either
+a DecimalInteger or a HexInteger.
