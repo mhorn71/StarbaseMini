@@ -41,6 +41,7 @@ import interpreter
 import constants
 import datatranslators
 import metadata
+import charting
 
 version = '1.0.256'
 
@@ -69,6 +70,10 @@ class Main(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Setup charting
+        self.mplwindow = self.ui.mplwindow
+        self.mplvl = self.ui.mplvl
 
         # Setup QTableWidget
         headers = ['DateTime', 'Identifier', 'Status', 'Units', 'ResponseValue']
@@ -324,9 +329,17 @@ class Main(QtGui.QMainWindow):
         # self.ui.actionManual.triggered.connect(self.help_manual_triggered)
         # self.ui.actionAbout.triggered.connect(self.help_about_triggered)
 
-        # Initialise configurationManager
+        # Initialise configurationManager & charting.
         if config_error is False:
             self.configurationManager = config_utilities.ConfigManager()
+
+            try:
+                self.chart = charting.Chart(self.ui, self.datatranslator, self.metadata_deconstructor,
+                                            self.instrument, self.config)
+            except Exception as msg:
+                # msg = ('Charting failed to initialise - %s' % str(msg))
+                self.logger.critical(str(msg))
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
 
         # Initialise Futurlec Baudrate tool
         self.futurlec_baudrate_tool = futurlec.FuturlecBaudrate()
@@ -352,10 +365,6 @@ class Main(QtGui.QMainWindow):
                 self.setStyleSheet(style.read())
 
         self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
-
-        # Setup charting
-        self.mplwindow = self.ui.mplwindow
-        self.mplvl = self.ui.mplvl
 
     # ----------------------------------------
     # For here on is the UI populate methods.
@@ -722,10 +731,22 @@ class Main(QtGui.QMainWindow):
                                                             stepped_data, choice, parameter, response_regex)
 
         if ident == 'getData' and response[0].startswith('SUCCESS'):
-            print('We should generate a chart at this point.')
+            # Add the chart widget to the UI.
+            self.chart.clear()
+            if self.chart.add_metadata('data') is not True:
+                self.status_message('getData', 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
+            else:
+                self.chart.add_mpl()
+                self.chart.add_data()
             self.status_message(ident, response[0], response[1], units)
         elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
-            print('We should generate a chart at this point.')
+            # Add the chart widget to the UI.
+            self.chart.clear()
+            if self.chart.add_metadata('csv') is not True:
+                self.status_message('getData', 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
+            else:
+                self.chart.add_mpl()
+                self.chart.add_data()
             self.status_message(ident, response[0], response[1], units)
         else:
             self.status_message(ident, response[0], response[1], units)
