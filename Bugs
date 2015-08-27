@@ -1,3 +1,5 @@
 Things to do
 
 Add defaults for missing imported metadata.
+
+Converted colours RGB -> HEX, HEX -> RGB aren't the right something is wrong.
