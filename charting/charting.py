@@ -21,7 +21,7 @@ __author__ = 'mark'
 import matplotlib as mpl
 
 from matplotlib.figure import Figure
-import matplotlib.dates as dates
+from matplotlib.dates import DateFormatter
 
 from matplotlib.backends.backend_qt4agg import (
     FigureCanvasQTAgg as FigureCanvas,
@@ -151,9 +151,8 @@ class Chart:
     def add_mpl(self):
 
         if self.run_once is False:
-            # set the mplwindow widget background to a gray otherwise splash page disfigured in toolbar.
-            # we can shift this to css at a later date.
-            self.ui.mplwindow.setStyleSheet('QWidget{background-color: #EDEDED}')
+            # set the mplwindow widget background to a gray otherwise splash page disfigures the toolbar look.
+            self.ui.mplwindow.setStyleSheet('QWidget{ background-color: #EDEDED; }')
 
             self.ui.mplvl.addWidget(self.canvas)
 
@@ -165,10 +164,10 @@ class Chart:
     def add_data(self):
 
         try:
-            number_of_channels = int(self.attributes.instrument.instrument_number_of_channels)
+            number_of_channels = int(self.attributes.instrument_number_of_channels)
         except AttributeError as msg:
             # todo add logger bits
-            return False
+            return 'PREMATURE_TERMINATION', str(msg)
 
         # for i in range(number_of_channels):
         #     print(repr(self.datatranslator.channel_1))
@@ -182,4 +181,6 @@ class Chart:
             self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.channel_4, '#2CA02C', label='channel3')
             self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.channel_5, '#9467BD', label='channel4')
 
-        return True
+        self.add_mpl()
+
+        return 'SUCCESS', None
