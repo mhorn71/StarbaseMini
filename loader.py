@@ -282,14 +282,23 @@ class Main(QtGui.QMainWindow):
 
             # Disable all channel buttons to start with.
             self.ui.channel0Button.setEnabled(False)
+            self.ui.channel0colour.setEnabled(False)
             self.ui.channel1Button.setEnabled(False)
+            self.ui.channel1colour.setEnabled(False)
             self.ui.channel2Button.setEnabled(False)
+            self.ui.channel2colour.setEnabled(False)
             self.ui.channel3Button.setEnabled(False)
+            self.ui.channel3colour.setEnabled(False)
             self.ui.channel4Button.setEnabled(False)
+            self.ui.channel4colour.setEnabled(False)
             self.ui.channel5Button.setEnabled(False)
+            self.ui.channel5colour.setEnabled(False)
             self.ui.channel6Button.setEnabled(False)
+            self.ui.channel6colour.setEnabled(False)
             self.ui.channel7Button.setEnabled(False)
+            self.ui.channel7colour.setEnabled(False)
             self.ui.channel8Button.setEnabled(False)
+            self.ui.channel8colour.setEnabled(False)
 
             # Disable Parameter Entry, Choices Combobox and Execute Button
             self.ui.executeButton.setEnabled(False)
@@ -490,32 +499,50 @@ class Main(QtGui.QMainWindow):
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setVisible(False)
+            self.ui.channel2colour.setVisible(False)
             self.ui.channel3Button.setVisible(False)
+            self.ui.channel3colour.setVisible(False)
             self.ui.channel4Button.setVisible(False)
+            self.ui.channel4colour.setVisible(False)
             self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
             self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
             self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
             self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
         elif self.instrument.instrument_number_of_channels == '3':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
             self.ui.channel3Button.setVisible(False)
+            self.ui.channel3colour.setVisible(False)
             self.ui.channel4Button.setVisible(False)
+            self.ui.channel4colour.setVisible(False)
             self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
             self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
             self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
             self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
         elif self.instrument.instrument_number_of_channels == '4':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
             self.ui.channel2Button.setText(self.instrument.channel_names[2])
             self.ui.channel3Button.setText(self.instrument.channel_names[3])
             self.ui.channel4Button.setVisible(False)
+            self.ui.channel4colour.setVisible(False)
             self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
             self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
             self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
             self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
         elif self.instrument.instrument_number_of_channels == '5':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
@@ -523,9 +550,13 @@ class Main(QtGui.QMainWindow):
             self.ui.channel3Button.setText(self.instrument.channel_names[3])
             self.ui.channel4Button.setText(self.instrument.channel_names[4])
             self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
             self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
             self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
             self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
         elif self.instrument.instrument_number_of_channels == '6':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
@@ -534,8 +565,11 @@ class Main(QtGui.QMainWindow):
             self.ui.channel4Button.setText(self.instrument.channel_names[4])
             self.ui.channel5Button.setText(self.instrument.channel_names[5])
             self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
             self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
             self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
         elif self.instrument.instrument_number_of_channels == '7':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
@@ -545,7 +579,9 @@ class Main(QtGui.QMainWindow):
             self.ui.channel5Button.setText(self.instrument.channel_names[5])
             self.ui.channel6Button.setText(self.instrument.channel_names[6])
             self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
             self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
         elif self.instrument.instrument_number_of_channels == '8':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
@@ -556,6 +592,7 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setText(self.instrument.channel_names[6])
             self.ui.channel7Button.setText(self.instrument.channel_names[7])
             self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
         elif self.instrument.instrument_number_of_channels == '9':
             self.ui.channel0Button.setText(self.instrument.channel_names[0])
             self.ui.channel1Button.setText(self.instrument.channel_names[1])
@@ -575,56 +612,144 @@ class Main(QtGui.QMainWindow):
 
         if self.instrument.instrument_number_of_channels == '2':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[1] + '; }')
         elif self.instrument.instrument_number_of_channels == '3':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[2] + '; }')
         elif self.instrument.instrument_number_of_channels == '4':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[3] + '; }')
         elif self.instrument.instrument_number_of_channels == '5':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[4] + '; }')
         elif self.instrument.instrument_number_of_channels == '6':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[4] + '; }')
             self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[5] + '; }')
         elif self.instrument.instrument_number_of_channels == '7':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[4] + '; }')
             self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[5] + '; }')
             self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[6] + '; }')
         elif self.instrument.instrument_number_of_channels == '8':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[4] + '; }')
             self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[5] + '; }')
             self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[6] + '; }')
             self.ui.channel7Button.setEnabled(True)
+            self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[7] + '; }')
         elif self.instrument.instrument_number_of_channels == '9':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[4] + '; }')
             self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[5] + '; }')
             self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[6] + '; }')
             self.ui.channel7Button.setEnabled(True)
+            self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[7] + '; }')
             self.ui.channel8Button.setEnabled(True)
+            self.ui.channel8colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.instrument.channel_colours[8] + '; }')
         else:
             self.status_message('system', 'ERROR', 'Number of channels out of bounds.', None)
             self.logger.warning('Index Error, Number of channels out of bounds. %s' %
@@ -633,56 +758,144 @@ class Main(QtGui.QMainWindow):
     def import_local_chart_control_panel(self):
         if self.instrument.instrument_number_of_channels == '2':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[1] + '; }')
         elif self.instrument.instrument_number_of_channels == '3':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[2] + '; }')
         elif self.instrument.instrument_number_of_channels == '4':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[3] + '; }')
         elif self.instrument.instrument_number_of_channels == '5':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[4] + '; }')
         elif self.instrument.instrument_number_of_channels == '6':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[4] + '; }')
             self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[5] + '; }')
         elif self.instrument.instrument_number_of_channels == '7':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[4] + '; }')
             self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[5] + '; }')
             self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[6] + '; }')
         elif self.instrument.instrument_number_of_channels == '8':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[4] + '; }')
             self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[5] + '; }')
             self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[6] + '; }')
             self.ui.channel7Button.setText(self.metadata_deconstructor.channel_names[7])
+            self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[7] + '; }')
         elif self.instrument.instrument_number_of_channels == '9':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[4] + '; }')
             self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[5] + '; }')
             self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[6] + '; }')
             self.ui.channel7Button.setText(self.metadata_deconstructor.channel_names[7])
+            self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[7] + '; }')
             self.ui.channel8Button.setText(self.metadata_deconstructor.channel_names[8])
+            self.ui.channel8colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + self.metadata_deconstructor.channel_colours[8] + '; }')
         else:
             self.status_message('system', 'ERROR', 'Number of channels out of bounds.', None)
             self.logger.warning('Index Error, Number of channels out of bounds. %s' %
