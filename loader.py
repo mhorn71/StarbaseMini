@@ -56,8 +56,7 @@ class Main(QtGui.QMainWindow):
         # Parameter / check state, regex parameter.
         self.parameter_regex = '^.*$'
 
-        # DataBlock
-        self.DataBlock = []
+        # DataBlock Boolean.
         self.DataBlockBool = False
 
         # Base attributes.
