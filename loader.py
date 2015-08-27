@@ -571,6 +571,123 @@ class Main(QtGui.QMainWindow):
             self.logger.warning('Index Error, Number of channels out of bounds. %s' %
                                 self.instrument.instrument_number_of_channels)
 
+    def enable_chart_control_panel(self):
+
+        if self.instrument.instrument_number_of_channels == '2':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel1Button.setEnabled(True)
+        elif self.instrument.instrument_number_of_channels == '3':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel2Button.setEnabled(True)
+        elif self.instrument.instrument_number_of_channels == '4':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel3Button.setEnabled(True)
+        elif self.instrument.instrument_number_of_channels == '5':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel4Button.setEnabled(True)
+        elif self.instrument.instrument_number_of_channels == '6':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel5Button.setEnabled(True)
+        elif self.instrument.instrument_number_of_channels == '7':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel5Button.setEnabled(True)
+            self.ui.channel6Button.setEnabled(True)
+        elif self.instrument.instrument_number_of_channels == '8':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel5Button.setEnabled(True)
+            self.ui.channel6Button.setEnabled(True)
+            self.ui.channel7Button.setEnabled(True)
+        elif self.instrument.instrument_number_of_channels == '9':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel5Button.setEnabled(True)
+            self.ui.channel6Button.setEnabled(True)
+            self.ui.channel7Button.setEnabled(True)
+            self.ui.channel8Button.setEnabled(True)
+        else:
+            self.status_message('system', 'ERROR', 'Number of channels out of bounds.', None)
+            self.logger.warning('Index Error, Number of channels out of bounds. %s' %
+                                self.instrument.instrument_number_of_channels)
+
+    def import_local_chart_control_panel(self):
+        if self.instrument.instrument_number_of_channels == '2':
+            self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+        elif self.instrument.instrument_number_of_channels == '3':
+            self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+        elif self.instrument.instrument_number_of_channels == '4':
+            self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+        elif self.instrument.instrument_number_of_channels == '5':
+            self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+        elif self.instrument.instrument_number_of_channels == '6':
+            self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+        elif self.instrument.instrument_number_of_channels == '7':
+            self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+        elif self.instrument.instrument_number_of_channels == '8':
+            self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+            self.ui.channel7Button.setText(self.metadata_deconstructor.channel_names[7])
+        elif self.instrument.instrument_number_of_channels == '9':
+            self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+            self.ui.channel7Button.setText(self.metadata_deconstructor.channel_names[7])
+            self.ui.channel8Button.setText(self.metadata_deconstructor.channel_names[8])
+        else:
+            self.status_message('system', 'ERROR', 'Number of channels out of bounds.', None)
+            self.logger.warning('Index Error, Number of channels out of bounds. %s' %
+                                self.instrument.instrument_number_of_channels)
+
     # ----------------------------------------
     # Parameter check state method.
     # ----------------------------------------
@@ -740,6 +857,8 @@ class Main(QtGui.QMainWindow):
                 chart_response = self.chart.add_data()
                 if chart_response[0].startswith('SUCCESS'):
                     self.status_message(ident, response[0], response[1], units)
+                    self.enable_chart_control_panel()
+                    self.chart_control_panel_populate()
                 else:
                     self.status_message(ident, chart_response[0], chart_response[1], None)
         elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
@@ -751,6 +870,8 @@ class Main(QtGui.QMainWindow):
                 chart_response = self.chart.add_data()
                 if chart_response[0].startswith('SUCCESS'):
                     self.status_message(ident, response[0], response[1], units)
+                    self.enable_chart_control_panel()
+                    self.import_local_chart_control_panel()
                 else:
                     self.status_message(ident, chart_response[0], chart_response[1], None)
         else:

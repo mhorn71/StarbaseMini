@@ -21,14 +21,12 @@ __author__ = 'mark'
 import matplotlib as mpl
 
 from matplotlib.figure import Figure
-from matplotlib.dates import DateFormatter
 
 from matplotlib.backends.backend_qt4agg import (
     FigureCanvasQTAgg as FigureCanvas,
     NavigationToolbar2QT as NavigationToolbar)
 
 import logging
-import sys
 
 
 class Chart:
@@ -97,7 +95,6 @@ class Chart:
 
     def clear(self):
         self.ax1f1.clear()
-        print('Chart Should be Cleared.')
 
     def add_metadata(self, type):
         '''
@@ -130,8 +127,8 @@ class Chart:
             else:
                 self.ax1f1.set_xlabel('NODATA')
 
-            if self.attributes.XaxisLabel is not None:
-                self.ax1f1.set_ylabel(self.attributes.XaxisLabel)
+            if self.attributes.YaxisLabel is not None:
+                self.ax1f1.set_ylabel(self.attributes.YaxisLabel)
             else:
                 self.ax1f1.set_ylabel('NODATA')
 
@@ -159,6 +156,8 @@ class Chart:
                                         self.ui.mplwindow, coordinates=True)
             self.ui.mplvl.addWidget(toolbar)
             self.run_once = True
+        else:
+            self.canvas.draw()
 
     def add_data(self):
 
@@ -176,6 +175,14 @@ class Chart:
             # todo add logger bits
             return 'PREMATURE_TERMINATION', str(msg)
 
+        self.ax1f1.xaxis.labelpad = 0.9
+
+        self.ax1f1.legend(loc='upper center', prop={'size': 10}, bbox_to_anchor=(0.5, -0.06), fancybox=True, shadow=False,
+                          ncol=number_of_channels)
+
         self.add_mpl()
 
         return 'SUCCESS', None
+
+    def channel_control(self, channel):
+        pass
