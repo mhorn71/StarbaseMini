@@ -330,6 +330,8 @@ class StaribusMetaDataDeconstructor:
 
         self.instrument_identifier = None
 
+        self.instrument_number_of_channels = self.instrument.instrument_number_of_channels
+
         self.channel_count = None
 
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
@@ -359,14 +361,16 @@ class StaribusMetaDataDeconstructor:
         self.channel_count = None
 
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
+        del self.base_channel_names[:]
+        del self.base_channel_colours[:]
         self.base_channel_names = [None] * 9
         self.base_channel_colours = [None] * 9
 
         # The metadata channel list see below for format etc ...
-        self.channel_names = []
+        del self.channel_names[:]
 
         # The metadata channel colour list
-        self.channel_colours = []
+        del self.channel_colours[:]
 
         self.YaxisLabel = None
 
