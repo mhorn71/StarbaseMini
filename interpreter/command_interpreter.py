@@ -110,12 +110,20 @@ class CommandInterpreter:
             if base == '80' and code == '00':  # Import Local
 
                 if self.data_state():
+
+                    self.parent.saved_data_state = False
+
                     response = core.importer(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
                                              self.parent.metadata_deconstructor)
+
+                    if response[0].startswith('SUCCESS'):
+                        self.parent.datatranslator.create_data_array()
+
                 else:
                     return 'ABORT', None
 
             elif base == '81' and code == '00':  # Export RawData
+
                 response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
                                          self.parent.metadata_creator)
 
@@ -314,7 +322,9 @@ class CommandInterpreter:
                         progressDialog.hide()
                         return 'PREMATURE_TERMINATION', 'NODATA'
 
+            self.parent.datatranslator.create_data_array()
             self.parent.saved_data_state = True
+
             return 'SUCCESS', None
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
