@@ -43,7 +43,7 @@ import datatranslators
 import metadata
 import charting
 
-version = '1.0.256'
+version = '1.0.318'
 
 
 class Main(QtGui.QMainWindow):
@@ -730,28 +730,34 @@ class Main(QtGui.QMainWindow):
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                             stepped_data, choice, parameter, response_regex)
 
+        # Now we process the response based on command, probably not the most elegant way of doing things but it works.
+
         if ident == 'getData' and response[0].startswith('SUCCESS'):
             # Add the chart widget to the UI.
             self.chart.clear()
             if self.chart.add_metadata('data') is not True:
-                self.status_message('getData', 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
+                self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
             else:
-                self.chart.add_mpl()
-                self.chart.add_data()
-            self.status_message(ident, response[0], response[1], units)
+                chart_response = self.chart.add_data()
+                if chart_response[0].startswith('SUCCESS'):
+                    self.status_message(ident, response[0], response[1], units)
+                else:
+                    self.status_message(ident, chart_response[0], chart_response[1], None)
         elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
             # Add the chart widget to the UI.
             self.chart.clear()
             if self.chart.add_metadata('csv') is not True:
-                self.status_message('getData', 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
+                self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
             else:
-                self.chart.add_mpl()
-                self.chart.add_data()
-            self.status_message(ident, response[0], response[1], units)
+                chart_response = self.chart.add_data()
+                if chart_response[0].startswith('SUCCESS'):
+                    self.status_message(ident, response[0], response[1], units)
+                else:
+                    self.status_message(ident, chart_response[0], chart_response[1], None)
         else:
             self.status_message(ident, response[0], response[1], units)
 
-    def closeEvent(self,event):
+    def closeEvent(self, event):
         if self.saved_data_state is False:
             message = 'Are you sure you want to exit?'
         else:
@@ -771,7 +777,7 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     myapp = Main()
     myapp.setWindowTitle('StarbaseMini -- Ver %s' % version)
-    # myapp.showMaximized()
+    myapp.showMaximized()
     myapp.show()
     x = app.exec_()
     sys.exit(x)
