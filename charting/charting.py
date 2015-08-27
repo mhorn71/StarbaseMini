@@ -165,7 +165,7 @@ class Chart:
     def add_data(self):
 
         try:
-            number_of_channels = int(self.attributes.instrument_number_of_channels)
+            number_of_channels = int(self.attributes.instrument.instrument_number_of_channels)
         except AttributeError as msg:
             # todo add logger bits
             return False
