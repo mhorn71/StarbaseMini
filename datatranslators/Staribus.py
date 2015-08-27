@@ -20,6 +20,7 @@ __author__ = 'mark'
 import logging
 import datetime
 import re
+import numpy as np
 
 
 class StaribusParser:
@@ -27,6 +28,8 @@ class StaribusParser:
         self.logger = logging.getLogger('datatranslator.StaribusBlock')
 
         self.number_of_channels = channels
+
+        self.data_array = None
 
         self.datetime = []
         self.channel_1 = []
@@ -52,6 +55,8 @@ class StaribusParser:
         del self.channel_7[:]
         del self.channel_8[:]
         del self.channel_9[:]
+        del self.data_array
+        self.data_array = None
 
     def block_parser(self, data):
         # First 32 chars are date, time, temp, and sample rate plus spaces.
@@ -139,7 +144,7 @@ class StaribusParser:
                     epoch = epoch + datetime.timedelta(seconds=int(data[3]))  # create next sample datetime object.
         except (ValueError, IndexError) as msg:
             self.logger.critical(str(msg))
-            return 'PREMATURE_TERMINATION', None
+            return False
         else:
             return True
 
@@ -222,3 +227,26 @@ class StaribusParser:
         else:
             self.datetime.append(epoch)  # append current datetime object to sampletime
             return True
+
+    def create_data_array(self):
+        if self.number_of_channels == '2':
+            self.data_array = np.array((self.datetime, self.channel_1, self.channel_2))
+        elif self.number_of_channels == '3':
+            self.data_array = np.array((self.datetime, self.channel_1, self.channel_2, self.channel_3))
+        elif self.number_of_channels == '4':
+            self.data_array = np.array((self.datetime, self.channel_1, self.channel_2, self.channel_3, self.channel_4))
+        elif self.number_of_channels == '5':
+            self.data_array = np.array((self.datetime, self.channel_1, self.channel_2, self.channel_3, self.channel_4,
+                                        self.channel_5))
+        elif self.number_of_channels == '6':
+            self.data_array = np.array((self.datetime, self.channel_1, self.channel_2, self.channel_3, self.channel_4,
+                                        self.channel_5, self.channel_6))
+        elif self.number_of_channels == '7':
+            self.data_array = np.array((self.datetime, self.channel_1, self.channel_2, self.channel_3, self.channel_4,
+                                        self.channel_5, self.channel_6, self.channel_7))
+        elif self.number_of_channels == '8':
+            self.data_array = np.array((self.datetime, self.channel_1, self.channel_2, self.channel_3, self.channel_4,
+                                        self.channel_5, self.channel_6, self.channel_7, self.channel_8))
+        elif self.number_of_channels == '9':
+            self.data_array = np.array((self.datetime, self.channel_1, self.channel_2, self.channel_3, self.channel_4,
+                                        self.channel_5, self.channel_6, self.channel_7, self.channel_8, self.channel_9))
