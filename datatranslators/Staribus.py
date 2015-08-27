@@ -28,9 +28,6 @@ class StaribusParser:
 
         self.number_of_channels = channels
 
-        self.clear()
-
-    def clear(self):
         self.datetime = []
         self.channel_1 = []
         self.channel_2 = []
@@ -41,6 +38,20 @@ class StaribusParser:
         self.channel_7 = []
         self.channel_8 = []
         self.channel_9 = []
+
+        self.clear()
+
+    def clear(self):
+        del self.datetime[:]
+        del self.channel_1[:]
+        del self.channel_2[:]
+        del self.channel_3[:]
+        del self.channel_4[:]
+        del self.channel_5[:]
+        del self.channel_6[:]
+        del self.channel_7[:]
+        del self.channel_8[:]
+        del self.channel_9[:]
 
     def block_parser(self, data):
         # First 32 chars are date, time, temp, and sample rate plus spaces.
