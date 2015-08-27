@@ -143,7 +143,6 @@ class Chart:
             self.ax1f1.grid(True)
         except AttributeError as msg:
             # todo add logger bits
-            print(str(msg))
             return False
         else:
             return True
@@ -169,17 +168,13 @@ class Chart:
             # todo add logger bits
             return 'PREMATURE_TERMINATION', str(msg)
 
-        # for i in range(number_of_channels):
-        #     print(repr(self.datatranslator.channel_1))
-        #     self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.channel_1,
-        #                     self.attributes.channel_colours[i], label=self.attributes.channel_names[i])
-
-        if number_of_channels == 5:
-            self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.channel_1, '#D62728', label='channel0')
-            self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.channel_2, '#1F77B4', label='channel1')
-            self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.channel_3, '#FF7F0E', label='channel2')
-            self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.channel_4, '#2CA02C', label='channel3')
-            self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.channel_5, '#9467BD', label='channel4')
+        try:
+            for i in range(number_of_channels):
+                self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.data_array[i],
+                                self.attributes.channel_colours[i], label=self.attributes.channel_names[i])
+        except IndexError as msg:
+            # todo add logger bits
+            return 'PREMATURE_TERMINATION', str(msg)
 
         self.add_mpl()
 
