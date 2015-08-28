@@ -1034,13 +1034,6 @@ class Main(QtGui.QMainWindow):
         else:
             choice = self.ui.choicesComboBox.currentText()
 
-            if choice == 'True':
-                choice = self.instrument.boolean_true
-            elif choice == 'False':
-                choice = self.instrument.boolean_false
-            else:
-                pass
-
         if self.instrument.command_dict[ident]['Parameters']['Regex'] == 'None':
             parameter = None
         else:
