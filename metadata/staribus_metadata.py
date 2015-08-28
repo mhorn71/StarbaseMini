@@ -543,9 +543,9 @@ class StaribusMetaDataDeconstructor:
         if len(rgb_colour) != 3:
             return None
 
-        r = rgb_colour[0][2:]
-        g = rgb_colour[1][2:]
-        b = rgb_colour[2][3:]
+        r = rgb_colour[0].strip('r=')
+        g = rgb_colour[1].strip('g=')
+        b = rgb_colour[2].strip('b=')
 
         hex_colour = utilities.rgb2hex((int(r), int(g), int(b)))
 
