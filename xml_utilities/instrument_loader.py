@@ -63,7 +63,7 @@ class Instrument:
                 YaxisRange:str
                 YaxisScale:str
                 XaxisLabel:str
-                
+
         :raises:    LookupError
                     ValueError
                     FileNotFoundError
