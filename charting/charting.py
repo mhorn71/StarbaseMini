@@ -175,14 +175,10 @@ class Chart:
             # todo add logger bits
             return 'PREMATURE_TERMINATION', str(msg)
 
-        # self.ax1f1.xaxis.labelpad = 0.9
-
-        # self.ax1f1.legend(loc='upper center', prop={'size': 10}, bbox_to_anchor=(0.5, -0.06), fancybox=True, shadow=False,
-        #                   ncol=number_of_channels)
-
         self.add_mpl()
 
         return 'SUCCESS', None
 
-    def channel_control(self, channel):
-        pass
+    def channel_control(self, channel, state):
+        print(channel, repr(state))
+

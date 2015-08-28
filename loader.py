@@ -307,6 +307,16 @@ class Main(QtGui.QMainWindow):
 
             # Button connectors
             self.ui.executeButton.clicked.connect(self.execute_triggered)
+            self.ui.channel0Button.clicked.connect(self.channel0_triggered)
+            self.ui.channel1Button.clicked.connect(self.channel1_triggered)
+            self.ui.channel2Button.clicked.connect(self.channel2_triggered)
+            self.ui.channel3Button.clicked.connect(self.channel3_triggered)
+            self.ui.channel4Button.clicked.connect(self.channel4_triggered)
+            self.ui.channel5Button.clicked.connect(self.channel5_triggered)
+            self.ui.channel6Button.clicked.connect(self.channel6_triggered)
+            self.ui.channel7Button.clicked.connect(self.channel7_triggered)
+            self.ui.channel8Button.clicked.connect(self.channel8_triggered)
+
 
             # Module, Command and Choices ComboBox Triggers.
             self.ui.moduleCombobox.currentIndexChanged.connect(self.populate_ui_command)
@@ -612,142 +622,186 @@ class Main(QtGui.QMainWindow):
 
         if self.instrument.instrument_number_of_channels == '2':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[1] + '; }')
         elif self.instrument.instrument_number_of_channels == '3':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[2] + '; }')
         elif self.instrument.instrument_number_of_channels == '4':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[3] + '; }')
         elif self.instrument.instrument_number_of_channels == '5':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[4] + '; }')
         elif self.instrument.instrument_number_of_channels == '6':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[4] + '; }')
             self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5Button.setChecked(True)
             self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[5] + '; }')
         elif self.instrument.instrument_number_of_channels == '7':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[4] + '; }')
             self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5Button.setChecked(True)
             self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[5] + '; }')
             self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6Button.setChecked(True)
             self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[6] + '; }')
         elif self.instrument.instrument_number_of_channels == '8':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[4] + '; }')
             self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5Button.setChecked(True)
             self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[5] + '; }')
             self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6Button.setChecked(True)
             self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[6] + '; }')
             self.ui.channel7Button.setEnabled(True)
+            self.ui.channel7Button.setChecked(True)
             self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[7] + '; }')
         elif self.instrument.instrument_number_of_channels == '9':
             self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[0] + '; }')
             self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[1] + '; }')
             self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[2] + '; }')
             self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[3] + '; }')
             self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[4] + '; }')
             self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5Button.setChecked(True)
             self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[5] + '; }')
             self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6Button.setChecked(True)
             self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[6] + '; }')
             self.ui.channel7Button.setEnabled(True)
+            self.ui.channel7Button.setChecked(True)
             self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[7] + '; }')
             self.ui.channel8Button.setEnabled(True)
+            self.ui.channel8Button.setChecked(True)
             self.ui.channel8colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.instrument.channel_colours[8] + '; }')
         else:
@@ -758,142 +812,186 @@ class Main(QtGui.QMainWindow):
     def import_local_chart_control_panel(self):
         if self.instrument.instrument_number_of_channels == '2':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[1] + '; }')
         elif self.instrument.instrument_number_of_channels == '3':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[2] + '; }')
         elif self.instrument.instrument_number_of_channels == '4':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[3] + '; }')
         elif self.instrument.instrument_number_of_channels == '5':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[4] + '; }')
         elif self.instrument.instrument_number_of_channels == '6':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[4] + '; }')
             self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel5Button.setChecked(True)
             self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[5] + '; }')
         elif self.instrument.instrument_number_of_channels == '7':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[4] + '; }')
             self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel5Button.setChecked(True)
             self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[5] + '; }')
             self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+            self.ui.channel6Button.setChecked(True)
             self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[6] + '; }')
         elif self.instrument.instrument_number_of_channels == '8':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[4] + '; }')
             self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel5Button.setChecked(True)
             self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[5] + '; }')
             self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+            self.ui.channel6Button.setChecked(True)
             self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[6] + '; }')
             self.ui.channel7Button.setText(self.metadata_deconstructor.channel_names[7])
+            self.ui.channel7Button.setChecked(True)
             self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[7] + '; }')
         elif self.instrument.instrument_number_of_channels == '9':
             self.ui.channel0Button.setText(self.metadata_deconstructor.channel_names[0])
+            self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[0] + '; }')
             self.ui.channel1Button.setText(self.metadata_deconstructor.channel_names[1])
+            self.ui.channel1Button.setChecked(True)
             self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[1] + '; }')
             self.ui.channel2Button.setText(self.metadata_deconstructor.channel_names[2])
+            self.ui.channel2Button.setChecked(True)
             self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[2] + '; }')
             self.ui.channel3Button.setText(self.metadata_deconstructor.channel_names[3])
+            self.ui.channel3Button.setChecked(True)
             self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[3] + '; }')
             self.ui.channel4Button.setText(self.metadata_deconstructor.channel_names[4])
+            self.ui.channel4Button.setChecked(True)
             self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[4] + '; }')
             self.ui.channel5Button.setText(self.metadata_deconstructor.channel_names[5])
+            self.ui.channel5Button.setChecked(True)
             self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[5] + '; }')
             self.ui.channel6Button.setText(self.metadata_deconstructor.channel_names[6])
+            self.ui.channel6Button.setChecked(True)
             self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[6] + '; }')
             self.ui.channel7Button.setText(self.metadata_deconstructor.channel_names[7])
+            self.ui.channel7Button.setChecked(True)
             self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[7] + '; }')
             self.ui.channel8Button.setText(self.metadata_deconstructor.channel_names[8])
+            self.ui.channel8Button.setChecked(True)
             self.ui.channel8colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + self.metadata_deconstructor.channel_colours[8] + '; }')
         else:
@@ -1082,6 +1180,60 @@ class Main(QtGui.QMainWindow):
                     self.status_message(ident, chart_response[0], chart_response[1], None)
         else:
             self.status_message(ident, response[0], response[1], units)
+
+    def channel0_triggered(self):
+        if self.ui.channel0Button.isChecked():
+            self.chart.channel_control('Channel 0', True)
+        else:
+            self.chart.channel_control('Channel 0', False)
+
+    def channel1_triggered(self):
+        if self.ui.channel1Button.isChecked():
+            self.chart.channel_control('Channel 1', True)
+        else:
+            self.chart.channel_control('Channel 1', False)
+
+    def channel2_triggered(self):
+        if self.ui.channel2Button.isChecked():
+            self.chart.channel_control('Channel 2', True)
+        else:
+            self.chart.channel_control('Channel 2', False)
+
+    def channel3_triggered(self):
+        if self.ui.channel3Button.isChecked():
+            self.chart.channel_control('Channel 3', True)
+        else:
+            self.chart.channel_control('Channel 3', False)
+
+    def channel4_triggered(self):
+        if self.ui.channel4Button.isChecked():
+            self.chart.channel_control('Channel 4', True)
+        else:
+            self.chart.channel_control('Channel 4', False)
+
+    def channel5_triggered(self):
+        if self.ui.channel5Button.isChecked():
+            self.chart.channel_control('Channel 5', True)
+        else:
+            self.chart.channel_control('Channel 5', False)
+
+    def channel6_triggered(self):
+        if self.ui.channel6Button.isChecked():
+            self.chart.channel_control('Channel 6', True)
+        else:
+            self.chart.channel_control('Channel 6', False)
+
+    def channel7_triggered(self):
+        if self.ui.channel7Button.isChecked():
+            self.chart.channel_control('Channel 7', True)
+        else:
+            self.chart.channel_control('Channel 7', False)
+
+    def channel8_triggered(self):
+        if self.ui.channel8Button.isChecked():
+            self.chart.channel_control('Channel 8', True)
+        else:
+            self.chart.channel_control('Channel 8', False)
 
     def closeEvent(self, event):
         if self.saved_data_state is False:
