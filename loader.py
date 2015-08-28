@@ -1183,57 +1183,57 @@ class Main(QtGui.QMainWindow):
 
     def channel0_triggered(self):
         if self.ui.channel0Button.isChecked():
-            self.chart.channel_control('Channel 0', True)
+            self.chart.channel_control(0, True)
         else:
-            self.chart.channel_control('Channel 0', False)
+            self.chart.channel_control(0, False)
 
     def channel1_triggered(self):
         if self.ui.channel1Button.isChecked():
-            self.chart.channel_control('Channel 1', True)
+            self.chart.channel_control(1, True)
         else:
-            self.chart.channel_control('Channel 1', False)
+            self.chart.channel_control(1, False)
 
     def channel2_triggered(self):
         if self.ui.channel2Button.isChecked():
-            self.chart.channel_control('Channel 2', True)
+            self.chart.channel_control(2, True)
         else:
-            self.chart.channel_control('Channel 2', False)
+            self.chart.channel_control(2, False)
 
     def channel3_triggered(self):
         if self.ui.channel3Button.isChecked():
-            self.chart.channel_control('Channel 3', True)
+            self.chart.channel_control(3, True)
         else:
-            self.chart.channel_control('Channel 3', False)
+            self.chart.channel_control(3, False)
 
     def channel4_triggered(self):
         if self.ui.channel4Button.isChecked():
-            self.chart.channel_control('Channel 4', True)
+            self.chart.channel_control(4, True)
         else:
-            self.chart.channel_control('Channel 4', False)
+            self.chart.channel_control(4, False)
 
     def channel5_triggered(self):
         if self.ui.channel5Button.isChecked():
-            self.chart.channel_control('Channel 5', True)
+            self.chart.channel_control(5, True)
         else:
-            self.chart.channel_control('Channel 5', False)
+            self.chart.channel_control(5, False)
 
     def channel6_triggered(self):
         if self.ui.channel6Button.isChecked():
-            self.chart.channel_control('Channel 6', True)
+            self.chart.channel_control(6, True)
         else:
-            self.chart.channel_control('Channel 6', False)
+            self.chart.channel_control(6, False)
 
     def channel7_triggered(self):
         if self.ui.channel7Button.isChecked():
-            self.chart.channel_control('Channel 7', True)
+            self.chart.channel_control(7, True)
         else:
-            self.chart.channel_control('Channel 7', False)
+            self.chart.channel_control(7, False)
 
     def channel8_triggered(self):
         if self.ui.channel8Button.isChecked():
-            self.chart.channel_control('Channel 8', True)
+            self.chart.channel_control(8, True)
         else:
-            self.chart.channel_control('Channel 8', False)
+            self.chart.channel_control(8, False)
 
     def closeEvent(self, event):
         if self.saved_data_state is False:

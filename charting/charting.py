@@ -180,5 +180,11 @@ class Chart:
         return 'SUCCESS', None
 
     def channel_control(self, channel, state):
-        print(channel, repr(state))
+
+        if state is False:
+            self.ax1f1.lines[channel].set_visible(False)
+        else:
+            self.ax1f1.lines[channel].set_visible(True)
+
+        self.add_mpl()
 
