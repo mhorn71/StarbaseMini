@@ -249,3 +249,23 @@ class StaribusParser:
         elif self.number_of_channels == '9':
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6, self.channel_7, self.channel_8, self.channel_9))
+
+    def parameter_converter(self, cb, cc, cv, param):
+
+        command = cb + cc + cv
+
+        if re.match('^[A-Za-z]*$', param):
+            param = param.lower()
+
+        if re.match('^0305000[1-4]$', command):  # setRate
+            param = param.zfill(4)
+        elif re.match('^0200000[0-4]$', command):  # getA2D
+            param = param.zfill(3)
+        elif re.match('^true$', param) and re.match('^[1-4]', cv):  # boolean true
+            param = 'Y'
+        elif re.match('^false$', param) and re.match('^[1-4]', cv):  # boolean false
+            param = 'N'
+        else:
+            pass
+
+        return param
