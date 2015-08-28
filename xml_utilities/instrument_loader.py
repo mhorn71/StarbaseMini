@@ -63,9 +63,7 @@ class Instrument:
                 YaxisRange:str
                 YaxisScale:str
                 XaxisLabel:str
-                boolean_true: str
-                boolean_false: str
-
+                
         :raises:    LookupError
                     ValueError
                     FileNotFoundError
@@ -322,13 +320,5 @@ class Instrument:
             logger.debug('Channel DataTypeName %s added to channel_datatypenames list.' % channel_metadata.findtext('ChannelDataTypeName'))
             self.channel_units.append(channel_metadata.findtext('ChannelUnit'))
             logger.debug('Channel Unit %s added to channel_units list.' % channel_metadata.findtext('ChannelUnit'))
-
-        Boolean = self.xmldom.find('BooleanMetadata')
-        logger.debug('Found BooleanMetadata Object : %s' % str(Boolean))
-
-        self.boolean_true = Boolean.findtext('True')
-        logger.debug('Boolean True set to : %s' % self.boolean_true)
-        self.boolean_false = Boolean.findtext('False')
-        logger.debug('Boolean False set to : %s' % self.boolean_false)
 
         logger.debug('Instrument XML Loaded completed.')
