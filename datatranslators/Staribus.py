@@ -257,7 +257,7 @@ class StaribusParser:
         if re.match('^[A-Za-z]*$', param):
             param = param.lower()
 
-        if re.match('^0305000[1-4]$', command):  # setRate
+        if re.match('^0305000[0-4]$', command):  # setRate
             param = param.zfill(4)
         elif re.match('^0200000[0-4]$', command):  # getA2D
             param = param.zfill(3)
