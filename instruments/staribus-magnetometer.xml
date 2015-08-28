@@ -530,10 +530,4 @@
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
-    <BooleanMetadata>
-        <True>Y</True>
-        <False>N</False>
-    </BooleanMetadata>
-
-
 </Instrument>

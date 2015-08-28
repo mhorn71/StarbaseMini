@@ -489,9 +489,4 @@
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
-    <BooleanMetadata>
-        <True>true</True>
-        <False>false</False>
-    </BooleanMetadata>
-
 </Instrument>
