@@ -97,9 +97,9 @@ class CommandInterpreter:
         if send_to_port == 'True':
 
             if choice is not None:
-                param = choice
+                param = self.parent.datatranslator.parameter_converter(base, code, variant, choice)
             elif parameter is not None:
-                param = parameter
+                param = self.parent.datatranslator.parameter_converter(base, code, variant, parameter)
             else:
                 param = None
 
