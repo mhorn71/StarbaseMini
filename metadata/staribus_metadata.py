@@ -273,9 +273,9 @@ class StaribusMetaDataCreator:
 
                 rgbcolour = utilities.hex2rgb(colour)
 
-                red = str(rgbcolour[0]).zfill(3)
-                grn = str(rgbcolour[1]).zfill(3)
-                blu = str(rgbcolour[2]).zfill(3)
+                red = str(rgbcolour[0])
+                grn = str(rgbcolour[1])
+                blu = str(rgbcolour[2])
 
                 metadata += 'Observation.Channel.Colour.' + chanid + ',r=' + red + ' g=' + grn + ' b=' + blu + ',' \
                             'ColourData,Dimensionless,The Colour of the channel graph'
@@ -543,9 +543,9 @@ class StaribusMetaDataDeconstructor:
         if len(rgb_colour) != 3:
             return None
 
-        r = rgb_colour[0][2:]
-        g = rgb_colour[1][2:]
-        b = rgb_colour[2][3:]
+        r = rgb_colour[0].strip('r=')
+        g = rgb_colour[1].strip('g=')
+        b = rgb_colour[2].strip('b=')
 
         hex_colour = utilities.rgb2hex((int(r), int(g), int(b)))
 
