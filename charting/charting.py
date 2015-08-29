@@ -102,7 +102,7 @@ class Chart:
         :param type: data or csv
         :return: True or False.
         '''
-        data_type = type.lower()
+        data_type = data_type.lower()
         if data_type == 'data':
             self.attributes = self.instrument
         elif data_type == 'csv':
@@ -187,4 +187,10 @@ class Chart:
             self.ax1f1.lines[channel].set_visible(True)
 
         self.add_mpl()
+
+    def channel_autoscale(self, state):
+        if state is False:
+            self.ax1f1.autoscale(False)
+        else:
+            self.ax1f1.autoscale(True)
 
