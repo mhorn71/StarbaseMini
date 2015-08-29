@@ -278,11 +278,25 @@ QToolBox::tab:selected { /* italicize selected tabs */
               <x>0</x>
               <y>0</y>
               <width>128</width>
-              <height>311</height>
+              <height>391</height>
              </rect>
             </property>
-            <layout class="QGridLayout" name="gridLayout_5">
-             <item row="0" column="0">
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QCheckBox" name="chartDecimateCheckBox">
+               <property name="text">
+                <string>Decimate</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="chartAutoRangeCheckBox">
+               <property name="text">
+                <string>AutoRange</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
                 <widget class="QCheckBox" name="channel0colour">
@@ -312,7 +326,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
               </layout>
              </item>
-             <item row="1" column="0">
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_2">
                <item>
                 <widget class="QCheckBox" name="channel1colour">
@@ -342,7 +356,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
               </layout>
              </item>
-             <item row="2" column="0">
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_3">
                <item>
                 <widget class="QCheckBox" name="channel2colour">
@@ -372,7 +386,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
               </layout>
              </item>
-             <item row="3" column="0">
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>
                 <widget class="QCheckBox" name="channel3colour">
@@ -402,7 +416,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
               </layout>
              </item>
-             <item row="4" column="0">
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_5">
                <item>
                 <widget class="QCheckBox" name="channel4colour">
@@ -432,7 +446,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
               </layout>
              </item>
-             <item row="5" column="0">
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_6">
                <item>
                 <widget class="QCheckBox" name="channel5colour">
@@ -462,7 +476,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
               </layout>
              </item>
-             <item row="6" column="0">
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_7">
                <item>
                 <widget class="QCheckBox" name="channel6colour">
@@ -492,7 +506,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
               </layout>
              </item>
-             <item row="7" column="0">
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_8">
                <item>
                 <widget class="QCheckBox" name="channel7colour">
@@ -522,7 +536,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
               </layout>
              </item>
-             <item row="8" column="0">
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_9">
                <item>
                 <widget class="QCheckBox" name="channel8colour">
@@ -551,6 +565,19 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 </widget>
                </item>
               </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
