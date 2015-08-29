@@ -494,14 +494,14 @@
 
     <ChannelMetadata>
         <ChannelLabel>Temperature</ChannelLabel>
-        <ChannelColour>Red</ChannelColour>
+        <ChannelColour>#F15854</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>Celsius</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 1</ChannelLabel>
-        <ChannelColour>Blue</ChannelColour>
+        <ChannelColour>#5DA5DA</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
