@@ -1245,7 +1245,7 @@ class Main(QtGui.QMainWindow):
         else:
             message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to exit?'
 
-        result = QtGui.QMessageBox.question(self,
+        result = QtGui.QMessageBox.question(None,
                                             "Confirm Exit...",
                                             message,
                                             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
