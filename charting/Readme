@@ -1,7 +1,7 @@
 I've formatted the X axis to display dates as below,
 
  22:30:13
-31/06/2015
+2015-06-23
 
 While fmt_xdata is formatted as below,
 
