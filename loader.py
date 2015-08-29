@@ -1147,6 +1147,10 @@ class Main(QtGui.QMainWindow):
         else:
             response_regex = self.instrument.command_dict[ident]['Response']['Regex']
 
+        if ident == 'getData' or ident == 'importLocal':
+            self.status_message('system', 'INFO', 'Note: Creating a chart may take awhile. '
+                                                  'Windows may display (Not Responding).', None)
+
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                             stepped_data, choice, parameter, response_regex)
 
