@@ -168,8 +168,8 @@ class StaribusParser:
             if self.number_of_channels == '1':
                 return False
             elif self.number_of_channels == '2':
-                self.channel1.append(int(data[2]))
-                self.channel2.append(int(data[3]))
+                self.channel_1.append(int(data[2]))
+                self.channel_2.append(int(data[3]))
             elif self.number_of_channels == '3':
                 self.channel_1.append(int(data[2]))
                 self.channel_2.append(int(data[3]))
