@@ -471,7 +471,7 @@ class StaribusMetaDataDeconstructor:
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.5$', data[0]):
-            self.base_channel_names.insert[6] = data[1]
+            self.base_channel_names[6] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.5$', data[0]):
