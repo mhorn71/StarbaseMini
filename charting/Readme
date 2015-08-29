@@ -1,0 +1,10 @@
+I've formatted the X axis to display dates as below,
+
+ 22:30:13
+31/06/2015
+
+While fmt_xdata is formatted as below,
+
+x=22:30:13 y=159.000
+
+I'm not sure what'll happen if a user implements a data translator that uses and Indexed X Axis instead of Datetime.

@@ -178,6 +178,11 @@ class Chart:
             # todo add logger bits
             return 'PREMATURE_TERMINATION', str(msg)
 
+        # Something to beware of I'm not sure what will happen if and Index X axis is used.
+        hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%d/%m/%Y')
+        self.ax1f1.xaxis.set_major_formatter(hfmt)
+        self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%H:%M:%S')
+
         self.add_mpl()
 
         return 'SUCCESS', None
