@@ -190,6 +190,25 @@
         <Identifier>VLF Plugin</Identifier>
         <Description>The VLF Plugin Module</Description>
         <CommandCodeBase>04</CommandCodeBase>
+        <Command>
+            <Identifier>getTemperature</Identifier>
+            <CommandCode>00</CommandCode>
+            <CommandVariant>0003</CommandVariant>
+            <Description>Gets the Temperature of the VLF Plugin (Celsius).</Description>
+            <SendToPort>True</SendToPort>
+            <BlockedDataCommand>None</BlockedDataCommand>
+            <SteppedDataCommand>None</SteppedDataCommand>
+            <Parameter>
+                <Choices>None</Choices>
+                <Regex>None</Regex>
+                <Tooltip>None</Tooltip>
+            </Parameter>
+            <Response>
+                <DataTypeName>Dimensionless</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
+                <Units>Celsius</Units>  # Any string you like this is displayed in the statusMessage after the response.
+                <Regex>^((-|\+)?\d*(\.\d+)?)$</Regex>
+            </Response>
+        </Command>
 
         <Command>
             <Identifier>getRealtimeData</Identifier>
