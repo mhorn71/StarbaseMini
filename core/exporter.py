@@ -78,23 +78,23 @@ def exporter(datatranslator, number_of_channels, metadata):
             elif number_of_channels == '6':
                 csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
                     ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
-                    str(datatranslator.channel_5[i]) + str(datatranslator.channel_6[i]) + '\r\n'
+                    str(datatranslator.channel_5[i]) + ',' + str(datatranslator.channel_6[i]) + '\r\n'
             elif number_of_channels == '7':
                 csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
                     ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
-                    str(datatranslator.channel_5[i]) + str(datatranslator.channel_6[i]) + \
-                    str(datatranslator.channel_7[i]) + '\r\n'
+                    str(datatranslator.channel_5[i]) + ',' + str(datatranslator.channel_6[i]) + \
+                    ',' + str(datatranslator.channel_7[i]) + '\r\n'
             elif number_of_channels == '8':
                 csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
                     ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
-                    str(datatranslator.channel_5[i]) + str(datatranslator.channel_6[i]) + \
-                    str(datatranslator.channel_7[i]) + str(datatranslator.channel_8[i]) + '\r\n'
-            elif number_of_channels == '8':
+                    str(datatranslator.channel_5[i]) + ',' + str(datatranslator.channel_6[i]) + \
+                    ',' + str(datatranslator.channel_7[i]) + ',' + str(datatranslator.channel_8[i]) + '\r\n'
+            elif number_of_channels == '9':
                 csv += date + ',' + str(datatranslator.channel_1[i]) + ',' + str(datatranslator.channel_2[i]) + \
                     ',' + str(datatranslator.channel_3[i]) + ',' + str(datatranslator.channel_4[i]) + ',' + \
-                    str(datatranslator.channel_5[i]) + str(datatranslator.channel_6[i]) + \
-                    str(datatranslator.channel_7[i]) + str(datatranslator.channel_7[i]) + \
-                    str(datatranslator.channel_9[i]) + '\r\n'
+                    str(datatranslator.channel_5[i]) + ',' + str(datatranslator.channel_6[i]) + \
+                    ',' + str(datatranslator.channel_7[i]) + ',' + str(datatranslator.channel_7[i]) + \
+                    ',' + str(datatranslator.channel_9[i]) + '\r\n'
 
         try:
             file = open(fname, 'a+')
