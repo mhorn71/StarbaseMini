@@ -96,16 +96,16 @@ class Chart:
     def clear(self):
         self.ax1f1.clear()
 
-    def add_metadata(self, type):
+    def add_metadata(self, data_type):
         '''
         adds the title, axis labels, channel names etc .....
         :param type: data or csv
         :return: True or False.
         '''
-        type = type.lower()
-        if type == 'data':
+        data_type = type.lower()
+        if data_type == 'data':
             self.attributes = self.instrument
-        elif type == 'csv':
+        elif data_type == 'csv':
             self.attributes = self.metadata
         else:
             # todo logger bits.
