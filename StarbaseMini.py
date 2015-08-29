@@ -281,6 +281,8 @@ class Main(QtGui.QMainWindow):
             self.parameter_check_state_trip = 0
 
             # Disable all channel buttons to start with.
+            self.ui.chartDecimateCheckBox.setEnabled(False)
+            self.ui.chartAutoRangeCheckBox.setEnabled(False)
             self.ui.channel0Button.setEnabled(False)
             self.ui.channel0colour.setEnabled(False)
             self.ui.channel1Button.setEnabled(False)
@@ -325,6 +327,10 @@ class Main(QtGui.QMainWindow):
             # Parameter entry emit and connect signals
             self.ui.commandParameter.textChanged.connect(self.parameter_check_state)
             self.ui.commandParameter.textChanged.emit(self.ui.commandParameter.text())
+
+            # Chart Decimate and AutoRange signals.
+            self.ui.chartAutoRangeCheckBox.stateChanged.connect(self.chart_auto_range_triggered)
+            self.ui.chartDecimateCheckBox.stateChanged.connect(self.chart_decimate_triggered)
 
             # Fire populate_ui_module for the first time.
             self.populate_ui_module()
@@ -1167,6 +1173,9 @@ class Main(QtGui.QMainWindow):
                     self.status_message(ident, response[0], response[1], units)
                     self.enable_chart_control_panel()
                     self.chart_control_panel_populate()
+                    self.ui.chartDecimateCheckBox.setEnabled(True)
+                    self.ui.chartAutoRangeCheckBox.setEnabled(True)
+                    self.ui.chartAutoRangeCheckBox.setChecked(False)
                 else:
                     self.status_message(ident, chart_response[0], chart_response[1], None)
         elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
@@ -1180,6 +1189,8 @@ class Main(QtGui.QMainWindow):
                     self.status_message(ident, response[0], response[1], units)
                     self.enable_chart_control_panel()
                     self.import_local_chart_control_panel()
+                    self.ui.chartDecimateCheckBox.setEnabled(True)
+                    self.ui.chartAutoRangeCheckBox.setChecked(True)
                 else:
                     self.status_message(ident, chart_response[0], chart_response[1], None)
         else:
@@ -1238,6 +1249,15 @@ class Main(QtGui.QMainWindow):
             self.chart.channel_control(8, True)
         else:
             self.chart.channel_control(8, False)
+
+    def chart_auto_range_triggered(self):
+        if self.ui.chartAutoRangeCheckBox.isChecked():
+            self.chart.channel_autoscale(True)
+        else:
+            self.chart.channel_autoscale(False)
+
+    def chart_decimate_triggered(self):
+        pass
 
     def closeEvent(self, event):
         if self.saved_data_state is False:

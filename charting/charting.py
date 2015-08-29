@@ -112,14 +112,7 @@ class Chart:
             print('Type unknown')
             return False
 
-        try:
-            if self.attributes.YaxisRange is not None:
-                axis_range = self.attributes.YaxisRange.split(',')
-                yrange_start = int(axis_range[0])
-                yrange_stop = int(axis_range[1])
-                self.ax1f1.set_ylim(yrange_start, yrange_stop)
-        except AttributeError:
-            pass
+        self.set_scale()
 
         try:
             if self.attributes.XaxisLabel is not None:
@@ -143,6 +136,16 @@ class Chart:
             return False
         else:
             return True
+
+    def set_scale(self):
+        try:
+            if self.attributes.YaxisRange is not None:
+                axis_range = self.attributes.YaxisRange.split(',')
+                yrange_start = int(axis_range[0])
+                yrange_stop = int(axis_range[1])
+                self.ax1f1.set_ylim(yrange_start, yrange_stop)
+        except AttributeError:
+            pass
 
     def add_mpl(self):
 
@@ -191,6 +194,9 @@ class Chart:
     def channel_autoscale(self, state):
         if state is False:
             self.ax1f1.autoscale(False)
+            self.set_scale()
         else:
             self.ax1f1.autoscale(True)
+
+        self.add_mpl()
 
