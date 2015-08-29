@@ -35,8 +35,8 @@ class Instruments:
             # The tree root is the top level Instruments tag.
             self.xmldom = eTree.parse(instrument_xml_file)  # Open and parse xml document.
         except FileNotFoundError:
-            raise FileNotFoundError(instrument_xml_file)
             logger.debug('XML File not found : %s' % instrument_xml_file)
+            raise FileNotFoundError(instrument_xml_file)
         else:
             logger.debug('XML File found : %s' % instrument_xml_file)
 
