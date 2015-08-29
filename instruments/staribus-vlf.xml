@@ -38,7 +38,7 @@
         <Command>
             <Identifier>getData</Identifier>
             <CommandCode>01</CommandCode>
-            <CommandVariant>0003</CommandVariant>
+            <CommandVariant>0000</CommandVariant>
             <Description>Gets the data produced by the Instrument.</Description>
             <SendToPort>False</SendToPort>
             <BlockedDataCommand>02,03</BlockedDataCommand>
@@ -167,7 +167,7 @@
         <Command>
             <Identifier>segmentTimeSeries</Identifier>
             <CommandCode>00</CommandCode>
-            <CommandVariant>0001</CommandVariant>
+            <CommandVariant>0000</CommandVariant>
             <Description>Segment current data set into days or weeks and save CSV file in data store.</Description>
             <SendToPort>True</SendToPort>
             <BlockedDataCommand>None</BlockedDataCommand>
