@@ -23,10 +23,22 @@ import matplotlib as mpl
 from matplotlib.figure import Figure
 
 from matplotlib.backends.backend_qt4agg import (
-    FigureCanvasQTAgg as FigureCanvas,
-    NavigationToolbar2QT as NavigationToolbar)
+    FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT)
 
 import logging
+
+# http://stackoverflow.com/questions/12695678/how-to-modify-the-navigation-toolbar-easily-in-a-matplotlib-figure-window
+# Thanks to torfbolt and MadeOfAir.
+
+
+class NavigationToolbar(NavigationToolbar2QT):
+    # only display the buttons we need
+    toolitems = [t for t in NavigationToolbar2QT.toolitems if
+                 t[0] in ('Home', 'Pan', 'Zoom', 'Save')]
+
+    def __init__(self, *args, **kwargs):
+        super(NavigationToolbar, self).__init__(*args, **kwargs)
+        self.layout().takeAt(4)
 
 
 class Chart:
