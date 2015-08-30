@@ -188,8 +188,8 @@
 
     <Plugin>
         <!-- A virtual Plugin -->
-        <Identifier>LoggerPlugin</Identifier>
-        <Description>The Logger Plugin Module</Description>
+        <Identifier>MagnetometerPlugin</Identifier>
+        <Description>The Magnetometer Plugin Module</Description>
         <CommandCodeBase>04</CommandCodeBase>
         <Command>
             <Identifier>getTemperature</Identifier>
