@@ -62,9 +62,8 @@ class StaribusParser:
         # First 32 chars are date, time, temp, and sample rate plus spaces.
         # We also need to search of ETX
 
-        print(data)
-
         data = data.split(' ')
+        
         try:
             # create datetime object
             date = str(data[0]).split('-')  # split date field up
@@ -96,8 +95,6 @@ class StaribusParser:
                 return 'PREMATURE_TERMINATION', 'Number of channels out of range.'
 
             for datum in re.findall(sample_length, data[6]):  # for every group of 16 digits
-
-                print(len(datum))
 
                 if len(datum) == 0:
                     return False
