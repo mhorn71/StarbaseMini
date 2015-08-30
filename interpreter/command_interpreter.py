@@ -313,7 +313,7 @@ class CommandInterpreter:
                     # Check primary response is valid
                     if self.check_response(secondary_command_response):
 
-                        if self.parent.datatranslator.block_parser(secondary_command_response[1]):
+                        if self.parent.datatranslator.block_parser(secondary_command_response[1], sec_variant):
                             pass
                         else:
                             return 'PREMATURE_TERMINATION', 'NODATA'

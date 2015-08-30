@@ -58,9 +58,11 @@ class StaribusParser:
         del self.data_array
         self.data_array = None
 
-    def block_parser(self, data):
+    def block_parser(self, data, command_variant):
         # First 32 chars are date, time, temp, and sample rate plus spaces.
         # We also need to search of ETX
+
+        print(data)
 
         data = data.split(' ')
         try:
@@ -74,7 +76,10 @@ class StaribusParser:
             elif self.number_of_channels == '2':
                 sample_length = '\d{4}'
             elif self.number_of_channels == '3':
-                sample_length = '\d{8}'
+                if command_variant == '0004':
+                    sample_length = '([+|\-]\d{3}[+\-]\d{3})'
+                else:
+                    sample_length = '\d{8}'
             elif self.number_of_channels == '4':
                 sample_length = '\d{12}'
             elif self.number_of_channels == '5':
@@ -91,57 +96,63 @@ class StaribusParser:
                 return 'PREMATURE_TERMINATION', 'Number of channels out of range.'
 
             for datum in re.findall(sample_length, data[6]):  # for every group of 16 digits
-                    dat = re.findall('\d{4}', str(datum))   # split each sample_length into groups of 4
 
-                    self.datetime.append(epoch)  # append current datetime object to sampletime
-                    self.channel_1.append(data[2])  # append temperature to temperature array
+                print(len(datum))
 
-                    if self.number_of_channels == '2':
-                        self.channel_2.append(int(dat[0]))  # append data to channel arrays
-                    elif self.number_of_channels == '3':
-                        self.channel_2.append(int(dat[0]))
-                        self.channel_3.append(int(dat[1]))
-                    elif self.number_of_channels == '4':
-                        self.channel_2.append(int(dat[0]))
-                        self.channel_3.append(int(dat[1]))
-                        self.channel_4.append(int(dat[2]))
-                    elif self.number_of_channels == '5':
-                        self.channel_2.append(int(dat[0]))
-                        self.channel_3.append(int(dat[1]))
-                        self.channel_4.append(int(dat[2]))
-                        self.channel_5.append(int(dat[3]))
-                    elif self.number_of_channels == '6':
-                        self.channel_2.append(int(dat[0]))
-                        self.channel_3.append(int(dat[1]))
-                        self.channel_4.append(int(dat[2]))
-                        self.channel_5.append(int(dat[3]))
-                        self.channel_6.append(int(dat[4]))
-                    elif self.number_of_channels == '7':
-                        self.channel_2.append(int(dat[0]))
-                        self.channel_3.append(int(dat[1]))
-                        self.channel_4.append(int(dat[2]))
-                        self.channel_5.append(int(dat[3]))
-                        self.channel_6.append(int(dat[4]))
-                        self.channel_7.append(int(dat[5]))
-                    elif self.number_of_channels == '8':
-                        self.channel_2.append(int(dat[0]))
-                        self.channel_3.append(int(dat[1]))
-                        self.channel_4.append(int(dat[2]))
-                        self.channel_5.append(int(dat[3]))
-                        self.channel_6.append(int(dat[4]))
-                        self.channel_7.append(int(dat[5]))
-                        self.channel_8.append(int(dat[6]))
-                    elif self.number_of_channels == '9':
-                        self.channel_2.append(int(dat[0]))
-                        self.channel_3.append(int(dat[1]))
-                        self.channel_4.append(int(dat[2]))
-                        self.channel_5.append(int(dat[3]))
-                        self.channel_6.append(int(dat[4]))
-                        self.channel_7.append(int(dat[5]))
-                        self.channel_8.append(int(dat[6]))
-                        self.channel_9.append(int(dat[7]))
+                if len(datum) == 0:
+                    return False
 
-                    epoch = epoch + datetime.timedelta(seconds=int(data[3]))  # create next sample datetime object.
+                dat = re.findall('....', str(datum))   # split each sample_length into groups of 4
+
+                self.datetime.append(epoch)  # append current datetime object to sampletime
+                self.channel_1.append(data[2])  # append temperature to temperature array
+
+                if self.number_of_channels == '2':
+                    self.channel_2.append(int(dat[0]))  # append data to channel arrays
+                elif self.number_of_channels == '3':
+                    self.channel_2.append(int(dat[0]))
+                    self.channel_3.append(int(dat[1]))
+                elif self.number_of_channels == '4':
+                    self.channel_2.append(int(dat[0]))
+                    self.channel_3.append(int(dat[1]))
+                    self.channel_4.append(int(dat[2]))
+                elif self.number_of_channels == '5':
+                    self.channel_2.append(int(dat[0]))
+                    self.channel_3.append(int(dat[1]))
+                    self.channel_4.append(int(dat[2]))
+                    self.channel_5.append(int(dat[3]))
+                elif self.number_of_channels == '6':
+                    self.channel_2.append(int(dat[0]))
+                    self.channel_3.append(int(dat[1]))
+                    self.channel_4.append(int(dat[2]))
+                    self.channel_5.append(int(dat[3]))
+                    self.channel_6.append(int(dat[4]))
+                elif self.number_of_channels == '7':
+                    self.channel_2.append(int(dat[0]))
+                    self.channel_3.append(int(dat[1]))
+                    self.channel_4.append(int(dat[2]))
+                    self.channel_5.append(int(dat[3]))
+                    self.channel_6.append(int(dat[4]))
+                    self.channel_7.append(int(dat[5]))
+                elif self.number_of_channels == '8':
+                    self.channel_2.append(int(dat[0]))
+                    self.channel_3.append(int(dat[1]))
+                    self.channel_4.append(int(dat[2]))
+                    self.channel_5.append(int(dat[3]))
+                    self.channel_6.append(int(dat[4]))
+                    self.channel_7.append(int(dat[5]))
+                    self.channel_8.append(int(dat[6]))
+                elif self.number_of_channels == '9':
+                    self.channel_2.append(int(dat[0]))
+                    self.channel_3.append(int(dat[1]))
+                    self.channel_4.append(int(dat[2]))
+                    self.channel_5.append(int(dat[3]))
+                    self.channel_6.append(int(dat[4]))
+                    self.channel_7.append(int(dat[5]))
+                    self.channel_8.append(int(dat[6]))
+                    self.channel_9.append(int(dat[7]))
+
+                epoch = epoch + datetime.timedelta(seconds=int(data[3]))  # create next sample datetime object.
         except (ValueError, IndexError) as msg:
             self.logger.critical(str(msg))
             return False
