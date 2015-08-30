@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 
 <Instrument>
-    <Identifier>Staribus4ChannelLogger</Identifier>
+    <Identifier>Staribus 4 Channel Logger</Identifier>
     <Description>A Staribus 4 Channel Data Logger</Description>
     <StaribusAddress>001</StaribusAddress>
     <StarinetAddress>None</StarinetAddress>

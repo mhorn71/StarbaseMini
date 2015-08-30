@@ -63,7 +63,7 @@ class StaribusParser:
         # We also need to search of ETX
 
         data = data.split(' ')
-        
+
         try:
             # create datetime object
             date = str(data[0]).split('-')  # split date field up
