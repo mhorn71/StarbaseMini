@@ -209,7 +209,7 @@ class Main(QtGui.QMainWindow):
                 logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
                 self.logger = logging.getLogger('main')
                 self.logger.info('-------------- APPLICATION STARTUP --------------')
-                
+
                 # Load application parameters.
                 try:
                     self.instrument_autodetect = self.config.get('Application', 'instrument_autodetect')
