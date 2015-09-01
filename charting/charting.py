@@ -78,7 +78,6 @@ class Chart:
         mpl.rcParams['figure.max_open_warning'] = 2
 
         self.fig = Figure()
-        self.logger.info('Charting initialised.')
         self.ax1f1 = self.fig.add_subplot(111)
         self.canvas = FigureCanvas(self.fig)
 
@@ -104,6 +103,8 @@ class Chart:
         self.default7_colour = '#E377C2'
         self.default8_colour = '#BCBD22'
         self.default9_colour = '#17BECF'
+
+        self.logger.info('Initialised charting.')
 
     def clear(self):
         self.ax1f1.clear()
