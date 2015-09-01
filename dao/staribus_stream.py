@@ -69,7 +69,7 @@ class StaribusStream:
          Will return either a full formed Staribus response or TIMEOUT, PREMATURE_TERMINATION
         '''
 
-        self.logger.info('%s %s', 'stream has been handed', repr(message))
+        self.logger.info('%s %s', 'Stream has been handed', repr(message))
 
         try:
 
