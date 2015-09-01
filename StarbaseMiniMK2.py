@@ -467,7 +467,8 @@ class Main(QtGui.QMainWindow):
 
     def disable_all(self):
         self.disable_all_boolean = True
-        self.logger.info('Disabling all UI input widgets.')
+        self.logger.info('Instrument control panel disabled.')
+        self.status_message('system', 'INFO', 'Instrument control panel disabled', None)
         self.ui.moduleCombobox.setEnabled(False)
         self.logger.debug('Module Combo box set False')
         self.ui.commandCombobox.setEnabled(False)
