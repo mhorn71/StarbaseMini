@@ -90,25 +90,6 @@ class Main(QtGui.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # Style sheets
-        self.style_boolean = False
-
-        if sys.platform.startswith('darwin'):
-            self.stylesheet = 'css/macStyle.css'
-            self.style_boolean = True
-        elif sys.platform.startswith('win32'):
-            self.stylesheet = 'css/winStyle.css'
-            self.style_boolean = True
-        elif sys.platform.startswith('linux'):
-            self.stylesheet = 'css/nixStyle.css'
-            self.style_boolean = True
-
-        if self.style_boolean:
-            with open(self.stylesheet, 'r') as style:
-                self.setStyleSheet(style.read())
-
-        self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
-
         # Menu items
         self.ui.actionExit.triggered.connect(self.close)
         self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
@@ -139,26 +120,35 @@ class Main(QtGui.QMainWindow):
         self.command_parameter_trip = 0
         self.parameter_check_state_trip = 0
 
-        # Disable all channel buttons to start with.
+        # Setup initial channel button and checkbox states.
         self.ui.chartDecimateCheckBox.setEnabled(False)
         self.ui.chartAutoRangeCheckBox.setEnabled(False)
-        self.ui.channel0Button.setEnabled(False)
+        self.ui.channel0Button.setVisible(False)
+        self.ui.channel0colour.setVisible(False)
         self.ui.channel0colour.setEnabled(False)
-        self.ui.channel1Button.setEnabled(False)
+        self.ui.channel1Button.setVisible(False)
+        self.ui.channel1colour.setVisible(False)
         self.ui.channel1colour.setEnabled(False)
-        self.ui.channel2Button.setEnabled(False)
+        self.ui.channel2Button.setVisible(False)
+        self.ui.channel2colour.setVisible(False)
         self.ui.channel2colour.setEnabled(False)
-        self.ui.channel3Button.setEnabled(False)
+        self.ui.channel3Button.setVisible(False)
+        self.ui.channel3colour.setVisible(False)
         self.ui.channel3colour.setEnabled(False)
-        self.ui.channel4Button.setEnabled(False)
+        self.ui.channel4Button.setVisible(False)
+        self.ui.channel4colour.setVisible(False)
         self.ui.channel4colour.setEnabled(False)
-        self.ui.channel5Button.setEnabled(False)
+        self.ui.channel5Button.setVisible(False)
+        self.ui.channel5colour.setVisible(False)
         self.ui.channel5colour.setEnabled(False)
-        self.ui.channel6Button.setEnabled(False)
+        self.ui.channel6Button.setVisible(False)
+        self.ui.channel6colour.setVisible(False)
         self.ui.channel6colour.setEnabled(False)
-        self.ui.channel7Button.setEnabled(False)
+        self.ui.channel7Button.setVisible(False)
+        self.ui.channel7colour.setVisible(False)
         self.ui.channel7colour.setEnabled(False)
-        self.ui.channel8Button.setEnabled(False)
+        self.ui.channel8Button.setVisible(False)
+        self.ui.channel8colour.setVisible(False)
         self.ui.channel8colour.setEnabled(False)
 
         # Disable Parameter Entry, Choices Combobox and Execute Button
@@ -219,10 +209,37 @@ class Main(QtGui.QMainWindow):
                 self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                 self.fatal_error = True
                 self.config_error = True
+            else:
+                # Load application parameters.
+                try:
+                    self.instrument_autodetect = self.config.get('Application', 'instrument_autodetect')
+                    self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
+                    self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
+                    self.starinet_address = self.config.get('StarinetRelay', 'address')
+                    self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
+                    self.serial_port = self.config.get('StaribusPort', 'staribus_port')
+                    self.serial_baudrate = self.config.get('StaribusPort', 'baudrate')
+                    self.serial_port_timeout = self.config.get('StaribusPort', 'timeout')
+                except ValueError as msg:
+                    self.logger.critical('Configuration ValueError : %s' % str(msg))
+                    msg = ('Configuration ValueError : %s exiting.' % str(msg))
+                    self.fatal_error = True
+                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+                else:
+                    self.logger.debug('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
+                    self.logger.debug('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
+                    self.logger.debug('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
+                    self.logger.debug('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
+                    self.logger.debug('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
+                    self.logger.debug('Initial parameter for serial_port : %s' % self.serial_port)
+                    self.logger.debug('Initial parameter for serial_baudrate : %s' % self.serial_baudrate)
+                    self.logger.debug('Initial parameter for serial_port_timeout : %s' % self.serial_port_timeout)
 
         # Initialise configurationManager & charting.
         if self.config_error is False:
             self.configurationManager = config_utilities.ConfigManager()
+
+
 
         if self.fatal_error is False:
             self.instrument_loader()
@@ -235,10 +252,9 @@ class Main(QtGui.QMainWindow):
         # Initialise charting.
         if self.config_error is False:
             self.chart_loader()
-            self.chart_control_panel_items(False)
 
         if self.fatal_error is False and self.config_error is False:
-            # Initalise command interpreter
+            # Initialise command interpreter
             self.instrument_interpreter_loader()
             # Fire populate_ui_module for the first time.
             self.populate_ui_module()
@@ -247,6 +263,25 @@ class Main(QtGui.QMainWindow):
 
             # Initialisation Statup Finish Status Message.
             self.status_message('system', 'INFO', 'Application Started.', None)
+
+        # Style sheets
+        self.style_boolean = False
+
+        if sys.platform.startswith('darwin'):
+            self.stylesheet = 'css/macStyle.css'
+            self.style_boolean = True
+        elif sys.platform.startswith('win32'):
+            self.stylesheet = 'css/winStyle.css'
+            self.style_boolean = True
+        elif sys.platform.startswith('linux'):
+            self.stylesheet = 'css/nixStyle.css'
+            self.style_boolean = True
+
+        if self.style_boolean:
+            with open(self.stylesheet, 'r') as style:
+                self.setStyleSheet(style.read())
+
+        self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
 
     # ----------------------------------------
     # Instrument loader method.
@@ -286,31 +321,6 @@ class Main(QtGui.QMainWindow):
             else:
                 self.logger.debug('Instrument XML found at : %s' % filename)
                 self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
-
-        # Load application parameters.
-        try:
-            self.instrument_autodetect = self.config.get('Application', 'instrument_autodetect')
-            self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
-            self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
-            self.starinet_address = self.config.get('StarinetRelay', 'address')
-            self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
-            self.serial_port = self.config.get('StaribusPort', 'staribus_port')
-            self.serial_baudrate = self.config.get('StaribusPort', 'baudrate')
-            self.serial_port_timeout = self.config.get('StaribusPort', 'timeout')
-        except ValueError as msg:
-            self.logger.critical('Configuration ValueError : %s' % str(msg))
-            msg = ('Configuration ValueError : %s exiting.' % str(msg))
-            self.fatal_error = True
-            self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-        else:
-            self.logger.debug('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
-            self.logger.debug('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
-            self.logger.debug('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
-            self.logger.debug('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
-            self.logger.debug('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
-            self.logger.debug('Initial parameter for serial_port : %s' % self.serial_port)
-            self.logger.debug('Initial parameter for serial_baudrate : %s' % self.serial_baudrate)
-            self.logger.debug('Initial parameter for serial_port_timeout : %s' % self.serial_port_timeout)
 
     # ----------------------------------------
     # Datatranslator loader method.
@@ -620,27 +630,26 @@ class Main(QtGui.QMainWindow):
         else:
             self.command_parameter_trip += 1
 
-    def chart_control_panel_items(self, _bool):
-        self.ui.channel0Button.setVisible(_bool)
-        self.ui.channel0colour.setVisible(_bool)
-        self.ui.channel1Button.setVisible(_bool)
-        self.ui.channel1colour.setVisible(_bool)
-        self.ui.channel2Button.setVisible(_bool)
-        self.ui.channel2colour.setVisible(_bool)
-        self.ui.channel3Button.setVisible(_bool)
-        self.ui.channel3colour.setVisible(_bool)
-        self.ui.channel4Button.setVisible(_bool)
-        self.ui.channel4colour.setVisible(_bool)
-        self.ui.channel5Button.setVisible(_bool)
-        self.ui.channel5colour.setVisible(_bool)
-        self.ui.channel6Button.setVisible(_bool)
-        self.ui.channel6colour.setVisible(_bool)
-        self.ui.channel7Button.setVisible(_bool)
-        self.ui.channel7colour.setVisible(_bool)
-        self.ui.channel8Button.setVisible(_bool)
-        self.ui.channel8colour.setVisible(_bool)
-
     def chart_control_panel(self, number_of_channels, translated):
+
+        self.ui.channel0Button.setVisible(False)
+        self.ui.channel0colour.setVisible(False)
+        self.ui.channel1Button.setVisible(False)
+        self.ui.channel1colour.setVisible(False)
+        self.ui.channel2Button.setVisible(False)
+        self.ui.channel2colour.setVisible(False)
+        self.ui.channel3Button.setVisible(False)
+        self.ui.channel3colour.setVisible(False)
+        self.ui.channel4Button.setVisible(False)
+        self.ui.channel4colour.setVisible(False)
+        self.ui.channel5Button.setVisible(False)
+        self.ui.channel5colour.setVisible(False)
+        self.ui.channel6Button.setVisible(False)
+        self.ui.channel6colour.setVisible(False)
+        self.ui.channel7Button.setVisible(False)
+        self.ui.channel7colour.setVisible(False)
+        self.ui.channel8Button.setVisible(False)
+        self.ui.channel8colour.setVisible(False)
 
         if number_of_channels == '2':
             self.ui.channel0Button.setEnabled(True)
@@ -653,6 +662,10 @@ class Main(QtGui.QMainWindow):
                                                  + translated.channel_colours[1] + '; }')
             self.ui.channel0Button.setText(translated.channel_names[0])
             self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
             self.ui.channel2Button.setVisible(False)
             self.ui.channel2colour.setVisible(False)
             self.ui.channel3Button.setVisible(False)
@@ -683,6 +696,12 @@ class Main(QtGui.QMainWindow):
             self.ui.channel0Button.setText(translated.channel_names[0])
             self.ui.channel1Button.setText(translated.channel_names[1])
             self.ui.channel2Button.setText(translated.channel_names[2])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
             self.ui.channel3Button.setVisible(False)
             self.ui.channel3colour.setVisible(False)
             self.ui.channel4Button.setVisible(False)
@@ -752,6 +771,16 @@ class Main(QtGui.QMainWindow):
             self.ui.channel2Button.setText(translated.channel_names[2])
             self.ui.channel3Button.setText(translated.channel_names[3])
             self.ui.channel4Button.setText(translated.channel_names[4])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
             self.ui.channel5Button.setVisible(False)
             self.ui.channel5colour.setVisible(False)
             self.ui.channel6Button.setVisible(False)
@@ -791,6 +820,18 @@ class Main(QtGui.QMainWindow):
             self.ui.channel3Button.setText(translated.channel_names[3])
             self.ui.channel4Button.setText(translated.channel_names[4])
             self.ui.channel5Button.setText(translated.channel_names[5])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(True)
+            self.ui.channel5colour.setVisible(True)
             self.ui.channel6Button.setVisible(False)
             self.ui.channel6colour.setVisible(False)
             self.ui.channel7Button.setVisible(False)
@@ -833,6 +874,20 @@ class Main(QtGui.QMainWindow):
             self.ui.channel4Button.setText(translated.channel_names[4])
             self.ui.channel5Button.setText(translated.channel_names[5])
             self.ui.channel6Button.setText(translated.channel_names[6])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(True)
+            self.ui.channel5colour.setVisible(True)
+            self.ui.channel6Button.setVisible(True)
+            self.ui.channel6colour.setVisible(True)
             self.ui.channel7Button.setVisible(False)
             self.ui.channel7colour.setVisible(False)
             self.ui.channel8Button.setVisible(False)
@@ -870,6 +925,22 @@ class Main(QtGui.QMainWindow):
             self.ui.channel7Button.setChecked(True)
             self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[7] + '; }')
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(True)
+            self.ui.channel5colour.setVisible(True)
+            self.ui.channel6Button.setVisible(True)
+            self.ui.channel6colour.setVisible(True)
+            self.ui.channel7Button.setVisible(True)
+            self.ui.channel7colour.setVisible(True)
             self.ui.channel0Button.setText(translated.channel_names[0])
             self.ui.channel1Button.setText(translated.channel_names[1])
             self.ui.channel2Button.setText(translated.channel_names[2])
@@ -926,6 +997,24 @@ class Main(QtGui.QMainWindow):
             self.ui.channel6Button.setText(translated.channel_names[6])
             self.ui.channel7Button.setText(translated.channel_names[7])
             self.ui.channel8Button.setText(translated.channel_names[8])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(True)
+            self.ui.channel5colour.setVisible(True)
+            self.ui.channel6Button.setVisible(True)
+            self.ui.channel6colour.setVisible(True)
+            self.ui.channel7Button.setVisible(True)
+            self.ui.channel7colour.setVisible(True)
+            self.ui.channel8Button.setVisible(True)
+            self.ui.channel8colour.setVisible(True)
         else:
             self.status_message('system', 'ERROR', 'Number of channels out of bounds.', None)
             self.logger.warning('Index Error, Number of channels out of bounds. %s' % number_of_channels)
@@ -1052,7 +1141,6 @@ class Main(QtGui.QMainWindow):
                 chart_response = self.chart.add_data()
                 if chart_response[0].startswith('SUCCESS'):
                     self.status_message(ident, response[0], response[1], units)
-                    self.chart_control_panel_items(True)
                     self.chart_control_panel(self.instrument.instrument_number_of_channels, self.instrument)
                     self.ui.chartDecimateCheckBox.setEnabled(True)
                     self.ui.chartAutoRangeCheckBox.setEnabled(True)
@@ -1068,7 +1156,6 @@ class Main(QtGui.QMainWindow):
                 chart_response = self.chart.add_data()
                 if chart_response[0].startswith('SUCCESS'):
                     self.status_message(ident, response[0], response[1], units)
-                    self.chart_control_panel_items(True)
                     self.chart_control_panel(self.metadata_deconstructor.channel_count, self.metadata_deconstructor)
                     self.ui.chartDecimateCheckBox.setEnabled(True)
                     self.ui.chartAutoRangeCheckBox.setChecked(True)
