@@ -50,7 +50,12 @@ class CommandInterpreter:
         starinet_port = self.instrument.instrument_starinet_port
 
         if starinet_address == 'None':
-            stream = 'Staribus'
+            if self.parent.staribus2starinet_relay_boolean == 'false':
+                stream = 'Staribus'
+            else:
+                stream = 'Starinet'
+                starinet_address = self.parent.staribus2starinet_address
+                starinet_port = self.parent.staribus2starinet_port
         else:
             stream = 'Starinet'
 
@@ -67,6 +72,9 @@ class CommandInterpreter:
             self.response_regex = None
         else:
             self.response_regex = response_regex
+
+        if self.parent.staribus2starinet_relay_boolean == 'true':
+            addr = '00'
 
         if blocked_data is None and stepped_data is None:
             response = self.single(addr, base, code, variant, choice, parameter, send_to_port)

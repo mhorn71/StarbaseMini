@@ -217,6 +217,9 @@ class Main(QtGui.QMainWindow):
                     self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
                     self.starinet_address = self.config.get('StarinetRelay', 'address')
                     self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
+                    self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
+                    self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
+                    self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
                     self.serial_port = self.config.get('StaribusPort', 'staribus_port')
                     self.serial_baudrate = self.config.get('StaribusPort', 'baudrate')
                     self.serial_port_timeout = self.config.get('StaribusPort', 'timeout')
@@ -231,6 +234,12 @@ class Main(QtGui.QMainWindow):
                     self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
                     self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
                     self.logger.info('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
+                    self.logger.info('Initial parameter for staribus2starinet_relay_boolean : %s' %
+                                     self.staribus2starinet_relay_boolean)
+                    self.logger.info('Initial parameter for staribus2starinet_relay_address : %s' %
+                                     self.staribus2starinet_address)
+                    self.logger.info('Initial parameter for staribus2starinet_relay_port : %s' %
+                                     self.staribus2starinet_port)
                     self.logger.info('Initial parameter for serial_port : %s' % self.serial_port)
                     self.logger.info('Initial parameter for serial_baudrate : %s' % self.serial_baudrate)
                     self.logger.info('Initial parameter for serial_port_timeout : %s' % self.serial_port_timeout)
@@ -246,7 +255,7 @@ class Main(QtGui.QMainWindow):
             if self.fatal_error is False:
                 self.instrument_loader()
 
-            if self.instrument_autodetect == 'True':
+            if self.instrument_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
                 self.instrument_autodetector()
 
             if self.fatal_error is False:
@@ -340,6 +349,8 @@ class Main(QtGui.QMainWindow):
     # Instrument interpreter loader method.
     # ----------------------------------------
 
+    # we need to s2s bit in here.
+
     def instrument_interpreter_loader(self):
         # Initialise Command Interpreter
         try:
@@ -348,13 +359,17 @@ class Main(QtGui.QMainWindow):
                     self.logger.info('Initialising Command Interpreter for Starinet')
                     self.command_interpreter = interpreter.CommandInterpreter(self)
                 elif self.instrument.instrument_staribus_address != 'None':
-                    if utilities.check_serial_port(self.config.get('StaribusPort', 'staribus_port')):
-                        self.logger.info('Initialising Command Interpreter for Staribus')
+                    if self.staribus2starinet_relay_boolean == 'True':
+                        self.logger.info('Initialising Command Interpreter for Staribus2Starinet')
                         self.command_interpreter = interpreter.CommandInterpreter(self)
                     else:
-                        self.disable_all()
-                        self.status_message('system', 'ERROR',
-                                            'Unable to set stream type - UI controls disabled.', None)
+                        if utilities.check_serial_port(self.config.get('StaribusPort', 'staribus_port')):
+                            self.logger.info('Initialising Command Interpreter for Staribus')
+                            self.command_interpreter = interpreter.CommandInterpreter(self)
+                        else:
+                            self.disable_all()
+                            self.status_message('system', 'ERROR',
+                                                'Unable to set stream type - UI controls disabled.', None)
                 else:
                     self.logger.critical('Unable able to determine stream type.')
                     self.status_message('system', 'ERROR',
