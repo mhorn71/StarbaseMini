@@ -226,43 +226,44 @@ class Main(QtGui.QMainWindow):
                     self.fatal_error = True
                     self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                 else:
-                    self.logger.debug('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
-                    self.logger.debug('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
-                    self.logger.debug('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
-                    self.logger.debug('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
-                    self.logger.debug('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
-                    self.logger.debug('Initial parameter for serial_port : %s' % self.serial_port)
-                    self.logger.debug('Initial parameter for serial_baudrate : %s' % self.serial_baudrate)
-                    self.logger.debug('Initial parameter for serial_port_timeout : %s' % self.serial_port_timeout)
+                    self.logger.info('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
+                    self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
+                    self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
+                    self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
+                    self.logger.info('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
+                    self.logger.info('Initial parameter for serial_port : %s' % self.serial_port)
+                    self.logger.info('Initial parameter for serial_baudrate : %s' % self.serial_baudrate)
+                    self.logger.info('Initial parameter for serial_port_timeout : %s' % self.serial_port_timeout)
 
         # Initialise configurationManager & charting.
         if self.config_error is False:
             self.configurationManager = config_utilities.ConfigManager()
 
-
-
-        if self.fatal_error is False:
-            self.instrument_loader()
-            self.instrument_autodetector()
+        # Setup StarinetConnector if enabled.
+        if self.starinet_relay_boolean == 'True':
             self.starinet_connector_loader()
+        else:
+            if self.fatal_error is False:
+                self.instrument_loader()
+                self.instrument_autodetector()
 
-        if self.fatal_error is False:
-            self.datatranslator_loader()
+            if self.fatal_error is False:
+                self.datatranslator_loader()
 
-        # Initialise charting.
-        if self.config_error is False:
-            self.chart_loader()
+            # Initialise charting.
+            if self.config_error is False:
+                self.chart_loader()
 
-        if self.fatal_error is False and self.config_error is False:
-            # Initialise command interpreter
-            self.instrument_interpreter_loader()
-            # Fire populate_ui_module for the first time.
-            self.populate_ui_module()
+            if self.fatal_error is False and self.config_error is False:
+                # Initialise command interpreter
+                self.instrument_interpreter_loader()
+                # Fire populate_ui_module for the first time.
+                self.populate_ui_module()
 
-            self.load_finish = True
+                self.load_finish = True
 
-            # Initialisation Statup Finish Status Message.
-            self.status_message('system', 'INFO', 'Application Started.', None)
+        # Initialisation Statup Finish Status Message.
+        self.status_message('system', 'INFO', 'Application Started.', None)
 
         # Style sheets
         self.style_boolean = False
@@ -295,11 +296,6 @@ class Main(QtGui.QMainWindow):
         except ValueError as msg:
             msg = ('Instrument Identifier ValueError : %s' % str(msg))
             self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-
-        #  Load and initialise logging configuration from user configuration file.
-        logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
-        self.logger = logging.getLogger('main')
-        self.logger.info('-------------- APPLICATION STARTUP --------------')
 
         # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
         try:
@@ -409,18 +405,21 @@ class Main(QtGui.QMainWindow):
                     self.config.set('StaribusPort', 'staribus_port', serial_port)
                     self.serial_port = serial_port
                 except (ValueError, IOError) as msg:
+                    self.instrument_autodetect_status_boolean = False
                     self.logger.critical('Fatal Error Unable to set serial port : %s' % msg)
                     msg = ('Unable to set serial port : %s' % msg)
                     self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
 
     # ----------------------------------------
-    # Instrument loader method.
+    # Starinet connector loader method.
     # ----------------------------------------
 
     def starinet_connector_loader(self):
-        # Initialise Starinet relay.
-        if self.starinet_relay_boolean == 'True' and self.instrument_autodetect == 'True':
-            if self.instrument_autodetect_status_boolean is True:
+        if self.instrument_autodetect == 'True':
+            self.instrument_loader()
+            self.instrument_autodetector()
+
+            if self.instrument_autodetect_status_boolean:
                 self.disable_all()
                 starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.serial_port,
                                                           self.serial_baudrate, self.serial_port_timeout)
@@ -429,13 +428,10 @@ class Main(QtGui.QMainWindow):
                 self.status_message('system', 'INFO', msg, None)
             else:
                 self.disable_all()
-                self.logger.warning('Starinet relay and Instrument autodetect are True but no Instrument found.')
-                msg = 'Starinet relay and Instrument autodetect are True but no Instrument found.'
-                self.status_message('system', 'WARNING', msg, None)
-                self.logger.critical('Starinet relay cannot initialise as serial port isn\'t set.')
-                msg = 'Starinet relay cannot initialise as serial port isn\'t set.'
+                self.logger.critical('Starinet relay cannot initialise no instrument found.')
+                msg = 'Starinet relay cannot initialise no instrument found.'
                 self.status_message('system', 'ERROR', msg, None)
-        elif self.starinet_relay_boolean =='True':
+        else:
             if self.serial_port is None:
                 self.disable_all()
                 self.logger.critical('Starinet relay cannot initialise as serial port isn\'t set.')
@@ -450,7 +446,7 @@ class Main(QtGui.QMainWindow):
                 self.status_message('system', 'INFO', msg, None)
 
     # ----------------------------------------
-    # Instrument loader method.
+    # Chart loader method.
     # ----------------------------------------
 
     def chart_loader(self):
