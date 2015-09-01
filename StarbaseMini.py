@@ -43,7 +43,7 @@ import datatranslators
 import metadata
 import charting
 
-version = '1.0.318'
+version = '1.0.389'
 
 
 class Main(QtGui.QMainWindow):
