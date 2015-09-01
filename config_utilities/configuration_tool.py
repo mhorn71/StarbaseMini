@@ -68,6 +68,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.baudrateDefaultCheckBox.stateChanged.connect(self.baudrate_checkbox_triggered)
         self.serialPortTimeoutCheckBox.stateChanged.connect(self.timeout_checkbox_triggered)
         self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
+        self.S2SCheckBox.stateChanged.connect(self.s2s_checkbox_triggered)
 
         # Setup slots for button box save
         self.chooserButton.clicked.connect(self.chooser_triggered)
@@ -206,6 +207,34 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.portLineEdit.setValidator(portLineEditValidator)
         self.portLineEdit.textChanged.connect(self.parameter_check_state)
         self.portLineEdit.textChanged.emit(self.portLineEdit.text())
+
+        # Set starinetConnector (Relay) check box and line edits.
+        staribus2starinet_active = self.application_conf.get('Staribus2Starinet', 'active')
+
+        if staribus2starinet_active == 'True':
+            self.S2SCheckBox.setChecked(True)
+        elif staribus2starinet_active == 'False':
+            self.S2SIpAddressLineEdit.setEnabled(False)
+            self.S2SPort.setEnabled(False)
+
+        staribus2starinet_address = self.application_conf.get('Staribus2Starinet', 'address')
+        self.S2SIpAddressLineEdit.setText(staribus2starinet_address)
+        self.S2SIpAddressLineEdit.setToolTip('The IPv4 address of the relay or instrument.\nIPv4 Address only IPv6 not '
+                                             'supported.')
+        S2SIpAddressLineEditRegexp = QtCore.QRegExp(constants.starinet_ip)
+        S2SIpAddressLineEditValidator = QtGui.QRegExpValidator(S2SIpAddressLineEditRegexp)
+        self.S2SIpAddressLineEdit.setValidator(S2SIpAddressLineEditValidator)
+        self.S2SIpAddressLineEdit.textChanged.connect(self.parameter_check_state)
+        self.S2SIpAddressLineEdit.textChanged.emit(self.S2SIpAddressLineEdit.text())
+
+        staribus2starinet_port = self.application_conf.get('Staribus2Starinet', 'starinet_port')
+        self.S2SPort.setText(staribus2starinet_port)
+        self.S2SPort.setToolTip('Port can be in the range 1 - 65535, default is 1205')
+        S2SPortRegexp = QtCore.QRegExp(constants.starinet_port)
+        S2SPortValidator = QtGui.QRegExpValidator(S2SPortRegexp)
+        self.S2SPort.setValidator(S2SPortValidator)
+        self.S2SPort.textChanged.connect(self.parameter_check_state)
+        self.S2SPort.textChanged.emit(self.S2SPort.text())
 
         # Load Observatory Metadata Tab
 
@@ -451,7 +480,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
     def timeout_checkbox_triggered(self):
         if self.serialPortTimeoutCheckBox.checkState():
             self.timeoutComboBox.setEnabled(False)
-            self.timeoutComboBox.setCurrentIndex(self.timeouts.index('30'))
+            self.timeoutComboBox.setCurrentIndex(self.timeouts.index('20'))
         else:
             self.timeoutComboBox.setEnabled(True)
 
@@ -462,6 +491,14 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         else:
             self.ipAddressLineEdit.setEnabled(False)
             self.portLineEdit.setEnabled(False)
+
+    def s2s_checkbox_triggered(self):
+        if self.S2SCheckBox.checkState():
+            self.S2SIpAddressLineEdit.setEnabled(True)
+            self.S2SPort.setEnabled(True)
+        else:
+            self.S2SIpAddressLineEdit.setEnabled(False)
+            self.S2SPort.setEnabled(False)
 
     def save_triggered(self):
 
@@ -491,6 +528,15 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         self.application_conf.set('StaribusPort', 'timeout',
                                   self.timeoutComboBox.itemText(self.timeoutComboBox.currentIndex()))
+
+        # Staribus2Starinet
+        if self.S2SCheckBox.checkState():
+            self.application_conf.set('Staribus2Starinet', 'active', 'True')
+        else:
+            self.application_conf.set('Staribus2Starinet', 'active', 'False')
+       
+        self.application_conf.set('Staribus2Starinet', 'address', self.S2SIpAddressLineEdit.text())
+        self.application_conf.set('Staribus2Starinet', 'starinet_port', self.S2SPort.text())
 
         # StarinetConnector
         if self.relayCheckBox.checkState():
