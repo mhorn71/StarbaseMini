@@ -83,7 +83,7 @@ class ConfigTool:
                 self.config.add_section('StaribusPort')
                 self.config.set('StaribusPort', 'staribus_port', '')
                 self.config.set('StaribusPort', 'baudrate', '57600')
-                self.config.set('StaribusPort', 'timeout', '30')
+                self.config.set('StaribusPort', 'timeout', '20')
 
                 # Add StarinetConnector section.
                 self.config.add_section('StarinetRelay')
