@@ -534,7 +534,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.application_conf.set('Staribus2Starinet', 'active', 'True')
         else:
             self.application_conf.set('Staribus2Starinet', 'active', 'False')
-       
+
         self.application_conf.set('Staribus2Starinet', 'address', self.S2SIpAddressLineEdit.text())
         self.application_conf.set('Staribus2Starinet', 'starinet_port', self.S2SPort.text())
 
