@@ -162,6 +162,11 @@ class Chart:
 
     def add_mpl(self):
 
+        # Something to beware of I'm not sure what will happen if and Index X axis is used.
+        hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
+        self.ax1f1.xaxis.set_major_formatter(hfmt)
+        self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%H:%M:%S')
+
         if self.run_once is False:
             # set the mplwindow widget background to a gray otherwise splash page disfigures the toolbar look.
             self.ui.mplwindow.setStyleSheet('QWidget{ background-color: #EDEDED; }')
@@ -191,14 +196,27 @@ class Chart:
             # todo add logger bits
             return 'PREMATURE_TERMINATION', str(msg)
 
-        # Something to beware of I'm not sure what will happen if and Index X axis is used.
-        hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
-        self.ax1f1.xaxis.set_major_formatter(hfmt)
-        self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%H:%M:%S')
-
         self.add_mpl()
 
         return 'SUCCESS', None
+
+    def decimate_data(self):
+
+        try:
+            number_of_channels = int(self.attributes.instrument_number_of_channels)
+        except AttributeError as msg:
+            # todo add logger bits
+            return 'PREMATURE_TERMINATION', str(msg)
+
+        try:
+            for i in range(number_of_channels):
+                self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.data_array[i],
+                                self.attributes.channel_colours[i], label=self.attributes.channel_names[i])
+        except IndexError as msg:
+            # todo add logger bits
+            return 'PREMATURE_TERMINATION', str(msg)
+
+        self.add_mpl()
 
     def channel_control(self, channel, state):
 
