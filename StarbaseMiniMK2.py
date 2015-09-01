@@ -245,6 +245,8 @@ class Main(QtGui.QMainWindow):
         else:
             if self.fatal_error is False:
                 self.instrument_loader()
+
+            if self.instrument_autodetect == 'True':
                 self.instrument_autodetector()
 
             if self.fatal_error is False:
@@ -1084,6 +1086,8 @@ class Main(QtGui.QMainWindow):
         code = self.instrument.command_dict[ident]['Code']
         variant = self.instrument.command_dict[ident]['Variant']
         send_to_port = self.instrument.command_dict[ident]['SendToPort']
+
+        self.logger.info('Executing command : %s' % ident)
 
         if self.instrument.command_dict[ident]['BlockedData'] == 'None':
             blocked_data = None
