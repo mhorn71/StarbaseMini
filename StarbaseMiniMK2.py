@@ -196,11 +196,6 @@ class Main(QtGui.QMainWindow):
             self.fatal_error = True
             self.config_error = True
         else:
-            #  Load and initialise logging configuration from user configuration file.
-            logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
-            self.logger = logging.getLogger('main')
-            self.logger.info('-------------- APPLICATION STARTUP --------------')
-
             # Generate user configuration if it's missing.
             try:
                 self.config.check_conf_exists()
@@ -210,6 +205,11 @@ class Main(QtGui.QMainWindow):
                 self.fatal_error = True
                 self.config_error = True
             else:
+                #  Load and initialise logging configuration from user configuration file.
+                logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
+                self.logger = logging.getLogger('main')
+                self.logger.info('-------------- APPLICATION STARTUP --------------')
+                
                 # Load application parameters.
                 try:
                     self.instrument_autodetect = self.config.get('Application', 'instrument_autodetect')
