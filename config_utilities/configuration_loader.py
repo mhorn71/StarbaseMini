@@ -41,10 +41,7 @@ class ConfigTool:
         if not path.isdir(home):
             raise FileNotFoundError("Fatal error unable to detect user home!!\nContact developer for help.")
 
-        if sys.platform.startswith('win32'):
-            home += path.sep + 'AppData' + path.sep + 'Local' + path.sep + 'StarbaseMini' + path.sep
-        else:
-            home += path.sep + '.starbasemini' + path.sep
+        home += path.sep + '.starbasemini' + path.sep
 
         if not path.isdir(home):
             try:

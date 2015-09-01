@@ -8,7 +8,7 @@ Mac OSX : /Users/<username>/.starbasemini/starbaseMini.conf
 
 Linux : /home/<username>/.starbasemini/starbaseMini.conf
 
-Windows :  C:\users\<username>\AppData\Local\StarbaseMini\starbaseMini.conf
+Windows :  C:\users\<username>\StarbaseMini\starbaseMini.conf
 
 logfile rotation is enabled and will rotate a log once is 1.5MB in size, and keep a maximum of 6 log files not
 including the current log being written too.
