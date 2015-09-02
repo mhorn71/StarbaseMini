@@ -171,11 +171,11 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         # Set timeout check box and combo box.
         timeout = self.application_conf.get('StaribusPort', 'timeout')
 
-        if timeout == '30':
+        if timeout == '20':
             self.serialPortTimeoutCheckBox.setChecked(True)
             self.timeoutComboBox.setEnabled(False)
 
-        self.serialPortTimeoutCheckBox.setToolTip('Sets the default Staribus port timeout to 30 seconds')
+        self.serialPortTimeoutCheckBox.setToolTip('Sets the default Staribus port timeout to 20 seconds')
 
         self.timeoutComboBox.addItems(self.timeouts)
         self.timeoutComboBox.setCurrentIndex(self.timeouts.index(timeout))
