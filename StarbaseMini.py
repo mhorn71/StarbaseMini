@@ -358,14 +358,20 @@ class Main(QtGui.QMainWindow):
                 if self.instrument.instrument_starinet_address != 'None':
                     self.logger.info('Initialising Command Interpreter for Starinet')
                     self.command_interpreter = interpreter.CommandInterpreter(self)
+                    message = ('Initialised Starinet Instrument : %s ' % self.instrument_identifier)
+                    self.status_message('system', 'INFO', message, None)
                 elif self.instrument.instrument_staribus_address != 'None':
                     if self.staribus2starinet_relay_boolean == 'True':
                         self.logger.info('Initialising Command Interpreter for Staribus2Starinet')
+                        message = ('Initialised Staribus2Starinet Instrument : %s ' % self.instrument_identifier)
+                        self.status_message('system', 'INFO', message, None)
                         self.command_interpreter = interpreter.CommandInterpreter(self)
                     else:
                         if utilities.check_serial_port(self.config.get('StaribusPort', 'staribus_port')):
                             self.logger.info('Initialising Command Interpreter for Staribus')
                             self.command_interpreter = interpreter.CommandInterpreter(self)
+                            message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
+                            self.status_message('system', 'INFO', message, None)
                         else:
                             self.disable_all()
                             self.status_message('system', 'ERROR',
