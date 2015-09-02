@@ -50,13 +50,18 @@ class CommandInterpreter:
         starinet_port = self.instrument.instrument_starinet_port
 
         if starinet_address == 'None':
-            if self.parent.staribus2starinet_relay_boolean == 'false':
+            self.logger.debug('Starinet address None')
+            if self.parent.staribus2starinet_relay_boolean == 'False':
                 stream = 'Staribus'
+                self.logger.debug('S2S is False so Staribus')
             else:
                 stream = 'Starinet'
                 starinet_address = self.parent.staribus2starinet_address
                 starinet_port = self.parent.staribus2starinet_port
+                self.logger.debug('S2S is True so Starinet')
+                self.logger.debug('Sending Staribus packets to ' + starinet_address + ':' + starinet_port)
         else:
+            self.logger.debug('S2S starinet address not None so Starinet')
             stream = 'Starinet'
 
         try:
