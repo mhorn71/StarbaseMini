@@ -1247,7 +1247,8 @@ class Main(QtGui.QMainWindow):
             self.chart.channel_autoscale(False)
 
     def chart_decimate_triggered(self):
-        pass
+        if self.chart is not None:
+            self.chart.decimate_data()
 
     def closeEvent(self, event):
         if self.saved_data_state is False:
