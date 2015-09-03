@@ -60,6 +60,9 @@ class Main(QtGui.QMainWindow):
         # DataBlock Boolean.
         self.DataBlockBool = False
 
+        # Data from need so we know where the data is from
+        self.data_from = None
+
         # Base attributes.
         self.saved_data_state = False
 
@@ -1186,6 +1189,7 @@ class Main(QtGui.QMainWindow):
             else:
                 chart_response = self.chart.add_data(self.instrument.instrument_number_of_channels)
                 if chart_response[0].startswith('SUCCESS'):
+                    self.data_from = 'data'
                     self.status_message(ident, response[0], response[1], units)
                     self.chart_control_panel(self.instrument.instrument_number_of_channels, self.instrument)
                     self.ui.chartDecimateCheckBox.setEnabled(True)
@@ -1201,6 +1205,7 @@ class Main(QtGui.QMainWindow):
             else:
                 chart_response = self.chart.add_data(self.metadata_deconstructor.channel_count)
                 if chart_response[0].startswith('SUCCESS'):
+                    self.data_from = 'csv'
                     self.status_message(ident, response[0], response[1], units)
                     self.chart_control_panel(self.metadata_deconstructor.channel_count, self.metadata_deconstructor)
                     self.ui.chartDecimateCheckBox.setEnabled(True)
@@ -1272,7 +1277,23 @@ class Main(QtGui.QMainWindow):
 
     def chart_decimate_triggered(self):
         if self.chart is not None:
-            self.chart.decimate_data()
+
+            if self.data_from == 'data':
+                translator = self.instrument
+                number_of_channels = self.instrument.instrument_number_of_channels
+            else:
+                translator = self.metadata_deconstructor
+                number_of_channels = self.metadata_deconstructor.channel_count
+
+            self.chart.clear()
+            self.chart.add_metadata(self.data_from)
+
+            if self.ui.chartDecimateCheckBox.isChecked():
+                self.chart.decimate_data(number_of_channels)
+            else:
+                self.chart.add_data(number_of_channels)
+
+            self.chart_control_panel(number_of_channels, translator)
 
     def closeEvent(self, event):
         if self.saved_data_state is False:

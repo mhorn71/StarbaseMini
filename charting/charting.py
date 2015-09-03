@@ -17,6 +17,9 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
+from itertools import zip_longest
 
 import matplotlib as mpl
 
@@ -24,8 +27,6 @@ from matplotlib.figure import Figure
 
 from matplotlib.backends.backend_qt4agg import (
     FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT)
-
-import logging
 
 # http://stackoverflow.com/questions/12695678/how-to-modify-the-navigation-toolbar-easily-in-a-matplotlib-figure-window
 # Thanks to torfbolt and MadeOfAir.
@@ -71,6 +72,10 @@ class Chart:
         self.run_once = False
         self.count = 0  # Just a generic counter for testing purposes.
 
+        # Decimate attributes etc...
+        self.timestamp = []
+        self.decimate_array = []
+
         mpl.rcParams['figure.autolayout'] = True
         mpl.rcParams['savefig.directory'] = self.config.get('Application', 'instrument_data_path')
         mpl.rcParams['axes.linewidth'] = 0.5
@@ -108,6 +113,8 @@ class Chart:
 
     def clear(self):
         self.ax1f1.clear()
+        del self.timestamp[:]
+        del self.decimate_array[:]
 
     def add_metadata(self, data_type):
         '''
@@ -199,17 +206,47 @@ class Chart:
 
         return 'SUCCESS', None
 
-    def decimate_data(self):
+    def decimate_data(self, number_of_channels):
 
         try:
-            number_of_channels = int(self.attributes.instrument_number_of_channels)
+            number_of_channels = int(number_of_channels)
         except AttributeError as msg:
             self.logger.critical('Channel count not found : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
 
+        self.logger.debug('Datetime Original Length : %s' % str(len(self.datatranslator.datetime)))
+
+        args = [iter(self.datatranslator.datetime)] * 4
+        x = zip_longest(fillvalue=None, *args)
+
+        for i in x:
+            self.timestamp.append(i[0])
+
+        self.logger.debug('Datetime Decimate Length : %s' % str(len(self.timestamp)))
+
         try:
             for i in range(number_of_channels):
-                self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.data_array[i],
+                tmp_list = []
+                # for q in range(number_of_channels):
+                args = [iter(self.datatranslator.data_array[i])] * 4
+                x = zip_longest(fillvalue=None, *args)
+
+                for n in x:
+                    tmp_list.append(n[0])
+
+                self.decimate_array.append(tmp_list)
+
+                self.logger.debug('Decimate Array Length : ' + str(len(self.decimate_array)))
+                self.logger.debug('Channel : ' + str(i) + ' - ' + 'Original Length : ' + str(len(self.datatranslator.data_array[i])))
+                self.logger.debug('Channel : ' + str(i) + ' - ' + 'Decimate Length : ' + str(len(tmp_list)))
+
+        except IndexError as msg:
+            self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
+            return 'PREMATURE_TERMINATION', str(msg)
+
+        try:
+            for i in range(number_of_channels):
+                self.ax1f1.plot(self.timestamp, self.decimate_array[i],
                                 self.attributes.channel_colours[i], label=self.attributes.channel_names[i])
         except IndexError as msg:
             self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
