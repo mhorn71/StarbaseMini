@@ -39,6 +39,7 @@ class CommandInterpreter:
         # Parent object so we can set status messages for blocked and stepped commands.
         self.parent = parent
         self.instrument = self.parent.instrument
+        self.data_type = 'data'
 
         self.response_regex = None
         self.check_response_message = 'INVALID_RESPONSE_MESSAGE', None
@@ -130,14 +131,18 @@ class CommandInterpreter:
 
                     if response[0].startswith('SUCCESS'):
                         self.parent.datatranslator.create_data_array(self.parent.metadata_deconstructor.channel_count)
+                        self.data_type = 'csv'
 
                 else:
                     return 'ABORT', None
 
             elif base == '81' and code == '00':  # Export RawData
 
-                response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
-                                         self.parent.metadata_creator)
+                if self.data_type == 'data':
+                    response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
+                                             self.parent.metadata_creator(self.instrument))
+                elif self.data_type == 'csv':
+                    response = 'ABORT', 'NODATA'
 
                 if response[0].startswith('SUCCESS'):
                     self.parent.saved_data_state = False
@@ -336,6 +341,7 @@ class CommandInterpreter:
 
             self.parent.datatranslator.create_data_array(self.instrument.instrument_number_of_channels)
             self.parent.saved_data_state = True
+            self.data_type = 'data'
 
             return 'SUCCESS', None
 
