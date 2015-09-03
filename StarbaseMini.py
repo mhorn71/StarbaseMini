@@ -120,6 +120,7 @@ class Main(QtGui.QMainWindow):
         # from one platform to another and I have no idea why.  Answers on a postcard please. ;-))
         self.ui_module_trip = 0
         self.ui_command_trip = 0
+        self.chart_warning = 0
         self.command_parameter_trip = 0
         self.parameter_check_state_trip = 0
 
@@ -1168,13 +1169,16 @@ class Main(QtGui.QMainWindow):
         else:
             response_regex = self.instrument.command_dict[ident]['Response']['Regex']
 
-        if sys.platform.startswith('win32'):
-            if ident == 'getData' or ident == 'importLocal':
-                self.status_message('system', 'INFO', 'Chart creation can take a long time. '
-                                                      'Windows may report (Not Responding) please ignore..', None)
-        else:
-            if ident == 'getData' or ident == 'importLocal':
-                self.status_message('system', 'INFO', 'Chart creation can take a long time..', None)
+        if self.chart_warning == 0:
+            if sys.platform.startswith('win32'):
+                if ident == 'getData' or ident == 'importLocal':
+                    self.status_message('system', 'INFO', 'Chart creation can take a long time. '
+                                                          'Windows may report (Not Responding) please ignore..', None)
+                    self.chart_warning = 1
+            else:
+                if ident == 'getData' or ident == 'importLocal':
+                    self.status_message('system', 'INFO', 'Chart creation can take a long time..', None)
+                    self.chart_warning = 1
 
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                             stepped_data, choice, parameter, response_regex)
@@ -1193,6 +1197,7 @@ class Main(QtGui.QMainWindow):
                     self.status_message(ident, response[0], response[1], units)
                     self.chart_control_panel(self.instrument.instrument_number_of_channels, self.instrument)
                     self.ui.chartDecimateCheckBox.setEnabled(True)
+                    self.ui.chartDecimateCheckBox.setChecked(False)
                     self.ui.chartAutoRangeCheckBox.setEnabled(True)
                     self.ui.chartAutoRangeCheckBox.setChecked(False)
                 else:
@@ -1209,6 +1214,7 @@ class Main(QtGui.QMainWindow):
                     self.status_message(ident, response[0], response[1], units)
                     self.chart_control_panel(self.metadata_deconstructor.channel_count, self.metadata_deconstructor)
                     self.ui.chartDecimateCheckBox.setEnabled(True)
+                    self.ui.chartDecimateCheckBox.setChecked(False)
                     self.ui.chartAutoRangeCheckBox.setChecked(True)
                 else:
                     self.status_message(ident, chart_response[0], chart_response[1], None)
