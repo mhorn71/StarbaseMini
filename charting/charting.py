@@ -227,7 +227,7 @@ class Chart:
         try:
             for i in range(number_of_channels):
                 tmp_list = []
-                # for q in range(number_of_channels):
+               
                 args = [iter(self.datatranslator.data_array[i])] * 4
                 x = zip_longest(fillvalue=None, *args)
 
