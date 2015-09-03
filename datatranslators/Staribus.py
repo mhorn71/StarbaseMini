@@ -236,25 +236,25 @@ class StaribusParser:
             self.datetime.append(epoch)  # append current datetime object to sampletime
             return True
 
-    def create_data_array(self):
-        if self.number_of_channels == '2':
+    def create_data_array(self, channel_count):
+        if channel_count == '2':
             self.data_array = np.array((self.channel_1, self.channel_2))
-        elif self.number_of_channels == '3':
+        elif channel_count == '3':
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3))
-        elif self.number_of_channels == '4':
+        elif channel_count == '4':
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4))
-        elif self.number_of_channels == '5':
+        elif channel_count == '5':
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5))
-        elif self.number_of_channels == '6':
+        elif channel_count == '6':
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6))
-        elif self.number_of_channels == '7':
+        elif channel_count == '7':
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6, self.channel_7))
-        elif self.number_of_channels == '8':
+        elif channel_count == '8':
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6, self.channel_7, self.channel_8))
-        elif self.number_of_channels == '9':
+        elif channel_count == '9':
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6, self.channel_7, self.channel_8, self.channel_9))
 

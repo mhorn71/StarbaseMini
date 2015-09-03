@@ -180,10 +180,10 @@ class Chart:
         else:
             self.canvas.draw()
 
-    def add_data(self):
+    def add_data(self, number_of_channels):
 
         try:
-            number_of_channels = int(self.attributes.instrument_number_of_channels)
+            number_of_channels = int(number_of_channels)
         except AttributeError as msg:
             # todo add logger bits
             return 'PREMATURE_TERMINATION', str(msg)

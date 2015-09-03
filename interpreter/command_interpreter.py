@@ -126,11 +126,10 @@ class CommandInterpreter:
 
                     self.parent.saved_data_state = False
 
-                    response = core.importer(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
-                                             self.parent.metadata_deconstructor)
+                    response = core.importer(self.parent.datatranslator, self.parent.metadata_deconstructor)
 
                     if response[0].startswith('SUCCESS'):
-                        self.parent.datatranslator.create_data_array()
+                        self.parent.datatranslator.create_data_array(self.parent.metadata_deconstructor.channel_count)
 
                 else:
                     return 'ABORT', None
@@ -335,7 +334,7 @@ class CommandInterpreter:
                         progressDialog.hide()
                         return 'PREMATURE_TERMINATION', 'NODATA'
 
-            self.parent.datatranslator.create_data_array()
+            self.parent.datatranslator.create_data_array(self.instrument.instrument_number_of_channels)
             self.parent.saved_data_state = True
 
             return 'SUCCESS', None

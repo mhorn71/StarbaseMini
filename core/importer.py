@@ -27,7 +27,7 @@ from PyQt4 import QtGui
 import config_utilities
 
 
-def importer(datatranslator, number_of_channels, metadata):
+def importer(datatranslator, metadata):
 
     logger = logging.getLogger('core.importer')
     
