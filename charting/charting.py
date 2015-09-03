@@ -85,30 +85,7 @@ class Chart:
         self.fig = Figure()
         self.ax1f1 = self.fig.add_subplot(111)
         self.canvas = FigureCanvas(self.fig)
-
-        # Standard Chart Colours are from
-        # http://tableaufriction.blogspot.ro/2012/11/finally-you-can-use-tableau-data-colors.html
-
-        self.default1_label = 'Celsius'
-        self.default2_label = 'Channel 0'
-        self.default3_label = 'Channel 1'
-        self.default4_label = 'Channel 2'
-        self.default5_label = 'Channel 3'
-        self.default6_label = 'Channel 4'
-        self.default7_label = 'channel 5'
-        self.default8_label = 'channel 6'
-        self.default9_label = 'channel 7'
-
-        self.default1_colour = '#D62728'
-        self.default2_colour = '#1F77B4'
-        self.default3_colour = '#FF7F0E'
-        self.default4_colour = '#2CA02C'
-        self.default5_colour = '#9467BD'
-        self.default6_colour = '#8C564B'
-        self.default7_colour = '#E377C2'
-        self.default8_colour = '#BCBD22'
-        self.default9_colour = '#17BECF'
-
+        
         self.logger.info('Initialised charting.')
 
     def clear(self):
@@ -227,7 +204,7 @@ class Chart:
         try:
             for i in range(number_of_channels):
                 tmp_list = []
-               
+
                 args = [iter(self.datatranslator.data_array[i])] * 4
                 x = zip_longest(fillvalue=None, *args)
 
