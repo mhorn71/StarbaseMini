@@ -156,7 +156,7 @@ class StaribusParser:
         else:
             return True
 
-    def csv_parser(self, data):
+    def csv_parser(self, data, channel_count):
         # First 32 chars are date, time, temp, and sample rate plus spaces.
         # We also need to search of ETX
 
@@ -173,43 +173,43 @@ class StaribusParser:
         epoch = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
 
         try:
-            if self.number_of_channels == '1':
+            if channel_count == '1':
                 return False
-            elif self.number_of_channels == '2':
-                self.channel_1.append(int(data[2]))
+            elif channel_count == '2':
+                self.channel_1.append(float(data[2]))
                 self.channel_2.append(int(data[3]))
-            elif self.number_of_channels == '3':
-                self.channel_1.append(int(data[2]))
+            elif channel_count == '3':
+                self.channel_1.append(float(data[2]))
                 self.channel_2.append(int(data[3]))
                 self.channel_3.append(int(data[4]))
-            elif self.number_of_channels == '4':
-                self.channel_1.append(int(data[2]))
+            elif channel_count == '4':
+                self.channel_1.append(float(data[2]))
                 self.channel_2.append(int(data[3]))
                 self.channel_3.append(int(data[4]))
                 self.channel_4.append(int(data[5]))
-            elif self.number_of_channels == '5':
-                self.channel_1.append(int(data[2]))
-                self.channel_2.append(int(data[3]))
+            elif channel_count == '5':
+                self.channel_1.append(float(data[2]))
+                self.channel_2.append((data[3]))
                 self.channel_3.append(int(data[4]))
                 self.channel_4.append(int(data[5]))
                 self.channel_5.append(int(data[6]))
-            elif self.number_of_channels == '6':
-                self.channel_1.append(int(data[2]))
+            elif channel_count == '6':
+                self.channel_1.append(float(data[2]))
                 self.channel_2.append(int(data[3]))
                 self.channel_3.append(int(data[4]))
                 self.channel_4.append(int(data[5]))
                 self.channel_5.append(int(data[6]))
                 self.channel_6.append(int(data[7]))
-            elif self.number_of_channels == '7':
-                self.channel_1.append(int(data[2]))
+            elif channel_count == '7':
+                self.channel_1.append(float(data[2]))
                 self.channel_2.append(int(data[3]))
                 self.channel_3.append(int(data[4]))
                 self.channel_4.append(int(data[5]))
                 self.channel_5.append(int(data[6]))
                 self.channel_6.append(int(data[7]))
                 self.channel_7.append(int(data[8]))
-            elif self.number_of_channels == '8':
-                self.channel_1.append(int(data[2]))
+            elif channel_count == '8':
+                self.channel_1.append(float(data[2]))
                 self.channel_2.append(int(data[3]))
                 self.channel_3.append(int(data[4]))
                 self.channel_4.append(int(data[5]))
@@ -217,8 +217,8 @@ class StaribusParser:
                 self.channel_6.append(int(data[7]))
                 self.channel_7.append(int(data[8]))
                 self.channel_8.append(int(data[9]))
-            elif self.number_of_channels == '9':
-                self.channel_1.append(int(data[2]))
+            elif channel_count == '9':
+                self.channel_1.append(float(data[2]))
                 self.channel_2.append(int(data[3]))
                 self.channel_3.append(int(data[4]))
                 self.channel_4.append(int(data[5]))
