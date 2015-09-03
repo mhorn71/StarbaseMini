@@ -121,8 +121,7 @@ class Chart:
         elif data_type == 'csv':
             self.attributes = self.metadata
         else:
-            # todo logger bits.
-            print('Type unknown')
+            self.logger.critical('Unknown data type : %s' % data_type)
             return False
 
         self.set_scale()
@@ -145,7 +144,7 @@ class Chart:
 
             self.ax1f1.grid(True)
         except AttributeError as msg:
-            # todo add logger bits
+            self.logger.critical(str(msg))
             return False
         else:
             return True
@@ -158,7 +157,7 @@ class Chart:
                 yrange_stop = int(axis_range[1])
                 self.ax1f1.set_ylim(yrange_start, yrange_stop)
         except AttributeError:
-            pass
+            self.logger.warning('No axes scale found defaulting to autoscale.')
 
     def add_mpl(self):
 
@@ -185,7 +184,7 @@ class Chart:
         try:
             number_of_channels = int(number_of_channels)
         except AttributeError as msg:
-            # todo add logger bits
+            self.logger.critical('Channel count not found : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
 
         try:
@@ -193,7 +192,7 @@ class Chart:
                 self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.data_array[i],
                                 self.attributes.channel_colours[i], label=self.attributes.channel_names[i])
         except IndexError as msg:
-            # todo add logger bits
+            self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
 
         self.add_mpl()
@@ -205,7 +204,7 @@ class Chart:
         try:
             number_of_channels = int(self.attributes.instrument_number_of_channels)
         except AttributeError as msg:
-            # todo add logger bits
+            self.logger.critical('Channel count not found : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
 
         try:
@@ -213,7 +212,7 @@ class Chart:
                 self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.data_array[i],
                                 self.attributes.channel_colours[i], label=self.attributes.channel_names[i])
         except IndexError as msg:
-            # todo add logger bits
+            self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
 
         self.add_mpl()
