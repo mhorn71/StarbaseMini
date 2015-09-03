@@ -34,11 +34,11 @@ import logging
 class NavigationToolbar(NavigationToolbar2QT):
     # only display the buttons we need
     toolitems = [t for t in NavigationToolbar2QT.toolitems if
-                 t[0] in ('Home', 'Pan', 'Zoom', 'Save')]
+                 t[0] in ('Home', 'Back', 'Forward', 'Pan', 'Zoom', 'Save')]
 
     def __init__(self, *args, **kwargs):
         super(NavigationToolbar, self).__init__(*args, **kwargs)
-        self.layout().takeAt(4)
+        self.layout().takeAt(6)
 
 
 class Chart:
