@@ -1167,11 +1167,11 @@ class Main(QtGui.QMainWindow):
 
         if sys.platform.startswith('win32'):
             if ident == 'getData' or ident == 'importLocal':
-                self.status_message('system', 'INFO', 'Chart creation may take a long time, '
+                self.status_message('system', 'INFO', 'Chart creation can take a long time. '
                                                       'Windows may report (Not Responding) please ignore..', None)
         else:
             if ident == 'getData' or ident == 'importLocal':
-                self.status_message('system', 'INFO', 'Chart creation may take a long time..', None)
+                self.status_message('system', 'INFO', 'Chart creation can take a long time..', None)
 
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                             stepped_data, choice, parameter, response_regex)
