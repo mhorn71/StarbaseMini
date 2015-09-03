@@ -85,7 +85,7 @@ class Chart:
         self.fig = Figure()
         self.ax1f1 = self.fig.add_subplot(111)
         self.canvas = FigureCanvas(self.fig)
-        
+
         self.logger.info('Initialised charting.')
 
     def clear(self):
