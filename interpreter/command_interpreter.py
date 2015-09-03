@@ -142,13 +142,19 @@ class CommandInterpreter:
                     response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
                                              self.parent.metadata_creator(self.instrument))
                 elif self.data_type == 'csv':
-                    response = 'ABORT', 'NODATA'
+                    response = 'ABORT', 'Imported CSV data can not be exported'
 
                 if response[0].startswith('SUCCESS'):
                     self.parent.saved_data_state = False
 
             elif base == '50' and code == '00':  # Segment Time Series.
-                response = 'SUCCESS', 'segmentTimeSeries not yet implemented.'
+
+                if self.data_type == 'data':
+                    response = 'ABORT', 'segmentTimeSeries not yet implemented'
+                elif self.data_type == 'csv':
+                    # response = 'ABORT', 'Imported CSV data can not be segmented'
+                    response = 'ABORT', 'segmentTimeSeries not yet implemented'
+
             else:
                 response = 'PREMATURE_TERMINATION', 'Unknown command.'
 
