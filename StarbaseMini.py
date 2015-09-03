@@ -671,7 +671,31 @@ class Main(QtGui.QMainWindow):
         self.ui.channel8Button.setVisible(False)
         self.ui.channel8colour.setVisible(False)
 
-        if number_of_channels == '2':
+        if number_of_channels == '1':
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(False)
+            self.ui.channel1colour.setVisible(False)
+            self.ui.channel2Button.setVisible(False)
+            self.ui.channel2colour.setVisible(False)
+            self.ui.channel3Button.setVisible(False)
+            self.ui.channel3colour.setVisible(False)
+            self.ui.channel4Button.setVisible(False)
+            self.ui.channel4colour.setVisible(False)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif number_of_channels == '2':
             self.ui.channel0Button.setEnabled(True)
             self.ui.channel0Button.setChecked(True)
             self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
@@ -1143,11 +1167,11 @@ class Main(QtGui.QMainWindow):
 
         if sys.platform.startswith('win32'):
             if ident == 'getData' or ident == 'importLocal':
-                self.status_message('system', 'INFO', 'While creating a chart MS Windows may state '
-                                                      '(Not Responding) please wait awhile..', None)
+                self.status_message('system', 'INFO', 'Chart creation may take a long time, '
+                                                      'Windows may report (Not Responding) please ignore..', None)
         else:
             if ident == 'getData' or ident == 'importLocal':
-                self.status_message('system', 'INFO', 'Creating a chart may take awhile..', None)
+                self.status_message('system', 'INFO', 'Chart creation may take a long time..', None)
 
         response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
                                                             stepped_data, choice, parameter, response_regex)
