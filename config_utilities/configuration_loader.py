@@ -168,9 +168,7 @@ class ConfigTool:
         self.config.read(self.conf_file)
         try:
             get_response = self.config.get(section, option)
-        except configparser.NoSectionError as msg:
-            raise ValueError(msg)
-        except configparser.NoOptionError as msg:
+        except (configparser.NoSectionError, KeyError, ValueError, configparser.NoOptionError) as msg:
             raise ValueError(msg)
         else:
             if len(get_response) == 0:

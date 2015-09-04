@@ -193,7 +193,7 @@ class Main(QtGui.QMainWindow):
         # Initialise configuration.
         try:
             self.config = config_utilities.ConfigTool()
-        except (FileNotFoundError, OSError) as msg:
+        except (FileNotFoundError, OSError, ValueError) as msg:
             msg = ('Configuration Tool : %s' % str(msg))
             self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
             self.disable_all()
@@ -227,7 +227,7 @@ class Main(QtGui.QMainWindow):
                     self.serial_port = self.config.get('StaribusPort', 'staribus_port')
                     self.serial_baudrate = self.config.get('StaribusPort', 'baudrate')
                     self.serial_port_timeout = self.config.get('StaribusPort', 'timeout')
-                except ValueError as msg:
+                except (ValueError, KeyError, ValueError) as msg:
                     self.logger.critical('Configuration ValueError : %s' % str(msg))
                     msg = ('Configuration ValueError : %s exiting.' % str(msg))
                     self.fatal_error = True
