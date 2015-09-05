@@ -170,7 +170,7 @@
             <CommandCode>00</CommandCode>
             <CommandVariant>0000</CommandVariant>
             <Description>Segment current data set into days or weeks and save CSV file in data store.</Description>
-            <SendToPort>True</SendToPort>
+            <SendToPort>False</SendToPort>
             <BlockedDataCommand>None</BlockedDataCommand>
             <SteppedDataCommand>None</SteppedDataCommand>
             <Parameter>
