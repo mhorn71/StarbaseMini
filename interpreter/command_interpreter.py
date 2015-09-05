@@ -140,7 +140,7 @@ class CommandInterpreter:
 
                 if self.data_type == 'data':
                     response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
-                                             self.parent.metadata_creator(self.instrument))
+                                             self.parent.metadata_creator)
                 elif self.data_type == 'csv':
                     response = 'ABORT', 'Imported CSV data can not be exported'
 
