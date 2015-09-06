@@ -210,7 +210,7 @@ class Main(QtGui.QMainWindow):
                 self.config_error = True
             else:
                 #  Load and initialise logging configuration from user configuration file.
-                logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=True)
+                logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
                 self.logger = logging.getLogger('main')
                 self.logger.info('-------------- APPLICATION STARTUP --------------')
 
