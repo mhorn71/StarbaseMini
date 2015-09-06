@@ -61,7 +61,7 @@ def importer(datatranslator, metadata):
                             metadata.meta_parser(row)
                         elif re.match('^\d\d\d\d-\d\d-\d\d$', row[0]):
 
-                            if metadata.channel_count is None:
+                            if metadata.instrument_number_of_channels is None:
                                 logger.critical('Unable to locate observation channel count')
                                 return 'PREMATURE_TERMINATION', 'Unable to locate observation channel count'
 

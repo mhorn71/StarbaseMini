@@ -324,15 +324,11 @@ class StaribusMetaDataCreator:
 
 
 class StaribusMetaDataDeconstructor:
-    def __init__(self, parent):
-        self.parent = parent
-        self.instrument = parent.instrument
+    def __init__(self):
 
         self.instrument_identifier = None
 
-        self.instrument_number_of_channels = self.instrument.instrument_number_of_channels
-
-        self.channel_count = None
+        self.instrument_number_of_channels = None
 
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
         self.base_channel_names = [None] * 9
@@ -370,7 +366,7 @@ class StaribusMetaDataDeconstructor:
 
         self.instrument_identifier = None
 
-        self.channel_count = None
+        self.instrument_number_of_channels = None
 
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
         del self.base_channel_names[:]
@@ -410,7 +406,6 @@ class StaribusMetaDataDeconstructor:
     def meta_parser(self, data):
 
         if re.match('^Observation\.Channel\.Count$', data[0]):
-            # self.channel_count = data[1]
             self.instrument_number_of_channels = data[1]
 
         if re.match('^Observation\.Title$', data[0]):
@@ -437,6 +432,14 @@ class StaribusMetaDataDeconstructor:
 
             self.colour_idx += 1
 
+        if re.match('^Observation\.Channel\.DataType\.Temperature$', data[0]):
+            self.base_channel_datatypenames[0] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.Temperature$', data[0]):
+            self.base_channel_units[0] = data[1]
+            self.units_idx += 1
+
         if re.match('^Observation\.Channel\.Name\.0$', data[0]):
             self.base_channel_names[1] = data[1]
             self.name_idx += 1
@@ -448,6 +451,14 @@ class StaribusMetaDataDeconstructor:
                 self.base_channel_colours[1] = hex_colour
 
             self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.DataType\.0$', data[0]):
+            self.base_channel_datatypenames[1] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.0$', data[0]):
+            self.base_channel_units[1] = data[1]
+            self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.1$', data[0]):
             self.base_channel_names[2] = data[1]
@@ -461,6 +472,14 @@ class StaribusMetaDataDeconstructor:
 
             self.colour_idx += 1
 
+        if re.match('^Observation\.Channel\.DataType\.1$', data[0]):
+            self.base_channel_datatypenames[2] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.1$', data[0]):
+            self.base_channel_units[2] = data[1]
+            self.units_idx += 1
+
         if re.match('^Observation\.Channel\.Name\.2$', data[0]):
             self.base_channel_names[3] = data[1]
             self.name_idx += 1
@@ -472,6 +491,14 @@ class StaribusMetaDataDeconstructor:
                 self.base_channel_colours[3] = hex_colour
 
             self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.DataType\.2$', data[0]):
+            self.base_channel_datatypenames[3] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.2$', data[0]):
+            self.base_channel_units[3] = data[1]
+            self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.3$', data[0]):
             self.base_channel_names[4] = data[1]
@@ -485,6 +512,14 @@ class StaribusMetaDataDeconstructor:
 
             self.colour_idx += 1
 
+        if re.match('^Observation\.Channel\.DataType\.3$', data[0]):
+            self.base_channel_datatypenames[4] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.3$', data[0]):
+            self.base_channel_units[4] = data[1]
+            self.units_idx += 1
+
         if re.match('^Observation\.Channel\.Name\.4$', data[0]):
             self.base_channel_names[5] = data[1]
             self.name_idx += 1
@@ -496,6 +531,14 @@ class StaribusMetaDataDeconstructor:
                 self.base_channel_colours[5] = hex_colour
 
             self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.DataType\.4$', data[0]):
+            self.base_channel_datatypenames[5] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.4$', data[0]):
+            self.base_channel_units[5] = data[1]
+            self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.5$', data[0]):
             self.base_channel_names[6] = data[1]
@@ -509,6 +552,14 @@ class StaribusMetaDataDeconstructor:
 
             self.colour_idx += 1
 
+        if re.match('^Observation\.Channel\.DataType\.5$', data[0]):
+            self.base_channel_datatypenames[6] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.5$', data[0]):
+            self.base_channel_units[6] = data[1]
+            self.units_idx += 1
+
         if re.match('^Observation\.Channel\.Name\.6$', data[0]):
             self.base_channel_names[7] = data[1]
             self.name_idx += 1
@@ -520,6 +571,14 @@ class StaribusMetaDataDeconstructor:
                 self.base_channel_colours[7] = hex_colour
 
             self.colour_idx += 1
+
+        if re.match('^Observation\.Channel\.DataType\.6$', data[0]):
+            self.base_channel_datatypenames[7] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.6$', data[0]):
+            self.base_channel_units[7] = data[1]
+            self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.7$', data[0]):
             self.base_channel_names[8] = data[1]
@@ -533,6 +592,14 @@ class StaribusMetaDataDeconstructor:
 
             self.colour_idx += 1
 
+        if re.match('^Observation\.Channel\.DataType\.7$', data[0]):
+            self.base_channel_datatypenames[8] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.7$', data[0]):
+            self.base_channel_units[8] = data[1]
+            self.units_idx += 1
+
         if re.match('^Observation\.Channel\.Name\.8$', data[0]):
             self.base_channel_names[9] = data[1]
             self.name_idx += 1
@@ -545,20 +612,42 @@ class StaribusMetaDataDeconstructor:
 
             self.colour_idx += 1
 
-        if self.channel_count is not None:
-            if self.colour_idx == int(self.channel_count):
+        if re.match('^Observation\.Channel\.DataType\.8$', data[0]):
+            self.base_channel_datatypenames[9] = data[1]
+            self.datatype_idx += 1
+
+        if re.match('^Observation\.Channel\.Units\.8$', data[0]):
+            self.base_channel_units[9] = data[1]
+            self.units_idx += 1
+
+        if self.instrument_number_of_channels is not None:
+            if self.colour_idx == int(self.instrument_number_of_channels):
                 if self.colour_trip is not True:
                     for i in self.base_channel_colours:
                         if i is not None:
                             self.channel_colours.append(i)
                     self.colour_trip = True
 
-            if self.name_idx == int(self.channel_count):
+            if self.name_idx == int(self.instrument_number_of_channels):
                 if self.name_trip is not True:
                     for i in self.base_channel_names:
                         if i is not None:
                             self.channel_names.append(i)
                     self.name_trip = True
+
+            if self.datatype_idx == int(self.instrument_number_of_channels):
+                if self.datatype_trip is not True:
+                    for i in self.base_channel_datatypenames:
+                        if i is not None:
+                            self.channel_datatypenames.append(i)
+                    self.datatype_trip = True
+
+            if self.units_idx == int(self.instrument_number_of_channels):
+                if self.units_trip is not True:
+                    for i in self.base_channel_units:
+                        if i is not None:
+                            self.channel_units.append(i)
+                    self.units_trip = True
 
     def colour_setter(self,rgb):
         # remove leading spaces.
