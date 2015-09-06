@@ -177,8 +177,6 @@ class CommandInterpreter:
                         response = self.segmenter.segment_day()
                     elif choice == 'week':
                         response = self.segmenter.segment_week()
-                    # response = 'ABORT', 'Imported CSV data can not be segmented'
-                    response = 'ABORT', 'segmentTimeSeries csv not yet implemented'
 
                 if response[0].startswith('SUCCESS'):
                     self.parent.saved_data_state = False

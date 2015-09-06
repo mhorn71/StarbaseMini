@@ -139,18 +139,15 @@ class SegmentTimeSeries:
                     return response
                 else:
                     timestamp = str(self.datatranslator.datetime[i]).split(' ')
-                    self.fname = self.data_file + 'RawData_Segmented_' + timestamp[0] + '.csv'
+                    self.fname = self.data_file + 'RawData_' + timestamp[0] + '.csv'
                     self.csv = ''
-                    return 'SUCCESS', 'segmentTimeSeries day not yet implemented AAA'
 
-        return 'SUCCESS', 'segmentTimeSeries day not yet implemented' + ' ' + timestamp[0] + ' ' + str(count)
+        return 'SUCCESS', None
 
     def segment_week(self):
-        print(self.data_file)
         return 'ABORT', 'segmentTimeSeries week not yet implemented'
 
     def segment_write(self):
-        print('segment write')
         try:
             file = open(self.fname, 'a+')
             self.logger.debug('Writing to file :%s' % self.fname)
@@ -181,6 +178,6 @@ class SegmentTimeSeries:
                 self.logger.critical(str(msg))
                 return 'PREMATURE_TERMINATION', 'Unable to create file'
             else:
-                self.logger.info('File Exported')
+                self.logger.info('File Exported :%s' % self.fname)
                 return 'SUCCESS', None
 
