@@ -99,7 +99,7 @@ class Main(QtGui.QMainWindow):
         self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
         self.ui.actionControllerEditor.triggered.connect(self.futurlec_baudrate_tool_triggered)
         # self.ui.actionManual.triggered.connect(self.help_manual_triggered)
-        # self.ui.actionAbout.triggered.connect(self.help_about_triggered)
+        self.ui.actionAbout.triggered.connect(self.help_about_triggered)
 
         # Setup charting
         self.mplwindow = self.ui.mplwindow
@@ -1315,6 +1315,10 @@ class Main(QtGui.QMainWindow):
 
         if result == QtGui.QMessageBox.Yes:
             event.accept()
+
+    def help_about_triggered(self):
+        QtGui.QMessageBox.information(self, 'Empty Field', 'StarbaseMini 1.1.0\nBy Mark Horn\n'
+                                                           'mhorn71@gmail.com\n(c) 2015')
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
