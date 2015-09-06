@@ -342,8 +342,8 @@ class Main(QtGui.QMainWindow):
         if self.instrument.instrument_datatranslator == 'StaribusBlock':
             self.datatranslator = datatranslators.StaribusParser(self.instrument.instrument_number_of_channels)
             # Initialise metadata
-            self.metadata_creator = metadata.StaribusMetaDataCreator(self)
             self.metadata_deconstructor = metadata.StaribusMetaDataDeconstructor()
+            self.metadata_creator = metadata.StaribusMetaDataCreator(self)
         else:
             self.logger.critical('Unable to locate Instrument DataTranslator')
             self.status_message('system', 'CRITICAL_ERROR', 'Unable to locate Instrument DataTranslator', None)
@@ -1290,7 +1290,7 @@ class Main(QtGui.QMainWindow):
                 number_of_channels = self.instrument.instrument_number_of_channels
             else:
                 translator = self.metadata_deconstructor
-                number_of_channels = self.metadata_deconstructor.channel_count
+                number_of_channels = self.metadata_deconstructor.instrument_number_of_channels
 
             self.chart.clear()
             self.chart.add_metadata(self.data_from)

@@ -26,7 +26,9 @@ from PyQt4 import QtGui
 import config_utilities
 
 
-def exporter(datatranslator, number_of_channels, metadata):
+def exporter(datatranslator, source, metadata, data_type):
+
+    number_of_channels = source.instrument_number_of_channels
 
     logger = logging.getLogger('core.exporter')
 
@@ -111,7 +113,7 @@ def exporter(datatranslator, number_of_channels, metadata):
                 if observer_metadata is not None:
                     file.write(observer_metadata)
 
-                observation_metadata = metadata.observation_metadata()
+                observation_metadata = metadata.observation_metadata(data_type)
                 if observation_metadata is not None:
                     file.write(observation_metadata)
 

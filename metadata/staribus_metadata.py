@@ -26,6 +26,7 @@ class StaribusMetaDataCreator:
     def __init__(self, parent):
         self.config = parent.config
         self.instrument = parent.instrument
+        self.metadata_deconstructor = parent.metadata_deconstructor
 
     def observatory_metadata(self):
         name = self.config.get('ObservatoryMetadata', 'name')
@@ -208,14 +209,22 @@ class StaribusMetaDataCreator:
         else:
             return None
 
-    def observation_metadata(self):
+    def observation_metadata(self, data_type):
 
         metadata = ''
 
-        title = self.instrument.instrument_description
-        count = self.instrument.instrument_number_of_channels
-        xlabel = self.instrument.XaxisLabel
-        ylabel = self.instrument.YaxisLabel
+        if data_type == 'data':
+            title = self.instrument.instrument_description
+            count = self.instrument.instrument_number_of_channels
+            xlabel = self.instrument.XaxisLabel
+            ylabel = self.instrument.YaxisLabel
+            source = self.instrument
+        else:
+            title = self.metadata_deconstructor.instrument_identifier
+            count = self.metadata_deconstructor.instrument_number_of_channels
+            xlabel = self.metadata_deconstructor.XaxisLabel
+            ylabel = self.metadata_deconstructor.YaxisLabel
+            source = self.metadata_deconstructor
 
         if title != 'None':
             if len(metadata) != 0:
@@ -243,7 +252,7 @@ class StaribusMetaDataCreator:
             metadata += 'Observation.Axis.Label.Y.0,' + ylabel + ',String,Dimensionless,The Y Axis Label'
 
         nameidx = 0
-        for name in self.instrument.channel_names:
+        for name in source.channel_names:
 
             if name != 'None':
                 if len(metadata) != 0:
@@ -260,7 +269,7 @@ class StaribusMetaDataCreator:
                 nameidx += 1
 
         colouridx = 0
-        for colour in self.instrument.channel_colours:
+        for colour in source.channel_colours:
 
             if colour != 'None':
                 if len(metadata) != 0:
@@ -283,7 +292,7 @@ class StaribusMetaDataCreator:
                 colouridx += 1
 
         dataidx = 0
-        for datatype in self.instrument.channel_datatypenames:
+        for datatype in source.channel_datatypenames:
 
             if datatype != 'None':
                 if len(metadata) != 0:
@@ -300,7 +309,7 @@ class StaribusMetaDataCreator:
                 dataidx += 1
 
         unitidx = 0
-        for unit in self.instrument.channel_units:
+        for unit in source.channel_units:
 
             if unit != 'None':
                 if len(metadata) != 0:

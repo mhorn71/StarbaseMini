@@ -141,10 +141,11 @@ class CommandInterpreter:
             elif base == '81' and code == '00':  # Export RawData
 
                 if self.data_type == 'data':
-                    response = core.exporter(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
-                                             self.parent.metadata_creator)
+                    response = core.exporter(self.parent.datatranslator, self.instrument, self.parent.metadata_creator,
+                                             'data')
                 elif self.data_type == 'csv':
-                    response = 'ABORT', 'Imported CSV data can not be exported'
+                    response = core.exporter(self.parent.datatranslator, self.parent.metadata_deconstructor,
+                                             self.parent.metadata_creator, 'csv')
 
                 if response[0].startswith('SUCCESS'):
                     self.parent.saved_data_state = False
