@@ -337,6 +337,8 @@ class StaribusMetaDataDeconstructor:
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
         self.base_channel_names = [None] * 9
         self.base_channel_colours = [None] * 9
+        self.base_channel_datatypenames = [None] * 9
+        self.base_channel_units = [None] * 9
 
         # The metadata channel list see below for format etc ...
         self.channel_names = []
@@ -344,15 +346,25 @@ class StaribusMetaDataDeconstructor:
         # The metadata channel colour list
         self.channel_colours = []
 
+        # The metadata channel datatypenames
+        self.channel_datatypenames = []
+
+        # The metadata channel units.
+        self.channel_units = []
+
         self.YaxisLabel = None
 
         self.XaxisLabel = None
 
         self.name_idx = 0
         self.colour_idx = 0
+        self.datatype_idx = 0
+        self.units_idx = 0
 
         self.name_trip = False
         self.colour_trip = False
+        self.datatype_trip = False
+        self.units_trip = False
 
     def clear(self):
 
@@ -363,8 +375,12 @@ class StaribusMetaDataDeconstructor:
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
         del self.base_channel_names[:]
         del self.base_channel_colours[:]
+        del self.base_channel_datatypenames[:]
+        del self.base_channel_units[:]
         self.base_channel_names = [None] * 9
         self.base_channel_colours = [None] * 9
+        self.base_channel_datatypenames = [None] * 9
+        self.base_channel_units = [None] * 9
 
         # The metadata channel list see below for format etc ...
         del self.channel_names[:]
@@ -372,19 +388,30 @@ class StaribusMetaDataDeconstructor:
         # The metadata channel colour list
         del self.channel_colours[:]
 
+        # The metadata datatypenames list
+        del self.channel_datatypenames[:]
+
+        # The metadata channel units list.
+        del self.channel_units[:]
+
         self.YaxisLabel = None
 
         self.XaxisLabel = None
 
         self.name_idx = 0
         self.colour_idx = 0
+        self.datatype_idx = 0
+        self.units_idx = 0
         self.name_trip = False
         self.colour_trip = False
+        self.datatype_trip = False
+        self.units_trip = False
 
     def meta_parser(self, data):
 
         if re.match('^Observation\.Channel\.Count$', data[0]):
-            self.channel_count = data[1]
+            # self.channel_count = data[1]
+            self.instrument_number_of_channels = data[1]
 
         if re.match('^Observation\.Title$', data[0]):
             self.instrument_identifier = data[1]

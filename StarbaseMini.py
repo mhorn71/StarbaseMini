@@ -1208,11 +1208,12 @@ class Main(QtGui.QMainWindow):
             if self.chart.add_metadata('csv') is not True:
                 self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
             else:
-                chart_response = self.chart.add_data(self.metadata_deconstructor.channel_count)
+                chart_response = self.chart.add_data(self.metadata_deconstructor.instrument_number_of_channels)
                 if chart_response[0].startswith('SUCCESS'):
                     self.data_from = 'csv'
                     self.status_message(ident, response[0], response[1], units)
-                    self.chart_control_panel(self.metadata_deconstructor.channel_count, self.metadata_deconstructor)
+                    self.chart_control_panel(self.metadata_deconstructor.instrument_number_of_channels,
+                                             self.metadata_deconstructor)
                     self.ui.chartDecimateCheckBox.setEnabled(True)
                     self.ui.chartDecimateCheckBox.setChecked(False)
                     self.ui.chartAutoRangeCheckBox.setChecked(True)

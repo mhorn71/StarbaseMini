@@ -132,7 +132,7 @@ class CommandInterpreter:
                     response = core.importer(self.parent.datatranslator, self.parent.metadata_deconstructor)
 
                     if response[0].startswith('SUCCESS'):
-                        self.parent.datatranslator.create_data_array(self.parent.metadata_deconstructor.channel_count)
+                        self.parent.datatranslator.create_data_array(self.parent.metadata_deconstructor.instrument_number_of_channels)
                         self.data_type = 'csv'
 
                 else:
