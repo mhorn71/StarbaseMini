@@ -44,6 +44,8 @@ class CommandInterpreter:
         self.response_regex = None
         self.check_response_message = 'INVALID_RESPONSE_MESSAGE', None
 
+        self.segmenter = core.SegmentTimeSeries(parent)
+
         staribus_port = self.parent.config.get('StaribusPort', 'staribus_port')
         staribus_baudrate = self.parent.config.get('StaribusPort', 'baudrate')
         staribus_timeout = self.parent.config.get('StaribusPort', 'timeout')
@@ -150,10 +152,22 @@ class CommandInterpreter:
             elif base == '50' and code == '00':  # Segment Time Series.
 
                 if self.data_type == 'data':
-                    response = 'ABORT', 'segmentTimeSeries not yet implemented'
+                    choice = choice.lower()
+
+                    self.segmenter.data_setup(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
+                                              self.parent.metadata_creator)
+
+                    if choice == 'day':
+                        response = self.segmenter.segment_day()
+                    elif choice == 'week':
+                        response = self.segmenter.segment_week()
+
                 elif self.data_type == 'csv':
                     # response = 'ABORT', 'Imported CSV data can not be segmented'
-                    response = 'ABORT', 'segmentTimeSeries not yet implemented'
+                    response = 'ABORT', 'segmentTimeSeries csv not yet implemented'
+
+                if response[0].startswith('SUCCESS'):
+                    self.parent.saved_data_state = False
 
             else:
                 response = 'PREMATURE_TERMINATION', 'Unknown command.'
