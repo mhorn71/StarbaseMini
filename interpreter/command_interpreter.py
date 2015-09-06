@@ -155,8 +155,10 @@ class CommandInterpreter:
                 if self.data_type == 'data':
                     choice = choice.lower()
 
-                    self.segmenter.data_setup(self.parent.datatranslator, self.instrument.instrument_number_of_channels,
-                                              self.parent.metadata_creator)
+                    # look at how exporter works.
+
+                    self.segmenter.data_setup(self.parent.datatranslator, self.instrument, self.parent.metadata_creator,
+                                              'data')
 
                     if choice == 'day':
                         response = self.segmenter.segment_day()
@@ -164,6 +166,17 @@ class CommandInterpreter:
                         response = self.segmenter.segment_week()
 
                 elif self.data_type == 'csv':
+                    choice = choice.lower()
+
+                    # look at how exporter works.
+
+                    self.segmenter.data_setup(self.parent.datatranslator, self.parent.metadata_deconstructor,
+                                              self.parent.metadata_creator, 'csv')
+
+                    if choice == 'day':
+                        response = self.segmenter.segment_day()
+                    elif choice == 'week':
+                        response = self.segmenter.segment_week()
                     # response = 'ABORT', 'Imported CSV data can not be segmented'
                     response = 'ABORT', 'segmentTimeSeries csv not yet implemented'
 

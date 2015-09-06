@@ -41,15 +41,17 @@ class SegmentTimeSeries:
             self.data_file = home + os.path.sep
 
         self.datatranslator = None
-        self.channel_count = None
+        self.number_of_channels = None
         self.metadata = None
         self.fname = None
         self.csv = ''
+        self.data_type = None
 
-    def data_setup(self, datatranslator, number_of_channels, metadata):
+    def data_setup(self, datatranslator, source, metadata, data_type):
         self.datatranslator = datatranslator
-        self.channel_count = number_of_channels
+        self.number_of_channels = source.instrument_number_of_channels
         self.metadata = metadata
+        self.data_type = data_type
 
     def segment_day(self):
         try:
@@ -74,32 +76,32 @@ class SegmentTimeSeries:
 
                 date = str(self.datatranslator.datetime[i]).replace(' ', ',')
 
-                if self.channel_count == '2':
+                if self.number_of_channels == '2':
                     self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
                            str(self.datatranslator.channel_2[i]) + '\r\n'
-                elif self.channel_count == '3':
+                elif self.number_of_channels == '3':
                     self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
                            str(self.datatranslator.channel_2[i]) + \
                            ',' + str(self.datatranslator.channel_3[i]) + '\r\n'
-                elif self.channel_count == '4':
+                elif self.number_of_channels == '4':
                     self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
                            str(self.datatranslator.channel_2[i]) + \
                            ',' + str(self.datatranslator.channel_3[i]) + ',' + \
                            str(self.datatranslator.channel_4[i]) + '\r\n'
-                elif self.channel_count == '5':
+                elif self.number_of_channels == '5':
                     self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
                            str(self.datatranslator.channel_2[i]) + \
                            ',' + str(self.datatranslator.channel_3[i]) + ',' + \
                            str(self.datatranslator.channel_4[i]) + ',' + \
                            str(self.datatranslator.channel_5[i]) + '\r\n'
-                elif self.channel_count == '6':
+                elif self.number_of_channels == '6':
                     self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
                            str(self.datatranslator.channel_2[i]) + \
                            ',' + str(self.datatranslator.channel_3[i]) + ',' + \
                            str(self.datatranslator.channel_4[i]) + ',' + \
                            str(self.datatranslator.channel_5[i]) + ',' + \
                            str(self.datatranslator.channel_6[i]) + '\r\n'
-                elif self.channel_count == '7':
+                elif self.number_of_channels == '7':
                     self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
                            str(self.datatranslator.channel_2[i]) + \
                            ',' + str(self.datatranslator.channel_3[i]) + ',' + \
@@ -107,7 +109,7 @@ class SegmentTimeSeries:
                            str(self.datatranslator.channel_5[i]) + ',' + \
                            str(self.datatranslator.channel_6[i]) + \
                            ',' + str(self.datatranslator.channel_7[i]) + '\r\n'
-                elif self.channel_count == '8':
+                elif self.number_of_channels == '8':
                     self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
                            str(self.datatranslator.channel_2[i]) + \
                            ',' + str(self.datatranslator.channel_3[i]) + ',' + \
@@ -116,7 +118,7 @@ class SegmentTimeSeries:
                            str(self.datatranslator.channel_6[i]) + \
                            ',' + str(self.datatranslator.channel_7[i]) + ',' + \
                            str(self.datatranslator.channel_8[i]) + '\r\n'
-                elif self.channel_count == '9':
+                elif self.number_of_channels == '9':
                     self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
                            str(self.datatranslator.channel_2[i]) + \
                            ',' + str(self.datatranslator.channel_3[i]) + ',' + \
@@ -167,7 +169,7 @@ class SegmentTimeSeries:
                     self.logger.debug('Appending Observer Metadata to csv file.')
                     file.write(observer_metadata)
 
-                observation_metadata = self.metadata.observation_metadata()
+                observation_metadata = self.metadata.observation_metadata(self.data_type)
                 if observation_metadata is not None:
                     self.logger.debug('Appending Observation Metadata to csv file.')
                     file.write(observation_metadata)
