@@ -37,8 +37,10 @@ class SegmentTimeSeries:
 
         if os.path.isdir(data_path):
             self.data_file = data_path + os.path.sep
+            self.logger.debug('Data file : %s' % self.data_file)
         else:
             self.data_file = home + os.path.sep
+            self.logger.debug('Data file : %s' % self.data_file)
 
         self.datatranslator = None
         self.number_of_channels = None
@@ -49,9 +51,13 @@ class SegmentTimeSeries:
 
     def data_setup(self, datatranslator, source, metadata, data_type):
         self.datatranslator = datatranslator
+        self.logger.debug('Data translator object : %s' % repr(datatranslator))
         self.number_of_channels = source.instrument_number_of_channels
+        self.logger.debug('Channel count : %s' % self.number_of_channels)
         self.metadata = metadata
+        self.logger.debug('Metadata object : %s' % repr(metadata))
         self.data_type = data_type
+        self.logger.debug('Data type : %s' % self.data_type)
 
     def segment_day(self):
         try:
@@ -64,6 +70,7 @@ class SegmentTimeSeries:
         lasttimestamp = str(self.datatranslator.datetime[count-1]).split(' ')
 
         if timestamp[0] == lasttimestamp[0]:
+            self.logger.info('Not enough data to segment.')
             return 'ABORT', 'Not enough data to segment use exporter instead.'
 
         self.fname = self.data_file + 'RawData_' + timestamp[0] + '.csv'
@@ -141,6 +148,68 @@ class SegmentTimeSeries:
                     timestamp = str(self.datatranslator.datetime[i]).split(' ')
                     self.fname = self.data_file + 'RawData_' + timestamp[0] + '.csv'
                     self.csv = ''
+
+                    date = str(self.datatranslator.datetime[i]).replace(' ', ',')
+
+                    if self.number_of_channels == '2':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + '\r\n'
+                    elif self.number_of_channels == '3':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + '\r\n'
+                    elif self.number_of_channels == '4':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + '\r\n'
+                    elif self.number_of_channels == '5':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + '\r\n'
+                    elif self.number_of_channels == '6':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + ',' + \
+                               str(self.datatranslator.channel_6[i]) + '\r\n'
+                    elif self.number_of_channels == '7':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + ',' + \
+                               str(self.datatranslator.channel_6[i]) + \
+                               ',' + str(self.datatranslator.channel_7[i]) + '\r\n'
+                    elif self.number_of_channels == '8':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + ',' + \
+                               str(self.datatranslator.channel_6[i]) + \
+                               ',' + str(self.datatranslator.channel_7[i]) + ',' + \
+                               str(self.datatranslator.channel_8[i]) + '\r\n'
+                    elif self.number_of_channels == '9':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + ',' + \
+                               str(self.datatranslator.channel_6[i]) + \
+                               ',' + str(self.datatranslator.channel_7[i]) + ',' + \
+                               str(self.datatranslator.channel_7[i]) + \
+                               ',' + str(self.datatranslator.channel_9[i]) + '\r\n'
+
+                    self.logger.debug('Writing data for time stamp %s' % timestamp[0])
+                    response = self.segment_write()
+
+                    if response[0].startswith('PREMATURE_TERMINATION'):
+                        self.logger.debug(response)
+                        return response
 
         return 'SUCCESS', None
 
