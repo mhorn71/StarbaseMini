@@ -365,10 +365,12 @@ class CommandInterpreter:
                         if self.parent.datatranslator.block_parser(secondary_command_response[1], sec_variant):
                             pass
                         else:
+                            self.logger.critical('Unable to parse block : %s' % repr(secondary_command_response[1]))
                             return 'PREMATURE_TERMINATION', 'NODATA'
 
                     else:
                         progressDialog.hide()
+                        print('B')
                         return 'PREMATURE_TERMINATION', 'NODATA'
 
             self.parent.datatranslator.create_data_array(self.instrument.instrument_number_of_channels)

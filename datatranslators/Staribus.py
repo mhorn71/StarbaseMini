@@ -26,6 +26,8 @@ import numpy as np
 class StaribusParser:
     def __init__(self, channels):
         self.logger = logging.getLogger('datatranslator.StaribusBlock')
+        self.loggera = logging.getLogger('datatranslator.StaribusBlock.block_parser')
+        self.loggerb = logging.getLogger('datatranslator.StaribusBlock.csv_parser')
 
         self.number_of_channels = channels
 
@@ -45,6 +47,7 @@ class StaribusParser:
         self.clear()
 
     def clear(self):
+        self.logger.info('Clearing data.')
         del self.datetime[:]
         del self.channel_1[:]
         del self.channel_2[:]
@@ -64,6 +67,8 @@ class StaribusParser:
 
         data = data.split(' ')
 
+        self.loggera.debug('Channel count : %s' % self.number_of_channels)
+
         try:
             # create datetime object
             date = str(data[0]).split('-')  # split date field up
@@ -71,27 +76,38 @@ class StaribusParser:
             epoch = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
 
             if self.number_of_channels == '1':
+                self.loggera.critical('Number of channels out of range : %s' % self.number_of_channels)
                 return 'PREMATURE_TERMINATION', 'Number of channels out of range.'
             elif self.number_of_channels == '2':
+                self.loggera.info('Sample Length d{4}')
                 sample_length = '\d{4}'
             elif self.number_of_channels == '3':
                 if command_variant == '0004':
+                    self.loggera.info('Sample Length cv 0004 mag format.')
                     sample_length = '([+|\-]\d{3}[+\-]\d{3})'
                 else:
                     sample_length = '\d{8}'
+                    self.loggera.info('Sample Length d{8}')
             elif self.number_of_channels == '4':
                 sample_length = '\d{12}'
+                self.loggera.info('Sample Length d{12}')
             elif self.number_of_channels == '5':
                 sample_length = '\d{16}'
+                self.loggera.info('Sample Length d{16}')
             elif self.number_of_channels == '6':
                 sample_length = '\d{20}'
+                self.loggera.info('Sample Length d{20}')
             elif self.number_of_channels == '7':
                 sample_length = '\d{24}'
+                self.loggera.info('Sample Length d{24}')
             elif self.number_of_channels == '8':
                 sample_length = '\d{28}'
+                self.loggera.info('Sample Length d{28}')
             elif self.number_of_channels == '9':
                 sample_length = '\d{32}'
+                self.loggera.info('Sample Length d{32}')
             else:
+                self.loggera.critical('Number of channels out of range : %s' % self.number_of_channels)
                 return 'PREMATURE_TERMINATION', 'Number of channels out of range.'
 
             for datum in re.findall(sample_length, data[6]):  # for every group of 16 digits
@@ -100,9 +116,12 @@ class StaribusParser:
                     return False
 
                 dat = re.findall('....', str(datum))   # split each sample_length into groups of 4
+                self.loggera.debug('Sample dat list : %s' % repr(dat))
 
                 self.datetime.append(epoch)  # append current datetime object to sampletime
+                self.loggera.debug('Appending to datetime : %s' % repr(epoch))
                 self.channel_1.append(data[2])  # append temperature to temperature array
+                self.logger.debug('Appending temp to channel 1 : %s' % data[2])
 
                 if self.number_of_channels == '2':
                     self.channel_2.append(dat[0]) # append data to channel arrays
@@ -151,7 +170,7 @@ class StaribusParser:
 
                 epoch = epoch + datetime.timedelta(seconds=int(data[3]))  # create next sample datetime object.
         except (ValueError, IndexError) as msg:
-            self.logger.critical(str(msg))
+            self.loggera.critical(str(msg))
             return False
         else:
             return True
@@ -163,17 +182,20 @@ class StaribusParser:
         if re.match('^\d\d\d\d-\d\d-\d\d$', data[0]):
             date = str(data[0]).split('-')  # split date field up
         else:
+            self.logger.warning('Unable to split date : %s' % repr(data[0]))
             return False
 
         if re.match('^\d\d:\d\d:\d\d', data[1]):
             time = str(data[1]).split(':')  # split time field up
         else:
+            self.logger.warning('Unable to split time : %s' % repr(data[1]))
             return False
 
         epoch = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
 
         try:
             if channel_count == '1':
+                self.loggerb.critical('Channel count out of bounds : %s' % channel_count)
                 return False
             elif channel_count == '2':
                 self.channel_1.append(data[2])
@@ -228,9 +250,10 @@ class StaribusParser:
                 self.channel_8.append(data[9])
                 self.channel_9.append(data[10])
             else:
+                self.loggerb.critical('Channel count out of bounds : %s' % channel_count)
                 return False
         except (ValueError, IndexError) as msg:
-            self.logger.critical(str(msg))
+            self.loggerb.critical(str(msg))
             return False
         else:
             self.datetime.append(epoch)  # append current datetime object to sampletime
@@ -238,23 +261,31 @@ class StaribusParser:
 
     def create_data_array(self, channel_count):
         if channel_count == '2':
+            self.logger.debug('Creating 2 * n data array')
             self.data_array = np.array((self.channel_1, self.channel_2))
         elif channel_count == '3':
+            self.logger.debug('Creating 3 * n data array')
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3))
         elif channel_count == '4':
+            self.logger.debug('Creating 4 * n data array')
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4))
         elif channel_count == '5':
+            self.logger.debug('Creating 5 * n data array')
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5))
         elif channel_count == '6':
+            self.logger.debug('Creating 6 * n data array')
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6))
         elif channel_count == '7':
+            self.logger.debug('Creating 7 * n data array')
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6, self.channel_7))
         elif channel_count == '8':
+            self.logger.debug('Creating 8 * n data array')
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6, self.channel_7, self.channel_8))
         elif channel_count == '9':
+            self.logger.debug('Creating 9 * n data array')
             self.data_array = np.array((self.channel_1, self.channel_2, self.channel_3, self.channel_4, self.channel_5,
                                         self.channel_6, self.channel_7, self.channel_8, self.channel_9))
 
