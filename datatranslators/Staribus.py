@@ -171,7 +171,7 @@ class StaribusParser:
                 epoch = epoch + datetime.timedelta(seconds=int(data[3]))  # create next sample datetime object.
         except (ValueError, IndexError) as msg:
             self.loggera.critical(str(msg))
-            return False
+            self.loggera.critical('Failed Staribus Block : %s' % repr(data))
         else:
             return True
 

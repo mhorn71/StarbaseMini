@@ -370,7 +370,6 @@ class CommandInterpreter:
 
                     else:
                         progressDialog.hide()
-                        print('B')
                         return 'PREMATURE_TERMINATION', 'NODATA'
 
             self.parent.datatranslator.create_data_array(self.instrument.instrument_number_of_channels)
