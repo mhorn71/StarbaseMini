@@ -228,12 +228,12 @@ class SegmentTimeSeries:
                                str(self.datatranslator.channel_7[i]) + \
                                ',' + str(self.datatranslator.channel_9[i]) + '\r\n'
 
-                    self.logger.debug('Writing data for time stamp %s' % timestamp[0])
-                    response = self.segment_write()
+        self.logger.debug('Writing data for time stamp %s' % timestamp[0])
+        response = self.segment_write()
 
-                    if response[0].startswith('PREMATURE_TERMINATION'):
-                        self.logger.debug(response)
-                        return response
+        if response[0].startswith('PREMATURE_TERMINATION'):
+            self.logger.debug(response)
+            return response
 
         return 'SUCCESS', None
 
@@ -245,18 +245,188 @@ class SegmentTimeSeries:
 
         count = len(self.datatranslator.datetime)
 
-        # todo remember why count is minus 1 for datetime.
-
         lasttimestamp = str(self.datatranslator.datetime[count-1]).split(' ')
 
         da = timestamp[0].split('-')
 
         year, week, weekday = datetime.date(int(da[0]), int(da[1]), int(da[2])).isocalendar()
 
-        self.fname = self.data_file + 'RawData_Week_' + week + '_' + timestamp[0] + '.csv'
+        self.fname = self.data_file + 'RawData_Week_' + str(week) + '_' + timestamp[0] + '.csv'
+
+        if os.path.isfile(self.fname):
+            seq = "0"
+
+            self.fname = self.data_file + 'RawData_' + str(week) + '_' + timestamp[0] + '.%s' + '.csv'
+
+            while os.path.isfile(self.fname % seq):
+                seq = int(seq or "0") + 1
+
+            self.fname = self.data_file + 'RawData_' + str(week) + '_' + timestamp[0] + '.%s' + '.csv'
+            self.fname = self.fname % seq
 
         self.csv = ''
-        return 'ABORT', 'segmentTimeSeries week not yet implemented'
+
+        for i in range(count):
+
+            timestamp = str(self.datatranslator.datetime[i]).split(' ')
+
+            da = timestamp[0].split('-')
+
+            year, current_week, weekday = datetime.date(int(da[0]), int(da[1]), int(da[2])).isocalendar()
+
+            if re.match(str(week), str(current_week)):
+
+                date = str(self.datatranslator.datetime[i]).replace(' ', ',')
+
+                if self.number_of_channels == '2':
+                    self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                           str(self.datatranslator.channel_2[i]) + '\r\n'
+                elif self.number_of_channels == '3':
+                    self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                           str(self.datatranslator.channel_2[i]) + \
+                           ',' + str(self.datatranslator.channel_3[i]) + '\r\n'
+                elif self.number_of_channels == '4':
+                    self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                           str(self.datatranslator.channel_2[i]) + \
+                           ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                           str(self.datatranslator.channel_4[i]) + '\r\n'
+                elif self.number_of_channels == '5':
+                    self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                           str(self.datatranslator.channel_2[i]) + \
+                           ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                           str(self.datatranslator.channel_4[i]) + ',' + \
+                           str(self.datatranslator.channel_5[i]) + '\r\n'
+                elif self.number_of_channels == '6':
+                    self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                           str(self.datatranslator.channel_2[i]) + \
+                           ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                           str(self.datatranslator.channel_4[i]) + ',' + \
+                           str(self.datatranslator.channel_5[i]) + ',' + \
+                           str(self.datatranslator.channel_6[i]) + '\r\n'
+                elif self.number_of_channels == '7':
+                    self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                           str(self.datatranslator.channel_2[i]) + \
+                           ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                           str(self.datatranslator.channel_4[i]) + ',' + \
+                           str(self.datatranslator.channel_5[i]) + ',' + \
+                           str(self.datatranslator.channel_6[i]) + \
+                           ',' + str(self.datatranslator.channel_7[i]) + '\r\n'
+                elif self.number_of_channels == '8':
+                    self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                           str(self.datatranslator.channel_2[i]) + \
+                           ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                           str(self.datatranslator.channel_4[i]) + ',' + \
+                           str(self.datatranslator.channel_5[i]) + ',' + \
+                           str(self.datatranslator.channel_6[i]) + \
+                           ',' + str(self.datatranslator.channel_7[i]) + ',' + \
+                           str(self.datatranslator.channel_8[i]) + '\r\n'
+                elif self.number_of_channels == '9':
+                    self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                           str(self.datatranslator.channel_2[i]) + \
+                           ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                           str(self.datatranslator.channel_4[i]) + ',' + \
+                           str(self.datatranslator.channel_5[i]) + ',' + \
+                           str(self.datatranslator.channel_6[i]) + \
+                           ',' + str(self.datatranslator.channel_7[i]) + ',' + \
+                           str(self.datatranslator.channel_7[i]) + \
+                           ',' + str(self.datatranslator.channel_9[i]) + '\r\n'
+
+            else:
+                self.logger.debug('Writing data for time stamp %s' % timestamp[0])
+
+                response = self.segment_write()
+
+                if response[0].startswith('PREMATURE_TERMINATION'):
+                    self.logger.debug(response)
+                    return response
+                else:
+
+                    timestamp = str(self.datatranslator.datetime[i]).split(' ')
+
+                    da = timestamp[0].split('-')
+
+                    year, week, weekday = datetime.date(int(da[0]), int(da[1]), int(da[2])).isocalendar()
+
+                    self.fname = self.data_file + 'RawData_Week_' + str(week) + '_' + timestamp[0] + '.csv'
+
+                    self.fname = self.data_file + 'RawData_Week_' + str(week) + '_' + timestamp[0] + '.csv'
+
+                    if os.path.isfile(self.fname):
+                        seq = "0"
+
+                        self.fname = self.data_file + 'RawData_' + str(week) + '_' + timestamp[0] + '.%s' + '.csv'
+
+                        while os.path.isfile(self.fname % seq):
+                            seq = int(seq or "0") + 1
+
+                        self.fname = self.data_file + 'RawData_' + str(week) + '_' + timestamp[0] + '.%s' + '.csv'
+                        self.fname = self.fname % seq
+
+                    self.csv = ''
+
+                    date = str(self.datatranslator.datetime[i]).replace(' ', ',')
+
+                    if self.number_of_channels == '2':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + '\r\n'
+                    elif self.number_of_channels == '3':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + '\r\n'
+                    elif self.number_of_channels == '4':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + '\r\n'
+                    elif self.number_of_channels == '5':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + '\r\n'
+                    elif self.number_of_channels == '6':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + ',' + \
+                               str(self.datatranslator.channel_6[i]) + '\r\n'
+                    elif self.number_of_channels == '7':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + ',' + \
+                               str(self.datatranslator.channel_6[i]) + \
+                               ',' + str(self.datatranslator.channel_7[i]) + '\r\n'
+                    elif self.number_of_channels == '8':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + ',' + \
+                               str(self.datatranslator.channel_6[i]) + \
+                               ',' + str(self.datatranslator.channel_7[i]) + ',' + \
+                               str(self.datatranslator.channel_8[i]) + '\r\n'
+                    elif self.number_of_channels == '9':
+                        self.csv += date + ',' + str(self.datatranslator.channel_1[i]) + ',' + \
+                               str(self.datatranslator.channel_2[i]) + \
+                               ',' + str(self.datatranslator.channel_3[i]) + ',' + \
+                               str(self.datatranslator.channel_4[i]) + ',' + \
+                               str(self.datatranslator.channel_5[i]) + ',' + \
+                               str(self.datatranslator.channel_6[i]) + \
+                               ',' + str(self.datatranslator.channel_7[i]) + ',' + \
+                               str(self.datatranslator.channel_7[i]) + \
+                               ',' + str(self.datatranslator.channel_9[i]) + '\r\n'
+
+        self.logger.debug('Writing data for time stamp %s' % timestamp[0])
+        response = self.segment_write()
+
+        if response[0].startswith('PREMATURE_TERMINATION'):
+            self.logger.debug(response)
+            return response
+
+        return 'SUCCESS', None
 
     def segment_write(self):
         try:
