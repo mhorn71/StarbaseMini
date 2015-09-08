@@ -420,6 +420,7 @@ class SegmentTimeSeries:
                                ',' + str(self.datatranslator.channel_9[i]) + '\r\n'
 
         self.logger.debug('Writing data for time stamp %s' % timestamp[0])
+        
         response = self.segment_write()
 
         if response[0].startswith('PREMATURE_TERMINATION'):

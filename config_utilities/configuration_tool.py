@@ -440,8 +440,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     def parameter_check_state(self, *args, **kwargs):
 
-        logger.debug('################ PARAMETER CHECK STATE ################')
-
         # This bit is a bit of bodge as parameter check state will trigger when loading and raise
         # AttributeError so we just ignore it, not ideal!
 
