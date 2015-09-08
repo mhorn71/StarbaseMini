@@ -20,6 +20,7 @@ __author__ = 'mark'
 import os
 import re
 import logging
+import datetime
 
 import config_utilities
 
@@ -74,6 +75,17 @@ class SegmentTimeSeries:
             return 'ABORT', 'Not enough data to segment use exporter instead.'
 
         self.fname = self.data_file + 'RawData_' + timestamp[0] + '.csv'
+
+        if os.path.isfile(self.fname):
+            seq = "0"
+
+            self.fname = self.data_file + 'RawData_' + timestamp[0] + '.%s' + '.csv'
+
+            while os.path.isfile(self.fname % seq):
+                seq = int(seq or "0") + 1
+
+            self.fname = self.data_file + 'RawData_' + timestamp[0] + '.%s' + '.csv'
+            self.fname = self.fname % seq
 
         self.csv = ''
 
@@ -137,7 +149,6 @@ class SegmentTimeSeries:
                            ',' + str(self.datatranslator.channel_9[i]) + '\r\n'
 
             else:
-
                 self.logger.debug('Writing data for time stamp %s' % timestamp[0])
                 response = self.segment_write()
 
@@ -147,6 +158,19 @@ class SegmentTimeSeries:
                 else:
                     timestamp = str(self.datatranslator.datetime[i]).split(' ')
                     self.fname = self.data_file + 'RawData_' + timestamp[0] + '.csv'
+
+                    if os.path.isfile(self.fname):
+
+                        seq = "0"
+
+                        self.fname = self.data_file + 'RawData_' + timestamp[0] + '.%s' + '.csv'
+
+                        while os.path.isfile(self.fname % seq):
+                            seq = int(seq or "0") + 1
+
+                        self.fname = self.data_file + 'RawData_' + timestamp[0] + '.%s' + '.csv'
+                        self.fname = self.fname % seq
+
                     self.csv = ''
 
                     date = str(self.datatranslator.datetime[i]).replace(' ', ',')
@@ -214,6 +238,24 @@ class SegmentTimeSeries:
         return 'SUCCESS', None
 
     def segment_week(self):
+        try:
+            timestamp = str(self.datatranslator.datetime[0]).split(' ')
+        except IndexError:
+            return 'ABORT', 'NODATA'
+
+        count = len(self.datatranslator.datetime)
+
+        # todo remember why count is minus 1 for datetime.
+
+        lasttimestamp = str(self.datatranslator.datetime[count-1]).split(' ')
+
+        da = timestamp[0].split('-')
+
+        year, week, weekday = datetime.date(int(da[0]), int(da[1]), int(da[2])).isocalendar()
+
+        self.fname = self.data_file + 'RawData_Week_' + week + '_' + timestamp[0] + '.csv'
+
+        self.csv = ''
         return 'ABORT', 'segmentTimeSeries week not yet implemented'
 
     def segment_write(self):
