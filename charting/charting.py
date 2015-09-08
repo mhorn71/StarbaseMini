@@ -148,7 +148,7 @@ class Chart:
         # Something to beware of I'm not sure what will happen if and Index X axis is used.
         hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
         self.ax1f1.xaxis.set_major_formatter(hfmt)
-        self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%H:%M:%S')
+        self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%Y-%m-%d %H:%M:%S')
 
         if self.run_once is False:
             # set the mplwindow widget background to a gray otherwise splash page disfigures the toolbar look.
