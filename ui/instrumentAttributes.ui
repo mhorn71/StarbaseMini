@@ -18,7 +18,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>554</width>
+    <width>1000</width>
     <height>1000</height>
    </size>
   </property>
@@ -132,7 +132,7 @@
         <x>10</x>
         <y>160</y>
         <width>511</width>
-        <height>321</height>
+        <height>381</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">

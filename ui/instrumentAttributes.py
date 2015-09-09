@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Wed Sep  9 11:58:24 2015
+# Created: Wed Sep  9 12:08:29 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,7 +28,7 @@ class Ui_InstrumentAttributesDialog(object):
         InstrumentAttributesDialog.setObjectName(_fromUtf8("InstrumentAttributesDialog"))
         InstrumentAttributesDialog.resize(554, 603)
         InstrumentAttributesDialog.setMinimumSize(QtCore.QSize(554, 603))
-        InstrumentAttributesDialog.setMaximumSize(QtCore.QSize(554, 1000))
+        InstrumentAttributesDialog.setMaximumSize(QtCore.QSize(1000, 1000))
         self.gridLayout_3 = QtGui.QGridLayout(InstrumentAttributesDialog)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.groupBox = QtGui.QGroupBox(InstrumentAttributesDialog)
@@ -77,7 +77,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_3.addWidget(self.StarinetPortLineEdit)
         self.gridLayout.addLayout(self.horizontalLayout_3, 2, 0, 1, 1)
         self.layoutWidget1 = QtGui.QWidget(self.groupBox)
-        self.layoutWidget1.setGeometry(QtCore.QRect(10, 160, 511, 321))
+        self.layoutWidget1.setGeometry(QtCore.QRect(10, 160, 511, 381))
         self.layoutWidget1.setObjectName(_fromUtf8("layoutWidget1"))
         self.gridLayout_2 = QtGui.QGridLayout(self.layoutWidget1)
         self.gridLayout_2.setMargin(0)
