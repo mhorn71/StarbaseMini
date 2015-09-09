@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Sep  9 11:33:19 2015
+# Created: Wed Sep  9 11:42:55 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -379,7 +379,7 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuMetadata.setTitle(_translate("MainWindow", "Tools", None))
         self.menuHelp.setTitle(_translate("MainWindow", "Help", None))
-        self.menuEdit.setTitle(_translate("MainWindow", "Edit", None))
+        self.menuEdit.setTitle(_translate("MainWindow", " Edit", None))
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
         self.actionConfiguration.setText(_translate("MainWindow", "Configuration", None))
         self.actionControllerEditor.setText(_translate("MainWindow", "Futurlec Controller", None))

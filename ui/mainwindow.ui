@@ -654,7 +654,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Edit</string>
+     <string> Edit</string>
     </property>
     <addaction name="actionInstrument_Attrib"/>
    </widget>
