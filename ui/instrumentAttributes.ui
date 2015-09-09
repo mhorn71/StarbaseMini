@@ -99,6 +99,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="StarinetAddressLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>129</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -117,6 +123,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="StarinetPortLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>170</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>5</number>
            </property>
@@ -147,6 +159,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan0LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -154,6 +172,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan0ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>157</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
@@ -179,6 +203,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan1LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -186,6 +216,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan1ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
@@ -211,6 +247,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan2LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -218,6 +260,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan2ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>157</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
@@ -243,6 +291,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan3LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -250,6 +304,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan3ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>157</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
@@ -275,6 +335,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan4LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -282,6 +348,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan4ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>157</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
@@ -307,6 +379,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan5LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -314,6 +392,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan5ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>157</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
@@ -339,6 +423,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan6LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -346,6 +436,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan6ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>157</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
@@ -371,6 +467,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan7LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -378,6 +480,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan7ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>157</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
@@ -403,6 +511,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan8LabelEdit">
+           <property name="minimumSize">
+            <size>
+             <width>158</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>15</number>
            </property>
@@ -410,6 +524,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="Chan8ColourLineEdit">
+           <property name="minimumSize">
+            <size>
+             <width>157</width>
+             <height>27</height>
+            </size>
+           </property>
            <property name="maxLength">
             <number>7</number>
            </property>
