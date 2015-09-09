@@ -42,6 +42,7 @@ import constants
 import datatranslators
 import metadata
 import charting
+import instrument_attrib
 
 version = '1.0.389'
 
@@ -96,6 +97,7 @@ class Main(QtGui.QMainWindow):
         # Menu items
         self.ui.actionExit.triggered.connect(self.close)
         self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
+        self.ui.actionInstrument_Attrib.triggered.connect(self.instrument_attrib_triggered)
         self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
         self.ui.actionControllerEditor.triggered.connect(self.futurlec_baudrate_tool_triggered)
         # self.ui.actionManual.triggered.connect(self.help_manual_triggered)
@@ -276,6 +278,8 @@ class Main(QtGui.QMainWindow):
                 self.populate_ui_module()
 
                 self.load_finish = True
+
+        self.instrument_attributes = instrument_attrib.InstrumentAttrib()
 
         # Initialisation Statup Finish Status Message.
         self.status_message('system', 'INFO', 'Application Started.', None)
@@ -1120,6 +1124,10 @@ class Main(QtGui.QMainWindow):
     def configuration_triggered(self):
         self.logger.info('Calling configuration tool.')
         self.configurationManager.exec_()
+
+    def instrument_attrib_triggered(self):
+        self.logger.info('Calling edit instrument attributes.')
+        self.instrument_attributes.exec_()
 
     def futurlec_baudrate_tool_triggered(self):
         self.logger.debug('Calling futurlec baudrate configuration tool.')

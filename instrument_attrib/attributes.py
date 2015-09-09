@@ -27,7 +27,7 @@ from ui import Ui_InstrumentAttributesDialog
 logger = logging.getLogger('instrument.builder')
 
 
-class InstrumentAttrib(QtGui.QDialog,Ui_InstrumentAttributesDialog):
+class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
