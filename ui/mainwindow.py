@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Tue Sep  8 22:58:17 2015
+# Created: Wed Sep  9 11:33:19 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -147,7 +147,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, _fromUtf8(""))
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.UserInst.setObjectName(_fromUtf8("UserInst"))
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 0, 128, 391))
@@ -316,6 +316,8 @@ class Ui_MainWindow(object):
         self.menuMetadata.setObjectName(_fromUtf8("menuMetadata"))
         self.menuHelp = QtGui.QMenu(self.menubar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
+        self.menuEdit = QtGui.QMenu(self.menubar)
+        self.menuEdit.setObjectName(_fromUtf8("menuEdit"))
         MainWindow.setMenuBar(self.menubar)
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName(_fromUtf8("actionExit"))
@@ -333,14 +335,17 @@ class Ui_MainWindow(object):
         self.actionInstrumentBuilder.setObjectName(_fromUtf8("actionInstrumentBuilder"))
         self.actionInstrument_Attributes = QtGui.QAction(MainWindow)
         self.actionInstrument_Attributes.setObjectName(_fromUtf8("actionInstrument_Attributes"))
+        self.actionInstrument_Attrib = QtGui.QAction(MainWindow)
+        self.actionInstrument_Attrib.setObjectName(_fromUtf8("actionInstrument_Attrib"))
         self.menuFile.addAction(self.actionConfiguration)
         self.menuFile.addAction(self.actionExit)
-        self.menuMetadata.addAction(self.actionInstrument_Attributes)
         self.menuMetadata.addAction(self.actionControllerEditor)
         self.menuMetadata.addAction(self.actionInstrumentBuilder)
         self.menuHelp.addAction(self.actionManual)
         self.menuHelp.addAction(self.actionAbout)
+        self.menuEdit.addAction(self.actionInstrument_Attrib)
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuMetadata.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
@@ -374,6 +379,7 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuMetadata.setTitle(_translate("MainWindow", "Tools", None))
         self.menuHelp.setTitle(_translate("MainWindow", "Help", None))
+        self.menuEdit.setTitle(_translate("MainWindow", "Edit", None))
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
         self.actionConfiguration.setText(_translate("MainWindow", "Configuration", None))
         self.actionControllerEditor.setText(_translate("MainWindow", "Futurlec Controller", None))
@@ -382,4 +388,5 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_translate("MainWindow", "About", None))
         self.actionInstrumentBuilder.setText(_translate("MainWindow", "Instrument Builder", None))
         self.actionInstrument_Attributes.setText(_translate("MainWindow", "Instrument Attributes", None))
+        self.actionInstrument_Attrib.setText(_translate("MainWindow", "Instrument Attributes", None))
 
