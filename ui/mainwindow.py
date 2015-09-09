@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Sat Aug 29 16:27:29 2015
+# Created: Tue Sep  8 22:58:17 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -331,8 +331,11 @@ class Ui_MainWindow(object):
         self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
         self.actionInstrumentBuilder = QtGui.QAction(MainWindow)
         self.actionInstrumentBuilder.setObjectName(_fromUtf8("actionInstrumentBuilder"))
+        self.actionInstrument_Attributes = QtGui.QAction(MainWindow)
+        self.actionInstrument_Attributes.setObjectName(_fromUtf8("actionInstrument_Attributes"))
         self.menuFile.addAction(self.actionConfiguration)
         self.menuFile.addAction(self.actionExit)
+        self.menuMetadata.addAction(self.actionInstrument_Attributes)
         self.menuMetadata.addAction(self.actionControllerEditor)
         self.menuMetadata.addAction(self.actionInstrumentBuilder)
         self.menuHelp.addAction(self.actionManual)
@@ -378,4 +381,5 @@ class Ui_MainWindow(object):
         self.actionManual.setText(_translate("MainWindow", "Manual", None))
         self.actionAbout.setText(_translate("MainWindow", "About", None))
         self.actionInstrumentBuilder.setText(_translate("MainWindow", "Instrument Builder", None))
+        self.actionInstrument_Attributes.setText(_translate("MainWindow", "Instrument Attributes", None))
 
