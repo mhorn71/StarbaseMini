@@ -56,8 +56,18 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         logger.info('Started')
 
         self.application_conf = config_utilities.ConfigTool()
-        instruments = 'instruments' + os.path.sep + 'instruments.xml'
-        self.instruments = xml_utilities.Instruments(instruments)
+
+        self.instruments_local = None
+
+        instruments_local = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'instruments' + \
+                            os.path.sep + 'instruments.xml'
+
+        if os.path.isfile(instruments_local):
+            self.instruments_local = xml_utilities.Instruments(instruments_local)
+
+        instruments_system = 'instruments' + os.path.sep + 'instruments.xml'
+
+        self.instruments = xml_utilities.Instruments(instruments_system)
         
         self.loglevels = ['INFO', 'DEBUG']
         self.baudrates = ['9600', '19200', '38400', '57600', '115200']
@@ -109,6 +119,11 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Set up instruments combo box.
         instruments = self.instruments.get_names()
+
+        if self.instruments_local is not None:
+            for i in self.instruments_local.get_names():
+                instruments.append(i)
+
         self.instrumentComboBox.addItems(instruments)
         self.instrumentComboBox.setCurrentIndex(instruments.index(instrument_name))
 
