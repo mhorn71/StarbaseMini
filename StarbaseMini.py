@@ -72,7 +72,6 @@ class Main(QtGui.QMainWindow):
 
         # Instrument Attributes
         self.instrument = None
-        self.instrument_identifier = None
         self.datatranslator = None
         self.metadata_creator = None
         self.metadata_deconstructor = None
@@ -218,6 +217,7 @@ class Main(QtGui.QMainWindow):
 
                 # Load application parameters.
                 try:
+                    self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
                     self.instrument_autodetect = self.config.get('Application', 'instrument_autodetect')
                     self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
                     self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
@@ -235,6 +235,7 @@ class Main(QtGui.QMainWindow):
                     self.fatal_error = True
                     self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                 else:
+                    self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
                     self.logger.info('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
                     self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
                     self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
@@ -308,13 +309,6 @@ class Main(QtGui.QMainWindow):
     # ----------------------------------------
 
     def instrument_loader(self):
-
-        # Get instrument identifier.
-        try:
-            self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
-        except ValueError as msg:
-            msg = ('Instrument Identifier ValueError : %s' % str(msg))
-            self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
 
         # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
         try:
