@@ -72,6 +72,7 @@ class Main(QtGui.QMainWindow):
 
         # Instrument Attributes
         self.instrument = None
+        self.instrument_file = None
         self.datatranslator = None
         self.metadata_creator = None
         self.metadata_deconstructor = None
@@ -310,26 +311,64 @@ class Main(QtGui.QMainWindow):
 
     def instrument_loader(self):
 
-        # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
+        instrument_found = False
+
+        sep = os.path.sep
+
+        instruments_local_home = os.path.expanduser('~') + sep + '.starbasemini' + sep + 'instruments' + sep
+
+        instruments_local = instruments_local_home + 'instruments.xml'
+
+        instruments_system_home = 'instruments' + os.path.sep
+
+        instruments_system =  instruments_system_home + 'instruments.xml'
+
+        # First see if we have a local instrument.
         try:
-            instruments = 'instruments' + os.path.sep + 'instruments.xml'
-            my_instruments = xml_utilities.Instruments(instruments)
-        except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
-            self.fatal_error = True
-            self.logger.critical('Unable to load instruments.xml %s' % str(msg))
-            self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+            my_instruments = xml_utilities.Instruments(instruments_local)
+        except (FileNotFoundError, ValueError, LookupError, AttributeError):
+            self.logger.info('No instruments found in user home location')
         else:
             try:
                 filename = my_instruments.get_filename(self.instrument_identifier)
-                filename = 'instruments' + os.path.sep + filename
+                filename = instruments_local_home + filename
                 self.instrument = xml_utilities.Instrument(filename)
+                self.instrument_file = filename
+            except (FileNotFoundError, ValueError, LookupError, AttributeError, UnboundLocalError) as msg:
+                self.logger.info('Instrument not found in user home location')
+            else:
+                instrument_found = True
+
+        if instrument_found is not True:
+            # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
+            try:
+                # instruments = 'instruments' + os.path.sep + 'instruments.xml'
+                my_instruments = xml_utilities.Instruments(instruments_system)
             except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
-                self.logger.critical('Unable to load instrument xml %s' % str(msg))
                 self.fatal_error = True
+                self.logger.critical('Unable to load instruments.xml %s' % str(msg))
                 self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
             else:
-                self.logger.debug('Instrument XML found at : %s' % filename)
-                self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
+                try:
+                    filename = my_instruments.get_filename(self.instrument_identifier)
+                    filename_local = instruments_local_home + filename
+                    filename_system  = instruments_system_home + filename
+
+                    if os.path.isfile(filename_local):
+                        self.instrument = xml_utilities.Instrument(filename_local)
+                        file = filename_local
+                        self.instrument_file = filename_local
+                    else:
+                        self.instrument = xml_utilities.Instrument(filename_system)
+                        file = filename_system
+                        self.instrument_file = filename_system
+                except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
+                    self.logger.critical('Unable to load instrument xml %s' % str(msg))
+                    self.fatal_error = True
+                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+                else:
+                    self.logger.debug('Instrument XML found at : %s' % file)
+                    self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
 
     # ----------------------------------------
     # Datatranslator loader method.
