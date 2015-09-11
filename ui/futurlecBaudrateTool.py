@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'futurlecBaudrateTool.ui'
 #
-# Created: Tue Jul 28 23:20:29 2015
+# Created: Fri Sep 11 22:56:27 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,13 +26,27 @@ except AttributeError:
 class Ui_FuturlecDialog(object):
     def setupUi(self, FuturlecDialog):
         FuturlecDialog.setObjectName(_fromUtf8("FuturlecDialog"))
-        FuturlecDialog.resize(700, 93)
+        FuturlecDialog.resize(576, 118)
         self.gridLayout = QtGui.QGridLayout(FuturlecDialog)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.groupBox = QtGui.QGroupBox(FuturlecDialog)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.gridLayout_2 = QtGui.QGridLayout(self.groupBox)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.FindInstButton = QtGui.QPushButton(self.groupBox)
+        self.FindInstButton.setObjectName(_fromUtf8("FindInstButton"))
+        self.horizontalLayout_2.addWidget(self.FindInstButton)
+        self.StatusLineEdit = QtGui.QLineEdit(self.groupBox)
+        self.StatusLineEdit.setMinimumSize(QtCore.QSize(251, 27))
+        self.StatusLineEdit.setReadOnly(True)
+        self.StatusLineEdit.setObjectName(_fromUtf8("StatusLineEdit"))
+        self.horizontalLayout_2.addWidget(self.StatusLineEdit)
+        self.label_2 = QtGui.QLabel(self.groupBox)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.horizontalLayout_2.addWidget(self.label_2)
+        self.gridLayout_2.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.label = QtGui.QLabel(self.groupBox)
@@ -52,7 +66,7 @@ class Ui_FuturlecDialog(object):
         self.horizontalLayout.addWidget(self.resetPushButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.gridLayout_2.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.horizontalLayout, 1, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
 
         self.retranslateUi(FuturlecDialog)
@@ -61,6 +75,8 @@ class Ui_FuturlecDialog(object):
     def retranslateUi(self, FuturlecDialog):
         FuturlecDialog.setWindowTitle(_translate("FuturlecDialog", "UKRAA Futurlec Controller Baudrate Tool", None))
         self.groupBox.setTitle(_translate("FuturlecDialog", "Baudrate Control", None))
+        self.FindInstButton.setText(_translate("FuturlecDialog", "Find Instrument", None))
+        self.label_2.setText(_translate("FuturlecDialog", "Status ", None))
         self.label.setText(_translate("FuturlecDialog", "Baudrate", None))
         self.defaultCheckBox.setText(_translate("FuturlecDialog", "Default", None))
         self.setPushButton.setText(_translate("FuturlecDialog", "Set", None))
