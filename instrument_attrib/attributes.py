@@ -60,17 +60,263 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         for i in range(0, 253):
             self.comboBox.addItem(str(i))
 
-        self.PickerButton0.clicked.connect(self.colour_picker)
-        self.PickerButton1.clicked.connect(self.colour_picker)
-        self.PickerButton2.clicked.connect(self.colour_picker)
-        self.PickerButton3.clicked.connect(self.colour_picker)
-        self.PickerButton4.clicked.connect(self.colour_picker)
-        self.PickerButton5.clicked.connect(self.colour_picker)
-        self.PickerButton6.clicked.connect(self.colour_picker)
-        self.PickerButton7.clicked.connect(self.colour_picker)
-        self.PickerButton8.clicked.connect(self.colour_picker)
+        self.colorDialog = QtGui.QColorDialog()
+        self.colorDialog.setOption(QtGui.QColorDialog.ShowAlphaChannel, False)
+        self.colorDialog.setOption(QtGui.QColorDialog.DontUseNativeDialog, False)
 
+        self.PickerButton0.clicked.connect(self.chan0_picker)
+        self.PickerButton1.clicked.connect(self.chan1_picker)
+        self.PickerButton2.clicked.connect(self.chan2_picker)
+        self.PickerButton3.clicked.connect(self.chan3_picker)
+        self.PickerButton4.clicked.connect(self.chan4_picker)
+        self.PickerButton5.clicked.connect(self.chan5_picker)
+        self.PickerButton6.clicked.connect(self.chan6_picker)
+        self.PickerButton7.clicked.connect(self.chan7_picker)
+        self.PickerButton8.clicked.connect(self.chan8_picker)
 
+        self.Chan0LabelEdit.setEnabled(False)
+        self.Chan0ColourLineEdit.setEnabled(False)
+        self.PickerButton0.setEnabled(False)
+
+        self.Chan1LabelEdit.setEnabled(False)
+        self.Chan1ColourLineEdit.setEnabled(False)
+        self.PickerButton1.setEnabled(False)
+
+        self.Chan2LabelEdit.setEnabled(False)
+        self.Chan2ColourLineEdit.setEnabled(False)
+        self.PickerButton2.setEnabled(False)
+
+        self.Chan3LabelEdit.setEnabled(False)
+        self.Chan3ColourLineEdit.setEnabled(False)
+        self.PickerButton3.setEnabled(False)
+
+        self.Chan4LabelEdit.setEnabled(False)
+        self.Chan4ColourLineEdit.setEnabled(False)
+        self.PickerButton4.setEnabled(False)
+
+        self.Chan5LabelEdit.setEnabled(False)
+        self.Chan5ColourLineEdit.setEnabled(False)
+        self.PickerButton5.setEnabled(False)
+
+        self.Chan6LabelEdit.setEnabled(False)
+        self.Chan6ColourLineEdit.setEnabled(False)
+        self.PickerButton6.setEnabled(False)
+
+        self.Chan7LabelEdit.setEnabled(False)
+        self.Chan7ColourLineEdit.setEnabled(False)
+        self.PickerButton7.setEnabled(False)
+
+        self.Chan8LabelEdit.setEnabled(False)
+        self.Chan8ColourLineEdit.setEnabled(False)
+        self.PickerButton8.setEnabled(False)
+
+    def channel0(self):
+        self.Chan0LabelEdit.setEnabled(True)
+        self.Chan0LabelEdit.setText(self.instrument.channel_names[0])
+        Chan0LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan0LabelEdit.setValidator(QtGui.QRegExpValidator(Chan0LabelRegex))
+        self.Chan0LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan0LabelEdit.textChanged.emit(self.Chan0LabelEdit.text())
+
+        self.Chan0ColourLineEdit.setEnabled(True)
+        self.Chan0ColourLineEdit.setText(self.instrument.channel_colours[0])
+        Chan0ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan0ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan0ColourRegex))
+        self.Chan0ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan0ColourLineEdit.textChanged.emit(self.Chan0ColourLineEdit.text())
+
+        self.PickerButton0.setEnabled(True)
+
+    def channel1(self):
+        self.Chan1LabelEdit.setEnabled(True)
+        self.Chan1LabelEdit.setText(self.instrument.channel_names[1])
+        Chan1LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan1LabelEdit.setValidator(QtGui.QRegExpValidator(Chan1LabelRegex))
+        self.Chan1LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan1LabelEdit.textChanged.emit(self.Chan1LabelEdit.text())
+
+        self.Chan1ColourLineEdit.setEnabled(True)
+        self.Chan1ColourLineEdit.setText(self.instrument.channel_colours[1])
+        Chan1ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan1ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan1ColourRegex))
+        self.Chan1ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan1ColourLineEdit.textChanged.emit(self.Chan1ColourLineEdit.text())
+
+        self.PickerButton1.setEnabled(True)
+
+    def channel2(self):
+        self.Chan2LabelEdit.setEnabled(True)
+        self.Chan2LabelEdit.setText(self.instrument.channel_names[2])
+        Chan2LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan2LabelEdit.setValidator(QtGui.QRegExpValidator(Chan2LabelRegex))
+        self.Chan2LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan2LabelEdit.textChanged.emit(self.Chan2LabelEdit.text())
+
+        self.Chan2ColourLineEdit.setEnabled(True)
+        self.Chan2ColourLineEdit.setText(self.instrument.channel_colours[2])
+        Chan2ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan2ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan2ColourRegex))
+        self.Chan2ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan2ColourLineEdit.textChanged.emit(self.Chan2ColourLineEdit.text())
+
+        self.PickerButton2.setEnabled(True)
+
+    def channel3(self):
+        self.Chan3LabelEdit.setEnabled(True)
+        self.Chan3LabelEdit.setText(self.instrument.channel_names[3])
+        Chan3LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan3LabelEdit.setValidator(QtGui.QRegExpValidator(Chan3LabelRegex))
+        self.Chan3LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan3LabelEdit.textChanged.emit(self.Chan3LabelEdit.text())
+
+        self.Chan3ColourLineEdit.setEnabled(True)
+        self.Chan3ColourLineEdit.setText(self.instrument.channel_colours[3])
+        Chan3ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan3ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan3ColourRegex))
+        self.Chan3ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan3ColourLineEdit.textChanged.emit(self.Chan3ColourLineEdit.text())
+
+        self.PickerButton3.setEnabled(True)
+
+    def channel4(self):
+        self.Chan4LabelEdit.setEnabled(True)
+        self.Chan4LabelEdit.setText(self.instrument.channel_names[4])
+        Chan4LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan4LabelEdit.setValidator(QtGui.QRegExpValidator(Chan4LabelRegex))
+        self.Chan4LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan4LabelEdit.textChanged.emit(self.Chan4LabelEdit.text())
+
+        self.Chan4ColourLineEdit.setEnabled(True)
+        self.Chan4ColourLineEdit.setText(self.instrument.channel_colours[4])
+        Chan4ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan4ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan4ColourRegex))
+        self.Chan4ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan4ColourLineEdit.textChanged.emit(self.Chan4ColourLineEdit.text())
+
+        self.PickerButton4.setEnabled(True)
+
+    def channel5(self):
+        self.Chan5LabelEdit.setEnabled(True)
+        self.Chan5LabelEdit.setText(self.instrument.channel_names[5])
+        Chan5LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan5LabelEdit.setValidator(QtGui.QRegExpValidator(Chan5LabelRegex))
+        self.Chan5LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan5LabelEdit.textChanged.emit(self.Chan5LabelEdit.text())
+
+        self.Chan5ColourLineEdit.setEnabled(True)
+        self.Chan5ColourLineEdit.setText(self.instrument.channel_colours[5])
+        Chan5ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan5ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan5ColourRegex))
+        self.Chan5ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan5ColourLineEdit.textChanged.emit(self.Chan5ColourLineEdit.text())
+
+        self.PickerButton5.setEnabled(True)
+
+    def channel6(self):
+        self.Chan6LabelEdit.setEnabled(True)
+        self.Chan6LabelEdit.setText(self.instrument.channel_names[6])
+        Chan6LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan6LabelEdit.setValidator(QtGui.QRegExpValidator(Chan6LabelRegex))
+        self.Chan6LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan6LabelEdit.textChanged.emit(self.Chan6LabelEdit.text())
+
+        self.Chan6ColourLineEdit.setEnabled(True)
+        self.Chan6ColourLineEdit.setText(self.instrument.channel_colours[6])
+        Chan6ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan6ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan6ColourRegex))
+        self.Chan6ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan6ColourLineEdit.textChanged.emit(self.Chan6ColourLineEdit.text())
+
+        self.PickerButton6.setEnabled(True)
+
+    def channel7(self):
+        self.Chan7LabelEdit.setEnabled(True)
+        self.Chan7LabelEdit.setText(self.instrument.channel_names[7])
+        Chan7LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan7LabelEdit.setValidator(QtGui.QRegExpValidator(Chan7LabelRegex))
+        self.Chan7LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan7LabelEdit.textChanged.emit(self.Chan7LabelEdit.text())
+
+        self.Chan7ColourLineEdit.setEnabled(True)
+        self.Chan7ColourLineEdit.setText(self.instrument.channel_colours[7])
+        Chan7ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan7ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan7ColourRegex))
+        self.Chan7ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan7ColourLineEdit.textChanged.emit(self.Chan7ColourLineEdit.text())
+
+        self.PickerButton7.setEnabled(True)
+
+    def channel8(self):
+        self.Chan8LabelEdit.setEnabled(True)
+        self.Chan8LabelEdit.setText(self.instrument.channel_names[8])
+        Chan8LabelRegex = QtCore.QRegExp(constants.channel_name)
+        self.Chan8LabelEdit.setValidator(QtGui.QRegExpValidator(Chan8LabelRegex))
+        self.Chan8LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan8LabelEdit.textChanged.emit(self.Chan8LabelEdit.text())
+
+        self.Chan8ColourLineEdit.setEnabled(True)
+        self.Chan8ColourLineEdit.setText(self.instrument.channel_colours[8])
+        Chan8ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
+        self.Chan8ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan8ColourRegex))
+        self.Chan8ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan8ColourLineEdit.textChanged.emit(self.Chan8ColourLineEdit.text())
+
+        self.PickerButton8.setEnabled(True)
+
+    def enable_channel_items(self):
+
+        if self.instrument.instrument_number_of_channels == '2':
+            self.channel0()
+            self.channel1()
+        elif self.instrument.instrument_number_of_channels == '3':
+            self.channel0()
+            self.channel1()
+            self.channel2()
+        elif self.instrument.instrument_number_of_channels == '4':
+            self.channel0()
+            self.channel1()
+            self.channel2()
+            self.channel3()
+        elif self.instrument.instrument_number_of_channels == '5':
+            self.channel0()
+            self.channel1()
+            self.channel2()
+            self.channel3()
+            self.channel4()
+        elif self.instrument.instrument_number_of_channels == '6':
+            self.channel0()
+            self.channel1()
+            self.channel2()
+            self.channel3()
+            self.channel4()
+            self.channel5()
+        elif self.instrument.instrument_number_of_channels == '7':
+            self.channel0()
+            self.channel1()
+            self.channel2()
+            self.channel3()
+            self.channel4()
+            self.channel5()
+            self.channel6()
+        elif self.instrument.instrument_number_of_channels == '8':
+            self.channel0()
+            self.channel1()
+            self.channel2()
+            self.channel3()
+            self.channel4()
+            self.channel5()
+            self.channel6()
+            self.channel7()
+        elif self.instrument.instrument_number_of_channels == '9':
+            self.channel0()
+            self.channel1()
+            self.channel2()
+            self.channel3()
+            self.channel4()
+            self.channel5()
+            self.channel6()
+            self.channel7()
+            self.channel8()
 
     def set(self, instrument, instrument_file):
         self.instrument = instrument
@@ -79,20 +325,17 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.comboBox.setCurrentIndex(int(self.instrument.instrument_staribus_address))
         self.staribus_address_orig = self.instrument.instrument_staribus_address
 
-        # OyLatitudeLineEditRegexp = QtCore.QRegExp(constants.observatory_latitude)
-        # OyLatitudeLineEditValidator = QtGui.QRegExpValidator(OyLatitudeLineEditRegexp)
-        # self.OyLatitudeLineEdit.setValidator(OyLatitudeLineEditValidator)
-        # self.OyLatitudeLineEdit.textChanged.connect(self.parameter_check_state)
-        # self.OyLatitudeLineEdit.textChanged.emit(self.OyLatitudeLineEdit.text())
+        self.enable_channel_items()
 
         if self.instrument.instrument_starinet_address == 'None':
             self.StarinetAddressLineEdit.setEnabled(False)
         else:
             self.comboBox.setEnabled(False)
+
             self.starinet_address_orig = self.instrument.instrument_starinet_address
+
             self.StarinetAddressLineEdit.setText(self.instrument.instrument_starinet_address)
-            StarinetAddressRegex = QtCore.QRegExp(constants.starinet_ip)
-            StarinetAddressValidator = QtGui.QRegExpValidator(StarinetAddressRegex)
+            StarinetAddressValidator = QtGui.QRegExpValidator(QtCore.QRegExp(constants.starinet_ip))
             self.StarinetAddressLineEdit.setValidator(StarinetAddressValidator)
             self.StarinetAddressLineEdit.textChanged.connect(self.parameter_check_state)
             self.StarinetAddressLineEdit.textChanged.emit(self.StarinetAddressLineEdit.text())
@@ -101,15 +344,67 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.StarinetPortLineEdit.setEnabled(False)
         else:
             self.StarinetPortLineEdit.setText(self.instrument.instrument_starinet_port)
+
             self.starinet_port_orig = self.instrument.instrument_starinet_port
-            StarinetPortRegex = QtCore.QRegExp(constants.starinet_port)
-            StarinetPortValidator = QtGui.QRegExpValidator(StarinetPortRegex)
+
+            StarinetPortValidator = QtGui.QRegExpValidator(QtCore.QRegExp(constants.starinet_port))
             self.StarinetPortLineEdit.setValidator(StarinetPortValidator)
             self.StarinetPortLineEdit.textChanged.connect(self.parameter_check_state)
             self.StarinetPortLineEdit.textChanged.emit(self.StarinetPortLineEdit.text())
 
-    def colour_picker(self):
-        print('colour picker selected...')
+    def chan0_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan0ColourLineEdit.setText(colour.name().upper())
+
+    def chan1_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan1ColourLineEdit.setText(colour.name().upper())
+
+    def chan2_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan2ColourLineEdit.setText(colour.name().upper())
+
+    def chan3_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan3ColourLineEdit.setText(colour.name().upper())
+
+    def chan4_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan4ColourLineEdit.setText(colour.name().upper())
+
+    def chan5_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan5ColourLineEdit.setText(colour.name().upper())
+
+    def chan6_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan6ColourLineEdit.setText(colour.name().upper())
+
+    def chan7_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan7ColourLineEdit.setText(colour.name().upper())
+
+    def chan8_picker(self):
+        colour = self.colorDialog.getColor()
+
+        if colour.isValid():
+            self.Chan8ColourLineEdit.setText(colour.name().upper())
 
     def parameter_check_state(self, *args, **kwargs):
 
