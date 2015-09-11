@@ -201,16 +201,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="Chan0CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="PickerButton0">
             <property name="minimumSize">
              <size>
@@ -263,16 +253,6 @@
             </property>
             <property name="maxLength">
              <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="Chan1CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
             </property>
            </widget>
           </item>
@@ -333,16 +313,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="Chan2CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="PickerButton2">
             <property name="minimumSize">
              <size>
@@ -395,16 +365,6 @@
             </property>
             <property name="maxLength">
              <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="Chan3CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
             </property>
            </widget>
           </item>
@@ -465,16 +425,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="Chan4CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="PickerButton4">
             <property name="minimumSize">
              <size>
@@ -527,16 +477,6 @@
             </property>
             <property name="maxLength">
              <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="Chan5CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
             </property>
            </widget>
           </item>
@@ -597,16 +537,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="Chan6CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="PickerButton6">
             <property name="minimumSize">
              <size>
@@ -663,16 +593,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="Chan7CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="PickerButton7">
             <property name="minimumSize">
              <size>
@@ -725,16 +645,6 @@
             </property>
             <property name="maxLength">
              <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="Chan8CheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
             </property>
            </widget>
           </item>
