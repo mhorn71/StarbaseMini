@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Wed Sep  9 16:39:57 2015
+# Created: Fri Sep 11 20:02:13 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -89,7 +89,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_4.addWidget(self.label_4)
         self.Chan0LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan0LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan0LabelEdit.setMaxLength(15)
+        self.Chan0LabelEdit.setMaxLength(9)
         self.Chan0LabelEdit.setObjectName(_fromUtf8("Chan0LabelEdit"))
         self.horizontalLayout_4.addWidget(self.Chan0LabelEdit)
         self.Chan0ColourLineEdit = QtGui.QLineEdit(self.groupBox)
@@ -110,7 +110,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_5.addWidget(self.label_5)
         self.Chan1LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan1LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan1LabelEdit.setMaxLength(15)
+        self.Chan1LabelEdit.setMaxLength(9)
         self.Chan1LabelEdit.setObjectName(_fromUtf8("Chan1LabelEdit"))
         self.horizontalLayout_5.addWidget(self.Chan1LabelEdit)
         self.Chan1ColourLineEdit = QtGui.QLineEdit(self.groupBox)
@@ -131,7 +131,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_6.addWidget(self.label_6)
         self.Chan2LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan2LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan2LabelEdit.setMaxLength(15)
+        self.Chan2LabelEdit.setMaxLength(9)
         self.Chan2LabelEdit.setObjectName(_fromUtf8("Chan2LabelEdit"))
         self.horizontalLayout_6.addWidget(self.Chan2LabelEdit)
         self.Chan2ColourLineEdit = QtGui.QLineEdit(self.groupBox)
@@ -152,7 +152,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_7.addWidget(self.label_7)
         self.Chan3LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan3LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan3LabelEdit.setMaxLength(15)
+        self.Chan3LabelEdit.setMaxLength(9)
         self.Chan3LabelEdit.setObjectName(_fromUtf8("Chan3LabelEdit"))
         self.horizontalLayout_7.addWidget(self.Chan3LabelEdit)
         self.Chan3ColourLineEdit = QtGui.QLineEdit(self.groupBox)
@@ -173,7 +173,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_8.addWidget(self.label_8)
         self.Chan4LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan4LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan4LabelEdit.setMaxLength(15)
+        self.Chan4LabelEdit.setMaxLength(9)
         self.Chan4LabelEdit.setObjectName(_fromUtf8("Chan4LabelEdit"))
         self.horizontalLayout_8.addWidget(self.Chan4LabelEdit)
         self.Chan4ColourLineEdit = QtGui.QLineEdit(self.groupBox)
@@ -194,7 +194,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_9.addWidget(self.label_9)
         self.Chan5LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan5LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan5LabelEdit.setMaxLength(15)
+        self.Chan5LabelEdit.setMaxLength(9)
         self.Chan5LabelEdit.setObjectName(_fromUtf8("Chan5LabelEdit"))
         self.horizontalLayout_9.addWidget(self.Chan5LabelEdit)
         self.Chan5ColourLineEdit = QtGui.QLineEdit(self.groupBox)
@@ -215,7 +215,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_10.addWidget(self.label_10)
         self.Chan6LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan6LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan6LabelEdit.setMaxLength(15)
+        self.Chan6LabelEdit.setMaxLength(9)
         self.Chan6LabelEdit.setObjectName(_fromUtf8("Chan6LabelEdit"))
         self.horizontalLayout_10.addWidget(self.Chan6LabelEdit)
         self.Chan6ColourLineEdit = QtGui.QLineEdit(self.groupBox)
@@ -236,7 +236,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_11.addWidget(self.label_11)
         self.Chan7LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan7LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan7LabelEdit.setMaxLength(15)
+        self.Chan7LabelEdit.setMaxLength(9)
         self.Chan7LabelEdit.setObjectName(_fromUtf8("Chan7LabelEdit"))
         self.horizontalLayout_11.addWidget(self.Chan7LabelEdit)
         self.Chan7ColourLineEdit = QtGui.QLineEdit(self.groupBox)
@@ -257,7 +257,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_12.addWidget(self.label_12)
         self.Chan8LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan8LabelEdit.setMinimumSize(QtCore.QSize(158, 27))
-        self.Chan8LabelEdit.setMaxLength(15)
+        self.Chan8LabelEdit.setMaxLength(9)
         self.Chan8LabelEdit.setObjectName(_fromUtf8("Chan8LabelEdit"))
         self.horizontalLayout_12.addWidget(self.Chan8LabelEdit)
         self.Chan8ColourLineEdit = QtGui.QLineEdit(self.groupBox)
