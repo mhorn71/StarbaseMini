@@ -61,5 +61,13 @@ QProgressBar::chunk {
     border: 0px;
 }
 
+QLineEdit::enabled {
+    background-color: #FFFFFF;
+}
+
+QLineEdit::disabled {
+    background-color: #EDEDED;
+}
+
 
 
