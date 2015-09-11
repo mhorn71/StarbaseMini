@@ -19,19 +19,24 @@ __author__ = 'mark'
 
 import sys
 import logging
+import os
+import xml.etree.ElementTree as ET
 
 from PyQt4 import QtGui, QtCore
 
 import constants
 from ui import Ui_InstrumentAttributesDialog
 
-logger = logging.getLogger('instrument.builder')
+logger = logging.getLogger('instrument.attributes_updater')
 
 
 class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
+
+        self.home_path = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'instruments' + \
+                         os.path.sep
 
         # Style sheets
         stylebool = False
@@ -52,10 +57,14 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.instrument = None
         self.instrument_file = None
+        self.channel_labels = []
+        self.channel_colours = []
 
-        self.staribus_address_orig = None
-        self.starinet_address_orig = None
-        self.starinet_port_orig = None
+        self.response_message = 'ABORT', None
+        self.reload = False
+
+        self.starinetaddressbool = True
+        self.starinetportbool = True
 
         for i in range(0, 253):
             self.comboBox.addItem(str(i))
@@ -63,6 +72,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.colorDialog = QtGui.QColorDialog()
         self.colorDialog.setOption(QtGui.QColorDialog.ShowAlphaChannel, False)
         self.colorDialog.setOption(QtGui.QColorDialog.DontUseNativeDialog, False)
+
+        self.buttonBox.accepted.connect(self.accept_called)
+        self.buttonBox.rejected.connect(self.reject_called)
 
         self.PickerButton0.clicked.connect(self.chan0_picker)
         self.PickerButton1.clicked.connect(self.chan1_picker)
@@ -319,20 +331,19 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.channel8()
 
     def set(self, instrument, instrument_file):
+
         self.instrument = instrument
         self.instrument_file = instrument_file
 
         self.comboBox.setCurrentIndex(int(self.instrument.instrument_staribus_address))
-        self.staribus_address_orig = self.instrument.instrument_staribus_address
 
         self.enable_channel_items()
 
         if self.instrument.instrument_starinet_address == 'None':
             self.StarinetAddressLineEdit.setEnabled(False)
+            self.starinetaddressbool = False
         else:
             self.comboBox.setEnabled(False)
-
-            self.starinet_address_orig = self.instrument.instrument_starinet_address
 
             self.StarinetAddressLineEdit.setText(self.instrument.instrument_starinet_address)
             StarinetAddressValidator = QtGui.QRegExpValidator(QtCore.QRegExp(constants.starinet_ip))
@@ -342,10 +353,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         if self.instrument.instrument_starinet_port == 'None':
             self.StarinetPortLineEdit.setEnabled(False)
+            self.starinetportbool = False
         else:
             self.StarinetPortLineEdit.setText(self.instrument.instrument_starinet_port)
-
-            self.starinet_port_orig = self.instrument.instrument_starinet_port
 
             StarinetPortValidator = QtGui.QRegExpValidator(QtCore.QRegExp(constants.starinet_port))
             self.StarinetPortLineEdit.setValidator(StarinetPortValidator)
@@ -424,8 +434,165 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         elif state == QtGui.QValidator.Acceptable:
             color = '#c4df9b'  # green
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+        elif state == QtGui.QValidator.Intermediate and len(sender.text()) == 0:
+            color = '#f6989d'  # red
+            sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
         elif state == QtGui.QValidator.Intermediate:
             color = '#fff79a'  # yellow
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
         else:
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+
+    def create_lists(self):
+
+        del self.channel_labels[:]
+        del self.channel_colours[:]
+
+        if len(self.Chan0LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan0LabelEdit.text())
+
+        if len(self.Chan1LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan1LabelEdit.text())
+
+        if len(self.Chan2LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan2LabelEdit.text())
+
+        if len(self.Chan3LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan3LabelEdit.text())
+
+        if len(self.Chan4LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan4LabelEdit.text())
+
+        if len(self.Chan5LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan5LabelEdit.text())
+
+        if len(self.Chan6LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan6LabelEdit.text())
+
+        if len(self.Chan7LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan7LabelEdit.text())
+
+        if len(self.Chan8LabelEdit.text()) != 0:
+            self.channel_labels.append(self.Chan8LabelEdit.text())
+
+        if len(self.Chan0ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan0ColourLineEdit.text())
+
+        if len(self.Chan1ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan1ColourLineEdit.text())
+
+        if len(self.Chan2ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan2ColourLineEdit.text())
+
+        if len(self.Chan3ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan3ColourLineEdit.text())
+
+        if len(self.Chan4ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan4ColourLineEdit.text())
+
+        if len(self.Chan5ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan5ColourLineEdit.text())
+
+        if len(self.Chan6ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan6ColourLineEdit.text())
+
+        if len(self.Chan7ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan7ColourLineEdit.text())
+
+        if len(self.Chan8ColourLineEdit.text()) != 0:
+            self.channel_colours.append(self.Chan8ColourLineEdit.text())
+
+    def reject_called(self):
+        self.response_message = 'ABORT', None
+        self.reload = False
+        self.hide()
+
+    def accept_called(self):
+
+        self.create_lists()
+
+        execute_state = True
+
+        # Check .starbasemini/instruments exists otherwise create.
+        if os.path.isdir(self.home_path) is not True:
+            os.makedirs(self.home_path)
+
+        # get the instrument xml file minus the original path
+        file = self.instrument_file.split(os.path.sep)
+        file = file[-1]
+
+        # set the new xml to use the users home path location.
+        new_file = self.home_path + file
+
+        #import xml file
+        tree = ET.parse(self.instrument_file)
+
+        staribusaddr = self.comboBox.currentText()
+        staribusaddr = staribusaddr.zfill(3)
+
+        staribusaddress = tree.find('StaribusAddress')
+        staribusaddress.text = staribusaddr
+
+        starinetaddress = tree.find('StarinetAddress')
+
+        if self.starinetaddressbool:
+            if len(self.StarinetAddressLineEdit.text()) != 0:
+                starinetaddress.text = self.StarinetAddressLineEdit.text()
+            else:
+                self.warning_message()
+                execute_state = False
+
+        starinetport = tree.find('StarinetPort')
+
+        if self.starinetportbool:
+            if len(self.StarinetPortLineEdit.text()) != 0:
+                starinetport.text = self.StarinetPortLineEdit.text()
+            else:
+                self.warning_message()
+                execute_state = False
+
+        channel_metadata = tree.findall('ChannelMetadata')
+
+        if len(self.channel_labels) == int(self.instrument.instrument_number_of_channels):
+
+            chanidx = 0
+
+            for metadata in channel_metadata:
+                ChannelLabel = metadata.find('ChannelLabel')
+                ChannelLabel.text = self.channel_labels[chanidx]
+                chanidx += 1
+
+        else:
+            self.warning_message()
+            execute_state = False
+
+        if len(self.channel_colours) == int(self.instrument.instrument_number_of_channels):
+
+            chanidx = 0
+
+            for metadata in channel_metadata:
+                ChannelColour = metadata.find('ChannelColour')
+                ChannelColour.text = self.channel_colours[chanidx]
+                chanidx += 1
+        else:
+            self.warning_message()
+            execute_state = False
+
+        if execute_state:
+            self.write(tree, new_file)
+
+    def warning_message(self):
+        QtGui.QMessageBox.information(None, 'WARNING', 'Blank fields not allowed')
+
+    def exit_message(self):
+        QtGui.QMessageBox.information(None, 'NOTICE', 'Application restart will be need\nfor changes to take effect.')
+
+    def write(self, tree, new_file):
+
+        tree.write(new_file)
+
+        self.response_message = 'SUCCESS', ('File written : %s' % new_file)
+
+        self.exit_message()
+
+        self.close()

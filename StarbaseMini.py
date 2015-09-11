@@ -1161,7 +1161,11 @@ class Main(QtGui.QMainWindow):
     def instrument_attrib_triggered(self):
         self.logger.info('Calling edit instrument attributes.')
         self.instrument_attributes.set(self.instrument, self.instrument_file)
-        self.instrument_attributes.exec_()
+
+        self.instrument_attributes.exec()
+
+        self.status_message('instrumentAttributes', self.instrument_attributes.response_message[0],
+                            self.instrument_attributes.response_message[1], None)
 
     def futurlec_baudrate_tool_triggered(self):
         self.logger.debug('Calling futurlec baudrate configuration tool.')
