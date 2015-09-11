@@ -21,6 +21,7 @@ import sys
 import logging
 import os
 import xml.etree.ElementTree as ET
+import re
 
 from PyQt4 import QtGui, QtCore
 
@@ -122,6 +123,66 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan8ColourLineEdit.setEnabled(False)
         self.PickerButton8.setEnabled(False)
 
+    def Picker0(self):
+
+        if re.match(constants.channel_hex_color, self.Chan0ColourLineEdit.text()):
+            self.PickerButton0.setStyleSheet('QPushButton { background-color: ' + self.Chan0ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+    def Picker1(self):
+        if re.match(constants.channel_hex_color, self.Chan1ColourLineEdit.text()):
+            self.PickerButton1.setStyleSheet('QPushButton { background-color: ' + self.Chan1ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+    def Picker2(self):
+        if re.match(constants.channel_hex_color, self.Chan2ColourLineEdit.text()):
+            self.PickerButton2.setStyleSheet('QPushButton { background-color: ' + self.Chan2ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+    def Picker3(self):
+        if re.match(constants.channel_hex_color, self.Chan3ColourLineEdit.text()):
+            self.PickerButton3.setStyleSheet('QPushButton { background-color: ' + self.Chan3ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+
+    def Picker4(self):
+        if re.match(constants.channel_hex_color, self.Chan4ColourLineEdit.text()):
+            self.PickerButton4.setStyleSheet('QPushButton { background-color: ' + self.Chan4ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+    def Picker5(self):
+        if re.match(constants.channel_hex_color, self.Chan5ColourLineEdit.text()):
+            self.PickerButton5.setStyleSheet('QPushButton { background-color: ' + self.Chan5ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+
+    def Picker6(self):
+        if re.match(constants.channel_hex_color, self.Chan6ColourLineEdit.text()):
+            self.PickerButton6.setStyleSheet('QPushButton { background-color: ' + self.Chan6ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+
+    def Picker7(self):
+        if re.match(constants.channel_hex_color, self.Chan7ColourLineEdit.text()):
+            self.PickerButton7.setStyleSheet('QPushButton { background-color: ' + self.Chan7ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+
+    def Picker8(self):
+        if re.match(constants.channel_hex_color, self.Chan8ColourLineEdit.text()):
+            self.PickerButton8.setStyleSheet('QPushButton { background-color: ' + self.Chan8ColourLineEdit.text() + ';' +
+                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
+                                             'margin-top: 5px; }')
+
     def channel0(self):
         self.Chan0LabelEdit.setEnabled(True)
         self.Chan0LabelEdit.setText(self.instrument.channel_names[0])
@@ -135,6 +196,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan0ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
         self.Chan0ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan0ColourRegex))
         self.Chan0ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan0ColourLineEdit.textChanged.connect(self.Picker0)
         self.Chan0ColourLineEdit.textChanged.emit(self.Chan0ColourLineEdit.text())
 
         self.PickerButton0.setEnabled(True)
@@ -145,6 +207,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan1LabelRegex = QtCore.QRegExp(constants.channel_name)
         self.Chan1LabelEdit.setValidator(QtGui.QRegExpValidator(Chan1LabelRegex))
         self.Chan1LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan1ColourLineEdit.textChanged.connect(self.Picker1)
         self.Chan1LabelEdit.textChanged.emit(self.Chan1LabelEdit.text())
 
         self.Chan1ColourLineEdit.setEnabled(True)
@@ -162,6 +225,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan2LabelRegex = QtCore.QRegExp(constants.channel_name)
         self.Chan2LabelEdit.setValidator(QtGui.QRegExpValidator(Chan2LabelRegex))
         self.Chan2LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan2ColourLineEdit.textChanged.connect(self.Picker2)
         self.Chan2LabelEdit.textChanged.emit(self.Chan2LabelEdit.text())
 
         self.Chan2ColourLineEdit.setEnabled(True)
@@ -179,6 +243,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan3LabelRegex = QtCore.QRegExp(constants.channel_name)
         self.Chan3LabelEdit.setValidator(QtGui.QRegExpValidator(Chan3LabelRegex))
         self.Chan3LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan3ColourLineEdit.textChanged.connect(self.Picker3)
         self.Chan3LabelEdit.textChanged.emit(self.Chan3LabelEdit.text())
 
         self.Chan3ColourLineEdit.setEnabled(True)
@@ -196,6 +261,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan4LabelRegex = QtCore.QRegExp(constants.channel_name)
         self.Chan4LabelEdit.setValidator(QtGui.QRegExpValidator(Chan4LabelRegex))
         self.Chan4LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan4ColourLineEdit.textChanged.connect(self.Picker4)
         self.Chan4LabelEdit.textChanged.emit(self.Chan4LabelEdit.text())
 
         self.Chan4ColourLineEdit.setEnabled(True)
@@ -213,6 +279,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan5LabelRegex = QtCore.QRegExp(constants.channel_name)
         self.Chan5LabelEdit.setValidator(QtGui.QRegExpValidator(Chan5LabelRegex))
         self.Chan5LabelEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan5ColourLineEdit.textChanged.connect(self.Picker5)
         self.Chan5LabelEdit.textChanged.emit(self.Chan5LabelEdit.text())
 
         self.Chan5ColourLineEdit.setEnabled(True)
@@ -237,6 +304,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan6ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
         self.Chan6ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan6ColourRegex))
         self.Chan6ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan6ColourLineEdit.textChanged.connect(self.Picker6)
         self.Chan6ColourLineEdit.textChanged.emit(self.Chan6ColourLineEdit.text())
 
         self.PickerButton6.setEnabled(True)
@@ -254,6 +322,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan7ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
         self.Chan7ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan7ColourRegex))
         self.Chan7ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan7ColourLineEdit.textChanged.connect(self.Picker7)
         self.Chan7ColourLineEdit.textChanged.emit(self.Chan7ColourLineEdit.text())
 
         self.PickerButton7.setEnabled(True)
@@ -271,6 +340,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         Chan8ColourRegex = QtCore.QRegExp(constants.channel_hex_color)
         self.Chan8ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan8ColourRegex))
         self.Chan8ColourLineEdit.textChanged.connect(self.parameter_check_state)
+        self.Chan8ColourLineEdit.textChanged.connect(self.Picker8)
         self.Chan8ColourLineEdit.textChanged.emit(self.Chan8ColourLineEdit.text())
 
         self.PickerButton8.setEnabled(True)
