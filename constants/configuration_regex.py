@@ -52,3 +52,6 @@ starinet_port = '^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|
 
 windows_path = '^.*$'
 unix_path = '^.*$'
+
+channel_name = '^.*$'
+channel_hex_color = '^#([A-F0-9]{6}|[A-F0-9]{3})$'
