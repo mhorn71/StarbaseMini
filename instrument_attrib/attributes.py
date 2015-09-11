@@ -591,8 +591,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         tree.write(new_file)
 
-        self.response_message = 'SUCCESS', ('File written : %s' % new_file)
+        self.response_message = 'SUCCESS', 'Instrument attributes saved, please restart application.'
 
-        self.exit_message()
+        # self.exit_message()
 
         self.close()
