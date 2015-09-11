@@ -58,6 +58,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.application_conf = config_utilities.ConfigTool()
 
         self.instruments_local = None
+        
+        self.response_message = 'ABORT', None
 
         instruments_local = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'instruments' + \
                             os.path.sep + 'instruments.xml'
@@ -582,6 +584,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.application_conf.set('ObserverMetadata', 'contact_url', self.ObUrlLineEdit.text())
         self.application_conf.set('ObserverMetadata', 'country', self.ObCountryLineEdit.text())
         self.application_conf.set('ObserverMetadata', 'notes', self.ObNotesLineEdit.text())
+        
+        self.response_message = 'SUCCESS', 'Configuration saved, please restart application.'
 
         self.close()
 
@@ -595,4 +599,5 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.savepathLineEdit.setText(file)
 
     def exit_triggered(self):
+        self.response_message = 'ABORT', None
         self.close()

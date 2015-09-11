@@ -1158,6 +1158,9 @@ class Main(QtGui.QMainWindow):
         self.logger.info('Calling configuration tool.')
         self.configurationManager.exec_()
 
+        self.status_message('configuration', self.configurationManager.response_message[0],
+                            self.configurationManager.response_message[1], None)
+
     def instrument_attrib_triggered(self):
         self.logger.info('Calling edit instrument attributes.')
         self.instrument_attributes.set(self.instrument, self.instrument_file)
