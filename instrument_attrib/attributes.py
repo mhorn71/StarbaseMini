@@ -127,61 +127,61 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         if re.match(constants.channel_hex_color, self.Chan0ColourLineEdit.text()):
             self.PickerButton0.setStyleSheet('QPushButton { background-color: ' + self.Chan0ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
     def Picker1(self):
         if re.match(constants.channel_hex_color, self.Chan1ColourLineEdit.text()):
             self.PickerButton1.setStyleSheet('QPushButton { background-color: ' + self.Chan1ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
     def Picker2(self):
         if re.match(constants.channel_hex_color, self.Chan2ColourLineEdit.text()):
             self.PickerButton2.setStyleSheet('QPushButton { background-color: ' + self.Chan2ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
     def Picker3(self):
         if re.match(constants.channel_hex_color, self.Chan3ColourLineEdit.text()):
             self.PickerButton3.setStyleSheet('QPushButton { background-color: ' + self.Chan3ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
 
     def Picker4(self):
         if re.match(constants.channel_hex_color, self.Chan4ColourLineEdit.text()):
             self.PickerButton4.setStyleSheet('QPushButton { background-color: ' + self.Chan4ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
     def Picker5(self):
         if re.match(constants.channel_hex_color, self.Chan5ColourLineEdit.text()):
             self.PickerButton5.setStyleSheet('QPushButton { background-color: ' + self.Chan5ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
 
     def Picker6(self):
         if re.match(constants.channel_hex_color, self.Chan6ColourLineEdit.text()):
             self.PickerButton6.setStyleSheet('QPushButton { background-color: ' + self.Chan6ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
 
     def Picker7(self):
         if re.match(constants.channel_hex_color, self.Chan7ColourLineEdit.text()):
             self.PickerButton7.setStyleSheet('QPushButton { background-color: ' + self.Chan7ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
 
     def Picker8(self):
         if re.match(constants.channel_hex_color, self.Chan8ColourLineEdit.text()):
             self.PickerButton8.setStyleSheet('QPushButton { background-color: ' + self.Chan8ColourLineEdit.text() + ';' +
-                                             'border-style: outset; border-width: 1px; border-radius: 3px;' +
-                                             'border-color: beige; font: bold 12px; min-width: 8em; padding: 2px;' +
-                                             'margin-top: 5px; }')
+                                             'border-width: 1px; border-radius: 3px;' +
+                                             'border-color: beige; padding: 5px;' +
+                                             'margin-top: 0px; }')
 
     def channel0(self):
         self.Chan0LabelEdit.setEnabled(True)
