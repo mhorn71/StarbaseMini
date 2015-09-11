@@ -54,4 +54,4 @@ windows_path = '^.*$'
 unix_path = '^.*$'
 
 channel_name = '^.*$'
-channel_hex_color = '^#([A-F0-9]{6}|[A-F0-9]{3})$'
+channel_hex_color = '^#([A-F0-9]{6})$'
