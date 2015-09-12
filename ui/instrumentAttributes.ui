@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>618</height>
+    <width>523</width>
+    <height>624</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>554</width>
+    <width>500</width>
     <height>603</height>
    </size>
   </property>
@@ -169,6 +169,12 @@
               <height>35</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 0</string>
             </property>
@@ -178,8 +184,14 @@
            <widget class="QLineEdit" name="Chan0LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -191,8 +203,14 @@
            <widget class="QLineEdit" name="Chan0ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>157</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -206,6 +224,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -225,6 +249,12 @@
               <height>35</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 1</string>
             </property>
@@ -234,8 +264,14 @@
            <widget class="QLineEdit" name="Chan1LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -247,8 +283,14 @@
            <widget class="QLineEdit" name="Chan1ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -262,6 +304,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -281,6 +329,12 @@
               <height>34</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 2</string>
             </property>
@@ -290,8 +344,14 @@
            <widget class="QLineEdit" name="Chan2LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -303,8 +363,14 @@
            <widget class="QLineEdit" name="Chan2ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>157</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -318,6 +384,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -337,6 +409,12 @@
               <height>35</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 3</string>
             </property>
@@ -346,8 +424,14 @@
            <widget class="QLineEdit" name="Chan3LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -359,8 +443,14 @@
            <widget class="QLineEdit" name="Chan3ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>157</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -374,6 +464,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -393,6 +489,12 @@
               <height>35</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 4</string>
             </property>
@@ -402,8 +504,14 @@
            <widget class="QLineEdit" name="Chan4LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -415,8 +523,14 @@
            <widget class="QLineEdit" name="Chan4ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>157</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -430,6 +544,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -449,6 +569,12 @@
               <height>35</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 5</string>
             </property>
@@ -458,8 +584,14 @@
            <widget class="QLineEdit" name="Chan5LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -471,8 +603,14 @@
            <widget class="QLineEdit" name="Chan5ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>157</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -486,6 +624,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -505,6 +649,12 @@
               <height>34</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 6</string>
             </property>
@@ -514,8 +664,14 @@
            <widget class="QLineEdit" name="Chan6LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -527,8 +683,14 @@
            <widget class="QLineEdit" name="Chan6ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>157</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -542,6 +704,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -561,6 +729,12 @@
               <height>35</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 7</string>
             </property>
@@ -570,8 +744,14 @@
            <widget class="QLineEdit" name="Chan7LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -583,8 +763,14 @@
            <widget class="QLineEdit" name="Chan7ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>157</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -598,6 +784,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -617,6 +809,12 @@
               <height>35</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Channel 8</string>
             </property>
@@ -626,8 +824,14 @@
            <widget class="QLineEdit" name="Chan8LabelEdit">
             <property name="minimumSize">
              <size>
-              <width>158</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -639,8 +843,14 @@
            <widget class="QLineEdit" name="Chan8ColourLineEdit">
             <property name="minimumSize">
              <size>
-              <width>157</width>
+              <width>120</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="maxLength">
@@ -654,6 +864,12 @@
              <size>
               <width>107</width>
               <height>27</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -675,7 +891,7 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>75</width>
+              <width>80</width>
               <height>20</height>
              </size>
             </property>
