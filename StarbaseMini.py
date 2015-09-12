@@ -35,7 +35,6 @@ import utilities
 import xml_utilities
 import config_utilities
 import starinet_connector
-import futurlec
 import instument_builder
 import interpreter
 import constants
@@ -185,9 +184,6 @@ class Main(QtGui.QMainWindow):
         # Chart Decimate and AutoRange signals.
         self.ui.chartAutoRangeCheckBox.stateChanged.connect(self.chart_auto_range_triggered)
         self.ui.chartDecimateCheckBox.stateChanged.connect(self.chart_decimate_triggered)
-
-        # Initialise Futurlec Baudrate tool
-        self.futurlec_baudrate_tool = futurlec.FuturlecBaudrate()
 
         # Initialise instrumentBuilder
         self.instrumentBuilder = instument_builder.InstrumentBuilder()

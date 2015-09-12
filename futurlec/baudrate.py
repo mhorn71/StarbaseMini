@@ -23,6 +23,8 @@ import logging
 from PyQt4 import QtGui
 
 from ui import Ui_FuturlecDialog
+import config_utilities
+import dao
 
 logger = logging.getLogger('futurlec.baudrate')
 
@@ -48,3 +50,21 @@ class FuturlecBaudrate(QtGui.QDialog, Ui_FuturlecDialog):
         if style_boolean:
             with open(stylesheet, 'r') as style:
                 self.setStyleSheet(style.read())
+
+        self.application_conf = config_utilities.ConfigTool()
+
+        self.FindInstButton.setFocus()
+
+        self.baudrates = ['9600', '19200', '38400', '57600', '115200']
+
+        # Set baudrate check box and combo box.
+        baudrate = self.application_conf.get('StaribusPort', 'baudrate')
+
+        if baudrate == '57600':
+            self.defaultCheckBox.setChecked(True)
+            self.baudrateComboBox.setEnabled(False)  # Disable combo box if default set.
+
+        self.defaultCheckBox.setToolTip('Sets the default baudrate to 57600')
+
+        self.baudrateComboBox.addItems(self.baudrates)
+        self.baudrateComboBox.setCurrentIndex(self.baudrates.index(baudrate))
