@@ -416,7 +416,7 @@ class Main(QtGui.QMainWindow):
                         else:
                             self.disable_all()
                             self.status_message('system', 'ERROR',
-                                                'Unable to set stream type - UI controls disabled.', None)
+                                                'Unable to open serial port - UI controls disabled.', None)
                 else:
                     self.logger.critical('Unable able to determine stream type.')
                     self.status_message('system', 'ERROR',

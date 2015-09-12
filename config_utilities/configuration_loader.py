@@ -77,7 +77,7 @@ class ConfigTool:
 
                 # Add Staribus Port section
                 self.config.add_section('StaribusPort')
-                self.config.set('StaribusPort', 'staribus_port', '')
+                self.config.set('StaribusPort', 'staribus_port', 'COM1')
                 self.config.set('StaribusPort', 'baudrate', '57600')
                 self.config.set('StaribusPort', 'timeout', '20')
 
