@@ -44,7 +44,7 @@ class CommandInterpreter:
         self.response_regex = None
         self.check_response_message = 'INVALID_RESPONSE_MESSAGE', None
 
-        self.segmenter = core.SegmentTimeSeries(parent)
+        self.segmenter = core.SegmentTimeSeries()
 
         staribus_port = self.parent.config.get('StaribusPort', 'staribus_port')
         staribus_baudrate = self.parent.config.get('StaribusPort', 'baudrate')
