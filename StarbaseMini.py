@@ -338,7 +338,6 @@ class Main(QtGui.QMainWindow):
         if instrument_found is not True:
             # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
             try:
-                # instruments = 'instruments' + os.path.sep + 'instruments.xml'
                 my_instruments = xml_utilities.Instruments(instruments_system)
             except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
                 self.fatal_error = True
@@ -420,7 +419,8 @@ class Main(QtGui.QMainWindow):
                     self.disable_all()
         except (TypeError, IOError) as msg:
             self.logger.critical(str(msg))
-            self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+            message = str(msg) + ' - UI controls disabled.'
+            self.status_message('system', 'CRITICAL_ERROR', message, None)
             self.disable_all()
 
     # ----------------------------------------
@@ -437,8 +437,6 @@ class Main(QtGui.QMainWindow):
             if ports is None:
                 self.logger.warning('No serial ports found to scan for instrument.')
                 self.instrument_autodetect_status_boolean = False
-                self.disable_all()
-                self.status_message('system', 'WARNING', 'No serial ports found, ui controls disabled.', None)
             else:
                 instrument_port = utilities.check_serial_port_staribus_instrument(
                     self.instrument.instrument_staribus_address, ports, self.serial_baudrate)
@@ -526,7 +524,7 @@ class Main(QtGui.QMainWindow):
     def disable_all(self):
         self.disable_all_boolean = True
         self.logger.info('Instrument control panel disabled.')
-        self.status_message('system', 'INFO', 'Instrument control panel disabled', None)
+        # self.status_message('system', 'INFO', 'Instrument control panel disabled', None)
         self.ui.moduleCombobox.setEnabled(False)
         self.logger.debug('Module Combo box set False')
         self.ui.commandCombobox.setEnabled(False)
