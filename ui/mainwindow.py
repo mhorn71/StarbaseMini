@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Sep  9 11:42:55 2015
+# Created: Sat Sep 12 12:10:16 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -339,7 +339,6 @@ class Ui_MainWindow(object):
         self.actionInstrument_Attrib.setObjectName(_fromUtf8("actionInstrument_Attrib"))
         self.menuFile.addAction(self.actionConfiguration)
         self.menuFile.addAction(self.actionExit)
-        self.menuMetadata.addAction(self.actionControllerEditor)
         self.menuMetadata.addAction(self.actionInstrumentBuilder)
         self.menuHelp.addAction(self.actionManual)
         self.menuHelp.addAction(self.actionAbout)
