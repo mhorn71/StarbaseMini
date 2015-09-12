@@ -28,7 +28,6 @@ import config_utilities
 class SegmentTimeSeries:
     def __init__(self):
         self.logger = logging.getLogger('core.segmentTimeSeries')
-        print('Segment past A')
 
         # First get instrument data path from configuration.
         App_Config = config_utilities.ConfigTool()
