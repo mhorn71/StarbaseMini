@@ -26,7 +26,7 @@ import config_utilities
 
 
 class SegmentTimeSeries:
-    def __init__(self, parent):
+    def __init__(self):
         self.logger = logging.getLogger('core.segmentTimeSeries')
 
         # First get instrument data path from configuration.
@@ -36,12 +36,16 @@ class SegmentTimeSeries:
         # Get home path in case instrument data path isn't set.
         home = os.path.expanduser("~")
 
-        if os.path.isdir(data_path):
-            self.data_file = data_path + os.path.sep
-            self.logger.debug('Data file : %s' % self.data_file)
-        else:
+        if data_path is None:
             self.data_file = home + os.path.sep
             self.logger.debug('Data file : %s' % self.data_file)
+        else:
+            if os.path.isdir(data_path):
+                self.data_file = data_path + os.path.sep
+                self.logger.debug('Data file : %s' % self.data_file)
+            else:
+                self.data_file = home + os.path.sep
+                self.logger.debug('Data file : %s' % self.data_file)
 
         self.datatranslator = None
         self.number_of_channels = None
