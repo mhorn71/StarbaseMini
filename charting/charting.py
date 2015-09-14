@@ -73,6 +73,7 @@ class Chart:
         self.attributes = None
         self.run_once = False
         self.count = 0  # Just a generic counter for testing purposes.
+        self.channel_count = 0
 
         # Decimate attributes etc...
         self.timestamp = []
@@ -179,6 +180,8 @@ class Chart:
             self.logger.critical('Channel count not found : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
 
+        self.channel_count = number_of_channels
+
         try:
             for i in range(number_of_channels):
                 self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.data_array[i],
@@ -198,6 +201,8 @@ class Chart:
         except AttributeError as msg:
             self.logger.critical('Channel count not found : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
+
+        self.channel_count = number_of_channels
 
         self.logger.debug('Datetime Original Length : %s' % str(len(self.datatranslator.datetime)))
 
@@ -260,10 +265,15 @@ class Chart:
     def chart_legend(self, state):
 
         fontP = FontProperties()
-        fontP.set_size('small')
+        fontP.set_size('medium')
 
         if state is True:
-            self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5).set_visible(True)
+            if self.channel_count <= 3:
+                self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5).set_visible(True)
+            elif self.channel_count == 5:
+                self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5, ncol=2).set_visible(True)
+            else:
+                self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5, ncol=3).set_visible(True)
         elif state is False:
             self.ax1f1.legend().set_visible(False)
 
