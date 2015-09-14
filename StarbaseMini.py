@@ -128,6 +128,7 @@ class Main(QtGui.QMainWindow):
         # Setup initial channel button and checkbox states.
         self.ui.chartDecimateCheckBox.setEnabled(False)
         self.ui.chartAutoRangeCheckBox.setEnabled(False)
+        self.ui.showLegend.setEnabled(False)
         self.ui.channel0Button.setVisible(False)
         self.ui.channel0colour.setVisible(False)
         self.ui.channel0colour.setEnabled(False)
@@ -184,6 +185,7 @@ class Main(QtGui.QMainWindow):
         # Chart Decimate and AutoRange signals.
         self.ui.chartAutoRangeCheckBox.stateChanged.connect(self.chart_auto_range_triggered)
         self.ui.chartDecimateCheckBox.stateChanged.connect(self.chart_decimate_triggered)
+        self.ui.showLegend.stateChanged.connect(self.chart_show_legend_triggered)
 
         # Initialise instrumentBuilder
         self.instrumentBuilder = instument_builder.InstrumentBuilder()
@@ -686,6 +688,9 @@ class Main(QtGui.QMainWindow):
             self.command_parameter_trip += 1
 
     def chart_control_panel(self, number_of_channels, translated):
+
+        self.ui.showLegend.setChecked(False)
+        self.ui.showLegend.setEnabled(True)
 
         self.ui.channel0Button.setVisible(False)
         self.ui.channel0colour.setVisible(False)
@@ -1265,6 +1270,20 @@ class Main(QtGui.QMainWindow):
         else:
             self.status_message(ident, response[0], response[1], units)
 
+    # ----------------------------------------
+    # Chart show legend method.
+    # ----------------------------------------
+
+    def chart_show_legend_triggered(self):
+        if self.ui.showLegend.isChecked():
+            self.chart.chart_legend(True)
+        else:
+            self.chart.chart_legend(False)
+
+    # ----------------------------------------
+    # Chart channel button methods.
+    # ----------------------------------------
+
     def channel0_triggered(self):
         if self.ui.channel0Button.isChecked():
             self.chart.channel_control(0, True)
@@ -1342,8 +1361,6 @@ class Main(QtGui.QMainWindow):
                 self.chart.decimate_data(number_of_channels)
             else:
                 self.chart.add_data(number_of_channels)
-
-            self.chart_control_panel(number_of_channels, translator)
 
     def closeEvent(self, event):
         if self.saved_data_state is False:

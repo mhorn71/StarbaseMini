@@ -74,6 +74,8 @@ class Chart:
         self.run_once = False
         self.count = 0  # Just a generic counter for testing purposes.
 
+        self.legend_bool = False
+
         # Decimate attributes etc...
         self.timestamp = []
         self.decimate_array = []
@@ -165,6 +167,15 @@ class Chart:
         self.ax1f1.xaxis.set_major_formatter(hfmt)
         self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%Y-%m-%d %H:%M:%S')
 
+        fontP = FontProperties()
+        fontP.set_size('small')
+
+
+        if self.legend_bool:
+            self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5).set_visible(True)
+        elif self.legend_bool is False:
+            self.ax1f1.legend().set_visible(False)
+
         if self.run_once is False:
             # set the mplwindow widget background to a gray otherwise splash page disfigures the toolbar look.
             self.ui.mplwindow.setStyleSheet('QWidget{ background-color: #EDEDED; }')
@@ -193,12 +204,6 @@ class Chart:
         except IndexError as msg:
             self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
-
-        fontP = FontProperties()
-        fontP.set_size('small')
-
-        self.ax1f1.legend(prop=fontP, loc=9, bbox_to_anchor=(0.5, -0.16), ncol=number_of_channels)
-        # self.ax1f1.legend(prop=fontP, loc=9, bbox_to_anchor=(0.5, -0.1), ncol=number_of_channels)
 
         self.add_mpl()
 
@@ -267,6 +272,14 @@ class Chart:
             self.set_scale()
         else:
             self.ax1f1.autoscale(True)
+
+        self.add_mpl()
+
+    def chart_legend(self, state):
+        if state is True:
+            self.legend_bool = True
+        elif state is False:
+            self.legend_bool = False
 
         self.add_mpl()
 
