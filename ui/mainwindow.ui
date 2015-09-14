@@ -302,7 +302,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel0colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -332,7 +332,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel1colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -362,7 +362,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel2colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -392,7 +392,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel3colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -422,7 +422,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel4colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -452,7 +452,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel5colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -482,7 +482,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel6colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -512,7 +512,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel7colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -542,7 +542,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
                 <widget class="QCheckBox" name="channel8colour">
                  <property name="maximumSize">
                   <size>
-                   <width>21</width>
+                   <width>5</width>
                    <height>22</height>
                   </size>
                  </property>

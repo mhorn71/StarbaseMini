@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Mon Sep 14 17:39:14 2015
+# Created: Mon Sep 14 17:52:51 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -164,7 +164,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.channel0colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel0colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel0colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel0colour.setText(_fromUtf8(""))
         self.channel0colour.setCheckable(False)
         self.channel0colour.setObjectName(_fromUtf8("channel0colour"))
@@ -177,7 +177,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.channel1colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel1colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel1colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel1colour.setText(_fromUtf8(""))
         self.channel1colour.setCheckable(False)
         self.channel1colour.setObjectName(_fromUtf8("channel1colour"))
@@ -190,7 +190,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.channel2colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel2colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel2colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel2colour.setText(_fromUtf8(""))
         self.channel2colour.setCheckable(False)
         self.channel2colour.setObjectName(_fromUtf8("channel2colour"))
@@ -203,7 +203,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
         self.channel3colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel3colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel3colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel3colour.setText(_fromUtf8(""))
         self.channel3colour.setCheckable(False)
         self.channel3colour.setObjectName(_fromUtf8("channel3colour"))
@@ -216,7 +216,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5 = QtGui.QHBoxLayout()
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
         self.channel4colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel4colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel4colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel4colour.setText(_fromUtf8(""))
         self.channel4colour.setCheckable(False)
         self.channel4colour.setObjectName(_fromUtf8("channel4colour"))
@@ -229,7 +229,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6 = QtGui.QHBoxLayout()
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
         self.channel5colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel5colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel5colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel5colour.setText(_fromUtf8(""))
         self.channel5colour.setCheckable(False)
         self.channel5colour.setObjectName(_fromUtf8("channel5colour"))
@@ -242,7 +242,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7 = QtGui.QHBoxLayout()
         self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
         self.channel6colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel6colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel6colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel6colour.setText(_fromUtf8(""))
         self.channel6colour.setCheckable(False)
         self.channel6colour.setObjectName(_fromUtf8("channel6colour"))
@@ -255,7 +255,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8 = QtGui.QHBoxLayout()
         self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
         self.channel7colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel7colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel7colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel7colour.setText(_fromUtf8(""))
         self.channel7colour.setCheckable(False)
         self.channel7colour.setObjectName(_fromUtf8("channel7colour"))
@@ -268,7 +268,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9 = QtGui.QHBoxLayout()
         self.horizontalLayout_9.setObjectName(_fromUtf8("horizontalLayout_9"))
         self.channel8colour = QtGui.QCheckBox(self.layoutWidget2)
-        self.channel8colour.setMaximumSize(QtCore.QSize(21, 22))
+        self.channel8colour.setMaximumSize(QtCore.QSize(5, 22))
         self.channel8colour.setText(_fromUtf8(""))
         self.channel8colour.setCheckable(False)
         self.channel8colour.setObjectName(_fromUtf8("channel8colour"))
