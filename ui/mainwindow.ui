@@ -316,6 +316,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel0Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
@@ -346,6 +352,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel1Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
@@ -376,6 +388,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel2Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
@@ -406,6 +424,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel3Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
@@ -436,6 +460,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel4Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
@@ -466,6 +496,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel5Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
@@ -496,6 +532,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel6Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
@@ -526,6 +568,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel7Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
@@ -556,6 +604,12 @@ QToolBox::tab:selected { /* italicize selected tabs */
                </item>
                <item>
                 <widget class="QPushButton" name="channel8Button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>PushButton</string>
                  </property>
