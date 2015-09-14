@@ -28,6 +28,8 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt4agg import (
     FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT)
 
+from matplotlib.font_manager import FontProperties
+
 # http://stackoverflow.com/questions/12695678/how-to-modify-the-navigation-toolbar-easily-in-a-matplotlib-figure-window
 # Thanks to torfbolt and MadeOfAir.
 
@@ -76,15 +78,27 @@ class Chart:
         self.timestamp = []
         self.decimate_array = []
 
-        mpl.rcParams['figure.autolayout'] = True
+        mpl.rcParams['font.monospace'] = 'Courier New'
         mpl.rcParams['savefig.directory'] = self.config.get('Application', 'instrument_data_path')
+        mpl.rcParams['savefig.bbox'] = 'tight'
+        # mpl.rcParams['xtick.labelsize'] = 'small'
+        # mpl.rcParams['ytick.labelsize'] = 'small'
         mpl.rcParams['axes.linewidth'] = 0.5
         mpl.rcParams['axes.facecolor'] = "#FDFDF0"
+        # mpl.rcParams['axes.titlesize'] = 'medium'
+        # mpl.rcParams['axes.labelsize'] = 'small'
         mpl.rcParams['figure.max_open_warning'] = 2
+        # mpl.rcParams['figure.autolayout'] = True
 
         self.fig = Figure()
+        # self.fig.set_tight_layout(True)
         self.ax1f1 = self.fig.add_subplot(111)
         self.canvas = FigureCanvas(self.fig)
+
+        if mpl.get_backend().lower() in ['agg', 'macosx']:
+            self.fig.set_tight_layout(True)
+        else:
+            self.fig.tight_layout()
 
         self.logger.info('Initialised charting.')
 
@@ -147,6 +161,7 @@ class Chart:
 
         # Something to beware of I'm not sure what will happen if and Index X axis is used.
         hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
+        # hfmt = mpl.dates.DateFormatter('%H:%M:%S')
         self.ax1f1.xaxis.set_major_formatter(hfmt)
         self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%Y-%m-%d %H:%M:%S')
 
@@ -178,6 +193,12 @@ class Chart:
         except IndexError as msg:
             self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
+
+        fontP = FontProperties()
+        fontP.set_size('small')
+
+        self.ax1f1.legend(prop=fontP, loc=9, bbox_to_anchor=(0.5, -0.16), ncol=number_of_channels)
+        # self.ax1f1.legend(prop=fontP, loc=9, bbox_to_anchor=(0.5, -0.1), ncol=number_of_channels)
 
         self.add_mpl()
 
