@@ -83,17 +83,11 @@ class Chart:
         mpl.rcParams['font.monospace'] = 'Courier New'
         mpl.rcParams['savefig.directory'] = self.config.get('Application', 'instrument_data_path')
         mpl.rcParams['savefig.bbox'] = 'tight'
-        # mpl.rcParams['xtick.labelsize'] = 'small'
-        # mpl.rcParams['ytick.labelsize'] = 'small'
         mpl.rcParams['axes.linewidth'] = 0.5
         mpl.rcParams['axes.facecolor'] = "#FDFDF0"
-        # mpl.rcParams['axes.titlesize'] = 'medium'
-        # mpl.rcParams['axes.labelsize'] = 'small'
         mpl.rcParams['figure.max_open_warning'] = 2
-        # mpl.rcParams['figure.autolayout'] = True
 
         self.fig = Figure()
-        # self.fig.set_tight_layout(True)
         self.ax1f1 = self.fig.add_subplot(111)
         self.canvas = FigureCanvas(self.fig)
 
@@ -163,13 +157,11 @@ class Chart:
 
         # Something to beware of I'm not sure what will happen if and Index X axis is used.
         hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
-        # hfmt = mpl.dates.DateFormatter('%H:%M:%S')
         self.ax1f1.xaxis.set_major_formatter(hfmt)
         self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%Y-%m-%d %H:%M:%S')
 
         fontP = FontProperties()
         fontP.set_size('small')
-
 
         if self.legend_bool:
             self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5).set_visible(True)
