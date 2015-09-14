@@ -74,8 +74,6 @@ class Chart:
         self.run_once = False
         self.count = 0  # Just a generic counter for testing purposes.
 
-        self.legend_bool = False
-
         # Decimate attributes etc...
         self.timestamp = []
         self.decimate_array = []
@@ -159,14 +157,6 @@ class Chart:
         hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
         self.ax1f1.xaxis.set_major_formatter(hfmt)
         self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%Y-%m-%d %H:%M:%S')
-
-        fontP = FontProperties()
-        fontP.set_size('small')
-
-        if self.legend_bool:
-            self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5).set_visible(True)
-        elif self.legend_bool is False:
-            self.ax1f1.legend().set_visible(False)
 
         if self.run_once is False:
             # set the mplwindow widget background to a gray otherwise splash page disfigures the toolbar look.
@@ -268,10 +258,14 @@ class Chart:
         self.add_mpl()
 
     def chart_legend(self, state):
+
+        fontP = FontProperties()
+        fontP.set_size('small')
+
         if state is True:
-            self.legend_bool = True
+            self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5).set_visible(True)
         elif state is False:
-            self.legend_bool = False
+            self.ax1f1.legend().set_visible(False)
 
         self.add_mpl()
 
