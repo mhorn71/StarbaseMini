@@ -85,6 +85,9 @@ class Chart:
         mpl.rcParams['axes.linewidth'] = 0.5
         mpl.rcParams['axes.facecolor'] = "#FDFDF0"
         mpl.rcParams['figure.max_open_warning'] = 2
+        mpl.rcParams['legend.framealpha'] = 0.5
+        mpl.rcParams['legend.fancybox'] = True
+        mpl.rcParams['lines.markersize'] = 5
 
         self.fig = Figure()
         self.ax1f1 = self.fig.add_subplot(111)
@@ -268,12 +271,22 @@ class Chart:
         fontP.set_size('medium')
 
         if state is True:
+            self.ax1f1.legend().set_visible(True)
             if self.channel_count <= 3:
-                self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5).set_visible(True)
+                self.ax1f1.legend(prop=fontP, loc='best').set_visible(True)
+                # # # set the linewidth of each legend object
+                for legend_handle in self.ax1f1.legend(prop=fontP, loc='best').legendHandles:
+                    legend_handle.set_linewidth(10.0)
             elif self.channel_count == 5:
-                self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5, ncol=2).set_visible(True)
+                self.ax1f1.legend(prop=fontP, loc='best', ncol=2).set_visible(True)
+                # # # set the linewidth of each legend object
+                for legend_handle in self.ax1f1.legend(prop=fontP, loc='best', ncol=2).legendHandles:
+                    legend_handle.set_linewidth(10.0)
             else:
-                self.ax1f1.legend(prop=fontP, loc='best', fancybox=True, framealpha=0.5, ncol=3).set_visible(True)
+                self.ax1f1.legend(prop=fontP, loc='best', ncol=5).set_visible(True)
+                # # # set the linewidth of each legend object
+                for legend_handle in self.ax1f1.legend(prop=fontP, loc='best', ncol=5).legendHandles:
+                    legend_handle.set_linewidth(10.0)
         elif state is False:
             self.ax1f1.legend().set_visible(False)
 

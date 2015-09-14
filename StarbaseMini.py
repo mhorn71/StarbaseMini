@@ -1362,6 +1362,8 @@ class Main(QtGui.QMainWindow):
             else:
                 self.chart.add_data(number_of_channels)
 
+            self.chart_show_legend_triggered()
+
     def closeEvent(self, event):
         if self.saved_data_state is False:
             message = 'Are you sure you want to exit?'
