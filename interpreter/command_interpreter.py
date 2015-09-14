@@ -375,7 +375,10 @@ class CommandInterpreter:
             self.parent.saved_data_state = True
             self.data_type = 'data'
 
-            return 'SUCCESS', None
+            if len(self.parent.datatranslator.data_array) == 0:
+                return 'PREMATURE_TERMINATION', 'NODATA'
+            else:
+                return 'SUCCESS', None
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
         return 'ABORT', 'stepped data command not yet implemented.'
