@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Tue Sep 15 10:02:39 2015
+# Created: Tue Sep 15 10:08:38 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,7 +37,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.gridLayout_4 = QtGui.QGridLayout(self.groupBox)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_4.addItem(spacerItem, 2, 0, 1, 1)
+        self.gridLayout_4.addItem(spacerItem, 3, 0, 1, 1)
         self.gridLayout = QtGui.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -321,9 +321,9 @@ class Ui_InstrumentAttributesDialog(object):
         spacerItem6 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_13.addItem(spacerItem6)
         self.gridLayout_2.addLayout(self.horizontalLayout_13, 1, 0, 1, 1)
+        self.gridLayout_4.addLayout(self.gridLayout_2, 2, 0, 1, 1)
         spacerItem7 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_2.addItem(spacerItem7, 0, 0, 1, 1)
-        self.gridLayout_4.addLayout(self.gridLayout_2, 1, 0, 1, 1)
+        self.gridLayout_4.addItem(spacerItem7, 1, 0, 1, 1)
         self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 1)
         self.buttonBox = QtGui.QDialogButtonBox(InstrumentAttributesDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
