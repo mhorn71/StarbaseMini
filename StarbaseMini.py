@@ -1347,14 +1347,42 @@ class Main(QtGui.QMainWindow):
         else:
             self.chart.channel_autoscale(False)
 
+    def manual_channel_trigger(self, number_of_channels):
+
+        if number_of_channels == '1':
+            pass
+        elif number_of_channels == '2':
+            self.channel0_triggered(), self.channel1_triggered()
+        elif number_of_channels == '3':
+            self.channel0_triggered(), self.channel1_triggered(), self.channel2_triggered()
+        elif number_of_channels == '4':
+            self.channel0_triggered(), self.channel1_triggered(), self.channel2_triggered(), \
+            self.channel3_triggered()
+        elif number_of_channels == '5':
+            self.channel0_triggered(), self.channel1_triggered(), self.channel2_triggered(), \
+            self.channel3_triggered(), self.channel4_triggered()
+        elif number_of_channels == '6':
+            self.channel0_triggered(), self.channel1_triggered(), self.channel2_triggered(), \
+            self.channel3_triggered(), self.channel4_triggered(), self.channel5_triggered()
+        elif number_of_channels == '7':
+            self.channel0_triggered(), self.channel1_triggered(), self.channel2_triggered(), \
+            self.channel3_triggered(), self.channel4_triggered(), self.channel5_triggered(), \
+            self.channel6_triggered()
+        elif number_of_channels == '8':
+            self.channel0_triggered(), self.channel1_triggered(), self.channel2_triggered(), \
+            self.channel3_triggered(), self.channel4_triggered(), self.channel5_triggered(), \
+            self.channel6_triggered(), self.channel7_triggered()
+        elif number_of_channels == '9':
+            self.channel0_triggered(), self.channel1_triggered(), self.channel2_triggered(), \
+            self.channel3_triggered(), self.channel4_triggered(), self.channel5_triggered(), \
+            self.channel6_triggered(), self.channel7_triggered(), self.channel8_triggered()
+
     def chart_decimate_triggered(self):
         if self.chart is not None:
 
             if self.data_from == 'data':
-                translator = self.instrument
                 number_of_channels = self.instrument.instrument_number_of_channels
             else:
-                translator = self.metadata_deconstructor
                 number_of_channels = self.metadata_deconstructor.instrument_number_of_channels
 
             self.chart.clear()
@@ -1362,29 +1390,12 @@ class Main(QtGui.QMainWindow):
 
             if self.ui.chartDecimateCheckBox.isChecked():
                 self.chart.decimate_data(number_of_channels)
-                self.channel0_triggered()
-                self.channel1_triggered()
-                self.channel2_triggered()
-                self.channel3_triggered()
-                self.channel4_triggered()
-                # self.channel5_triggered()
-                # self.channel6_triggered()
-                # self.channel7_triggered()
-                # self.channel8_triggered()
             else:
                 self.chart.add_data(number_of_channels)
-                self.channel0_triggered()
-                self.channel1_triggered()
-                self.channel2_triggered()
-                self.channel3_triggered()
-                self.channel4_triggered()
-                # self.channel5_triggered()
-                # self.channel6_triggered()
-                # self.channel7_triggered()
-                # self.channel8_triggered()
 
             self.chart_show_legend_triggered()
-            # self.chart_control_panel(number_of_channels, translator)
+            self.manual_channel_trigger(number_of_channels)
+
 
     def closeEvent(self, event):
         if self.saved_data_state is False:
