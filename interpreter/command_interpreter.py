@@ -365,9 +365,8 @@ class CommandInterpreter:
                         if self.parent.datatranslator.block_parser(secondary_command_response[1], sec_variant):
                             pass
                         else:
-                            self.logger.critical('Unable to parse block : %s' % repr(secondary_command_response[1]))
-                            return 'PREMATURE_TERMINATION', 'NODATA'
-
+                            self.logger.warning('Unable to parse block : %s' % str(datafile))
+                            self.logger.warning('Failed data  : %s' % repr(secondary_command_response[1]))
                     else:
                         progressDialog.hide()
                         return 'PREMATURE_TERMINATION', 'NODATA'
@@ -376,7 +375,10 @@ class CommandInterpreter:
             self.parent.saved_data_state = True
             self.data_type = 'data'
 
-            return 'SUCCESS', None
+            if len(self.parent.datatranslator.data_array) == 0:
+                return 'PREMATURE_TERMINATION', 'NODATA'
+            else:
+                return 'SUCCESS', None
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
         return 'ABORT', 'stepped data command not yet implemented.'
