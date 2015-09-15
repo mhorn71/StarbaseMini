@@ -74,6 +74,9 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.loglevels = ['INFO', 'DEBUG']
         self.baudrates = ['9600', '19200', '38400', '57600', '115200']
         self.timeouts = ['20', '30', '40', '50', '60']
+        self.legend_loc = ['best', 'upper right', 'upper left', 'lower left', 'lower right', 'right', 'center left',
+                           'center right', 'lower center', 'upper center', 'center']
+        self.legend_font = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large']
 
         # Setup checkbox slots.
         self.detectInstrumentPortCheckBox.stateChanged.connect(self.instrument_port_checkbox_triggered)
@@ -233,6 +236,10 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         elif staribus2starinet_active == 'False':
             self.S2SIpAddressLineEdit.setEnabled(False)
             self.S2SPort.setEnabled(False)
+
+        # Chart legend
+        self.legendLocationComboBox.addItems(self.legend_loc)
+        self.LegendFontComboBox.addItems(self.legend_font)
 
         staribus2starinet_address = self.application_conf.get('Staribus2Starinet', 'address')
         self.S2SIpAddressLineEdit.setText(staribus2starinet_address)
