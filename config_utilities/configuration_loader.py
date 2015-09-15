@@ -21,10 +21,10 @@ import configparser
 from os import path, makedirs
 
 
-class ConfigTool:
+class ConfigLoader:
     def __init__(self):
         '''
-        :return: ConfigTool Instance.
+        :return: ConfigLoader Instance.
         :raises: FileNotFoundError, OSError,
 
             gives access to configuration file home and name via config_home
@@ -59,7 +59,7 @@ class ConfigTool:
         :raises: IOError in the event it can't find or write to configuration file.
         '''
         
-        self.conf_file = self.config_home + self.config_file
+        # self.conf_file = self.config_home + self.config_file
 
         if not path.exists(self.conf_file):
             try:
@@ -68,6 +68,11 @@ class ConfigTool:
                 raise IOError(msg)
             else:
                 self.config.read(self.conf_file)
+
+
+                # Add Application Release Number
+                self.config.add_section('Release')
+                self.config.set('Release', 'Version', '1')
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')
@@ -150,6 +155,29 @@ class ConfigTool:
                         conffile.close()
                 except IOError as msg:
                     raise IOError(msg)
+
+    def release_update(self):
+        try:
+            ver = self.get('Release', 'Version')
+        except (configparser.NoSectionError, ValueError):
+            try:
+                open(self.conf_file, 'a').close()
+            except IOError as msg:
+                raise IOError(msg)
+            else:
+                self.config.read(self.conf_file)
+                # Add Application Release Number
+                self.config.add_section('Release')
+                self.config.set('Release', 'Version', '1')
+                try:
+                    with open(self.conf_file, 'wt') as conffile:
+                        self.config.write(conffile)
+                        conffile.close()
+                except IOError as msg:
+                    raise IOError(msg)
+        else:
+            if int(ver) == 1:
+                pass
 
     def get(self, section, option):
 

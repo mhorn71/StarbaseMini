@@ -55,7 +55,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         logger.info('Started')
 
-        self.application_conf = config_utilities.ConfigTool()
+        self.application_conf = config_utilities.ConfigLoader()
 
         self.instruments_local = None
         

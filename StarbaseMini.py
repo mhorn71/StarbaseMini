@@ -192,7 +192,7 @@ class Main(QtGui.QMainWindow):
 
         # Initialise configuration.
         try:
-            self.config = config_utilities.ConfigTool()
+            self.config = config_utilities.ConfigLoader()
         except (FileNotFoundError, OSError, ValueError) as msg:
             msg = ('Configuration Tool : %s' % str(msg))
             self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
@@ -209,6 +209,8 @@ class Main(QtGui.QMainWindow):
                 self.fatal_error = True
                 self.config_error = True
             else:
+                # Upgrade release if need.
+                self.config.release_update()
                 #  Load and initialise logging configuration from user configuration file.
                 logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
                 self.logger = logging.getLogger('main')

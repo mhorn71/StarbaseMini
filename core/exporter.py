@@ -38,7 +38,7 @@ def exporter(datatranslator, source, metadata, data_type):
         return 'PREMATURE_TERMINATION', 'No data to export.'
 
     # First get instrument data path from configuration.
-    App_Config = config_utilities.ConfigTool()
+    App_Config = config_utilities.ConfigLoader()
     data_path = App_Config.get('Application', 'instrument_data_path')
 
     # Get home path in case instrument data path isn't set.

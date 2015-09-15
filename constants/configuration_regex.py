@@ -18,7 +18,7 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 '''
-Regex for configTool text line edits.
+Regex for ConfigLoader text line edits.
 
 '''
 
