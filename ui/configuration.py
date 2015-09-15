@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'configuration.ui'
 #
-# Created: Tue Sep 15 19:30:17 2015
+# Created: Tue Sep 15 20:39:18 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_ConfigurationDialog(object):
     def setupUi(self, ConfigurationDialog):
         ConfigurationDialog.setObjectName(_fromUtf8("ConfigurationDialog"))
-        ConfigurationDialog.resize(699, 619)
+        ConfigurationDialog.resize(699, 632)
         self.gridLayout = QtGui.QGridLayout(ConfigurationDialog)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.verticalLayout = QtGui.QVBoxLayout()
@@ -202,7 +202,9 @@ class Ui_ConfigurationDialog(object):
         self.label_34.setObjectName(_fromUtf8("label_34"))
         self.horizontalLayout_33.addWidget(self.label_34)
         self.LegendColSpinBox = QtGui.QSpinBox(self.groupBox_5)
-        self.LegendColSpinBox.setMaximum(4)
+        self.LegendColSpinBox.setMinimum(1)
+        self.LegendColSpinBox.setMaximum(6)
+        self.LegendColSpinBox.setSingleStep(1)
         self.LegendColSpinBox.setObjectName(_fromUtf8("LegendColSpinBox"))
         self.horizontalLayout_33.addWidget(self.LegendColSpinBox)
         self.label_35 = QtGui.QLabel(self.groupBox_5)
