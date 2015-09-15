@@ -98,7 +98,7 @@ class Main(QtGui.QMainWindow):
         self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
         self.ui.actionInstrument_Attrib.triggered.connect(self.instrument_attrib_triggered)
         self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
-        self.ui.actionControllerEditor.triggered.connect(self.futurlec_baudrate_tool_triggered)
+        # self.ui.actionControllerEditor.triggered.connect(self.futurlec_baudrate_tool_triggered)
         # self.ui.actionManual.triggered.connect(self.help_manual_triggered)
         self.ui.actionAbout.triggered.connect(self.help_about_triggered)
 
@@ -689,7 +689,6 @@ class Main(QtGui.QMainWindow):
 
     def chart_control_panel(self, number_of_channels, translated):
 
-        self.ui.showLegend.setChecked(False)
         self.ui.showLegend.setEnabled(True)
 
         self.ui.channel0Button.setVisible(False)
@@ -1169,9 +1168,9 @@ class Main(QtGui.QMainWindow):
         self.status_message('instrumentAttributes', self.instrument_attributes.response_message[0],
                             self.instrument_attributes.response_message[1], None)
 
-    def futurlec_baudrate_tool_triggered(self):
-        self.logger.debug('Calling futurlec baudrate configuration tool.')
-        self.futurlec_baudrate_tool.exec_()
+    # def futurlec_baudrate_tool_triggered(self):
+    #     self.logger.debug('Calling futurlec baudrate configuration tool.')
+    #     self.futurlec_baudrate_tool.exec_()
 
     def instrument_builder_triggered(self):
         self.logger.info('Calling instrument builder.')
@@ -1248,6 +1247,7 @@ class Main(QtGui.QMainWindow):
                     self.ui.chartDecimateCheckBox.setChecked(False)
                     self.ui.chartAutoRangeCheckBox.setEnabled(True)
                     self.ui.chartAutoRangeCheckBox.setChecked(False)
+                    self.ui.showLegend.setChecked(False)
                 else:
                     self.status_message(ident, chart_response[0], chart_response[1], None)
         elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
@@ -1265,6 +1265,7 @@ class Main(QtGui.QMainWindow):
                     self.ui.chartDecimateCheckBox.setEnabled(True)
                     self.ui.chartDecimateCheckBox.setChecked(False)
                     self.ui.chartAutoRangeCheckBox.setChecked(True)
+                    self.ui.showLegend.setChecked(False)
                 else:
                     self.status_message(ident, chart_response[0], chart_response[1], None)
         else:
@@ -1359,10 +1360,29 @@ class Main(QtGui.QMainWindow):
 
             if self.ui.chartDecimateCheckBox.isChecked():
                 self.chart.decimate_data(number_of_channels)
+                self.channel0_triggered()
+                self.channel1_triggered()
+                self.channel2_triggered()
+                self.channel3_triggered()
+                self.channel4_triggered()
+                # self.channel5_triggered()
+                # self.channel6_triggered()
+                # self.channel7_triggered()
+                # self.channel8_triggered()
             else:
                 self.chart.add_data(number_of_channels)
+                self.channel0_triggered()
+                self.channel1_triggered()
+                self.channel2_triggered()
+                self.channel3_triggered()
+                self.channel4_triggered()
+                # self.channel5_triggered()
+                # self.channel6_triggered()
+                # self.channel7_triggered()
+                # self.channel8_triggered()
 
             self.chart_show_legend_triggered()
+            # self.chart_control_panel(number_of_channels, translator)
 
     def closeEvent(self, event):
         if self.saved_data_state is False:
