@@ -252,9 +252,9 @@ class Main(QtGui.QMainWindow):
                     self.logger.info('Initial parameter for serial_baudrate : %s' % self.serial_baudrate)
                     self.logger.info('Initial parameter for serial_port_timeout : %s' % self.serial_port_timeout)
 
-        # Initialise configurationManager & charting.
-        if self.config_error is False:
-            self.configurationManager = config_utilities.ConfigManager()
+                    # Initialise configurationManager & charting.
+                    if self.config_error is False:
+                        self.configurationManager = config_utilities.ConfigManager()
 
         # Setup StarinetConnector if enabled.
         if self.starinet_relay_boolean == 'True':
