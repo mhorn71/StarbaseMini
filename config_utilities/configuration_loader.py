@@ -18,6 +18,7 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import configparser
+import config_utilities.release_update as rlu
 from os import path, makedirs
 
 
@@ -28,12 +29,20 @@ class ConfigLoader:
         :raises: FileNotFoundError, OSError,
 
             gives access to configuration file home and name via config_home
+
+        Notes:  Release updates.
+
+            To added a new configuration section/s do the following. 1.) Added section and default attributes to
+            check_conf_exists.  Next increase self.version by 1 below.  Next add additional section to
+            release_update file.
         '''
         # Some basic attributes.
 
         self.config_file = 'starbaseMini.conf'
         self.logger = None
         self.config = configparser.RawConfigParser()
+        self.version = 2
+        self.current_version = 0
 
         home = path.expanduser("~")
 
@@ -69,10 +78,9 @@ class ConfigLoader:
             else:
                 self.config.read(self.conf_file)
 
-
                 # Add Application Release Number
                 self.config.add_section('Release')
-                self.config.set('Release', 'Version', '1')
+                self.config.set('Release', 'version', '1')
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')
@@ -97,6 +105,12 @@ class ConfigLoader:
                 self.config.set('Staribus2Starinet', 'active', 'False')
                 self.config.set('Staribus2Starinet', 'address', '192.168.1.100')
                 self.config.set('Staribus2Starinet', 'starinet_port', '1205')
+
+                # Add Chart legend attributes section
+                self.config.add_section('Legend')
+                self.config.set('Legend', 'location', 'best')
+                self.config.set('Legend', 'columns', '1')
+                self.config.set('Legend', 'font', 'medium')
 
                 # Add ObservatoryMetadata section.
                 self.config.add_section('ObservatoryMetadata')
@@ -158,7 +172,7 @@ class ConfigLoader:
 
     def release_update(self):
         try:
-            ver = self.get('Release', 'Version')
+            self.current_version = int(self.get('Release', 'version'))
         except (configparser.NoSectionError, ValueError):
             try:
                 open(self.conf_file, 'a').close()
@@ -168,7 +182,7 @@ class ConfigLoader:
                 self.config.read(self.conf_file)
                 # Add Application Release Number
                 self.config.add_section('Release')
-                self.config.set('Release', 'Version', '1')
+                self.config.set('Release', 'version', '1')
                 try:
                     with open(self.conf_file, 'wt') as conffile:
                         self.config.write(conffile)
@@ -176,8 +190,20 @@ class ConfigLoader:
                 except IOError as msg:
                     raise IOError(msg)
         else:
-            if int(ver) == 1:
+            if self.current_version == self.version:
                 pass
+            else:
+                self.config.read(self.conf_file)
+                for i in range((self.current_version + 1), (self.version + 1)):
+                    rlu.update(self.config, i)
+                    self.config.set('Release', 'version', str(i))
+
+                try:
+                    with open(self.conf_file, 'wt') as conffile:
+                        self.config.write(conffile)
+                        conffile.close()
+                except IOError as msg:
+                    raise IOError(msg)
 
     def get(self, section, option):
 
