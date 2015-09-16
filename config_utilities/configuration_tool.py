@@ -239,7 +239,13 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Chart legend
         self.legendLocationComboBox.addItems(self.legend_loc)
+        self.legendLocationComboBox.setCurrentIndex(self.legend_loc.index(
+                                                    self.application_conf.get('Legend', 'location')))
+
         self.LegendFontComboBox.addItems(self.legend_font)
+        self.LegendFontComboBox.setCurrentIndex(self.legend_font.index(self.application_conf.get('Legend', 'font')))
+
+        self.LegendColSpinBox.setValue(int(self.application_conf.get('Legend', 'columns')))
 
         staribus2starinet_address = self.application_conf.get('Staribus2Starinet', 'address')
         self.S2SIpAddressLineEdit.setText(staribus2starinet_address)
@@ -568,6 +574,15 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         self.application_conf.set('StarinetRelay', 'address', self.ipAddressLineEdit.text())
         self.application_conf.set('StarinetRelay', 'starinet_port', self.portLineEdit.text())
+
+        # Chart Legend
+        self.application_conf.set('Legend', 'location',
+                                  self.legendLocationComboBox.itemText(self.legendLocationComboBox.currentIndex()))
+
+        self.application_conf.set('Legend', 'columns', str(self.LegendColSpinBox.value()))
+        
+        self.application_conf.set('Legend', 'font',
+                                  self.LegendFontComboBox.itemText(self.LegendFontComboBox.currentIndex()))
 
         # ObservatoryMetadata
         self.application_conf.set('ObservatoryMetadata', 'name', self.OyNameLineEdit.text())
