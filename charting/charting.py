@@ -268,25 +268,16 @@ class Chart:
     def chart_legend(self, state):
 
         fontP = FontProperties()
-        fontP.set_size('medium')
+        fontP.set_size(self.config.get('Legend', 'font'))
 
         if state is True:
-            self.ax1f1.legend().set_visible(True)
-            if self.channel_count <= 3:
-                self.ax1f1.legend(prop=fontP, loc='best').set_visible(True)
-                # # # set the linewidth of each legend object
-                for legend_handle in self.ax1f1.legend(prop=fontP, loc='best').legendHandles:
-                    legend_handle.set_linewidth(10.0)
-            elif self.channel_count == 5:
-                self.ax1f1.legend(prop=fontP, loc='best', ncol=2).set_visible(True)
-                # # # set the linewidth of each legend object
-                for legend_handle in self.ax1f1.legend(prop=fontP, loc='best', ncol=2).legendHandles:
-                    legend_handle.set_linewidth(10.0)
-            else:
-                self.ax1f1.legend(prop=fontP, loc='best', ncol=5).set_visible(True)
-                # # # set the linewidth of each legend object
-                for legend_handle in self.ax1f1.legend(prop=fontP, loc='best', ncol=5).legendHandles:
-                    legend_handle.set_linewidth(10.0)
+            self.ax1f1.legend(prop=fontP, loc=self.config.get('Legend', 'location'),
+                              ncol=int(self.config.get('Legend', 'columns'))).set_visible(True)
+            # # # set the linewidth of each legend object
+            for legend_handle in self.ax1f1.legend(prop=fontP, loc=self.config.get('Legend', 'location'),
+                                                   ncol=int(self.config.get('Legend', 'columns'))).legendHandles:
+                legend_handle.set_linewidth(10.0)
+
         elif state is False:
             self.ax1f1.legend().set_visible(False)
 

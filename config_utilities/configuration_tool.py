@@ -580,7 +580,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
                                   self.legendLocationComboBox.itemText(self.legendLocationComboBox.currentIndex()))
 
         self.application_conf.set('Legend', 'columns', str(self.LegendColSpinBox.value()))
-        
+
         self.application_conf.set('Legend', 'font',
                                   self.LegendFontComboBox.itemText(self.LegendFontComboBox.currentIndex()))
 
