@@ -90,6 +90,9 @@ class StaribusMetaDataCreator:
             if len(metadata) != 0:
                 metadata += '\r\n'
 
+            if timezone == 'UTC' or timezone == 'utc':
+                timezone = 'GMT+00:00'
+
             metadata += 'Observatory.TimeZone,' + timezone + ',TimeZone,Dimensionless,The TimeZone containing the ' \
                         'Observatory  GMT-23:59 to GMT+00:00 to GMT+23:59'
 
