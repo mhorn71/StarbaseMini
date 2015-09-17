@@ -41,7 +41,7 @@ class ConfigLoader:
         self.config_file = 'starbaseMini.conf'
         self.logger = None
         self.config = configparser.RawConfigParser()
-        self.version = 2
+        self.version = 3
         self.current_version = 0
 
         home = path.expanduser("~")
@@ -80,7 +80,7 @@ class ConfigLoader:
 
                 # Add Application Release Number
                 self.config.add_section('Release')
-                self.config.set('Release', 'version', '2')
+                self.config.set('Release', 'version', '3')
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')

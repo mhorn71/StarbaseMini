@@ -25,3 +25,6 @@ def update(config_object, version):
         config_object.set('Legend', 'location', 'best')
         config_object.set('Legend', 'columns', '1')
         config_object.set('Legend', 'font', 'medium')
+
+    if version == 3:
+        config_object.set('ObservatoryMetadata', 'timezone', 'GMT+00:00')
