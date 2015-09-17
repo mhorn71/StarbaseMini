@@ -33,8 +33,8 @@ class ConfigLoader:
         Notes:  Release updates.
 
             To added a new configuration section/s do the following. 1.) Added section and default attributes to
-            check_conf_exists.  Next increase self.version by 1 below.  Next add additional section to
-            release_update file.
+            check_conf_exists.  Next increase self.version by 1 below and in check_conf_exists.  Next add additional
+            section to release_update file.
         '''
         # Some basic attributes.
 
@@ -80,7 +80,7 @@ class ConfigLoader:
 
                 # Add Application Release Number
                 self.config.add_section('Release')
-                self.config.set('Release', 'version', '1')
+                self.config.set('Release', 'version', '2')
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')
