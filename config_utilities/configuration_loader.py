@@ -120,7 +120,7 @@ class ConfigLoader:
                 self.config.set('ObservatoryMetadata', 'contact_telephone', '+44 123 1234567')
                 self.config.set('ObservatoryMetadata', 'contact_url', 'http://wardshillobservatory.co.uk')
                 self.config.set('ObservatoryMetadata', 'country', 'GB')
-                self.config.set('ObservatoryMetadata', 'timezone', 'UTC')
+                self.config.set('ObservatoryMetadata', 'timezone', 'GMT+00:00')
                 self.config.set('ObservatoryMetadata', 'geodetic_datum', 'WGS84')
                 self.config.set('ObservatoryMetadata', 'geomagnetic_latitude', '+00:00:00.000')
                 self.config.set('ObservatoryMetadata', 'geomagnetic_longitude', '+000:00:00.000')
