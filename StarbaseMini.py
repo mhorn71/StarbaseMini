@@ -43,7 +43,7 @@ import metadata
 import charting
 import instrument_attrib
 
-version = '1.0.389'
+version = '1.0.507'
 
 
 class Main(QtGui.QMainWindow):
@@ -1411,7 +1411,7 @@ class Main(QtGui.QMainWindow):
             event.accept()
 
     def help_about_triggered(self):
-        QtGui.QMessageBox.information(self, 'About', 'StarbaseMini 1.1.0\nBy Mark Horn\n'
+        QtGui.QMessageBox.information(self, 'About', 'StarbaseMini ' + version + '\nBy Mark Horn\n'
                                                            'mhorn71@gmail.com\n(c) 2015')
 
 if __name__ == '__main__':
