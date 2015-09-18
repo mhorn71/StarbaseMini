@@ -351,7 +351,7 @@ class Main(QtGui.QMainWindow):
                 try:
                     filename = my_instruments.get_filename(self.instrument_identifier)
                     filename_local = instruments_local_home + filename
-                    filename_system  = instruments_system_home + filename
+                    filename_system = instruments_system_home + filename
 
                     if os.path.isfile(filename_local):
                         self.instrument = xml_utilities.Instrument(filename_local)
@@ -388,8 +388,6 @@ class Main(QtGui.QMainWindow):
     # ----------------------------------------
     # Instrument interpreter loader method.
     # ----------------------------------------
-
-    # we need to s2s bit in here.
 
     def instrument_interpreter_loader(self):
         # Initialise Command Interpreter
