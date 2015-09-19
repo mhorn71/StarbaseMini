@@ -28,4 +28,9 @@
         <File>starinet-4ch-beagle-logger.xml</File>
     </Instrument>
 
+    <Instrument>
+        <Name>Starinet 6 Channel Beaglebone Logger</Name>
+        <File>starinet-6ch-beagle-logger.xml</File>
+    </Instrument>
+
 </Instruments>
