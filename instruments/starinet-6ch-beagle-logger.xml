@@ -456,49 +456,49 @@
 
     <ChannelMetadata>
         <ChannelLabel>Temperature</ChannelLabel>
-        <ChannelColour>#F15854</ChannelColour>
+        <ChannelColour>#FF0000</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>Celsius</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 1</ChannelLabel>
-        <ChannelColour>#5DA5DA</ChannelColour>
+        <ChannelColour>#0000FF</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 2</ChannelLabel>
-        <ChannelColour>#DECF3F</ChannelColour>
+        <ChannelColour>#FFFF00</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 3</ChannelLabel>
-        <ChannelColour>#60BD68</ChannelColour>
+        <ChannelColour>#00FF00</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 4</ChannelLabel>
-        <ChannelColour>#B2912F</ChannelColour>
+        <ChannelColour>#996633</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 5</ChannelLabel>
-        <ChannelColour>#60BD68</ChannelColour>
+        <ChannelColour>#FF8000</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 6</ChannelLabel>
-        <ChannelColour>#B2912F</ChannelColour>
+        <ChannelColour>#FF00FF</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
