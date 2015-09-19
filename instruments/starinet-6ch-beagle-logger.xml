@@ -4,9 +4,9 @@
     <Identifier>Starinet 4 Channel Beagle Logger</Identifier>
     <Description>A Starinet 4 Channel Beagle Data Logger</Description>
     <StaribusAddress>000</StaribusAddress>
-    <StarinetAddress>192.168.1.24</StarinetAddress>
+    <StarinetAddress>192.168.1.19</StarinetAddress>
     <StarinetPort>1205</StarinetPort>
-    <NumberOfChannels>5</NumberOfChannels>
+    <NumberOfChannels>7</NumberOfChannels>
     <DataTranslator>StaribusBlock</DataTranslator>
 
     <!-- Plugins are loaded in order or appearance.  Core normally resides after all other plugins, well it does -->
