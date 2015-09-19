@@ -284,8 +284,8 @@
             <SteppedDataCommand>None</SteppedDataCommand>
             <Parameter>
                 <Choices>None</Choices>
-                <Regex>^[0-7]$</Regex>
-                <Tooltip>Allowed Values: Channels 0 to 7</Tooltip>
+                <Regex>^[0-3]$</Regex>
+                <Tooltip>Allowed Values: Channels 0 to 3</Tooltip>
             </Parameter>
             <Response>
                 <DataTypeName>DecimalInteger</DataTypeName>
