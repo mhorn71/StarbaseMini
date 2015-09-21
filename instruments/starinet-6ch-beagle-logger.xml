@@ -216,6 +216,33 @@
 
     <Plugin>
         <!-- A virtual Plugin -->
+        <Identifier>Publisher</Identifier>
+        <Description>The Chart Publisher Module</Description>
+        <CommandCodeBase>05</CommandCodeBase>
+
+        <Command>
+            <Identifier>publisher</Identifier>
+            <CommandCode>01</CommandCode>
+            <CommandVariant>0000</CommandVariant>
+            <Description>Starts or Stops the chart publisher</Description>
+            <SendToPort>True</SendToPort>
+            <BlockedDataCommand>None</BlockedDataCommand>
+            <SteppedDataCommand>None</SteppedDataCommand>
+            <Parameter>
+                <Choices>False,True</Choices>
+                <Regex>None</Regex>
+                <Tooltip>Starts or Stops the chart publisher</Tooltip>
+            </Parameter>
+            <Response>
+                <DataTypeName>None</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
+                <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
+                <Regex>ACK</Regex> # Regex of response can be ACK if response is ACK
+            </Response>
+        </Command>
+    </Plugin>
+
+    <Plugin>
+        <!-- A virtual Plugin -->
         <Identifier>Importer</Identifier>
         <Description>The Data Importer Plugin Module</Description>
         <CommandCodeBase>80</CommandCodeBase>
@@ -429,6 +456,25 @@
             <CommandCode>0A</CommandCode>
             <CommandVariant>0000</CommandVariant>
             <Description>Gets the Version of the Controller OS.</Description>
+            <SendToPort>True</SendToPort>
+            <BlockedDataCommand>None</BlockedDataCommand>
+            <SteppedDataCommand>None</SteppedDataCommand>
+            <Parameter>
+                <Choices>None</Choices>
+                <Regex>None</Regex>
+                <Tooltip>None</Tooltip>
+            </Parameter>
+            <Response>
+                <DataTypeName>String</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
+                <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
+                <Regex>None</Regex> # Regex of response can be ACK if response is ACK
+            </Response>
+        </Command>
+        <Command>
+            <Identifier>getMacAddress</Identifier>
+            <CommandCode>0D</CommandCode>
+            <CommandVariant>0000</CommandVariant>
+            <Description>Gets the MAC Address of the Controller.</Description>
             <SendToPort>True</SendToPort>
             <BlockedDataCommand>None</BlockedDataCommand>
             <SteppedDataCommand>None</SteppedDataCommand>
