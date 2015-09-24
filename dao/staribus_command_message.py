@@ -68,11 +68,9 @@ class StaribusCommandMessage:
 
         # Convert staribus address to hexbyte.
         self.logger.debug('Message instrument address passed range check.')
-        # covert string to int base 16
-        addr = int(addr, 16)
+        # covert string to hex base 16 and make sure length is two chars long padd with leading zero if not.
+        addr = hex(int(addr)).split('x')[1].upper().zfill(2)
 
-        # change back to str and make sure length is two chars long padd with leading zero if not.
-        addr = str(addr).zfill(2)
         self.logger.debug('Message instrument address converted to hexbyte : %s' % addr)
 
         # The base and code are a hex byte and must be in the range 0x00 - 0xFF
