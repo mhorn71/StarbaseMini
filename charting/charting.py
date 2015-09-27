@@ -273,7 +273,7 @@ class Chart:
         if state is True:
             lgd = self.ax1f1.legend(prop=fontP, loc=self.config.get('Legend', 'location'),
                               ncol=int(self.config.get('Legend', 'columns'))).set_visible(True)
-            
+
             # # # set the linewidth of each legend object
             for legend_handle in lgd.legendHandles:
                 legend_handle.set_linewidth(10.0)
