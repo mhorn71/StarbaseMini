@@ -413,26 +413,6 @@
         <CommandCodeBase>00</CommandCodeBase>
 
         <Command>
-            <Identifier>reset</Identifier>
-            <CommandCode>00</CommandCode>
-            <CommandVariant>0000</CommandVariant>
-            <Description>Allowed values: Soft, Defaults, Staribus.</Description>
-            <SendToPort>True</SendToPort>
-            <BlockedDataCommand>1234</BlockedDataCommand>
-            <SteppedDataCommand>None</SteppedDataCommand>
-            <Parameter>
-                <Choices>Soft,Defaults</Choices>
-                <Regex>None</Regex>
-                <Tooltip>Soft,Defaults</Tooltip>
-            </Parameter>
-            <Response>
-                <DataTypeName>None</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
-                <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
-                <Regex>ACK</Regex> # Regex of response can be ACK if response is ACK
-            </Response>
-        </Command>
-
-        <Command>
             <Identifier>ping</Identifier>
             <CommandCode>01</CommandCode>
             <CommandVariant>0000</CommandVariant>
