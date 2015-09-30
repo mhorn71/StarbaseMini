@@ -244,8 +244,12 @@ class Chart:
         except IndexError as msg:
             self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
+        
+        hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
+        self.ax1f1.xaxis.set_major_formatter(hfmt)
+        self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%Y-%m-%d %H:%M:%S')
 
-        self.add_mpl()
+        self.canvas.draw()
 
     def channel_control(self, channel, state):
 
@@ -254,7 +258,7 @@ class Chart:
         else:
             self.ax1f1.lines[channel].set_visible(True)
 
-        self.add_mpl()
+        self.canvas.draw()
 
     def channel_autoscale(self, state):
         if state is False:
@@ -263,7 +267,7 @@ class Chart:
         else:
             self.ax1f1.autoscale(True)
 
-        self.add_mpl()
+        self.canvas.draw()
 
     def chart_legend(self, state):
 
@@ -271,15 +275,16 @@ class Chart:
         fontP.set_size(self.config.get('Legend', 'font'))
 
         if state is True:
-            lgd = self.ax1f1.legend(prop=fontP, loc=self.config.get('Legend', 'location'),
+            self.ax1f1.legend(prop=fontP, loc=self.config.get('Legend', 'location'),
                               ncol=int(self.config.get('Legend', 'columns'))).set_visible(True)
 
             # # # set the linewidth of each legend object
-            for legend_handle in lgd.legendHandles:
+            for legend_handle in self.ax1f1.legend(prop=fontP, loc=self.config.get('Legend', 'location'),
+                                                   ncol=int(self.config.get('Legend', 'columns'))).legendHandles:
                 legend_handle.set_linewidth(10.0)
 
         elif state is False:
             self.ax1f1.legend().set_visible(False)
 
-        self.add_mpl()
+        self.canvas.draw()
 
