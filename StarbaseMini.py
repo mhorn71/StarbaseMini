@@ -43,7 +43,7 @@ import metadata
 import charting
 import instrument_attrib
 
-version = '1.0.520'
+version = '1.0.521'
 
 
 class Main(QtGui.QMainWindow):
@@ -305,7 +305,12 @@ class Main(QtGui.QMainWindow):
 
         self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
 
-        utilities.detect_upgrade(version)
+        upgrade = utilities.Upgrader()
+
+        message = upgrade.detect_upgrade(version)
+
+        if message is not None:
+            self.status_message('system', message[0], message[1], None)
 
     # ----------------------------------------
     # Instrument loader method.
@@ -1395,7 +1400,6 @@ class Main(QtGui.QMainWindow):
 
             self.chart_show_legend_triggered()
             self.manual_channel_trigger(number_of_channels)
-
 
     def closeEvent(self, event):
         if self.saved_data_state is False:

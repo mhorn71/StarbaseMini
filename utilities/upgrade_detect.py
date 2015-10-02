@@ -24,76 +24,98 @@ import hashlib
 from functools import partial
 import logging
 import xml.etree.ElementTree as eTree
-import re
-from PyQt4 import QtGui
 
-xml_url = 'http://ukraa.com/ftpupload/starbasemini_version.xml'
+from PyQt4 import QtGui, QtCore
 
-def detect_upgrade(current_version):
-    try:
-        xml_str  = urllib.request.urlopen(xml_url)
-    except (urllib.error.HTTPError, urllib.error.URLError) as msg:
-        print('XML Not found')
-    else:
-        xmldom = eTree.parse(xml_str)  # Open and parse xml document.
-        revision = xmldom.findtext('revision')
 
-        if revision != current_version:
+class Upgrader:
+    def __init__(self):
+        self.baseurl = 'http://ukraa.com/ftpupload/'
 
-            message = 'There is a new version of StarbaseMini available\ndo you wish to download version ' + revision
-            result = QtGui.QMessageBox.question(None,
-                                                "StarbaseMini Upgrade",
-                                                message,
-                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        self.xml_url = self.baseurl + 'starbasemini_version.xml'
 
-            if result == QtGui.QMessageBox.Yes:
-                if sys.platform.startswith('darwin'):
-                    minifile = xmldom.findtext('mac')
-                    md5hash = xmldom.findtext('machash')
-                    status = downloader(minifile, md5hash)
-                elif sys.platform.startswith('win32'):
-                    minifile = xmldom.findtext('windows')
-                    md5hash = xmldom.findtext('winhash')
-                    status = downloader(minifile, md5hash)
-                elif sys.platform.startswith('linux'):
-                    if os.uname()[4].startswith("arm"):
-                        minifile = xmldom.findtext('arm')
-                        md5hash = xmldom.findtext('armhash')
-                        status = downloader(minifile, md5hash)
-                    else:
-                        minifile = xmldom.findtext('linux')
-                        md5hash = xmldom.findtext('linhash')
-                        status = downloader(minifile, md5hash)
+        self.logger = logging.getLogger('utilities.upgrade_detect')
 
-def downloader(minifile, md5hash):
-    home = os.path.expanduser("~")
+    def detect_upgrade(self, current_version):
+        try:
+            xml_str = urllib.request.urlopen(self.xml_url)
+        except (urllib.error.HTTPError, urllib.error.URLError) as msg:
+            self.logger.warning('Unable to download upgrade information from : ' + self.xml_url)
+        else:
+            xmldom = eTree.parse(xml_str)  # Open and parse xml document.
+            revision = xmldom.findtext('revision')
 
-    if not os.path.isdir(home):
-        raise FileNotFoundError("Fatal error unable to detect user home!!\nContact developer for help.")
-    else:
-        home += os.path.sep + '.starbasemini' + os.path.sep
+            if revision != current_version:
 
-        in_file = 'http://ukraa.com/ftpupload/' + minifile
-        out_file = home + minifile
+                message = 'There is a new version of StarbaseMini available do you wish to download : \n\nVersion ' + revision + \
+                          '\n\nPlease wait for download to complete.'
+                result = QtGui.QMessageBox.question(None,
+                                                    "StarbaseMini Upgrade",
+                                                    message,
+                                                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+                if result == QtGui.QMessageBox.Yes:
+                    if sys.platform.startswith('darwin'):
+                        minifile = xmldom.findtext('mac')
+                        md5hash = xmldom.findtext('machash')
+                        status = self.downloader(minifile, md5hash)
+                    elif sys.platform.startswith('win32'):
+                        minifile = xmldom.findtext('windows')
+                        md5hash = xmldom.findtext('winhash')
+                        status = self.downloader(minifile, md5hash)
+                    elif sys.platform.startswith('linux'):
+                        if os.uname()[4].startswith('arm'):
+                            minifile = xmldom.findtext('arm')
+                            md5hash = xmldom.findtext('armhash')
+                            status = self.downloader(minifile, md5hash)
+                        else:
+                            minifile = xmldom.findtext('linux')
+                            md5hash = xmldom.findtext('linhash')
+                            status = self.downloader(minifile, md5hash)
+
+                    return status
+                else:
+                    return 'ABORT', 'Upgrade download cancelled.'
+            else:
+                return None
+
+    def downloader(self, minifile, md5hash):
+
+        in_file = self.baseurl + minifile
+
+        fname = QtGui.QFileDialog.getExistingDirectory(None, 'Save Download To', os.path.expanduser("~"),
+                                                       QtGui.QFileDialog.ShowDirsOnly)
+
+        if len(fname) == 0:
+            return 'ABORT', 'Upgrade downloaded cancelled.'
+
+        out_file = fname + os.path.sep + minifile
+
+        if os.path.isfile(out_file):
+            os.unlink(out_file)
 
         try:
-            urllib.request.urlretrieve (in_file, out_file)
+            urllib.request.urlretrieve(in_file, out_file)
         except urllib.error.URLError:
-            print('Download Failed')
+            return 'ABORT', 'Unable to retrieve upgrade.'
         else:
-            if md5sum(out_file) == md5hash:
-                print('We matched checked sums')
+            if self.md5sum(out_file) == md5hash:
+                QtGui.QMessageBox.information(None, 'Upgrade Instructions', 'To upgrade close application and uninstall, '
+                                                                            'then reinstall with the downloaded upgrade '
+                                                                            'file.  Your settings will be preserved.')
+
+                return 'SUCCESS', 'Upgrade file downloaded to - ' + out_file
             else:
-                print(md5sum(out_file))
+                print(self.md5sum(out_file))
                 if os.path.isfile(out_file):
                     os.unlink(out_file)
-                print('We didn\'t match check sums')
+                return 'ABORT', 'Upgrade file checksum failed check.'
 
-def md5sum(filename):
-    # This code was copied verbatim from
-    # http://stackoverflow.com/questions/7829499/using-hashlib-to-compute-md5-digest-of-a-file-in-python-3
-    with open(filename, mode='rb') as f:
-        d = hashlib.md5()
-        for buf in iter(partial(f.read, 1024), b''):
-            d.update(buf)
-    return d.hexdigest()
+    def md5sum(self, filename):
+        # This code was copied verbatim from
+        # http://stackoverflow.com/questions/7829499/using-hashlib-to-compute-md5-digest-of-a-file-in-python-3
+        with open(filename, mode='rb') as f:
+            d = hashlib.md5()
+            for buf in iter(partial(f.read, 1024), b''):
+                d.update(buf)
+        return d.hexdigest()
