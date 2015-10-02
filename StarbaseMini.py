@@ -305,6 +305,8 @@ class Main(QtGui.QMainWindow):
 
         self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
 
+        utilities.detect_upgrade(version)
+
     # ----------------------------------------
     # Instrument loader method.
     # ----------------------------------------

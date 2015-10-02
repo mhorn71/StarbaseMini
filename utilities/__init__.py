@@ -13,3 +13,4 @@ from utilities.staribus_instrument_scanner import check_serial_port_staribus_ins
 from utilities.staribus_address import check_staribus_address
 from utilities.hex_byte_check import check_hexbyte_string
 from utilities.hex_word_check import check_hexword_string
+from utilities.upgrade_detect import detect_upgrade
