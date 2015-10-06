@@ -18,10 +18,14 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import sys
 
 from itertools import zip_longest
 
 import matplotlib as mpl
+
+if sys.platform.startswith('linux'):
+    mpl.use("Qt4Agg")
 
 from matplotlib.figure import Figure
 
