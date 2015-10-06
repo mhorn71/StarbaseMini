@@ -43,7 +43,7 @@ import metadata
 import charting
 import instrument_attrib
 
-version = '1.0.521'
+version = '1.0.524'
 
 
 class Main(QtGui.QMainWindow):
