@@ -74,10 +74,6 @@ class SegmentTimeSeries:
 
         lasttimestamp = str(self.datatranslator.datetime[count-1]).split(' ')
 
-        if timestamp[0] == lasttimestamp[0]:
-            self.logger.info('Not enough data to segment.')
-            return 'ABORT', 'Not enough data to segment use exporter instead.'
-
         self.fname = self.data_file + 'RawData_' + timestamp[0] + '.csv'
 
         if os.path.isfile(self.fname):
