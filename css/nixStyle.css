@@ -68,5 +68,5 @@ QLineEdit::enabled {
 }
 
 QLineEdit::disabled {
-    background-color: #EDEDED;
+    background-color: #CECECE;
 }
