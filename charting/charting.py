@@ -92,6 +92,7 @@ class Chart:
         mpl.rcParams['legend.framealpha'] = 0.5
         mpl.rcParams['legend.fancybox'] = True
         mpl.rcParams['lines.markersize'] = 5
+        mpl.rcParams['figure.autolayout'] = True
 
         self.fig = Figure()
         self.ax1f1 = self.fig.add_subplot(111)
