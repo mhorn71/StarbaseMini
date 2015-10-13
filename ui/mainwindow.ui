@@ -119,19 +119,6 @@
         <height>16777215</height>
        </size>
       </property>
-      <property name="styleSheet">
-       <string notr="true">QGroupBox {
-    border: 1px solid gray;
-    border-radius: 9px;
-    margin-top: 0.5em;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 3px 3px 0 3px;
-}</string>
-      </property>
       <property name="title">
        <string>Control Panel</string>
       </property>
@@ -232,7 +219,11 @@ QToolBox::tab:selected { /* italicize selected tabs */
               </widget>
              </item>
              <item row="5" column="0">
-              <widget class="QLineEdit" name="commandParameter"/>
+              <widget class="QLineEdit" name="commandParameter">
+               <property name="maxLength">
+                <number>15</number>
+               </property>
+              </widget>
              </item>
              <item row="6" column="0">
               <widget class="QComboBox" name="choicesComboBox"/>
@@ -272,7 +263,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
            <attribute name="label">
             <string>Chart Control</string>
            </attribute>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>0</x>
@@ -693,7 +684,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
      <x>0</x>
      <y>0</y>
      <width>905</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -703,17 +694,10 @@ QToolBox::tab:selected { /* italicize selected tabs */
     <addaction name="actionConfiguration"/>
     <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menuMetadata">
+   <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>Tools</string>
+     <string>Info</string>
     </property>
-    <addaction name="actionInstrumentBuilder"/>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionManual"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -724,8 +708,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
-   <addaction name="menuMetadata"/>
-   <addaction name="menuHelp"/>
+   <addaction name="menuAbout"/>
   </widget>
   <action name="actionExit">
    <property name="text">
@@ -752,7 +735,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
     <string>Manual</string>
    </property>
   </action>
-  <action name="actionAbout">
+  <action name="action">
    <property name="text">
     <string>About</string>
    </property>
@@ -770,6 +753,11 @@ QToolBox::tab:selected { /* italicize selected tabs */
   <action name="actionInstrument_Attrib">
    <property name="text">
     <string>Instrument Attributes</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

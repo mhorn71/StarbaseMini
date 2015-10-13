@@ -35,7 +35,6 @@ import utilities
 import xml_utilities
 import config_utilities
 import starinet_connector
-import instument_builder
 import interpreter
 import constants
 import datatranslators
@@ -97,9 +96,6 @@ class Main(QtGui.QMainWindow):
         self.ui.actionExit.triggered.connect(self.close)
         self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
         self.ui.actionInstrument_Attrib.triggered.connect(self.instrument_attrib_triggered)
-        self.ui.actionInstrumentBuilder.triggered.connect(self.instrument_builder_triggered)
-        # self.ui.actionControllerEditor.triggered.connect(self.futurlec_baudrate_tool_triggered)
-        # self.ui.actionManual.triggered.connect(self.help_manual_triggered)
         self.ui.actionAbout.triggered.connect(self.help_about_triggered)
 
         # Setup charting
