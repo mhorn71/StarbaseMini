@@ -183,9 +183,6 @@ class Main(QtGui.QMainWindow):
         self.ui.chartDecimateCheckBox.stateChanged.connect(self.chart_decimate_triggered)
         self.ui.showLegend.stateChanged.connect(self.chart_show_legend_triggered)
 
-        # Initialise instrumentBuilder
-        self.instrumentBuilder = instument_builder.InstrumentBuilder()
-
         # Initialise configuration.
         try:
             self.config = config_utilities.ConfigLoader()
