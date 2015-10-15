@@ -93,6 +93,8 @@ class Chart:
         mpl.rcParams['legend.fancybox'] = True
         mpl.rcParams['lines.markersize'] = 5
         mpl.rcParams['figure.autolayout'] = True
+        mpl.rcParams['ytick.labelsize'] = 'small'
+        mpl.rcParams['xtick.labelsize'] = 'small'
 
         self.fig = Figure()
         self.ax1f1 = self.fig.add_subplot(111)
