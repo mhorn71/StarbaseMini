@@ -291,18 +291,27 @@ class StaribusParser:
 
     def parameter_converter(self, cb, cc, cv, param):
 
+        self.logger.debug('Parameter converter CB - ' + str(cb))
+        self.logger.debug('Parameter converter CC - ' + str(cc))
+        self.logger.debug('Parameter converter CV - ' + str(cv))
+        self.logger.debug('Parameter converter Param - ' + str(param))
+
         command = cb + cc + cv
 
         if re.match('^[A-Za-z]*$', param):
             param = param.lower()
 
         if re.match('^0305000[1-4]$', command):  # setRate
+            self.logger.debug('CV conversion padding to four places.')
             param = param.zfill(4)
         elif re.match('^0200000[1-4]$', command):  # getA2D
             param = param.zfill(3)
-        elif re.match('^true$', param) and re.match('^[0001|0002|0003|0004]$', cv):  # boolean true
+            self.logger.debug('CV conversion padding to three places.')
+        elif re.match('^true$', param) and re.match('^0001$|^0002$|^0003$|^0004$', cv):  # boolean true
+            self.logger.debug('CV conversion changing true to Y')
             param = 'Y'
-        elif re.match('^false$', param) and re.match('^[0001|0002|0003|0004]$', cv):  # boolean false
+        elif re.match('^false$', param) and re.match('^0001$|^0002$|^0003$|^0004$', cv):  # boolean false
+            self.logger.debug('CV conversion changing false to N')
             param = 'N'
         else:
             pass
