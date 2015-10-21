@@ -74,7 +74,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.loglevels = ['INFO', 'DEBUG']
         self.baudrates = ['9600', '19200', '38400', '57600', '115200']
         self.timeouts = ['20', '30', '40', '50', '60']
-        self.legend_loc = ['best', 'upper right', 'upper left', 'lower left', 'lower right', 'right', 'center left',
+        self.legend_loc = ['best', 'upper right', 'upper left', 'lower left', 'lower right', 'center left',
                            'center right', 'lower center', 'upper center', 'center']
         self.legend_font = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large']
 
