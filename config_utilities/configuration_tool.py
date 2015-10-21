@@ -326,7 +326,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         OyTimezone = self.application_conf.get('ObservatoryMetadata', 'timezone')
         self.OyTimezoneLineEdit.setText(OyTimezone)
         self.OyTimezoneLineEdit.setToolTip('The TimeZone containing the Observatory  GMT-23:59 to GMT+00:00 '
-                                           'to GMT+23:59 or UTC')
+                                           'to GMT+23:59')
         OyTimezoneLineEditRegexp = QtCore.QRegExp(constants.observatory_timezone)
         OyTimezoneLineEditValidator = QtGui.QRegExpValidator(OyTimezoneLineEditRegexp)
         self.OyTimezoneLineEdit.setValidator(OyTimezoneLineEditValidator)
