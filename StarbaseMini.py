@@ -624,6 +624,7 @@ class Main(QtGui.QMainWindow):
     # Get the command parameters for the current set command.
     def command_parameter_populate(self):
         self.command_parameter_trip = 0
+        self.ui.commandParameter.clear()
         try:
             # Check if command has choices.
             if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'] == 'None':
