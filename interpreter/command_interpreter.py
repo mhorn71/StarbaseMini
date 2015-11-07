@@ -283,9 +283,11 @@ class CommandInterpreter:
 
             self.logger.debug('Secondary Command Ident : %s' % secondary_command_key)
 
+            # This line is wrong it should be Response Regex not Parameters.
             secondary_parameter_regex = self.instrument.command_dict[secondary_command_key]['Parameters']['Regex']
+            secondary_response_regex = self.instrument.command_dict[secondary_command_key]['Response']['Regex']
 
-            self.logger.debug('Secondary response regex : %s' % secondary_parameter_regex)
+            self.logger.debug('Secondary response regex : %s' % secondary_response_regex)
 
             if secondary_parameter_regex == 'None':
                 secondary_parameter_regex = None
@@ -294,8 +296,8 @@ class CommandInterpreter:
                 self.logger.debug('PREMATURE_TERMINATION : Secondary command requires a parameter and none is available.')
                 return 'PREMATURE_TERMINATION', 'Secondary command requires a parameter and none is available.'
 
-            # reset self.response_regex to secondary command regex
-            self.response_regex = secondary_parameter_regex
+            # reset self.response_regex to secondary response regex
+            self.response_regex = secondary_response_regex
 
             if re.match(secondary_parameter_regex, primary_response):
                 try:
@@ -371,14 +373,16 @@ class CommandInterpreter:
                         progressDialog.hide()
                         return 'PREMATURE_TERMINATION', 'NODATA'
 
-            self.parent.datatranslator.create_data_array(self.instrument.instrument_number_of_channels)
-            self.parent.saved_data_state = True
-            self.data_type = 'data'
+                self.parent.datatranslator.create_data_array(self.instrument.instrument_number_of_channels)
+                self.parent.saved_data_state = True
+                self.data_type = 'data'
 
-            if len(self.parent.datatranslator.data_array) == 0:
-                return 'PREMATURE_TERMINATION', 'NODATA'
+                if len(self.parent.datatranslator.data_array) == 0:
+                    return 'PREMATURE_TERMINATION', 'NODATA'
+                else:
+                    return 'SUCCESS', None
             else:
-                return 'SUCCESS', None
+                return 'PREMATURE_TERMINATION', None
 
     def stepped(self, addr, base, code, variant, stepped_data, send_to_port):
         return 'ABORT', 'stepped data command not yet implemented.'
