@@ -71,7 +71,7 @@
             <Response>
                 <DataTypeName>HexInteger</DataTypeName>  # DecimalInteger, DecimalFloat, HexInteger, String
                 <Units>None</Units>  # Any string you like this is displayed in the statusMessage after the response.
-                <Regex>^([0-9A-F][0-9A-F][0-9A-F][0-9A-F])$</Regex>
+                <Regex>^[0-9A-F][0-9A-F][0-9A-F][0-9A-F]$</Regex>
             </Response>
         </Command>
 
@@ -85,7 +85,7 @@
             <SteppedDataCommand>None</SteppedDataCommand>
             <Parameter>
                 <Choices>None</Choices>
-                <Regex>[0-9A-F][0-9A-F][0-9A-F][0-9A-F]</Regex>
+                <Regex>^[0-9A-F][0-9A-F][0-9A-F][0-9A-F]$</Regex>
                 <Tooltip>Allowed Values: BlockID 0000 to FFFF</Tooltip>
             </Parameter>
             <Response>
