@@ -304,9 +304,10 @@ class StaribusParser:
         if re.match('^0305000[1-4]$', command):  # setRate
             self.logger.debug('CV conversion padding to four places.')
             param = param.zfill(4)
-        elif re.match('^0200000[1-4]$', command):  # getA2D
+        elif re.match('^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$', param):  # integer conversion
+            # 0 - 255 ... 000 - 255
             param = param.zfill(3)
-            self.logger.debug('CV conversion padding to three places.')
+            self.logger.debug('Integer conversion padding to three places.')
         elif re.match('^true$', param) and re.match('^0001$|^0002$|^0003$|^0004$', cv):  # boolean true
             self.logger.debug('CV conversion changing true to Y')
             param = 'Y'
