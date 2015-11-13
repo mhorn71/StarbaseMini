@@ -300,6 +300,7 @@ class StaribusParser:
 
         if re.match('^[A-Za-z]*$', param):
             param = param.lower()
+            self.logger.debug('Alpha parameter converting to lowercase :' + param)
 
         if re.match('^0305000[1-4]$', command):  # setRate
             self.logger.debug('CV conversion padding to four places.')
@@ -308,11 +309,11 @@ class StaribusParser:
             # 0 - 255 ... 000 - 255
             param = param.zfill(3)
             self.logger.debug('Integer conversion padding to three places.')
-        elif re.match('^true$', param) and re.match('^0001$|^0002$|^0003$|^0004$', cv):  # boolean true
-            self.logger.debug('CV conversion changing true to Y')
+        elif re.match('^true$', param):  # boolean true
+            self.logger.debug('Boolean true conversion to Y')
             param = 'Y'
-        elif re.match('^false$', param) and re.match('^0001$|^0002$|^0003$|^0004$', cv):  # boolean false
-            self.logger.debug('CV conversion changing false to N')
+        elif re.match('^false$', param):  # boolean false
+            self.logger.debug('Boolean false conversion to N')
             param = 'N'
         else:
             pass
