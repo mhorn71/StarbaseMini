@@ -69,5 +69,15 @@ QLineEdit::disabled {
     background-color: #EDEDED;
 }
 
+QProgressBar#ExecuteBar {
+     border: 0px solid grey;
+     border-radius: 3px;
+     background-color: #00FF00;
+ }
+
+ QProgressBar#ExecuteBar::chunk {
+     background-color: #00B2EE;
+ }
+
 
 

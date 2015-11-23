@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Tue Oct 13 15:45:42 2015
+# Created: Mon Nov 23 20:07:17 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,7 +103,7 @@ class Ui_MainWindow(object):
         self.UserCtrl.setSizePolicy(sizePolicy)
         self.UserCtrl.setObjectName(_fromUtf8("UserCtrl"))
         self.layoutWidget1 = QtGui.QWidget(self.UserCtrl)
-        self.layoutWidget1.setGeometry(QtCore.QRect(0, 0, 131, 259))
+        self.layoutWidget1.setGeometry(QtCore.QRect(0, 0, 131, 267))
         self.layoutWidget1.setObjectName(_fromUtf8("layoutWidget1"))
         self.gridLayout = QtGui.QGridLayout(self.layoutWidget1)
         self.gridLayout.setMargin(0)
@@ -132,12 +132,16 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.choicesComboBox, 6, 0, 1, 1)
         self.executeButton = QtGui.QPushButton(self.layoutWidget1)
         self.executeButton.setObjectName(_fromUtf8("executeButton"))
-        self.gridLayout.addWidget(self.executeButton, 7, 0, 1, 1)
+        self.gridLayout.addWidget(self.executeButton, 8, 0, 1, 1)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
+        self.gridLayout.addItem(spacerItem, 9, 0, 1, 1)
+        self.ExecuteBar = QtGui.QProgressBar(self.layoutWidget1)
+        self.ExecuteBar.setProperty("value", 24)
+        self.ExecuteBar.setObjectName(_fromUtf8("ExecuteBar"))
+        self.gridLayout.addWidget(self.ExecuteBar, 7, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, _fromUtf8(""))
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.UserInst.setObjectName(_fromUtf8("UserInst"))
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 2, 124, 443))
