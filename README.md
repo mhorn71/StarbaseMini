@@ -10,3 +10,8 @@ numpy
 matplotlib
 crcmod
 pyserial 
+
+
+NOTE:  Currently under going a minor rewrite to we have a status indicator and abort features.
+
+Please download a working copy of the application from releases.
