@@ -321,7 +321,7 @@ class Main(QtGui.QMainWindow):
 
         instruments_system_home = 'instruments' + os.path.sep
 
-        instruments_system =  instruments_system_home + 'instruments.xml'
+        instruments_system = instruments_system_home + 'instruments.xml'
 
         # First see if we have a local instrument.
         try:
