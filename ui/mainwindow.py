@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Sat Nov 28 19:39:12 2015
+# Created: Tue Oct 13 15:45:42 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,7 +103,7 @@ class Ui_MainWindow(object):
         self.UserCtrl.setSizePolicy(sizePolicy)
         self.UserCtrl.setObjectName(_fromUtf8("UserCtrl"))
         self.layoutWidget1 = QtGui.QWidget(self.UserCtrl)
-        self.layoutWidget1.setGeometry(QtCore.QRect(0, 0, 131, 300))
+        self.layoutWidget1.setGeometry(QtCore.QRect(0, 0, 131, 259))
         self.layoutWidget1.setObjectName(_fromUtf8("layoutWidget1"))
         self.gridLayout = QtGui.QGridLayout(self.layoutWidget1)
         self.gridLayout.setMargin(0)
@@ -123,8 +123,6 @@ class Ui_MainWindow(object):
         self.label_2 = QtGui.QLabel(self.layoutWidget1)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 4, 0, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 10, 0, 1, 1)
         self.commandParameter = QtGui.QLineEdit(self.layoutWidget1)
         self.commandParameter.setMaxLength(15)
         self.commandParameter.setObjectName(_fromUtf8("commandParameter"))
@@ -134,17 +132,12 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.choicesComboBox, 6, 0, 1, 1)
         self.executeButton = QtGui.QPushButton(self.layoutWidget1)
         self.executeButton.setObjectName(_fromUtf8("executeButton"))
-        self.gridLayout.addWidget(self.executeButton, 8, 0, 1, 1)
-        self.ExecuteBar = QtGui.QProgressBar(self.layoutWidget1)
-        self.ExecuteBar.setProperty("value", 24)
-        self.ExecuteBar.setObjectName(_fromUtf8("ExecuteBar"))
-        self.gridLayout.addWidget(self.ExecuteBar, 7, 0, 1, 1)
-        self.abortButton = QtGui.QPushButton(self.layoutWidget1)
-        self.abortButton.setObjectName(_fromUtf8("abortButton"))
-        self.gridLayout.addWidget(self.abortButton, 9, 0, 1, 1)
+        self.gridLayout.addWidget(self.executeButton, 7, 0, 1, 1)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, _fromUtf8(""))
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
         self.UserInst.setObjectName(_fromUtf8("UserInst"))
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 2, 124, 443))
@@ -406,7 +399,6 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Command", None))
         self.label_2.setText(_translate("MainWindow", "Parameter", None))
         self.executeButton.setText(_translate("MainWindow", "Execute", None))
-        self.abortButton.setText(_translate("MainWindow", "Abort", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.UserCtrl), _translate("MainWindow", "Instrument", None))
         self.chartDecimateCheckBox.setText(_translate("MainWindow", "Decimate", None))
         self.chartAutoRangeCheckBox.setText(_translate("MainWindow", "AutoRange", None))
