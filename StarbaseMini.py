@@ -183,10 +183,6 @@ class Main(QtGui.QMainWindow):
         self.ui.chartDecimateCheckBox.stateChanged.connect(self.chart_decimate_triggered)
         self.ui.showLegend.stateChanged.connect(self.chart_show_legend_triggered)
 
-        # Progressbar
-        self.ui.ExecuteBar.setRange(0, 1)
-        self.ui.ExecuteBar.setFixedHeight(8)
-
         # Initialise configuration.
         try:
             self.config = config_utilities.ConfigLoader()
@@ -1191,8 +1187,6 @@ class Main(QtGui.QMainWindow):
 
         self.logger.info('Executing command : %s' % ident)
 
-        self.ui.ExecuteBar.setRange(0, 0)
-
         if self.instrument.command_dict[ident]['BlockedData'] == 'None':
             blocked_data = None
         else:
@@ -1238,8 +1232,6 @@ class Main(QtGui.QMainWindow):
                                                             stepped_data, choice, parameter, response_regex)
 
         # Now we process the response based on command, probably not the most elegant way of doing things but it works.
-
-        self.ui.ExecuteBar.setRange(0, 1)
 
         if ident == 'getData' and response[0].startswith('SUCCESS'):
             # Add the chart widget to the UI.
@@ -1402,9 +1394,6 @@ class Main(QtGui.QMainWindow):
 
             self.chart_show_legend_triggered()
             self.manual_channel_trigger(number_of_channels)
-
-    def execute_progress(self):
-        self.ui.progressBar.setRange(0, 0)
 
     def closeEvent(self, event):
         if self.saved_data_state is False:
