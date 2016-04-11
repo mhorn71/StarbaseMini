@@ -49,6 +49,9 @@ class DaoProcessor:
             else:
                 self.logger.debug('Stream set to Staribus')
 
+    def close(self):
+        self.message_stream.close()
+
     def star_message(self, addr, base, code, variant, param):
         '''
 

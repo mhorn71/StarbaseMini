@@ -27,7 +27,8 @@ import dao
 
 
 class CommandInterpreter:
-    def __init__(self, parent):
+    def __init__(self):
+    # def __init__(self, parent):
         '''
         Initialise the CommandInterpreter.
         :param parent: Parent Object which should be the UI Object.
@@ -37,14 +38,20 @@ class CommandInterpreter:
         self.logger = logging.getLogger('interpreter.CommandInterpreter')
 
         # Parent object so we can set status messages for blocked and stepped commands.
-        self.parent = parent
-        self.instrument = self.parent.instrument
+        # self.parent = parent
+        # self.instrument = self.parent.instrument
         self.data_type = 'data'
 
         self.response_regex = None
         self.check_response_message = 'INVALID_RESPONSE_MESSAGE', None
 
         self.segmenter = core.SegmentTimeSeries()
+
+        self.dao_processor = None
+        self.parent = None
+        self.instrument = None
+
+    def initialise_dao(self):
 
         staribus_port = self.parent.config.get('StaribusPort', 'staribus_port')
         staribus_baudrate = self.parent.config.get('StaribusPort', 'baudrate')
@@ -72,6 +79,18 @@ class CommandInterpreter:
                                                   starinet_port, stream)
         except IOError as msg:
             raise IOError(msg)
+
+
+    def start(self,parent):
+
+        self.parent = parent
+        self.instrument = parent.instrument
+
+        if self.dao_processor is None:
+            self.initialise_dao()
+        else:
+            self.dao_processor.close()
+            self.initialise_dao()
 
     def process_command(self, addr, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter,
                         response_regex):

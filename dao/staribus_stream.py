@@ -64,6 +64,12 @@ class StaribusStream:
             self.logger.critical('%s %s', 'Error opening serial port - ', msg)
             raise IOError(msg)
 
+    def close(self):
+        if self.staribus_port.isOpen():
+            self.staribus_port.close()
+
+        print("Staribus DAO Stream Close Called")
+
     def stream(self, message):
         '''
          Will return either a full formed Staribus response or TIMEOUT, PREMATURE_TERMINATION

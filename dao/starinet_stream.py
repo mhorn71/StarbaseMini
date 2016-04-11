@@ -44,6 +44,9 @@ class StarinetStream:
             self.logger.critical('%s %s', 'Unable to initialise Starinet network port - ', msg)
             raise IOError(msg)
 
+    def close(self):
+        self.sock.close()
+
     def stream(self, message):
         '''
          Will return either a full formed Staribus/net response or TIMEOUT, PREMATURE_TERMINATION

@@ -22,6 +22,8 @@ import os
 import logging.config
 import logging
 import datetime
+import threading
+import time
 
 from PyQt4 import QtGui, QtCore
 
@@ -42,7 +44,7 @@ import metadata
 import charting
 import instrument_attrib
 
-version = '1.0.545'
+version = '1.0.546'
 
 
 class Main(QtGui.QMainWindow):
@@ -183,7 +185,20 @@ class Main(QtGui.QMainWindow):
         self.ui.chartDecimateCheckBox.stateChanged.connect(self.chart_decimate_triggered)
         self.ui.showLegend.stateChanged.connect(self.chart_show_legend_triggered)
 
+        # Initialise Command Interpreter Class
+        self.command_interpreter = interpreter.CommandInterpreter()
+
+        # Attempt at allowing configuration changes
+        self.first_initialisation = True
+
+        self.initialise_configuration()
+
         # Initialise configuration.
+    def initialise_configuration(self):
+
+        self.ui.moduleCombobox.clear()
+        self.ui.commandCombobox.clear()
+
         try:
             self.config = config_utilities.ConfigLoader()
         except (FileNotFoundError, OSError, ValueError) as msg:
@@ -208,6 +223,9 @@ class Main(QtGui.QMainWindow):
                 logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
                 self.logger = logging.getLogger('main')
                 self.logger.info('-------------- APPLICATION STARTUP --------------')
+
+                # Enable all UI components.
+                self.enable_all()
 
                 # Load application parameters.
                 try:
@@ -277,7 +295,8 @@ class Main(QtGui.QMainWindow):
         self.instrument_attributes = instrument_attrib.InstrumentAttrib()
 
         # Initialisation Statup Finish Status Message.
-        self.status_message('system', 'INFO', 'Application Started.', None)
+        if self.first_initialisation is True:
+            self.status_message('system', 'INFO', 'Application Started.', None)
 
         # Style sheets
         self.style_boolean = False
@@ -298,12 +317,16 @@ class Main(QtGui.QMainWindow):
 
         self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
 
-        upgrade = utilities.Upgrader()
+        if self.first_initialisation is True:
 
-        message = upgrade.detect_upgrade(version)
+            upgrade = utilities.Upgrader()
 
-        if message is not None:
-            self.status_message('system', message[0], message[1], None)
+            message = upgrade.detect_upgrade(version)
+
+            if message is not None:
+                self.status_message('system', message[0], message[1], None)
+
+            self.first_initialisation = False
 
     # ----------------------------------------
     # Instrument loader method.
@@ -395,7 +418,7 @@ class Main(QtGui.QMainWindow):
             if self.starinet_relay_boolean == 'False':
                 if self.instrument.instrument_starinet_address != 'None':
                     self.logger.info('Initialising Command Interpreter for Starinet')
-                    self.command_interpreter = interpreter.CommandInterpreter(self)
+                    self.command_interpreter.start(self)
                     message = ('Initialised Starinet Instrument : %s ' % self.instrument_identifier)
                     self.status_message('system', 'INFO', message, None)
                 elif self.instrument.instrument_staribus_address != 'None':
@@ -403,11 +426,11 @@ class Main(QtGui.QMainWindow):
                         self.logger.info('Initialising Command Interpreter for Staribus2Starinet')
                         message = ('Initialised Staribus2Starinet Instrument : %s ' % self.instrument_identifier)
                         self.status_message('system', 'INFO', message, None)
-                        self.command_interpreter = interpreter.CommandInterpreter(self)
+                        self.command_interpreter.start(self)
                     else:
                         if utilities.check_serial_port(self.config.get('StaribusPort', 'staribus_port')):
                             self.logger.info('Initialising Command Interpreter for Staribus')
-                            self.command_interpreter = interpreter.CommandInterpreter(self)
+                            self.command_interpreter.start(self)
                             message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
                             self.status_message('system', 'INFO', message, None)
                         else:
@@ -537,6 +560,21 @@ class Main(QtGui.QMainWindow):
         self.logger.debug('Choices Combo box set False')
         self.ui.executeButton.setEnabled(False)
         self.logger.debug('Execute Button set False')
+
+    def enable_all(self):
+        self.disable_all_boolean = False
+        self.logger.info('Instrument control panel enabled.')
+        # self.status_message('system', 'INFO', 'Instrument control panel disabled', None)
+        self.ui.moduleCombobox.setEnabled(True)
+        self.logger.debug('Module Combo box set True')
+        self.ui.commandCombobox.setEnabled(True)
+        self.logger.debug('Command Combo box set True')
+        self.ui.commandParameter.setEnabled(True)
+        self.logger.debug('Parameter Combo box set True')
+        self.ui.choicesComboBox.setEnabled(True)
+        self.logger.debug('Choices Combo box set True')
+        self.ui.executeButton.setEnabled(True)
+        self.logger.debug('Execute Button set True')
 
     # ----------------------------------------
     # Status Message method.
@@ -1160,6 +1198,10 @@ class Main(QtGui.QMainWindow):
         self.status_message('configuration', self.configurationManager.response_message[0],
                             self.configurationManager.response_message[1], None)
 
+        #  Attempt at allowing configuration changes without requiring restart.
+        if self.configurationManager.response_message[0] == 'SUCCESS':
+            self.initialise_configuration()
+
     def instrument_attrib_triggered(self):
         self.logger.info('Calling edit instrument attributes.')
         self.instrument_attributes.set(self.instrument, self.instrument_file)
@@ -1168,6 +1210,10 @@ class Main(QtGui.QMainWindow):
 
         self.status_message('instrumentAttributes', self.instrument_attributes.response_message[0],
                             self.instrument_attributes.response_message[1], None)
+
+        #  Attempt at allowing configuration changes without requiring restart.
+        if self.instrument_attributes.response_message[0] == 'SUCCESS':
+            self.initialise_configuration()
 
     # def futurlec_baudrate_tool_triggered(self):
     #     self.logger.debug('Calling futurlec baudrate configuration tool.')

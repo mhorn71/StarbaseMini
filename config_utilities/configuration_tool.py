@@ -607,7 +607,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.application_conf.set('ObserverMetadata', 'country', self.ObCountryLineEdit.text())
         self.application_conf.set('ObserverMetadata', 'notes', self.ObNotesLineEdit.text())
         
-        self.response_message = 'SUCCESS', 'Configuration saved, please restart application.'
+        self.response_message = 'SUCCESS', 'Configuration saved, ' + self.instrumentComboBox.itemText(self.instrumentComboBox.currentIndex()) + ' initialised'
 
         self.close()
 
