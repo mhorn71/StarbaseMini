@@ -76,6 +76,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.buttonBox.accepted.connect(self.accept_called)
         self.buttonBox.rejected.connect(self.reject_called)
+        self.buttonBox.button(QtGui.QDialogButtonBox.RestoreDefaults).clicked.connect(self.defaults_called)
 
         self.PickerButton0.clicked.connect(self.chan0_picker)
         self.PickerButton1.clicked.connect(self.chan1_picker)
@@ -572,6 +573,27 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         if len(self.Chan8ColourLineEdit.text()) != 0:
             self.channel_colours.append(self.Chan8ColourLineEdit.text())
 
+    def defaults_called(self):
+        self.response_message = 'SUCCESS', 'Instrument attributes reset defaults'
+
+        # get the instrument xml file minus the original path
+        file = self.instrument_file.split(os.path.sep)
+        file = file[-1]
+
+        # set the new xml to use the users home path location.
+        new_file = self.home_path + file
+
+        try:
+            if os.path.isfile(new_file):
+                os.unlink(new_file)
+        except OSError:
+            self.response_message = 'ABORT', 'No Instrument attributes need resetting'
+        else:
+            self.response_message = 'SUCCESS', 'Instrument attributes reset defaults'
+
+
+        self.hide()
+
     def reject_called(self):
         self.response_message = 'ABORT', None
         self.reload = False
@@ -661,7 +683,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         tree.write(new_file)
 
-        self.response_message = 'SUCCESS', 'Instrument attributes saved, please restart application.'
+        self.response_message = 'SUCCESS', 'Instrument attributes saved, calling reinitialisation.'
 
         # self.exit_message()
 
