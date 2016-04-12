@@ -294,10 +294,6 @@ class Main(QtGui.QMainWindow):
 
         self.instrument_attributes = instrument_attrib.InstrumentAttrib()
 
-        # Initialisation Statup Finish Status Message.
-        if self.first_initialisation is True:
-            self.status_message('system', 'INFO', 'Application Started.', None)
-
         # Style sheets
         self.style_boolean = False
 
@@ -323,10 +319,36 @@ class Main(QtGui.QMainWindow):
 
             message = upgrade.detect_upgrade(version)
 
+            # This is just a trial to workout how to add menu items that are checkable
+            # http://stackoverflow.com/questions/20019489/pyside-adding-a-toggle-option-action-to-the-menu-bar
+            # See also
+            # http://stackoverflow.com/questions/1100775/create-pyqt-menu-from-a-list-of-strings
+
+            action = QtGui.QActionGroup(self.ui.menuInstrument, exclusive=True)
+
+            for item in self.configurationManager.instruments.get_names():
+                ag = QtGui.QAction(item, action, checkable=True)
+
+                if self.config.get('Application', 'instrument_identifier') == item:
+                    ag.setChecked(True)
+
+                self.ui.menuInstrument.addAction(ag)
+                self.connect(ag, QtCore.SIGNAL('triggered()'), lambda item=item: self.instrument_selection(item))
+
             if message is not None:
                 self.status_message('system', message[0], message[1], None)
 
+            # Initialisation Statup Finish Status Message.
+            if self.first_initialisation is True:
+                self.status_message('system', 'INFO', 'Application Started - ' +
+                                    self.config.get('Application', 'instrument_identifier') + ' Initialised', None)
+
             self.first_initialisation = False
+
+    def instrument_selection(self, item):
+        self.config.set('Application', 'instrument_identifier', item)
+        self.initialise_configuration()
+
 
     # ----------------------------------------
     # Instrument loader method.
@@ -435,7 +457,7 @@ class Main(QtGui.QMainWindow):
                             self.status_message('system', 'INFO', message, None)
                         else:
                             self.disable_all()
-                            self.status_message('system', 'ERROR',
+                            self.status_message('system', 'WARNING',
                                                 'Unable to open serial port - UI controls disabled.', None)
                 else:
                     self.logger.critical('Unable able to determine stream type.')

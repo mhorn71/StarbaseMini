@@ -123,14 +123,14 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.savepathLineEdit.textChanged.emit(self.savepathLineEdit.text())
 
         # Set up instruments combo box.
-        instruments = self.instruments.get_names()
-
-        if self.instruments_local is not None:
-            for i in self.instruments_local.get_names():
-                instruments.append(i)
-
-        self.instrumentComboBox.addItems(instruments)
-        self.instrumentComboBox.setCurrentIndex(instruments.index(instrument_name))
+        # instruments = self.instruments.get_names()
+        #
+        # if self.instruments_local is not None:
+        #     for i in self.instruments_local.get_names():
+        #         instruments.append(i)
+        #
+        # self.instrumentComboBox.addItems(instruments)
+        # self.instrumentComboBox.setCurrentIndex(instruments.index(instrument_name))
 
         # Set up log level combo box.
         
@@ -533,8 +533,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         # Application
         self.application_conf.set('Application', 'instrument_data_path', self.savepathLineEdit.text())
 
-        self.application_conf.set('Application', 'instrument_identifier',
-                                  self.instrumentComboBox.itemText(self.instrumentComboBox.currentIndex()))
+        # self.application_conf.set('Application', 'instrument_identifier',
+        #                           self.instrumentComboBox.itemText(self.instrumentComboBox.currentIndex()))
 
         if self.detectInstrumentPortCheckBox.checkState():
             self.application_conf.set('Application', 'instrument_autodetect', 'True')
@@ -607,8 +607,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.application_conf.set('ObserverMetadata', 'country', self.ObCountryLineEdit.text())
         self.application_conf.set('ObserverMetadata', 'notes', self.ObNotesLineEdit.text())
         
-        self.response_message = 'SUCCESS', 'Configuration saved, ' + self.instrumentComboBox.itemText(self.instrumentComboBox.currentIndex()) + ' initialised'
-
+        # self.response_message = 'SUCCESS', 'Configuration saved, ' + self.instrumentComboBox.itemText(self.instrumentComboBox.currentIndex()) + ' initialised'
+        self.response_message = 'SUCCESS', 'Configuration saved.'
         self.close()
 
     def chooser_triggered(self):
