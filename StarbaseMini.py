@@ -346,9 +346,27 @@ class Main(QtGui.QMainWindow):
             self.first_initialisation = False
 
     def instrument_selection(self, item):
-        self.config.set('Application', 'instrument_identifier', item)
-        self.initialise_configuration()
 
+        if self.saved_data_state is not False:
+
+            message = 'WARNING:  You have unsaved data.\n\nIf you change the instrument, ' + \
+                      'you will be able to save the unsaved data!\n\nDo you want to change instruments?'
+            header = ''
+
+            result = QtGui.QMessageBox.question(None,
+                                                header,
+                                                message,
+                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+            if result == QtGui.QMessageBox.Yes:
+                self.datatranslator.clear()
+                self.saved_data_state = False
+                self.config.set('Application', 'instrument_identifier', item)
+                self.initialise_configuration()
+
+        else:
+            self.config.set('Application', 'instrument_identifier', item)
+            self.initialise_configuration()
 
     # ----------------------------------------
     # Instrument loader method.
@@ -557,13 +575,21 @@ class Main(QtGui.QMainWindow):
     # ----------------------------------------
 
     def chart_loader(self):
-        try:
-            self.chart = charting.Chart(self.ui, self.datatranslator, self.metadata_deconstructor,
-                                        self.instrument, self.config)
-        except Exception as msg:
-            # msg = ('Charting failed to initialise - %s' % str(msg))
-            self.logger.critical(str(msg))
-            self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+        if self.first_initialisation is True:
+            try:
+                self.chart = charting.Chart(self.ui, self.metadata_deconstructor, self.config)
+                self.chart.chart_instrument_setup(self.datatranslator, self.instrument)
+            except Exception as msg:
+                # msg = ('Charting failed to initialise - %s' % str(msg))
+                self.logger.critical(str(msg))
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+        else:
+            try:
+                self.chart.chart_instrument_setup(self.datatranslator, self.instrument)
+            except Exception as msg:
+                # msg = ('Charting failed to initialise - %s' % str(msg))
+                self.logger.critical(str(msg))
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
 
     # ----------------------------------------
     # Disable ui controls method.
