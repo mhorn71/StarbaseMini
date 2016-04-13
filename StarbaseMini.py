@@ -339,9 +339,9 @@ class Main(QtGui.QMainWindow):
                 self.status_message('system', message[0], message[1], None)
 
             # Initialisation Statup Finish Status Message.
-            if self.first_initialisation is True:
-                self.status_message('system', 'INFO', 'Application Started - ' +
-                                    self.config.get('Application', 'instrument_identifier') + ' Initialised', None)
+            # if self.first_initialisation is True:
+            #     self.status_message('system', 'INFO', 'Application Started - ' +
+            #                         self.config.get('Application', 'instrument_identifier') + ' Initialised', None)
 
             self.first_initialisation = False
 
@@ -457,6 +457,8 @@ class Main(QtGui.QMainWindow):
                             self.status_message('system', 'INFO', message, None)
                         else:
                             self.disable_all()
+                            message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
+                            self.status_message('system', 'INFO', message, None)
                             self.status_message('system', 'WARNING',
                                                 'Unable to open serial port - UI controls disabled.', None)
                 else:
@@ -555,7 +557,6 @@ class Main(QtGui.QMainWindow):
     # ----------------------------------------
 
     def chart_loader(self):
-        self.configurationManager = config_utilities.ConfigManager()
         try:
             self.chart = charting.Chart(self.ui, self.datatranslator, self.metadata_deconstructor,
                                         self.instrument, self.config)
