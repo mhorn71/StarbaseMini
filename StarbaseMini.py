@@ -44,7 +44,7 @@ import metadata
 import charting
 import instrument_attrib
 
-version = '1.0.546'
+version = '2.0.0'
 
 
 class Main(QtGui.QMainWindow):
@@ -460,23 +460,30 @@ class Main(QtGui.QMainWindow):
         try:
             if self.starinet_relay_boolean == 'False':
                 if self.instrument.instrument_starinet_address != 'None':
+                    self.logger.debug('Main Starinet Routine being run')
                     self.logger.info('Initialising Command Interpreter for Starinet')
                     self.command_interpreter.start(self)
                     message = ('Initialised Starinet Instrument : %s ' % self.instrument_identifier)
                     self.status_message('system', 'INFO', message, None)
                 elif self.instrument.instrument_staribus_address != 'None':
                     if self.staribus2starinet_relay_boolean == 'True':
+                        self.logger.debug('Main Staribus 2 Starinet Routine being run')
                         self.logger.info('Initialising Command Interpreter for Staribus2Starinet')
                         message = ('Initialised Staribus2Starinet Instrument : %s ' % self.instrument_identifier)
                         self.status_message('system', 'INFO', message, None)
                         self.command_interpreter.start(self)
                     else:
+                        self.logger.debug('Main Staribus Routine being run')
+                        self.command_interpreter.close()
+
                         if utilities.check_serial_port(self.config.get('StaribusPort', 'staribus_port')):
+                            self.logger.debug('Main Staribus check_serial Routine success')
                             self.logger.info('Initialising Command Interpreter for Staribus')
                             self.command_interpreter.start(self)
                             message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
                             self.status_message('system', 'INFO', message, None)
                         else:
+                            self.logger.debug('Main Staribus check_serial Routine failure')
                             self.disable_all()
                             message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
                             self.status_message('system', 'INFO', message, None)

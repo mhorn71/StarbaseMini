@@ -80,16 +80,23 @@ class CommandInterpreter:
         except IOError as msg:
             raise IOError(msg)
 
+    def close(self):
+        if self.dao_processor is not None:
+            self.logger.debug('Command Interpreter closing dao_processor')
+            self.dao_processor.close()
 
-    def start(self,parent):
+    def start(self, parent):
 
         self.parent = parent
         self.instrument = parent.instrument
 
         if self.dao_processor is None:
+            self.logger.debug('Command Interpreter initialising dao_processor')
             self.initialise_dao()
         else:
+            self.logger.debug('Command Interpreter closing dao_processor')
             self.dao_processor.close()
+            self.logger.debug('Command Interpreter initialising dao_processor')
             self.initialise_dao()
 
     def process_command(self, addr, base, code, variant, send_to_port, blocked_data, stepped_data, choice, parameter,

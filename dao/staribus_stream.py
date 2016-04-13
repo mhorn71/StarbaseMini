@@ -68,10 +68,10 @@ class StaribusStream:
             raise IOError(msg)
 
     def close(self):
+        self.logger.debug('Running staribus port close')
         if self.staribus_port.isOpen():
             self.staribus_port.close()
-
-        print("Staribus DAO Stream Close Called")
+            self.logger.debug('Staribus port close run')
 
     def stream(self, message):
         '''

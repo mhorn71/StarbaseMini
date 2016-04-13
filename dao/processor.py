@@ -34,6 +34,7 @@ class DaoProcessor:
         starinet_port = starinet_port
 
         if stream == 'Starinet':
+            self.logger.debug('Starinet Stream selected')
             # we use the serial_timeout as well for the StarinetStream.
             try:
                 self.message_stream = dao.StarinetStream(starinet_address, starinet_port, serial_timeout)
@@ -42,6 +43,7 @@ class DaoProcessor:
             else:
                 self.logger.debug('Stream set to Starinet')
         else:
+            self.logger.debug('Staribus Stream selected')
             try:
                 self.message_stream = dao.StaribusStream(serial_port, serial_baudrate, serial_timeout)
             except IOError as msg:
