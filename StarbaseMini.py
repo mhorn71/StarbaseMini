@@ -270,7 +270,10 @@ class Main(QtGui.QMainWindow):
         # Setup StarinetConnector if enabled.
         if self.starinet_relay_boolean == 'True':
             self.starinet_connector_loader()
+            self.ui.menuInstrument.setEnabled(False)
         else:
+            self.ui.menuInstrument.setEnabled(True)
+
             if self.fatal_error is False:
                 self.instrument_loader()
 
