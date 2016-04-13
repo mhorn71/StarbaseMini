@@ -1517,7 +1517,7 @@ class Main(QtGui.QMainWindow):
 
     def help_about_triggered(self):
         QtGui.QMessageBox.information(self, 'About', 'StarbaseMini ' + version + '\nBy Mark Horn\n'
-                                                           'mhorn71@gmail.com\n(c) 2015')
+                                                           'mhorn71@gmail.com\n(c) 2016')
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
