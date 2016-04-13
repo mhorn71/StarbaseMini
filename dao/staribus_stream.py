@@ -30,6 +30,9 @@ class StaribusStream:
 
         # initialise the logger
         self.logger = logging.getLogger('dao.StaribusStream')
+        self.logger.info('Serial port - ' + str(serial_port))
+        self.logger.info('Serial baudrate - ' + str(serial_baudrate))
+        self.logger.info('Serial port timeout - ' + str(serial_timeout))
 
         # initialise serial port
         try:
