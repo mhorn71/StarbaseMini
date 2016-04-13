@@ -706,8 +706,14 @@ QToolBox::tab:selected { /* italicize selected tabs */
     </property>
     <addaction name="actionInstrument_Attrib"/>
    </widget>
+   <widget class="QMenu" name="menuInstrument">
+    <property name="title">
+     <string>Instrument</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuInstrument"/>
    <addaction name="menuAbout"/>
   </widget>
   <action name="actionExit">
