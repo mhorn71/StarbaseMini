@@ -57,7 +57,7 @@ class Chart:
     vertical then delete the temporary widget. Set the vertical layout name to mplvl
     '''
 
-    def __init__(self, ui, datatranslator, metadata, instrument, config):
+    def __init__(self, ui, metadata, config):
         '''
 
         :param ui: The UI to which we need for displaying the chart.
@@ -70,9 +70,9 @@ class Chart:
         ##initialise logger
         self.logger = logging.getLogger('graphics.chart')
         self.ui = ui
-        self.datatranslator = datatranslator
+        self.datatranslator = None
         self.metadata = metadata
-        self.instrument = instrument
+        self.instrument = None
         self.config = config
         self.attributes = None
         self.run_once = False
@@ -106,6 +106,11 @@ class Chart:
             self.fig.tight_layout()
 
         self.logger.info('Initialised charting.')
+
+    def chart_instrument_setup(self, datatranslator, instrument):
+        self.datatranslator = datatranslator
+        self.instrument = instrument
+
 
     def clear(self):
         self.ax1f1.clear()
