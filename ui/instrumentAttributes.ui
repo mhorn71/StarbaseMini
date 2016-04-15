@@ -863,6 +863,13 @@
            <widget class="QLineEdit" name="StaribusPortLineEdit"/>
           </item>
           <item>
+           <widget class="QCheckBox" name="RS485checkBox">
+            <property name="text">
+             <string>RS485</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="StaribusAutodetectCheckBox">
             <property name="text">
              <string>Autodetect</string>
@@ -875,6 +882,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QLabel" name="label">
+            <property name="minimumSize">
+             <size>
+              <width>102</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Staribus Address</string>
             </property>
@@ -889,6 +902,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_16">
+            <property name="minimumSize">
+             <size>
+              <width>56</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Baudrate</string>
             </property>
@@ -899,6 +918,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_17">
+            <property name="minimumSize">
+             <size>
+              <width>53</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Timeout</string>
             </property>
@@ -906,6 +931,19 @@
           </item>
           <item>
            <widget class="QComboBox" name="TimeoutCombobox"/>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>

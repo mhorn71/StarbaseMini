@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Wed Apr 13 23:37:49 2016
+# Created: Fri Apr 15 19:21:52 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -279,6 +279,9 @@ class Ui_InstrumentAttributesDialog(object):
         self.StaribusPortLineEdit = QtGui.QLineEdit(self.groupBox)
         self.StaribusPortLineEdit.setObjectName("StaribusPortLineEdit")
         self.horizontalLayout.addWidget(self.StaribusPortLineEdit)
+        self.RS485checkBox = QtGui.QCheckBox(self.groupBox)
+        self.RS485checkBox.setObjectName("RS485checkBox")
+        self.horizontalLayout.addWidget(self.RS485checkBox)
         self.StaribusAutodetectCheckBox = QtGui.QCheckBox(self.groupBox)
         self.StaribusAutodetectCheckBox.setObjectName("StaribusAutodetectCheckBox")
         self.horizontalLayout.addWidget(self.StaribusAutodetectCheckBox)
@@ -286,6 +289,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtGui.QLabel(self.groupBox)
+        self.label.setMinimumSize(QtCore.QSize(102, 0))
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
         self.comboBox = QtGui.QComboBox(self.groupBox)
@@ -293,17 +297,21 @@ class Ui_InstrumentAttributesDialog(object):
         self.comboBox.setObjectName("comboBox")
         self.horizontalLayout_2.addWidget(self.comboBox)
         self.label_16 = QtGui.QLabel(self.groupBox)
+        self.label_16.setMinimumSize(QtCore.QSize(56, 0))
         self.label_16.setObjectName("label_16")
         self.horizontalLayout_2.addWidget(self.label_16)
         self.BaudrateCombobox = QtGui.QComboBox(self.groupBox)
         self.BaudrateCombobox.setObjectName("BaudrateCombobox")
         self.horizontalLayout_2.addWidget(self.BaudrateCombobox)
         self.label_17 = QtGui.QLabel(self.groupBox)
+        self.label_17.setMinimumSize(QtCore.QSize(53, 0))
         self.label_17.setObjectName("label_17")
         self.horizontalLayout_2.addWidget(self.label_17)
         self.TimeoutCombobox = QtGui.QComboBox(self.groupBox)
         self.TimeoutCombobox.setObjectName("TimeoutCombobox")
         self.horizontalLayout_2.addWidget(self.TimeoutCombobox)
+        spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem5)
         self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -361,6 +369,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.label_13.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Label", None, QtGui.QApplication.UnicodeUTF8))
         self.label_14.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Colour", None, QtGui.QApplication.UnicodeUTF8))
         self.label_15.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Staribus Port", None, QtGui.QApplication.UnicodeUTF8))
+        self.RS485checkBox.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "RS485", None, QtGui.QApplication.UnicodeUTF8))
         self.StaribusAutodetectCheckBox.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Autodetect", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Staribus Address", None, QtGui.QApplication.UnicodeUTF8))
         self.label_16.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Baudrate", None, QtGui.QApplication.UnicodeUTF8))

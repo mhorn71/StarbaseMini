@@ -69,5 +69,7 @@ QLineEdit::disabled {
     background-color: #EDEDED;
 }
 
-
+#InstrumentAttributesDialog {
+    min-width: 568px;
+}
 
