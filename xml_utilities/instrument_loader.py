@@ -22,6 +22,7 @@ import xml.etree.ElementTree as eTree
 import re
 
 import utilities
+import constants
 
 
 class Instrument:
@@ -37,6 +38,13 @@ class Instrument:
                 instrument_staribus_address: str
                 instrument_starinet_address: str
                 instrument_starinet_port: str
+
+                instrument_staribus_type: str
+                instrument_staribus_port: str
+                instrument_staribus_baudrate: str
+                instrument_staribus_timeout: str
+                instrument_staribus_autodetect: str
+
                 instrument_number_of_channels: str
 
                 module_list: ['Module Identifier', 'Description', 'Module CB'
@@ -110,45 +118,93 @@ class Instrument:
             self.instrument_starinet_port = self.xmldom.findtext('StarinetPort')
             logger.debug('Instrument starinet network port : %s' % self.instrument_starinet_port)
 
+            self.instrument_staribus_type = self.xmldom.findtext('StaribusPortType')
+            logger.debug('Instrument staribus port type : %s' % self.instrument_staribus_type)
+
+            self.instrument_staribus_port = self.xmldom.findtext('StaribusPort')
+            logger.debug('Instrument staribus port : %s' % self.instrument_staribus_port)
+
+            self.instrument_staribus_baudrate = self.xmldom.findtext('StaribusPortBaudrate')
+            logger.debug('Instrument staribus port baudrate : %s' % self.instrument_staribus_baudrate)
+
+            self.instrument_staribus_timeout = self.xmldom.findtext('StaribusPortTimeout')
+            logger.debug('Instrument staribus port timeout : %s' % self.instrument_staribus_timeout)
+
+            self.instrument_staribus_autodetect = self.xmldom.findtext('StaribusPortAutodetect')
+            logger.debug('Instrument staribus port autodetect : %s' % self.instrument_staribus_autodetect)
+
             self.instrument_datatranslator = self.xmldom.findtext('DataTranslator')
             logger.debug('Instrument data translator : %s' % self.instrument_datatranslator)
 
-            # Check that we have both Starinet Address and Starinet Port set.
-            if self.instrument_starinet_address != 'None' and self.instrument_starinet_port == 'None':
-                logger.critical('INVALID_XML : Starinet port not set set.')
-                raise ValueError('INVALID_XML : Starinet port not set set.')
+            # Check Staribus port timeout is set we need it as we use it as the cmd timeout as well.
+            if re.match('^20|30|40|50|60$', self.instrument_staribus_timeout):
+                pass
+            else:
+                logger.critical('INVALID_XML : Staribus port timeout %s out of range.' % self.instrument_staribus_timeout)
+                raise ValueError('INVALID_XML : Staribus port timeout %s out of range.' % self.instrument_staribus_timeout)
 
-            elif self.instrument_starinet_address == 'None' and self.instrument_starinet_port != 'None':
-                logger.critical('INVALID_XML : Starinet address not set.')
-                raise ValueError('INVALID_XML : Starinet address not set.')
+            # Then check we haven't both Starinet Address and Staribus port set
+            if self.instrument_staribus_port != 'None' and self.instrument_starinet_address != 'None':
+                logger.critical('INVALID_XML : Starinet address and Staribus port are both set.')
+                raise ValueError('INVALID_XML : Starinet address and Staribus port are both set.')
 
             if self.instrument_starinet_address != 'None':
-                logger.debug('Starinet address is not None.')
-                # If we have a Starinet address then the Staribus Address must be 000
-                if self.instrument_staribus_address != '000':
-                    logger.critical('INVALID_XML : Starbus Address out of range for Starinet instrument, should be'
-                                    ' 000 currently set to %s' % self.instrument_staribus_address)
-                    raise ValueError('INVALID_XML : Starbus Address out of range for Starinet instrument, should be'
-                                     ' 000 currently set to %s' % self.instrument_staribus_address)
-                else:
-                    logger.debug('Staribus address correct for Starinet instrument : 000')
+                # Check that we have both Starinet Address and Starinet Port set.
+                if self.instrument_starinet_address != 'None' and self.instrument_starinet_port == 'None':
+                    logger.critical('INVALID_XML : Starinet port not set set.')
+                    raise ValueError('INVALID_XML : Starinet port not set set.')
+                elif self.instrument_starinet_address == 'None' and self.instrument_starinet_port != 'None':
+                    logger.critical('INVALID_XML : Starinet address not set.')
+                    raise ValueError('INVALID_XML : Starinet address not set.')
 
-                # Check for valid IPv4 Address.
-                logger.debug('Checking starinet IPv4 address.')
-                if utilities.check_ip(self.instrument_starinet_address):
-                    # Check port is at least a number.
-                    if utilities.check_starinet_port(self.instrument_starinet_port):
-                        logger.debug('Starinet port is True.')
+
+                if self.instrument_starinet_address != 'None':
+                    logger.debug('Starinet address is not None.')
+                    # If we have a Starinet address then the Staribus Address must be 000
+                    if self.instrument_staribus_address != '000':
+                        logger.critical('INVALID_XML : Starbus Address out of range for Starinet instrument, should be'
+                                        ' 000 currently set to %s' % self.instrument_staribus_address)
+                        raise ValueError('INVALID_XML : Starbus Address out of range for Starinet instrument, should be'
+                                         ' 000 currently set to %s' % self.instrument_staribus_address)
                     else:
-                        logger.critical('INVALID_XML : Starinet port %s out of range.' % self.instrument_starinet_port)
-                        raise ValueError('INVALID_XML : Starinet port %s out of range.' % self.instrument_starinet_port)
-                else:
-                    logger.critical('INVALID_XML : Unable to parse Starinet address  %s' %
-                                    self.instrument_starinet_address)
-                    raise ValueError('INVALID_XML : Unable to parse Starinet address  %s' %
-                                     self.instrument_starinet_address)
+                        logger.debug('Staribus address correct for Starinet instrument : 000')
 
-            elif self.instrument_staribus_address != 'None' and self.instrument_starinet_address == 'None':
+                    # Check for valid IPv4 Address.
+                    logger.debug('Checking starinet IPv4 address.')
+                    if utilities.check_ip(self.instrument_starinet_address):
+                        # Check port is at least a number.
+                        if utilities.check_starinet_port(self.instrument_starinet_port):
+                            logger.debug('Starinet port is True.')
+                        else:
+                            logger.critical('INVALID_XML : Starinet port %s out of range.' % self.instrument_starinet_port)
+                            raise ValueError('INVALID_XML : Starinet port %s out of range.' % self.instrument_starinet_port)
+                    else:
+                        logger.critical('INVALID_XML : Unable to parse Starinet address  %s' %
+                                        self.instrument_starinet_address)
+                        raise ValueError('INVALID_XML : Unable to parse Starinet address  %s' %
+                                         self.instrument_starinet_address)
+
+            if self.instrument_staribus_type == 'None' and self.instrument_staribus_port != 'None':
+                logger.critical('INVALID_XML : Staribus port set but port type isn\'t')
+                raise ValueError('INVALID_XML : Staribus port set but port type isn\'t')
+            elif self.instrument_staribus_port != 'None':
+                if re.match('^RS232|RS485$', self.instrument_staribus_type):
+                    pass
+                else:
+                    logger.critical('INVALID_XML : Staribus port type mismatch should be (RS232 | RS485) set - %s' %
+                                    self.instrument_staribus_type)
+                    raise ValueError('INVALID_XML : Staribus port type mismatch should be (RS232 | RS485) set - %s' %
+                                     self.instrument_staribus_type)
+
+            if re.match(constants.staribus_port, self.instrument_staribus_port):
+                pass
+            else:
+                logger.critical('INVALID_XML : Staribus port not recognised - %s' %
+                               self.instrument_staribus_port)
+                raise ValueError('INVALID_XML : Staribus port not recognised - %s' %
+                                 self.instrument_staribus_port)
+
+            if self.instrument_staribus_address != 'None':
                 # Check Staribus Address is in range (001 - 253)
                 if utilities.check_staribus_address(self.instrument_staribus_address):
                     pass
@@ -157,6 +213,23 @@ class Instrument:
                                     self.instrument_staribus_address)
                     raise ValueError('INVALID_XML : Starbus Address out of range (001 - 253) currently set to %s' %
                                      self.instrument_staribus_address)
+
+            if re.match('^True|False$', self.instrument_staribus_autodetect):
+                pass
+            else:
+                logger.critical('INVALID_XML : Staribus port autodetect should be True or False currently set to %s' %
+                                self.instrument_staribus_autodetect)
+                raise ValueError('INVALID_XML : Staribus port autodetect should be True or False currently set to %s' %
+                                 self.instrument_staribus_autodetect)
+
+
+            if re.match(constants.staribus_baudrate, self.instrument_staribus_baudrate):
+                pass
+            else:
+                logger.critical('INVALID_XML : Staribus port baudrate out of bounds set to %s' %
+                                self.instrument_staribus_baudrate)
+                raise ValueError('INVALID_XML : Staribus port baudrate out of bounds set to %s' %
+                                 self.instrument_staribus_baudrate)
 
             self.instrument_number_of_channels = self.xmldom.findtext('NumberOfChannels')
             logger.debug('Instrument number of channels : %s' % self.instrument_number_of_channels)
