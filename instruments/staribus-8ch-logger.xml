@@ -6,6 +6,11 @@
     <StaribusAddress>002</StaribusAddress>
     <StarinetAddress>None</StarinetAddress>
     <StarinetPort>None</StarinetPort>
+    <StaribusPortType>RS232</StaribusPortType>
+    <StaribusPort>COM1</StaribusPort>
+    <StaribusPortBaudrate>57600</StaribusPortBaudrate>
+    <StaribusPortTimeout>20</StaribusPortTimeout>
+    <StaribusPortAutodetect>False</StaribusPortAutodetect>
     <NumberOfChannels>9</NumberOfChannels>
     <DataTranslator>StaribusBlock</DataTranslator>
 

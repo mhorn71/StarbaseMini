@@ -6,6 +6,11 @@
     <StaribusAddress>000</StaribusAddress>
     <StarinetAddress>192.168.1.19</StarinetAddress>
     <StarinetPort>1205</StarinetPort>
+    <StaribusPortType>None</StaribusPortType>
+    <StaribusPort>None</StaribusPort>
+    <StaribusPortBaudrate>None</StaribusPortBaudrate>
+    <StaribusPortTimeout>None</StaribusPortTimeout>
+    <StaribusPortAutodetect>None</StaribusPortAutodetect>
     <NumberOfChannels>7</NumberOfChannels>
     <DataTranslator>StaribusBlock</DataTranslator>
 
