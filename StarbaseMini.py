@@ -222,7 +222,9 @@ class Main(QtGui.QMainWindow):
                 #  Load and initialise logging configuration from user configuration file.
                 logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
                 self.logger = logging.getLogger('main')
-                self.logger.info('-------------- APPLICATION STARTUP --------------')
+
+                if self.first_initialisation is True:
+                    self.logger.info('**************************** APPLICATION STARTUP ****************************')
 
                 # Enable all UI components.
                 self.enable_all()
@@ -230,6 +232,8 @@ class Main(QtGui.QMainWindow):
                 # Load application parameters.
                 try:
                     self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
+                    self.logger.info('############################## Initialising ' + self.instrument_identifier +
+                                     ' ##############################')
                     self.instrument_autodetect = self.config.get('Application', 'instrument_autodetect')
                     self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
                     self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
