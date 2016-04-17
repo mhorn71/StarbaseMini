@@ -41,7 +41,7 @@ class ConfigLoader:
         self.config_file = 'starbaseMini.conf'
         self.logger = None
         self.config = configparser.RawConfigParser()
-        self.version = 3
+        self.version = 4
         self.current_version = 0
 
         home = path.expanduser("~")
@@ -80,19 +80,19 @@ class ConfigLoader:
 
                 # Add Application Release Number
                 self.config.add_section('Release')
-                self.config.set('Release', 'version', '3')
+                self.config.set('Release', 'version', '4')
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')
                 self.config.set('Application', 'instrument_data_path', '')
-                self.config.set('Application', 'instrument_identifier', 'Staribus 4 Channel Logger')
+                # self.config.set('Application', 'instrument_identifier', 'Staribus 4 Channel Logger')
                 self.config.set('Application', 'instrument_autodetect', 'True')
 
                 # Add Staribus Port section
-                self.config.add_section('StaribusPort')
-                self.config.set('StaribusPort', 'staribus_port', 'COM1')
-                self.config.set('StaribusPort', 'baudrate', '57600')
-                self.config.set('StaribusPort', 'timeout', '20')
+                # self.config.add_section('StaribusPort')
+                # self.config.set('StaribusPort', 'staribus_port', 'COM1')
+                # self.config.set('StaribusPort', 'baudrate', '57600')
+                # self.config.set('StaribusPort', 'timeout', '20')
 
                 # Add StarinetConnector section.
                 self.config.add_section('StarinetRelay')
@@ -258,6 +258,62 @@ class ConfigLoader:
             raise ValueError(msg)
         except IOError as msg:
             raise IOError(msg)
+
+    def rm_section(self, section):
+        '''
+            Example :
+
+                rm_section('StaribusPort')
+
+            :param section: Configuration Section
+            :raises: ValueError, IOError
+            '''
+
+        self.config.read(self.conf_file)
+
+        try:
+            self.config.remove_section(section)
+
+            with open(self.conf_file, 'wt') as configfile:
+
+                self.config.write(configfile)
+                configfile.close()
+
+        except configparser.NoSectionError as msg:
+            raise ValueError(msg)
+        except configparser.NoOptionError as msg:
+            raise ValueError(msg)
+        except IOError as msg:
+            raise IOError(msg)
+
+    def rm_option(self, section, option):
+        '''
+            Example :
+
+                rm_option('StaribusPort', 'port')
+
+            :param section: Configuration Section
+            :param option: Section Parameter
+            :raises: ValueError, IOError
+            '''
+
+        self.config.read(self.conf_file)
+
+        try:
+            self.config.remove_option(section, option)
+
+            with open(self.conf_file, 'wt') as configfile:
+
+                self.config.write(configfile)
+                configfile.close()
+
+        except configparser.NoSectionError as msg:
+            raise ValueError(msg)
+        except configparser.NoOptionError as msg:
+            raise ValueError(msg)
+        except IOError as msg:
+            raise IOError(msg)
+
 
 if __name__ == '__main__':
     x = ConfigLoader()
