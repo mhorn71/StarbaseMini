@@ -64,6 +64,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.response_message = 'ABORT', None
         self.reload = False
 
+        self.baudrates = ['9600', '19200', '38400', '57600', '115200']
+        self.timeouts = ['20', '30', '40', '50', '60']
+
         self.starinetaddressbool = True
         self.starinetportbool = True
 
@@ -123,6 +126,32 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan8LabelEdit.setEnabled(False)
         self.Chan8ColourLineEdit.setEnabled(False)
         self.PickerButton8.setEnabled(False)
+
+        self.StaribusAutodetectCheckBox.stateChanged.connect(self.autodetect_checkbox)
+
+
+    def autodetect_checkbox(self):
+        if self.StaribusAutodetectCheckBox.isChecked():
+            self.StaribusPortLineEdit.clear()
+            self.StaribusPortLineEdit.setStyleSheet('background: ;')
+            self.StaribusPortLineEdit.setEnabled(False)
+        else:
+            self.StaribusPortLineEdit.setEnabled(True)
+
+            port = self.instrument.instrument_staribus_port
+
+            self.StaribusPortLineEdit.setText(port)
+            serialPortLineEditRegexp = QtCore.QRegExp(constants.staribus_port)
+            serialPortLineEditValidator = QtGui.QRegExpValidator(serialPortLineEditRegexp)
+            self.StaribusPortLineEdit.setValidator(serialPortLineEditValidator)
+            self.StaribusPortLineEdit.textChanged.connect(self.parameter_check_state)
+            self.StaribusPortLineEdit.textChanged.emit(self.StaribusPortLineEdit.text())
+
+
+            if sys.platform.startswith('win32'):
+                self.StaribusPortLineEdit.setToolTip('The com port to which the instrument is attached, such as COM1')
+            else:
+                self.StaribusPortLineEdit.setToolTip('The full path and serial port the instrument is attached, ')
 
     def Picker0(self):
 
@@ -425,8 +454,91 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         if self.instrument.instrument_starinet_port == 'None':
             self.StarinetPortLineEdit.setEnabled(False)
             self.starinetportbool = False
+
+            # Staribus port autodetect setup
+            detect_staribus_port = self.instrument.instrument_staribus_autodetect
+
+            if detect_staribus_port == 'False':
+                self.StaribusAutodetectCheckBox.setChecked(False)
+            elif detect_staribus_port == 'True':
+                self.StaribusAutodetectCheckBox.setChecked(True)
+                self.StaribusPortLineEdit.setEnabled(False)  # Disable port entry box if auto detect is true.
+            else:
+                logger.warning('Unable to detect staribus port check state, setting to default \'False\'.')
+                # self.application_conf.set('Application', 'instrument_autodetect', 'False')
+                self.StaribusAutodetectCheckBox.setChecked(False)
+
+            self.StaribusAutodetectCheckBox.setToolTip('Will check each attached serial port for the configured instrument'
+                                                     '\nNote : The configured instrument must be attached.')
+
+            # Staribus port type setup
+
+            type_staribus_port = self.instrument.instrument_staribus_type
+
+            if type_staribus_port == 'RS232':
+                self.RS485checkBox.setChecked(False)
+            else:
+                self.RS485checkBox.setChecked(True)
+
+            self.RS485checkBox.setToolTip('The type of interface being used RS232 or RS485')
+
+            # Staribus port baudrate setup
+            baudrate = self.instrument.instrument_staribus_baudrate
+
+            self.BaudrateCombobox.clear()
+
+            self.BaudrateCombobox.setToolTip('The default baudrate is normally 57600')
+
+            self.BaudrateCombobox.addItems(self.baudrates)
+            self.BaudrateCombobox.setCurrentIndex(self.baudrates.index(baudrate))
+
+            # Staribus port timeout setup
+
+            timeout = self.instrument.instrument_staribus_timeout
+
+            self.TimeoutCombobox.clear()
+
+            self.TimeoutCombobox.setToolTip('The default Staribus port timeout is 20 seconds')
+
+            self.TimeoutCombobox.addItems(self.timeouts)
+            self.TimeoutCombobox.setCurrentIndex(self.timeouts.index(timeout))
+
+            # Staribus port setup
+            if detect_staribus_port == 'False':
+                self.StaribusPortLineEdit.setEnabled(True)
+                port = self.instrument.instrument_staribus_port
+
+                self.StaribusPortLineEdit.setText(port)
+                serialPortLineEditRegexp = QtCore.QRegExp(constants.staribus_port)
+                serialPortLineEditValidator = QtGui.QRegExpValidator(serialPortLineEditRegexp)
+                self.StaribusPortLineEdit.setValidator(serialPortLineEditValidator)
+                self.StaribusPortLineEdit.textChanged.connect(self.parameter_check_state)
+                self.StaribusPortLineEdit.textChanged.emit(self.StaribusPortLineEdit.text())
+            else:
+                self.StaribusPortLineEdit.setEnabled(False)
+
+            if sys.platform.startswith('win32'):
+                self.StaribusPortLineEdit.setToolTip('The com port to which the instrument is attached, such as COM1')
+            else:
+                self.StaribusPortLineEdit.setToolTip('The full path and serial port the instrument is attached, '
+                                                   'such as /dev/ttyS0')
+
         else:
+            self.StaribusPortLineEdit.setEnabled(False)
+            self.RS485checkBox.setEnabled(False)
+            self.StaribusAutodetectCheckBox.setEnabled(False)
+            self.BaudrateCombobox.setEnabled(False)
+
             self.StarinetPortLineEdit.setText(self.instrument.instrument_starinet_port)
+
+            # Staribus port timeout setup
+
+            timeout = self.instrument.instrument_staribus_timeout
+
+            self.TimeoutCombobox.setToolTip('The default Staribus port timeout is 20 seconds')
+
+            self.TimeoutCombobox.addItems(self.timeouts)
+            self.TimeoutCombobox.setCurrentIndex(self.timeouts.index(timeout))
 
             StarinetPortValidator = QtGui.QRegExpValidator(QtCore.QRegExp(constants.starinet_port))
             self.StarinetPortLineEdit.setValidator(StarinetPortValidator)
@@ -642,6 +754,31 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             else:
                 self.warning_message()
                 execute_state = False
+
+        staribusport = tree.find('StaribusPort')
+        if self.StaribusPortLineEdit.isEnabled():
+            staribusport.text = self.StaribusPortLineEdit.text()
+
+        staribustype = tree.find('StaribusPortType')
+        if self.RS485checkBox.isEnabled():
+            if self.RS485checkBox.isChecked():
+                staribustype.text = 'RS485'
+            else:
+                staribustype.text = 'RS232'
+
+        staribusauto = tree.find('StaribusPortAutodetect')
+        if self.StaribusAutodetectCheckBox.isEnabled():
+            if self.StaribusAutodetectCheckBox.isChecked():
+                staribusauto.text = 'True'
+            else:
+                staribusauto.text = 'False'
+
+        staribusbaud = tree.find('StaribusPortBaudrate')
+        if self.BaudrateCombobox.isEnabled():
+            staribusbaud.text = self.BaudrateCombobox.currentText()
+
+        staribustimeout = tree.find('StaribusPortTimeout')
+        staribustimeout.text = self.TimeoutCombobox.currentText()
 
         channel_metadata = tree.findall('ChannelMetadata')
 
