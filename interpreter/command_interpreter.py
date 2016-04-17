@@ -53,9 +53,9 @@ class CommandInterpreter:
 
     def initialise_dao(self):
 
-        staribus_port = self.parent.config.get('StaribusPort', 'staribus_port')
-        staribus_baudrate = self.parent.config.get('StaribusPort', 'baudrate')
-        staribus_timeout = self.parent.config.get('StaribusPort', 'timeout')
+        staribus_port = self.instrument.instrument_staribus_port
+        staribus_baudrate = self.instrument.instrument_staribus_baudrate
+        staribus_timeout = self.instrument.instrument_staribus_timeout
         starinet_address = self.instrument.instrument_starinet_address
         starinet_port = self.instrument.instrument_starinet_port
 
