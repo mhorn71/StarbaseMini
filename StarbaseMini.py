@@ -234,7 +234,6 @@ class Main(QtGui.QMainWindow):
                     self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
                     self.logger.info('############################## Initialising ' + self.instrument_identifier +
                                      ' ##############################')
-                    self.instrument_autodetect = self.config.get('Application', 'instrument_autodetect')
                     self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
                     self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
                     self.starinet_address = self.config.get('StarinetRelay', 'address')
@@ -242,9 +241,6 @@ class Main(QtGui.QMainWindow):
                     self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
                     self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
                     self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
-                    self.serial_port = self.config.get('StaribusPort', 'staribus_port')
-                    self.serial_baudrate = self.config.get('StaribusPort', 'baudrate')
-                    self.serial_port_timeout = self.config.get('StaribusPort', 'timeout')
                 except (ValueError, KeyError, ValueError) as msg:
                     self.logger.critical('Configuration ValueError : %s' % str(msg))
                     msg = ('Configuration ValueError : %s exiting.' % str(msg))
@@ -252,7 +248,7 @@ class Main(QtGui.QMainWindow):
                     self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                 else:
                     self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
-                    self.logger.info('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
+                    ####self.logger.info('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
                     self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
                     self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
                     self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
@@ -263,9 +259,6 @@ class Main(QtGui.QMainWindow):
                                      self.staribus2starinet_address)
                     self.logger.info('Initial parameter for staribus2starinet_relay_port : %s' %
                                      self.staribus2starinet_port)
-                    self.logger.info('Initial parameter for serial_port : %s' % self.serial_port)
-                    self.logger.info('Initial parameter for serial_baudrate : %s' % self.serial_baudrate)
-                    self.logger.info('Initial parameter for serial_port_timeout : %s' % self.serial_port_timeout)
 
                     # Initialise configurationManager & charting.
                     if self.config_error is False:
@@ -344,11 +337,6 @@ class Main(QtGui.QMainWindow):
 
             if message is not None:
                 self.status_message('system', message[0], message[1], None)
-
-            # Initialisation Statup Finish Status Message.
-            # if self.first_initialisation is True:
-            #     self.status_message('system', 'INFO', 'Application Started - ' +
-            #                         self.config.get('Application', 'instrument_identifier') + ' Initialised', None)
 
             self.first_initialisation = False
 
@@ -480,7 +468,7 @@ class Main(QtGui.QMainWindow):
                         self.logger.debug('Main Staribus Routine being run')
                         self.command_interpreter.close()
 
-                        if utilities.check_serial_port(self.config.get('StaribusPort', 'staribus_port')):
+                        if utilities.check_serial_port(self.instrument.instrument_staribus_port):
                             self.logger.debug('Main Staribus check_serial Routine success')
                             self.logger.info('Initialising Command Interpreter for Staribus')
                             self.command_interpreter.start(self)
