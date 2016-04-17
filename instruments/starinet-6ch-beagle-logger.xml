@@ -9,7 +9,7 @@
     <StaribusPortType>None</StaribusPortType>
     <StaribusPort>None</StaribusPort>
     <StaribusPortBaudrate>None</StaribusPortBaudrate>
-    <StaribusPortTimeout>None</StaribusPortTimeout>
+    <StaribusPortTimeout>20</StaribusPortTimeout>
     <StaribusPortAutodetect>None</StaribusPortAutodetect>
     <NumberOfChannels>7</NumberOfChannels>
     <DataTranslator>StaribusBlock</DataTranslator>
