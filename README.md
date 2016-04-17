@@ -12,6 +12,6 @@ crcmod
 pyserial 
 
 
-NOTE:  Currently under going a minor rewrite to we have a status indicator and abort features.
+NOTE:  Currently under going a major rewrite please use version one located under branches.
 
 Please download a working copy of the application from releases.
