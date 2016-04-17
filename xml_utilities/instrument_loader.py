@@ -137,7 +137,7 @@ class Instrument:
             logger.debug('Instrument data translator : %s' % self.instrument_datatranslator)
 
             # Check Staribus port timeout is set we need it as we use it as the cmd timeout as well.
-            if re.match('^20|30|40|50|60$', self.instrument_staribus_timeout):
+            if re.match('^20|30|40|50|60$', str(self.instrument_staribus_timeout)):
                 pass
             else:
                 logger.critical('INVALID_XML : Staribus port timeout %s out of range.' % self.instrument_staribus_timeout)
@@ -204,7 +204,7 @@ class Instrument:
                 raise ValueError('INVALID_XML : Staribus port not recognised - %s' %
                                  self.instrument_staribus_port)
 
-            if self.instrument_staribus_address != 'None':
+            if self.instrument_staribus_address != '000' and self.instrument_starinet_address != None:
                 # Check Staribus Address is in range (001 - 253)
                 if utilities.check_staribus_address(self.instrument_staribus_address):
                     pass
@@ -214,7 +214,7 @@ class Instrument:
                     raise ValueError('INVALID_XML : Starbus Address out of range (001 - 253) currently set to %s' %
                                      self.instrument_staribus_address)
 
-            if re.match('^True|False$', self.instrument_staribus_autodetect):
+            if re.match('^True|False|None$', self.instrument_staribus_autodetect):
                 pass
             else:
                 logger.critical('INVALID_XML : Staribus port autodetect should be True or False currently set to %s' %
@@ -222,14 +222,14 @@ class Instrument:
                 raise ValueError('INVALID_XML : Staribus port autodetect should be True or False currently set to %s' %
                                  self.instrument_staribus_autodetect)
 
-
-            if re.match(constants.staribus_baudrate, self.instrument_staribus_baudrate):
-                pass
-            else:
-                logger.critical('INVALID_XML : Staribus port baudrate out of bounds set to %s' %
-                                self.instrument_staribus_baudrate)
-                raise ValueError('INVALID_XML : Staribus port baudrate out of bounds set to %s' %
-                                 self.instrument_staribus_baudrate)
+            if self.instrument_starinet_address == 'None':
+                if re.match(constants.staribus_baudrate, self.instrument_staribus_baudrate):
+                    pass
+                else:
+                    logger.critical('INVALID_XML : Staribus port baudrate out of bounds set to %s' %
+                                    self.instrument_staribus_baudrate)
+                    raise ValueError('INVALID_XML : Staribus port baudrate out of bounds set to %s' %
+                                     self.instrument_staribus_baudrate)
 
             self.instrument_number_of_channels = self.xmldom.findtext('NumberOfChannels')
             logger.debug('Instrument number of channels : %s' % self.instrument_number_of_channels)
