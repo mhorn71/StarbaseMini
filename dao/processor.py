@@ -45,6 +45,7 @@ class DaoProcessor:
         else:
             self.logger.debug('Staribus Stream selected')
             if staribus_port_type == 'RS232':
+
                 try:
                     self.message_stream = dao.StaribusStream(serial_port, serial_baudrate, serial_timeout)
                 except IOError as msg:
@@ -52,19 +53,18 @@ class DaoProcessor:
                 else:
                     self.logger.debug('Stream set to Staribus')
             elif staribus_port_type == 'RS485':
-
-                ##############################################
-                ##############################################
-                print("dao.processor - " + staribus_port_type)
-                ##############################################
-                ##############################################
+                # Need to write the RS485 stream interface.
+                pass
 
 
             else:
                 raise IOError('Unknown port type')
 
     def close(self):
-        self.message_stream.close()
+        try:
+            self.message_stream.close()
+        except AttributeError:
+            pass
 
     def star_message(self, addr, base, code, variant, param):
         '''

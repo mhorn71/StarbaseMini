@@ -75,12 +75,6 @@ class CommandInterpreter:
             self.logger.debug('S2S starinet address not None so Starinet')
             stream = 'Starinet'
 
-        ####################################################
-        ####################################################
-        print("command interpreter - " + staribus_port_type)
-        ####################################################
-        ####################################################
-
         try:
             self.dao_processor = dao.DaoProcessor(staribus_port, staribus_baudrate, staribus_timeout, starinet_address,
                                                   starinet_port, stream, staribus_port_type)
