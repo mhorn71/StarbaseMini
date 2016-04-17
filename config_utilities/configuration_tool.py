@@ -72,16 +72,16 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.instruments = xml_utilities.Instruments(instruments_system)
         
         self.loglevels = ['INFO', 'DEBUG']
-        self.baudrates = ['9600', '19200', '38400', '57600', '115200']
-        self.timeouts = ['20', '30', '40', '50', '60']
+        # self.baudrates = ['9600', '19200', '38400', '57600', '115200']
+        # self.timeouts = ['20', '30', '40', '50', '60']
         self.legend_loc = ['best', 'upper right', 'upper left', 'lower left', 'lower right', 'center left',
                            'center right', 'lower center', 'upper center', 'center']
         self.legend_font = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large']
 
         # Setup checkbox slots.
-        self.detectInstrumentPortCheckBox.stateChanged.connect(self.instrument_port_checkbox_triggered)
-        self.baudrateDefaultCheckBox.stateChanged.connect(self.baudrate_checkbox_triggered)
-        self.serialPortTimeoutCheckBox.stateChanged.connect(self.timeout_checkbox_triggered)
+        # self.detectInstrumentPortCheckBox.stateChanged.connect(self.instrument_port_checkbox_triggered)
+        # self.baudrateDefaultCheckBox.stateChanged.connect(self.baudrate_checkbox_triggered)
+        # self.serialPortTimeoutCheckBox.stateChanged.connect(self.timeout_checkbox_triggered)
         self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
         self.S2SCheckBox.stateChanged.connect(self.s2s_checkbox_triggered)
 
@@ -139,66 +139,66 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         #  Set Detect staribus port checkbox
 
-        detect_staribus_port = self.application_conf.get('Application', 'instrument_autodetect')
-
-        if detect_staribus_port == 'False':
-            self.detectInstrumentPortCheckBox.setChecked(False)
-        elif detect_staribus_port == 'True':
-            self.detectInstrumentPortCheckBox.setChecked(True)
-            self.serialPortLineEdit.setEnabled(False)  # Disable port entry box if auto detect is true.
-        else:
-            logger.warning('Unable to detect staribus port check state, setting to default \'False\'.')
-            self.application_conf.set('Application', 'instrument_autodetect', 'False')
-            self.detectInstrumentPortCheckBox.setChecked(False)
-
-        self.detectInstrumentPortCheckBox.setToolTip('Will check each serial ports for the configured instrument'
-                                                     '\nNote : The configured instrument must be attached.')
+        # detect_staribus_port = self.application_conf.get('Application', 'instrument_autodetect')
+        #
+        # if detect_staribus_port == 'False':
+        #     self.detectInstrumentPortCheckBox.setChecked(False)
+        # elif detect_staribus_port == 'True':
+        #     self.detectInstrumentPortCheckBox.setChecked(True)
+        #     self.serialPortLineEdit.setEnabled(False)  # Disable port entry box if auto detect is true.
+        # else:
+        #     logger.warning('Unable to detect staribus port check state, setting to default \'False\'.')
+        #     self.application_conf.set('Application', 'instrument_autodetect', 'False')
+        #     self.detectInstrumentPortCheckBox.setChecked(False)
+        #
+        # self.detectInstrumentPortCheckBox.setToolTip('Will check each serial ports for the configured instrument'
+        #                                              '\nNote : The configured instrument must be attached.')
 
         # Set serial port name in entry box.
-        port = self.application_conf.get('StaribusPort', 'staribus_port')
-
-        if port is None:
-            if self.application_conf.get('Application', 'instrument_autodetect'):
-                port = 'No serial ports detected!!'
-            else:
-                port = 'No serial port set!!'
-
-        self.serialPortLineEdit.setText(port)
-        serialPortLineEditRegexp = QtCore.QRegExp(constants.staribus_port)
-        serialPortLineEditValidator = QtGui.QRegExpValidator(serialPortLineEditRegexp)
-        self.serialPortLineEdit.setValidator(serialPortLineEditValidator)
-        self.serialPortLineEdit.textChanged.connect(self.parameter_check_state)
-        self.serialPortLineEdit.textChanged.emit(self.serialPortLineEdit.text())
-
-        if sys.platform.startswith('win32'):
-            self.serialPortLineEdit.setToolTip('The com port to which the instrument is attached, such as COM1')
-        else:
-            self.serialPortLineEdit.setToolTip('The full path and serial port the instrument is attached, '
-                                               'such as /dev/ttyS0')
+        # port = self.application_conf.get('StaribusPort', 'staribus_port')
+        #
+        # if port is None:
+        #     if self.application_conf.get('Application', 'instrument_autodetect'):
+        #         port = 'No serial ports detected!!'
+        #     else:
+        #         port = 'No serial port set!!'
+        #
+        # self.serialPortLineEdit.setText(port)
+        # serialPortLineEditRegexp = QtCore.QRegExp(constants.staribus_port)
+        # serialPortLineEditValidator = QtGui.QRegExpValidator(serialPortLineEditRegexp)
+        # self.serialPortLineEdit.setValidator(serialPortLineEditValidator)
+        # self.serialPortLineEdit.textChanged.connect(self.parameter_check_state)
+        # self.serialPortLineEdit.textChanged.emit(self.serialPortLineEdit.text())
+        #
+        # if sys.platform.startswith('win32'):
+        #     self.serialPortLineEdit.setToolTip('The com port to which the instrument is attached, such as COM1')
+        # else:
+        #     self.serialPortLineEdit.setToolTip('The full path and serial port the instrument is attached, '
+        #                                        'such as /dev/ttyS0')
 
         # Set baudrate check box and combo box.
-        baudrate = self.application_conf.get('StaribusPort', 'baudrate')
-
-        if baudrate == '57600':
-            self.baudrateDefaultCheckBox.setChecked(True)
-            self.baudrateComboBox.setEnabled(False)  # Disable combo box if default set.
-
-        self.baudrateDefaultCheckBox.setToolTip('Sets the default baudrate to 57600')
-
-        self.baudrateComboBox.addItems(self.baudrates)
-        self.baudrateComboBox.setCurrentIndex(self.baudrates.index(baudrate))
+        # baudrate = self.application_conf.get('StaribusPort', 'baudrate')
+        #
+        # if baudrate == '57600':
+        #     self.baudrateDefaultCheckBox.setChecked(True)
+        #     self.baudrateComboBox.setEnabled(False)  # Disable combo box if default set.
+        #
+        # self.baudrateDefaultCheckBox.setToolTip('Sets the default baudrate to 57600')
+        #
+        # self.baudrateComboBox.addItems(self.baudrates)
+        # self.baudrateComboBox.setCurrentIndex(self.baudrates.index(baudrate))
 
         # Set timeout check box and combo box.
-        timeout = self.application_conf.get('StaribusPort', 'timeout')
-
-        if timeout == '20':
-            self.serialPortTimeoutCheckBox.setChecked(True)
-            self.timeoutComboBox.setEnabled(False)
-
-        self.serialPortTimeoutCheckBox.setToolTip('Sets the default Staribus port timeout to 20 seconds')
-
-        self.timeoutComboBox.addItems(self.timeouts)
-        self.timeoutComboBox.setCurrentIndex(self.timeouts.index(timeout))
+        # timeout = self.application_conf.get('StaribusPort', 'timeout')
+        #
+        # if timeout == '20':
+        #     self.serialPortTimeoutCheckBox.setChecked(True)
+        #     self.timeoutComboBox.setEnabled(False)
+        #
+        # self.serialPortTimeoutCheckBox.setToolTip('Sets the default Staribus port timeout to 20 seconds')
+        #
+        # self.timeoutComboBox.addItems(self.timeouts)
+        # self.timeoutComboBox.setCurrentIndex(self.timeouts.index(timeout))
 
         # Set starinetConnector (Relay) check box and line edits.
         starinetConnector_active = self.application_conf.get('StarinetRelay', 'active')
@@ -492,25 +492,25 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         else:
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
 
-    def instrument_port_checkbox_triggered(self):
-        if self.detectInstrumentPortCheckBox.checkState():
-            self.serialPortLineEdit.setEnabled(False)
-        else:
-            self.serialPortLineEdit.setEnabled(True)
+    # def instrument_port_checkbox_triggered(self):
+    #     if self.detectInstrumentPortCheckBox.checkState():
+    #         self.serialPortLineEdit.setEnabled(False)
+    #     else:
+    #         self.serialPortLineEdit.setEnabled(True)
 
-    def baudrate_checkbox_triggered(self):
-        if self.baudrateDefaultCheckBox.checkState():
-            self.baudrateComboBox.setEnabled(False)
-            self.baudrateComboBox.setCurrentIndex(self.baudrates.index('57600'))
-        else:
-            self.baudrateComboBox.setEnabled(True)
-
-    def timeout_checkbox_triggered(self):
-        if self.serialPortTimeoutCheckBox.checkState():
-            self.timeoutComboBox.setEnabled(False)
-            self.timeoutComboBox.setCurrentIndex(self.timeouts.index('20'))
-        else:
-            self.timeoutComboBox.setEnabled(True)
+    # def baudrate_checkbox_triggered(self):
+    #     if self.baudrateDefaultCheckBox.checkState():
+    #         self.baudrateComboBox.setEnabled(False)
+    #         self.baudrateComboBox.setCurrentIndex(self.baudrates.index('57600'))
+    #     else:
+    #         self.baudrateComboBox.setEnabled(True)
+    #
+    # def timeout_checkbox_triggered(self):
+    #     if self.serialPortTimeoutCheckBox.checkState():
+    #         self.timeoutComboBox.setEnabled(False)
+    #         self.timeoutComboBox.setCurrentIndex(self.timeouts.index('20'))
+    #     else:
+    #         self.timeoutComboBox.setEnabled(True)
 
     def relay_checkbox_triggered(self):
         if self.relayCheckBox.checkState():
@@ -546,16 +546,16 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.loglevelComboBox.currentIndex()))
 
         # StaribusPort
-        if self.serialPortLineEdit.text().startswith('No serial'):
-            self.application_conf.set('StaribusPort', 'staribus_port', '')
-        else:
-            self.application_conf.set('StaribusPort', 'staribus_port', self.serialPortLineEdit.text())
-
-        self.application_conf.set('StaribusPort', 'baudrate',
-                                  self.baudrateComboBox.itemText(self.baudrateComboBox.currentIndex()))
-
-        self.application_conf.set('StaribusPort', 'timeout',
-                                  self.timeoutComboBox.itemText(self.timeoutComboBox.currentIndex()))
+        # if self.serialPortLineEdit.text().startswith('No serial'):
+        #     self.application_conf.set('StaribusPort', 'staribus_port', '')
+        # else:
+        #     self.application_conf.set('StaribusPort', 'staribus_port', self.serialPortLineEdit.text())
+        #
+        # self.application_conf.set('StaribusPort', 'baudrate',
+        #                           self.baudrateComboBox.itemText(self.baudrateComboBox.currentIndex()))
+        #
+        # self.application_conf.set('StaribusPort', 'timeout',
+        #                           self.timeoutComboBox.itemText(self.timeoutComboBox.currentIndex()))
 
         # Staribus2Starinet
         if self.S2SCheckBox.checkState():
