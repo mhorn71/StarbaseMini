@@ -23,7 +23,7 @@ import logging
 
 class DaoProcessor:
     def __init__(self, serial_port, serial_baudrate, serial_timeout, starinet_address,
-                 starinet_port, stream):
+                 starinet_port, stream, staribus_port_type):
 
         self.logger = logging.getLogger('dao.DaoProcessor')
 
@@ -44,12 +44,24 @@ class DaoProcessor:
                 self.logger.debug('Stream set to Starinet')
         else:
             self.logger.debug('Staribus Stream selected')
-            try:
-                self.message_stream = dao.StaribusStream(serial_port, serial_baudrate, serial_timeout)
-            except IOError as msg:
-                raise IOError(msg)
+            if staribus_port_type == 'RS232':
+                try:
+                    self.message_stream = dao.StaribusStream(serial_port, serial_baudrate, serial_timeout)
+                except IOError as msg:
+                    raise IOError(msg)
+                else:
+                    self.logger.debug('Stream set to Staribus')
+            elif staribus_port_type == 'RS485':
+
+                ##############################################
+                ##############################################
+                print("dao.processor - " + staribus_port_type)
+                ##############################################
+                ##############################################
+
+
             else:
-                self.logger.debug('Stream set to Staribus')
+                raise IOError('Unknown port type')
 
     def close(self):
         self.message_stream.close()

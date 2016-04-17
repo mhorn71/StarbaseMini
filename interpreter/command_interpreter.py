@@ -54,6 +54,7 @@ class CommandInterpreter:
     def initialise_dao(self):
 
         staribus_port = self.instrument.instrument_staribus_port
+        staribus_port_type = self.instrument.instrument_staribus_type
         staribus_baudrate = self.instrument.instrument_staribus_baudrate
         staribus_timeout = self.instrument.instrument_staribus_timeout
         starinet_address = self.instrument.instrument_starinet_address
@@ -74,9 +75,15 @@ class CommandInterpreter:
             self.logger.debug('S2S starinet address not None so Starinet')
             stream = 'Starinet'
 
+        ####################################################
+        ####################################################
+        print("command interpreter - " + staribus_port_type)
+        ####################################################
+        ####################################################
+
         try:
             self.dao_processor = dao.DaoProcessor(staribus_port, staribus_baudrate, staribus_timeout, starinet_address,
-                                                  starinet_port, stream)
+                                                  starinet_port, stream, staribus_port_type)
         except IOError as msg:
             raise IOError(msg)
 
