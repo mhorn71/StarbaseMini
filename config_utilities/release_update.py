@@ -55,9 +55,6 @@ def update(config_object, version):
         config_object.remove_section('StaribusPort')
         logging.info('Removing section \'StaribusPort\'')
 
-        config_object.remove_option('Application','instrument_identifier')
-        logging.info('Removing option \'instrument_identifier\'')
-
         config_object.remove_option('Application','instrument_autodetect')
         logging.info('Removing option \'instrument_autodetect\'')
 
