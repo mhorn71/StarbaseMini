@@ -17,14 +17,66 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+import logging
+
+upgradelog = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'upgrade.log'
+logging.basicConfig(filename=upgradelog,level=logging.INFO)
 
 def update(config_object, version):
 
     if version == 2:
+        logging.info('Upgrading configuration to version 2')
+
         config_object.add_section('Legend')
+        logging.info('Added section \'legend\' to starbaseMini.conf')
+
         config_object.set('Legend', 'location', 'best')
+        logging.info('Added option \'location\' to \'legend\' set to \'best\'')
+
         config_object.set('Legend', 'columns', '1')
+        logging.info('Added option \'columns\' to \'legend\' set to \'1\'')
+
         config_object.set('Legend', 'font', 'medium')
+        logging.info('Added option \'font\' to \'legend\' set to \'medium\'')
 
     if version == 3:
+
+        logging.info('Upgrading configuration to version 3')
+
         config_object.set('ObservatoryMetadata', 'timezone', 'GMT+00:00')
+
+        logging.info('Updating section option \'ObservatoryMetadata\' - \'timezone\' set to \'GMT+00:00\'')
+
+    if version == 4:
+
+        logging.info('Upgrading configuration to version 4')
+
+        config_object.remove_section('StaribusPort')
+        logging.info('Removing section \'StaribusPort\'')
+
+        config_object.remove_option('Application','instrument_identifier')
+        logging.info('Removing option \'instrument_identifier\'')
+
+        config_object.remove_option('Application','instrument_autodetect')
+        logging.info('Removing option \'instrument_autodetect\'')
+
+        instruments_local = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + \
+                            'instruments' + os.path.sep
+
+        logging.info('Instruments path set to - ' + instruments_local)
+
+        instrument_local_base = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep
+
+        logging.info('Instrument base path set to - ' + instrument_local_base)
+
+        try:
+            if os.path.exists(instruments_local):
+                logging.info('Instruments path exists')
+                for name in os.listdir(instruments_local):
+                    if os.path.isfile(instruments_local + name):
+                        logging.info('Instrument XML file found')
+                        os.rename(instruments_local + name, instrument_local_base + name + '.revison3bak')
+                        logging.info('Renaming file - ' + name + ' to ' + name + '.revison3bak')
+        except (OSError, IOError) as msg:
+            logging.critical(msg)
