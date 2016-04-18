@@ -331,6 +331,7 @@ class Main(QtGui.QMainWindow):
 
                 if self.config.get('Application', 'instrument_identifier') == item:
                     ag.setChecked(True)
+                    self.instrument_item = item
 
                 self.ui.menuInstrument.addAction(ag)
                 self.connect(ag, QtCore.SIGNAL('triggered()'), lambda item=item: self.instrument_selection(item))
@@ -346,7 +347,7 @@ class Main(QtGui.QMainWindow):
 
             message = 'WARNING:  You have unsaved data.\n\nIf you change the instrument, ' + \
                       'you will be able to save the unsaved data!\n\nDo you want to change instruments?'
-            header = ''
+            header = 'HELLO'
 
             result = QtGui.QMessageBox.question(None,
                                                 header,
@@ -358,10 +359,17 @@ class Main(QtGui.QMainWindow):
                 self.saved_data_state = False
                 self.config.set('Application', 'instrument_identifier', item)
                 self.initialise_configuration()
+                self.instrument_item = item
+            else:
+                for name in self.ui.menuInstrument.actions():
+                    if name.text() == self.instrument_item:
+                        name.setChecked(True)
+
 
         else:
             self.config.set('Application', 'instrument_identifier', item)
             self.initialise_configuration()
+            self.instrument_item = item
 
     # ----------------------------------------
     # Instrument loader method.
