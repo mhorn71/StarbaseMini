@@ -290,14 +290,6 @@ class Main(QtGui.QMainWindow):
                         if self.config_error is False:
                             self.configurationManager = config_utilities.ConfigManager()
 
-            # Setup StarinetConnector if enabled.
-            if self.starinet_relay_boolean == 'True':
-                self.starinet_relay_initialised = True
-                self.starinet_connector_loader()
-                self.ui.menuInstrument.setEnabled(False)
-            else:
-                self.ui.menuInstrument.setEnabled(True)
-
                 if self.fatal_error is False:
                     self.instrument_loader()
 
@@ -448,6 +440,15 @@ class Main(QtGui.QMainWindow):
         self.serial_port_timeout = self.instrument.instrument_staribus_timeout
 
 
+        # Setup StarinetConnector if enabled.
+        if self.starinet_relay_boolean == 'True':
+            self.starinet_relay_initialised = True
+            self.starinet_connector_loader()
+            self.ui.menuInstrument.setEnabled(False)
+        else:
+            self.ui.menuInstrument.setEnabled(True)
+
+
     # ----------------------------------------
     # Datatranslator loader method.
     # ----------------------------------------
@@ -563,6 +564,9 @@ class Main(QtGui.QMainWindow):
     # ----------------------------------------
 
     def starinet_connector_loader(self):
+        if self.command_interpreter is not None:
+            self.command_interpreter.close()
+
         if self.instrument_autodetect == 'True':
             self.instrument_loader()
             self.instrument_autodetector()
