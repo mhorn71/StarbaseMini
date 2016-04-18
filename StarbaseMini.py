@@ -219,7 +219,7 @@ class Main(QtGui.QMainWindow):
 
         if self.starinet_relay_initialised is True:
             self.disable_all()
-            self.status_message('system', 'INFO', 'Starinet relay is initialised please restart the application.')
+            self.status_message('system', 'INFO', 'Starinet relay is initialised please restart the application.', None)
         else:
 
             self.ui.moduleCombobox.clear()
@@ -442,6 +442,11 @@ class Main(QtGui.QMainWindow):
                 else:
                     self.logger.debug('Instrument XML found at : %s' % file)
                     self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
+
+        self.serial_port = self.instrument.instrument_staribus_port
+        self.serial_baudrate = self.instrument.instrument_staribus_baudrate
+        self.serial_port_timeout = self.instrument.instrument_staribus_timeout
+
 
     # ----------------------------------------
     # Datatranslator loader method.
