@@ -437,14 +437,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         # Application
         self.application_conf.set('Application', 'instrument_data_path', self.savepathLineEdit.text())
 
-        # self.application_conf.set('Application', 'instrument_identifier',
-        #                           self.instrumentComboBox.itemText(self.instrumentComboBox.currentIndex()))
-
-        if self.detectInstrumentPortCheckBox.checkState():
-            self.application_conf.set('Application', 'instrument_autodetect', 'True')
-        else:
-            self.application_conf.set('Application', 'instrument_autodetect', 'False')
-
         # Logging Level
         self.application_conf.set('logger_root', 'level', self.loglevelComboBox.itemText(
             self.loglevelComboBox.currentIndex()))
