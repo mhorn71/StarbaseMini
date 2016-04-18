@@ -88,6 +88,7 @@ class Main(QtGui.QMainWindow):
         self.command_interpreter = None
         self.configurationManager = None
         self.chart = None
+        self.starinet_relay_initialised = False
 
         # Initialise UI
         QtGui.QMainWindow.__init__(self, parent)
@@ -191,109 +192,6 @@ class Main(QtGui.QMainWindow):
         # Attempt at allowing configuration changes
         self.first_initialisation = True
 
-        self.initialise_configuration()
-
-        # Initialise configuration.
-    def initialise_configuration(self):
-
-        self.ui.moduleCombobox.clear()
-        self.ui.commandCombobox.clear()
-
-        try:
-            self.config = config_utilities.ConfigLoader()
-        except (FileNotFoundError, OSError, ValueError) as msg:
-            msg = ('Configuration Tool : %s' % str(msg))
-            self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-            self.disable_all()
-            self.fatal_error = True
-            self.config_error = True
-        else:
-            # Generate user configuration if it's missing.
-            try:
-                self.config.check_conf_exists()
-            except IOError as msg:
-                msg = ('Configuration IOError : %s' % str(msg))
-                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-                self.fatal_error = True
-                self.config_error = True
-            else:
-                # Upgrade release if need.
-                self.config.release_update()
-                #  Load and initialise logging configuration from user configuration file.
-                logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
-                self.logger = logging.getLogger('main')
-
-                if self.first_initialisation is True:
-                    self.logger.info('**************************** APPLICATION STARTUP ****************************')
-
-                # Enable all UI components.
-                self.enable_all()
-
-                # Load application parameters.
-                try:
-                    self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
-                    self.logger.info('############################## Initialising ' + self.instrument_identifier +
-                                     ' ##############################')
-                    self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
-                    self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
-                    self.starinet_address = self.config.get('StarinetRelay', 'address')
-                    self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
-                    self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
-                    self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
-                    self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
-                except (ValueError, KeyError, ValueError) as msg:
-                    self.logger.critical('Configuration ValueError : %s' % str(msg))
-                    msg = ('Configuration ValueError : %s exiting.' % str(msg))
-                    self.fatal_error = True
-                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-                else:
-                    self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
-                    ####self.logger.info('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
-                    self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
-                    self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
-                    self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
-                    self.logger.info('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
-                    self.logger.info('Initial parameter for staribus2starinet_relay_boolean : %s' %
-                                     self.staribus2starinet_relay_boolean)
-                    self.logger.info('Initial parameter for staribus2starinet_relay_address : %s' %
-                                     self.staribus2starinet_address)
-                    self.logger.info('Initial parameter for staribus2starinet_relay_port : %s' %
-                                     self.staribus2starinet_port)
-
-                    # Initialise configurationManager & charting.
-                    if self.config_error is False:
-                        self.configurationManager = config_utilities.ConfigManager()
-
-        # Setup StarinetConnector if enabled.
-        if self.starinet_relay_boolean == 'True':
-            self.starinet_connector_loader()
-            self.ui.menuInstrument.setEnabled(False)
-        else:
-            self.ui.menuInstrument.setEnabled(True)
-
-            if self.fatal_error is False:
-                self.instrument_loader()
-
-            if self.instrument_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
-                self.instrument_autodetector()
-
-            if self.fatal_error is False:
-                self.datatranslator_loader()
-
-            # Initialise charting.
-            if self.config_error is False:
-                self.chart_loader()
-
-            if self.fatal_error is False and self.config_error is False:
-                # Initialise command interpreter
-                self.instrument_interpreter_loader()
-                # Fire populate_ui_module for the first time.
-                self.populate_ui_module()
-
-                self.load_finish = True
-
-        self.instrument_attributes = instrument_attrib.InstrumentAttrib()
-
         # Style sheets
         self.style_boolean = False
 
@@ -313,33 +211,143 @@ class Main(QtGui.QMainWindow):
 
         self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
 
-        if self.first_initialisation is True:
+        # Run instrument configuration initialisation.
+        self.initialise_configuration()
 
-            upgrade = utilities.Upgrader()
+    # Initialise configuration.
+    def initialise_configuration(self):
 
-            message = upgrade.detect_upgrade(version)
+        if self.starinet_relay_initialised is True:
+            self.disable_all()
+            self.status_message('system', 'INFO', 'Starinet relay is initialised please restart the application.')
+        else:
 
-            # This is just a trial to workout how to add menu items that are checkable
-            # http://stackoverflow.com/questions/20019489/pyside-adding-a-toggle-option-action-to-the-menu-bar
-            # See also
-            # http://stackoverflow.com/questions/1100775/create-pyqt-menu-from-a-list-of-strings
+            self.ui.moduleCombobox.clear()
+            self.ui.commandCombobox.clear()
 
-            action = QtGui.QActionGroup(self.ui.menuInstrument, exclusive=True)
+            try:
+                self.config = config_utilities.ConfigLoader()
+            except (FileNotFoundError, OSError, ValueError) as msg:
+                msg = ('Configuration Tool : %s' % str(msg))
+                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+                self.disable_all()
+                self.fatal_error = True
+                self.config_error = True
+            else:
+                # Generate user configuration if it's missing.
+                try:
+                    self.config.check_conf_exists()
+                except IOError as msg:
+                    msg = ('Configuration IOError : %s' % str(msg))
+                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+                    self.fatal_error = True
+                    self.config_error = True
+                else:
+                    # Upgrade release if need.
+                    self.config.release_update()
+                    #  Load and initialise logging configuration from user configuration file.
+                    logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
+                    self.logger = logging.getLogger('main')
 
-            for item in self.configurationManager.instruments.get_names():
-                ag = QtGui.QAction(item, action, checkable=True)
+                    if self.first_initialisation is True:
+                        self.logger.info('**************************** APPLICATION STARTUP ****************************')
 
-                if self.config.get('Application', 'instrument_identifier') == item:
-                    ag.setChecked(True)
-                    self.instrument_item = item
+                    # Enable all UI components.
+                    self.enable_all()
 
-                self.ui.menuInstrument.addAction(ag)
-                self.connect(ag, QtCore.SIGNAL('triggered()'), lambda item=item: self.instrument_selection(item))
+                    # Load application parameters.
+                    try:
+                        self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
+                        self.logger.info('############################## Initialising ' + self.instrument_identifier +
+                                         ' ##############################')
+                        self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
+                        self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
+                        self.starinet_address = self.config.get('StarinetRelay', 'address')
+                        self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
+                        self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
+                        self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
+                        self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
+                    except (ValueError, KeyError, ValueError) as msg:
+                        self.logger.critical('Configuration ValueError : %s' % str(msg))
+                        msg = ('Configuration ValueError : %s exiting.' % str(msg))
+                        self.fatal_error = True
+                        self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+                    else:
+                        self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
+                        ####self.logger.info('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
+                        self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
+                        self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
+                        self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
+                        self.logger.info('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
+                        self.logger.info('Initial parameter for staribus2starinet_relay_boolean : %s' %
+                                         self.staribus2starinet_relay_boolean)
+                        self.logger.info('Initial parameter for staribus2starinet_relay_address : %s' %
+                                         self.staribus2starinet_address)
+                        self.logger.info('Initial parameter for staribus2starinet_relay_port : %s' %
+                                         self.staribus2starinet_port)
 
-            if message is not None:
-                self.status_message('system', message[0], message[1], None)
+                        # Initialise configurationManager & charting.
+                        if self.config_error is False:
+                            self.configurationManager = config_utilities.ConfigManager()
 
-            self.first_initialisation = False
+            # Setup StarinetConnector if enabled.
+            if self.starinet_relay_boolean == 'True':
+                self.starinet_relay_initialised = True
+                self.starinet_connector_loader()
+                self.ui.menuInstrument.setEnabled(False)
+            else:
+                self.ui.menuInstrument.setEnabled(True)
+
+                if self.fatal_error is False:
+                    self.instrument_loader()
+
+                if self.instrument_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
+                    self.instrument_autodetector()
+
+                if self.fatal_error is False:
+                    self.datatranslator_loader()
+
+                # Initialise charting.
+                if self.config_error is False:
+                    self.chart_loader()
+
+                if self.fatal_error is False and self.config_error is False:
+                    # Initialise command interpreter
+                    self.instrument_interpreter_loader()
+                    # Fire populate_ui_module for the first time.
+                    self.populate_ui_module()
+
+                    self.load_finish = True
+
+            self.instrument_attributes = instrument_attrib.InstrumentAttrib()
+
+            if self.first_initialisation is True:
+
+                upgrade = utilities.Upgrader()
+
+                message = upgrade.detect_upgrade(version)
+
+                # This is just a trial to workout how to add menu items that are checkable
+                # http://stackoverflow.com/questions/20019489/pyside-adding-a-toggle-option-action-to-the-menu-bar
+                # See also
+                # http://stackoverflow.com/questions/1100775/create-pyqt-menu-from-a-list-of-strings
+
+                action = QtGui.QActionGroup(self.ui.menuInstrument, exclusive=True)
+
+                for item in self.configurationManager.instruments.get_names():
+                    ag = QtGui.QAction(item, action, checkable=True)
+
+                    if self.config.get('Application', 'instrument_identifier') == item:
+                        ag.setChecked(True)
+                        self.instrument_item = item
+
+                    self.ui.menuInstrument.addAction(ag)
+                    self.connect(ag, QtCore.SIGNAL('triggered()'), lambda item=item: self.instrument_selection(item))
+
+                if message is not None:
+                    self.status_message('system', message[0], message[1], None)
+
+                self.first_initialisation = False
 
     def instrument_selection(self, item):
 
