@@ -81,9 +81,6 @@ class Main(QtGui.QMainWindow):
         self.starinet_relay_boolean = None
         self.starinet_address = None
         self.starinet_port = None
-        self.serial_port = None
-        self.serial_baudrate = None
-        self.serial_port_timeout = None
         self.instrument_autodetect_status_boolean = False
         self.command_interpreter = None
         self.configurationManager = None
@@ -435,10 +432,7 @@ class Main(QtGui.QMainWindow):
                     self.logger.debug('Instrument XML found at : %s' % file)
                     self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
 
-        self.serial_port = self.instrument.instrument_staribus_port
-        self.serial_baudrate = self.instrument.instrument_staribus_baudrate
-        self.serial_port_timeout = self.instrument.instrument_staribus_timeout
-
+        # self.instrument_autodetect = self.instrument.instrument_staribus_autodetect
 
         # Setup StarinetConnector if enabled.
         if self.starinet_relay_boolean == 'True':
@@ -530,7 +524,7 @@ class Main(QtGui.QMainWindow):
                 self.instrument_autodetect_status_boolean = False
             else:
                 instrument_port = utilities.check_serial_port_staribus_instrument(
-                    self.instrument.instrument_staribus_address, ports, self.serial_baudrate)
+                    self.instrument.instrument_staribus_address, ports, self.instrument.instrument_staribus_baudrate)
                 if instrument_port is None:
                     self.logger.warning('Staribus instrument not found for address %s' %
                                         self.instrument.instrument_staribus_address)
@@ -552,7 +546,7 @@ class Main(QtGui.QMainWindow):
             if self.instrument_autodetect_status_boolean is True:
                 try:
                     self.config.set('StaribusPort', 'staribus_port', serial_port)
-                    self.serial_port = serial_port
+                    self.instrument.instrument_staribus_port = serial_port
                 except (ValueError, IOError) as msg:
                     self.instrument_autodetect_status_boolean = False
                     self.logger.critical('Fatal Error Unable to set serial port : %s' % msg)
@@ -573,8 +567,8 @@ class Main(QtGui.QMainWindow):
 
             if self.instrument_autodetect_status_boolean:
                 self.disable_all()
-                starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.serial_port,
-                                                          self.serial_baudrate, self.serial_port_timeout)
+                starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.instrument.instrument_staribus_port,
+                                                          self.instrument.instrument_staribus_baudrate, self.instrument.instrument_staribus_timeout)
                 self.logger.info('Starinet relay initialised.')
                 msg = 'Starinet relay initialised.'
                 self.status_message('system', 'INFO', msg, None)
@@ -584,15 +578,15 @@ class Main(QtGui.QMainWindow):
                 msg = 'Starinet relay cannot initialise no instrument found.'
                 self.status_message('system', 'ERROR', msg, None)
         else:
-            if self.serial_port is None:
+            if self.instrument.instrument_staribus_port is None:
                 self.disable_all()
                 self.logger.critical('Starinet relay cannot initialise as serial port isn\'t set.')
                 msg = 'Starinet relay cannot initialise as serial port isn\'t set.'
                 self.status_message('system', 'ERROR', msg, None)
             else:
                 self.disable_all()
-                starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.serial_port,
-                                                          self.serial_baudrate, self.serial_port_timeout)
+                starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.instrument.instrument_staribus_port,
+                                                          self.instrument.instrument_staribus_baudrate, self.instrument.instrument_staribus_timeout)
                 self.logger.info('Starinet relay initialised.')
                 msg = 'Starinet relay initialised.'
                 self.status_message('system', 'INFO', msg, None)
