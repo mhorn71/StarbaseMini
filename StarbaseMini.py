@@ -76,7 +76,6 @@ class Main(QtGui.QMainWindow):
         self.datatranslator = None
         self.metadata_creator = None
         self.metadata_deconstructor = None
-        self.instrument_autodetect = None
         self.instrument_data_path = None
         self.starinet_relay_boolean = None
         self.starinet_address = None
@@ -271,7 +270,6 @@ class Main(QtGui.QMainWindow):
                         self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                     else:
                         self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
-                        ####self.logger.info('Initial parameter for instrument_autodetect : %s' % self.instrument_autodetect)
                         self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
                         self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
                         self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
@@ -290,7 +288,7 @@ class Main(QtGui.QMainWindow):
                 if self.fatal_error is False:
                     self.instrument_loader()
 
-                if self.instrument_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
+                if self.instrument.instrument_staribus_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
                     self.instrument_autodetector()
 
                 if self.fatal_error is False:
@@ -432,8 +430,6 @@ class Main(QtGui.QMainWindow):
                     self.logger.debug('Instrument XML found at : %s' % file)
                     self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
 
-        # self.instrument_autodetect = self.instrument.instrument_staribus_autodetect
-
         # Setup StarinetConnector if enabled.
         if self.starinet_relay_boolean == 'True':
             self.starinet_relay_initialised = True
@@ -534,24 +530,14 @@ class Main(QtGui.QMainWindow):
                     self.status_message('system', 'WARNING',
                                         'Multiple Staribus instruments found defaulting to first.', None)
                     self.logger.info('Setting serial port to %s' % instrument_port[0])
-                    serial_port = instrument_port[0]
+                    self.instrument.instrument_staribus_port = instrument_port[0]
                     self.instrument_autodetect_status_boolean = True
                 else:
                     self.status_message('system', 'INFO',  ('%s instrument found.' %
                                                             self.instrument.instrument_identifier), None)
                     self.logger.info('Setting serial port to %s' % instrument_port[0])
-                    serial_port = instrument_port[0]
+                    self.instrument.instrument_staribus_port = instrument_port[0]
                     self.instrument_autodetect_status_boolean = True
-
-            if self.instrument_autodetect_status_boolean is True:
-                try:
-                    self.config.set('StaribusPort', 'staribus_port', serial_port)
-                    self.instrument.instrument_staribus_port = serial_port
-                except (ValueError, IOError) as msg:
-                    self.instrument_autodetect_status_boolean = False
-                    self.logger.critical('Fatal Error Unable to set serial port : %s' % msg)
-                    msg = ('Unable to set serial port : %s' % msg)
-                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
 
     # ----------------------------------------
     # Starinet connector loader method.
@@ -561,8 +547,7 @@ class Main(QtGui.QMainWindow):
         if self.command_interpreter is not None:
             self.command_interpreter.close()
 
-        if self.instrument_autodetect == 'True':
-            self.instrument_loader()
+        if self.instrument.instrument_staribus_autodetect == 'True':
             self.instrument_autodetector()
 
             if self.instrument_autodetect_status_boolean:
