@@ -355,10 +355,13 @@ class Main(QtGui.QMainWindow):
                 self.config.set('Application', 'instrument_identifier', item)
                 self.initialise_configuration()
                 self.instrument_item = item
+                self.ui.chartDecimateCheckBox.setEnabled(False)
+                self.ui.chartAutoRangeCheckBox.setEnabled(False)
+                self.ui.showLegend.setEnabled(False)
             else:
-                for name in self.ui.menuInstrument.actions():
-                    if name.text() == self.instrument_item:
-                        name.setChecked(True)
+                for action in self.ui.menuInstrument.actions():
+                    if action.text() == self.instrument_item:
+                        action.setChecked(True)
 
 
         else:
