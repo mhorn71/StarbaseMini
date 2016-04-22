@@ -230,66 +230,67 @@ class Main(QtGui.QMainWindow):
                 self.fatal_error = True
                 self.config_error = True
             else:
-                # Generate user configuration if it's missing.
+                # # Generate user configuration if it's missing.
+                # try:
+                #     self.config.check_conf_exists()
+                # except IOError as msg:
+                #     msg = ('Configuration IOError : %s' % str(msg))
+                #     self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+                #     self.fatal_error = True
+                #     self.config_error = True
+                # else:
+                #     # Upgrade release if need.
+                #     # self.config.release_update()
+                #     #  Load and initialise logging configuration from user configuration file.
+                logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
+                self.logger = logging.getLogger('main')
+
+                if self.first_initialisation is True:
+                    self.logger.info('**************************** APPLICATION STARTUP ****************************')
+
+                # Enable all UI components.
+                self.enable_all()
+
+                # Load application parameters.
                 try:
-                    self.config.check_conf_exists()
-                except IOError as msg:
-                    msg = ('Configuration IOError : %s' % str(msg))
-                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+                    self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
+                    self.logger.info('############################## Initialising ' + self.instrument_identifier +
+                                     ' ##############################')
+                    self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
+                    self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
+                    self.starinet_address = self.config.get('StarinetRelay', 'address')
+                    self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
+                    self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
+                    self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
+                    self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
+                except (ValueError, KeyError, ValueError) as msg:
+                    self.logger.critical('Configuration ValueError : %s' % str(msg))
+                    msg = ('Configuration ValueError : %s exiting.' % str(msg))
                     self.fatal_error = True
-                    self.config_error = True
+                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
                 else:
-                    # Upgrade release if need.
-                    self.config.release_update()
-                    #  Load and initialise logging configuration from user configuration file.
-                    logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
-                    self.logger = logging.getLogger('main')
+                    self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
+                    self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
+                    self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
+                    self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
+                    self.logger.info('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
+                    self.logger.info('Initial parameter for staribus2starinet_relay_boolean : %s' %
+                                     self.staribus2starinet_relay_boolean)
+                    self.logger.info('Initial parameter for staribus2starinet_relay_address : %s' %
+                                     self.staribus2starinet_address)
+                    self.logger.info('Initial parameter for staribus2starinet_relay_port : %s' %
+                                     self.staribus2starinet_port)
 
-                    if self.first_initialisation is True:
-                        self.logger.info('**************************** APPLICATION STARTUP ****************************')
-
-                    # Enable all UI components.
-                    self.enable_all()
-
-                    # Load application parameters.
-                    try:
-                        self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
-                        self.logger.info('############################## Initialising ' + self.instrument_identifier +
-                                         ' ##############################')
-                        self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
-                        self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
-                        self.starinet_address = self.config.get('StarinetRelay', 'address')
-                        self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
-                        self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
-                        self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
-                        self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
-                    except (ValueError, KeyError, ValueError) as msg:
-                        self.logger.critical('Configuration ValueError : %s' % str(msg))
-                        msg = ('Configuration ValueError : %s exiting.' % str(msg))
-                        self.fatal_error = True
-                        self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-                    else:
-                        self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
-                        self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
-                        self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
-                        self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
-                        self.logger.info('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
-                        self.logger.info('Initial parameter for staribus2starinet_relay_boolean : %s' %
-                                         self.staribus2starinet_relay_boolean)
-                        self.logger.info('Initial parameter for staribus2starinet_relay_address : %s' %
-                                         self.staribus2starinet_address)
-                        self.logger.info('Initial parameter for staribus2starinet_relay_port : %s' %
-                                         self.staribus2starinet_port)
-
-                        # Initialise configurationManager & charting.
-                        if self.config_error is False:
-                            self.configurationManager = config_utilities.ConfigManager()
+                    # Initialise configurationManager & charting.
+                    if self.config_error is False:
+                        self.configurationManager = config_utilities.ConfigManager()
 
                 if self.fatal_error is False:
                     self.instrument_loader()
 
-                if self.instrument.instrument_staribus_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
-                    self.instrument_autodetector()
+
+                # if self.instrument.instrument_staribus_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
+                #     self.instrument_autodetector()
 
                 if self.fatal_error is False:
                     self.datatranslator_loader()
@@ -432,6 +433,10 @@ class Main(QtGui.QMainWindow):
                 else:
                     self.logger.debug('Instrument XML found at : %s' % file)
                     self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
+
+        if self.instrument is not None:
+            if self.instrument.instrument_staribus_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
+                self.instrument_autodetector()
 
         # Setup StarinetConnector if enabled.
         if self.starinet_relay_boolean == 'True':

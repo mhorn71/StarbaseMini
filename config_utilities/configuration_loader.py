@@ -18,7 +18,6 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import configparser
-import config_utilities.release_update as rlu
 from os import path, makedirs
 
 
@@ -58,19 +57,24 @@ class ConfigLoader:
                 raise OSError(msg)
             else:
                 self.config_home = home
+                import config_utilities.release_update as rlu
         else:
             self.config_home = home
+            import config_utilities.release_update as rlu
 
         self.conf_file = self.config_home + self.config_file
+
+        self.check_conf_exists()
 
     def check_conf_exists(self):
         '''
         :raises: IOError in the event it can't find or write to configuration file.
         '''
         
-        # self.conf_file = self.config_home + self.config_file
+        self.conf_file = self.config_home + self.config_file
 
         if not path.exists(self.conf_file):
+            print('Conf file doesnt exist')
             try:
                 open(self.conf_file, 'a').close()
             except IOError as msg:
@@ -85,7 +89,7 @@ class ConfigLoader:
                 # Add Application Data Save Path
                 self.config.add_section('Application')
                 self.config.set('Application', 'instrument_data_path', '')
-                # self.config.set('Application', 'instrument_identifier', 'Staribus 4 Channel Logger')
+                self.config.set('Application', 'instrument_identifier', 'Staribus 4 Channel Logger')
                 self.config.set('Application', 'instrument_autodetect', 'True')
 
                 # Add Staribus Port section
