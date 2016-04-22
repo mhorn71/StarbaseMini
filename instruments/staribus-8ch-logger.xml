@@ -436,7 +436,7 @@
             <CommandVariant>0000</CommandVariant>
             <Description>Allowed values: Soft, Defaults, Staribus.</Description>
             <SendToPort>True</SendToPort>
-            <BlockedDataCommand>1234</BlockedDataCommand>
+            <BlockedDataCommand>None</BlockedDataCommand>
             <SteppedDataCommand>None</SteppedDataCommand>
             <Parameter>
                 <Choices>Soft,Defaults</Choices>
