@@ -369,6 +369,13 @@ class Main(QtGui.QMainWindow):
             self.initialise_configuration()
             self.instrument_item = item
 
+            # if self.instrument.instrument_number_of_channels != self.chart.channel_count:
+            #     pass
+            # else:
+            #     self.ui.chartDecimateCheckBox.setEnabled(False)
+            #     self.ui.showLegend.setEnabled(False)
+
+
     # ----------------------------------------
     # Instrument loader method.
     # ----------------------------------------
@@ -1289,7 +1296,7 @@ class Main(QtGui.QMainWindow):
         variant = self.instrument.command_dict[ident]['Variant']
         send_to_port = self.instrument.command_dict[ident]['SendToPort']
 
-        self.logger.info('Executing command : %s' % ident)
+        self.logger.info('################### Executing command : %s ###################' % ident)
 
         if self.instrument.command_dict[ident]['BlockedData'] == 'None':
             blocked_data = None
@@ -1373,6 +1380,10 @@ class Main(QtGui.QMainWindow):
                     self.ui.showLegend.setChecked(False)
                 else:
                     self.status_message(ident, chart_response[0], chart_response[1], None)
+        elif ident == 'getA2D' and response[0].startswith('SUCCESS'):
+            a2dmessage = 'Channel ID ' + str(parameter) + ' = ' + response[1] + 'mV'
+            self.status_message(ident, response[0], a2dmessage, units)
+
         else:
             self.status_message(ident, response[0], response[1], units)
 
