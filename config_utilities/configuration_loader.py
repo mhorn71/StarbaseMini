@@ -74,7 +74,6 @@ class ConfigLoader:
         self.conf_file = self.config_home + self.config_file
 
         if not path.exists(self.conf_file):
-            print('Conf file doesnt exist')
             try:
                 open(self.conf_file, 'a').close()
             except IOError as msg:
