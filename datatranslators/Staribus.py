@@ -309,6 +309,18 @@ class StaribusParser:
             # 0 - 255 ... 000 - 255
             param = param.zfill(3)
             self.logger.debug('Integer conversion padding to three places.')
+        if re.match('^00000000$', command):  # reset
+
+            if param == 'soft':
+                param = '0'
+                self.logger.debug('Reset soft converted to 0')
+            elif param == 'defaults':
+                param = '1'
+                self.logger.debug('Reset defaults converted to 1')
+            else:
+                param = '2'
+                self.logger.debug('Reset unknown converted to 2')
+
         elif re.match('^true$', param):  # boolean true
             self.logger.debug('Boolean true conversion to Y')
             param = 'Y'
