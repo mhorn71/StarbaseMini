@@ -49,7 +49,7 @@ class Instrument:
 
                 module_list: ['Module Identifier', 'Description', 'Module CB'
                 command_list: ['Command Identifier, 'Description', 'Command Code']
-                command_dict: {command_ident: {'Base': plugin_cmdbase,
+                command_dict: {command_ident: {plugin_cmdbase: {'Base': plugin_cmdbase,
                                                  'Code': command_code,
                                                  'Variant': command_variant,
                                                  'Description': command_desc,
@@ -61,7 +61,7 @@ class Instrument:
                                                                 'Tooltip': parameter_tooltip},
                                                  'Response': {'DataType': response_datatype,
                                                               'Units': response_units,
-                                                              'Regex': response_regex}}}
+                                                              'Regex': response_regex}}}}
 
                 channel_names: list
                 channel_colours: list
@@ -338,7 +338,7 @@ class Instrument:
                 # This won't work for multiple parameters so needs a rewrite at some point.
 
                 logger.debug('Adding command to command_dict')
-                self.command_dict.update({command_ident: {'Base': plugin_cmdbase,
+                self.command_dict.update({command_ident: { plugin_cmdbase : {'Base': plugin_cmdbase,
                                                           'Code': command_code,
                                                           'Variant': command_variant,
                                                           'Description': command_desc,
@@ -350,7 +350,7 @@ class Instrument:
                                                                          'Tooltip': parameter_tooltip},
                                                           'Response': {'DataTypeName': response_datatype,
                                                                        'Units': response_units,
-                                                                       'Regex': response_regex}}})
+                                                                       'Regex': response_regex}}}})
                 logger.debug('Appending to tmp_command list %s' % command_ident)
                 tmp_command.append(command_ident)
 

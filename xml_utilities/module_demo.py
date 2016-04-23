@@ -83,21 +83,23 @@ else:
     print(instrument.command_list)
     print('----------------------------------------------------')
 
+    base = instrument.module_list[0][2]
+
     i = instrument.command_list[0][0]
 
-    CB = instrument.command_dict[i]['Base']
-    CC = instrument.command_dict[i]['Code']
-    CV = instrument.command_dict[i]['Variant']
-    DESC = instrument.command_dict[i]['Description']
-    STP = instrument.command_dict[i]['SendToPort']
-    BLK = instrument.command_dict[i]['BlockedData']
-    STC = instrument.command_dict[i]['SteppedData']
-    PCH = instrument.command_dict[i]['Parameters']['Choices']
-    PRX = instrument.command_dict[i]['Parameters']['Regex']
-    PTT = instrument.command_dict[i]['Parameters']['Tooltip']
-    RDT = instrument.command_dict[i]['Response']['DataType']
-    RUT = instrument.command_dict[i]['Response']['Units']
-    RRX = instrument.command_dict[i]['Response']['Regex']
+    CB = instrument.command_dict[i][base]['Base']
+    CC = instrument.command_dict[i][base]['Code']
+    CV = instrument.command_dict[i][base]['Variant']
+    DESC = instrument.command_dict[i][base]['Description']
+    STP = instrument.command_dict[i][base]['SendToPort']
+    BLK = instrument.command_dict[i][base]['BlockedData']
+    STC = instrument.command_dict[i][base]['SteppedData']
+    PCH = instrument.command_dict[i][base]['Parameters']['Choices']
+    PRX = instrument.command_dict[i][base]['Parameters']['Regex']
+    PTT = instrument.command_dict[i][base]['Parameters']['Tooltip']
+    RDT = instrument.command_dict[i][base]['Response']['DataType']
+    RUT = instrument.command_dict[i][base]['Response']['Units']
+    RRX = instrument.command_dict[i][base]['Response']['Regex']
 
     print('Command Name : %s' % i)
     print('Command Base : %s' % CB)
