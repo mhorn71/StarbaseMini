@@ -711,7 +711,7 @@ class Main(QtGui.QMainWindow):
             for cmd in self.instrument.command_list[plugin_index]:
                 self.logger.debug('Populate command combobox with : %s' % str(cmd))
                 self.ui.commandCombobox.addItem(cmd)
-                self.ui.commandCombobox.setItemData(index, self.instrument.command_dict[cmd]['Description'],
+                self.ui.commandCombobox.setItemData(index, self.instrument.command_dict[cmd][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Description'],
                                                     QtCore.Qt.ToolTipRole)
 
                 index += 1
@@ -730,7 +730,7 @@ class Main(QtGui.QMainWindow):
         self.ui.commandParameter.clear()
         try:
             # Check if command has choices.
-            if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Choices'] == 'None':
+            if self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Choices'] == 'None':
                 self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
                 self.ui.choicesComboBox.clear()
                 self.ui.choicesComboBox.setEnabled(False)
@@ -746,7 +746,7 @@ class Main(QtGui.QMainWindow):
 
                 # Split the choices up into list.
                 choices = \
-                    (self.instrument.command_dict[self.ui.commandCombobox.currentText()]
+                    (self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]
                      ['Parameters']['Choices'].split(','))
                 self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :',
                                   str(choices))
@@ -755,11 +755,11 @@ class Main(QtGui.QMainWindow):
                 # Add choices tool tips to combo box.
                 for i in range(len(choices)):
                     self.ui.choicesComboBox.setItemData(i, (
-                        self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Tooltip']),
+                        self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Tooltip']),
                                                         QtCore.Qt.ToolTipRole)
 
             # Check if command has parameters.
-            if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
+            if self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Regex'] == 'None':
                 self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
                 self.ui.commandParameter.clear()
                 self.ui.commandParameter.setEnabled(False)
@@ -772,9 +772,9 @@ class Main(QtGui.QMainWindow):
                     self.ui.executeButton.setEnabled(False)
 
                 self.ui.commandParameter.setToolTip(self.instrument.command_dict[self.ui.commandCombobox.currentText()]
-                                                    ['Parameters']['Tooltip'])
+                                                    [self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Tooltip'])
                 self.parameter_regex = \
-                    self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex']
+                    self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Regex']
 
                 self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex :',
                                   self.parameter_regex)
@@ -1223,7 +1223,7 @@ class Main(QtGui.QMainWindow):
             pass
         if self.disable_all_boolean is False and self.load_finish is True:
             try:
-                if self.instrument.command_dict[self.ui.commandCombobox.currentText()]['Parameters']['Regex'] == 'None':
+                if self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Regex'] == 'None':
                     self.logger.debug('Command parameters regex is None setting parameter entry box to gray')
                     sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
                     self.logger.debug('Enabling execute button')
@@ -1291,42 +1291,42 @@ class Main(QtGui.QMainWindow):
     def execute_triggered(self):
         addr = self.instrument.instrument_staribus_address
         ident = self.ui.commandCombobox.currentText()
-        base = self.instrument.command_dict[ident]['Base']
-        code = self.instrument.command_dict[ident]['Code']
-        variant = self.instrument.command_dict[ident]['Variant']
-        send_to_port = self.instrument.command_dict[ident]['SendToPort']
+        base = self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())
+        code = self.instrument.command_dict[ident][base]['Code']
+        variant = self.instrument.command_dict[ident][base]['Variant']
+        send_to_port = self.instrument.command_dict[ident][base]['SendToPort']
 
         self.logger.info('################### Executing command : %s ###################' % ident)
 
-        if self.instrument.command_dict[ident]['BlockedData'] == 'None':
+        if self.instrument.command_dict[ident][base]['BlockedData'] == 'None':
             blocked_data = None
         else:
-            blocked_data = self.instrument.command_dict[ident]['BlockedData']
+            blocked_data = self.instrument.command_dict[ident][base]['BlockedData']
 
-        if self.instrument.command_dict[ident]['SteppedData'] == 'None':
+        if self.instrument.command_dict[ident][base]['SteppedData'] == 'None':
             stepped_data = None
         else:
             stepped_data = self.instrument.command_dict[ident]['SteppedData']
 
-        if self.instrument.command_dict[ident]['Parameters']['Choices'] == 'None':
+        if self.instrument.command_dict[ident][base]['Parameters']['Choices'] == 'None':
             choice = None
         else:
             choice = self.ui.choicesComboBox.currentText()
 
-        if self.instrument.command_dict[ident]['Parameters']['Regex'] == 'None':
+        if self.instrument.command_dict[ident][base]['Parameters']['Regex'] == 'None':
             parameter = None
         else:
             parameter = self.ui.commandParameter.text()
 
-        if self.instrument.command_dict[ident]['Response']['Units'] == 'None':
+        if self.instrument.command_dict[ident][base]['Response']['Units'] == 'None':
             units = None
         else:
-            units = self.instrument.command_dict[ident]['Response']['Units']
+            units = self.instrument.command_dict[ident][base]['Response']['Units']
 
-        if self.instrument.command_dict[ident]['Response']['Regex'] == 'None':
+        if self.instrument.command_dict[ident][base]['Response']['Regex'] == 'None':
             response_regex = None
         else:
-            response_regex = self.instrument.command_dict[ident]['Response']['Regex']
+            response_regex = self.instrument.command_dict[ident][base]['Response']['Regex']
 
         if self.chart_warning == 0:
             if sys.platform.startswith('win32'):
