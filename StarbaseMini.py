@@ -1300,33 +1300,45 @@ class Main(QtGui.QMainWindow):
 
         if self.instrument.command_dict[ident][base]['BlockedData'] == 'None':
             blocked_data = None
+            self.logger.debug('Blocked data is None')
         else:
             blocked_data = self.instrument.command_dict[ident][base]['BlockedData']
+            self.logger.debug('Blocked data is ' + str(blocked_data))
 
         if self.instrument.command_dict[ident][base]['SteppedData'] == 'None':
             stepped_data = None
+            self.logger.debug('Stepped data is None')
         else:
             stepped_data = self.instrument.command_dict[ident]['SteppedData']
+            self.logger.debug('Stepped data is ' + str(stepped_data))
 
         if self.instrument.command_dict[ident][base]['Parameters']['Choices'] == 'None':
             choice = None
+            self.logger.debug('Choice is None')
         else:
             choice = self.ui.choicesComboBox.currentText()
+            self.logger.debug('Choice is ' + str(choice))
 
         if self.instrument.command_dict[ident][base]['Parameters']['Regex'] == 'None':
             parameter = None
+            self.logger.debug('Parameter is None')
         else:
             parameter = self.ui.commandParameter.text()
+            self.logger.debug('Parameter is ' + str(parameter))
 
         if self.instrument.command_dict[ident][base]['Response']['Units'] == 'None':
             units = None
+            self.logger.debug('Units is None')
         else:
             units = self.instrument.command_dict[ident][base]['Response']['Units']
+            self.logger.debug('Units is ' + str(units))
 
         if self.instrument.command_dict[ident][base]['Response']['Regex'] == 'None':
             response_regex = None
+            self.logger.debug('Response regex is None')
         else:
             response_regex = self.instrument.command_dict[ident][base]['Response']['Regex']
+            self.logger.debug('Response regex is ' + str(response_regex))
 
         if self.chart_warning == 0:
             if sys.platform.startswith('win32'):
