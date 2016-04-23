@@ -28,7 +28,6 @@ import dao
 
 class CommandInterpreter:
     def __init__(self):
-    # def __init__(self, parent):
         '''
         Initialise the CommandInterpreter.
         :param parent: Parent Object which should be the UI Object.
@@ -37,9 +36,6 @@ class CommandInterpreter:
 
         self.logger = logging.getLogger('interpreter.CommandInterpreter')
 
-        # Parent object so we can set status messages for blocked and stepped commands.
-        # self.parent = parent
-        # self.instrument = self.parent.instrument
         self.data_type = 'data'
 
         self.response_regex = None
@@ -240,19 +236,19 @@ class CommandInterpreter:
                 return 'INVALID_XML', 'Command should consist of two sub commands only'
 
             # Iter over dict keys to get ident of parent command.
-            for key in self.instrument.command_dict.keys():
-                if self.instrument.command_dict[key]['Code'] == code and \
-                        self.instrument.command_dict[key]['Base'] == base:
-                    parent_ident = key
+            for command_name in self.instrument.command_dict.keys():
+                for CB in self.instrument.command_dict[command_name]:
+                    if CB == base:
+                        if self.instrument.command_dict[command_name][CB]['Code'] == code:
+                            parent_ident = command_name
 
-            # Iterate over dict keys and get command idents
-            for key in self.instrument.command_dict.keys():
-                if self.instrument.command_dict[key]['Code'] == command_codes[0] and \
-                        self.instrument.command_dict[key]['Base'] == base:
-                    primary_command_key = key
-                elif self.instrument.command_dict[key]['Code'] == command_codes[1] and \
-                        self.instrument.command_dict[key]['Base'] == base:
-                    secondary_command_key = key
+            for command_name in self.instrument.command_dict.keys():
+                for CB in self.instrument.command_dict[command_name]:
+                    if CB == base:
+                        if self.instrument.command_dict[command_name][CB]['Code'] == command_codes[0]:
+                            primary_command_key = command_name
+                        elif self.instrument.command_dict[command_name][CB]['Code'] == command_codes[1]:
+                            secondary_command_key = command_name
 
             if primary_command_key is None:
                 return 'INVALID_XML', 'Primary command not found'
@@ -263,15 +259,15 @@ class CommandInterpreter:
             self.logger.debug('Primary Command Ident : %s' % primary_command_key)
             self.logger.debug('Primary CodeBase : %s' % base)
             self.logger.debug('Primary CommandCode : %s' % command_codes[0])
-            pri_variant = self.instrument.command_dict[primary_command_key]['Variant']
+            pri_variant = self.instrument.command_dict[primary_command_key][base]['Variant']
             self.logger.debug('Primary variant : %s' % pri_variant)
-            pri_choice = self.instrument.command_dict[primary_command_key]['Parameters']['Choices']
+            pri_choice = self.instrument.command_dict[primary_command_key][base]['Parameters']['Choices']
             self.logger.debug('Primary choices : %s' % pri_choice)
-            pri_parameter = self.instrument.command_dict[primary_command_key]['Parameters']['Regex']
+            pri_parameter = self.instrument.command_dict[primary_command_key][base]['Parameters']['Regex']
             self.logger.debug('Primary parameter : %s' % pri_parameter )
-            pri_stp = self.instrument.command_dict[primary_command_key]['SendToPort']
+            pri_stp = self.instrument.command_dict[primary_command_key][base]['SendToPort']
             self.logger.debug('Primary SendToPort : %s' % pri_stp)
-            pri_datatype = self.instrument.command_dict[primary_command_key]['Response']['DataTypeName']
+            pri_datatype = self.instrument.command_dict[primary_command_key][base]['Response']['DataTypeName']
             self.logger.debug('Primary DataTypeName : %s' % pri_datatype)
 
             if pri_choice != 'None':
@@ -280,7 +276,7 @@ class CommandInterpreter:
             if pri_parameter != 'None':
                 return 'INVALID_XML', 'Blocked primary command has a parameter which isn\'t allowed.'
 
-            self.response_regex = self.instrument.command_dict[primary_command_key]['Response']['Regex']
+            self.response_regex = self.instrument.command_dict[primary_command_key][base]['Response']['Regex']
             self.logger.debug('Primary response regex : %s' % self.response_regex)
 
             primary_command_response = self.single(addr, base, command_codes[0], pri_variant, None, None, pri_stp)
@@ -311,8 +307,8 @@ class CommandInterpreter:
             self.logger.debug('Secondary Command Ident : %s' % secondary_command_key)
 
             # This line is wrong it should be Response Regex not Parameters.
-            secondary_parameter_regex = self.instrument.command_dict[secondary_command_key]['Parameters']['Regex']
-            secondary_response_regex = self.instrument.command_dict[secondary_command_key]['Response']['Regex']
+            secondary_parameter_regex = self.instrument.command_dict[secondary_command_key][base]['Parameters']['Regex']
+            secondary_response_regex = self.instrument.command_dict[secondary_command_key][base]['Response']['Regex']
 
             self.logger.debug('Secondary response regex : %s' % secondary_response_regex)
 
@@ -342,9 +338,9 @@ class CommandInterpreter:
                     self.logger.debug('PREMATURE_TERMINATION : Secondary command expected iterable primary response')
                     return 'PREMATURE_TERMINATION', 'Secondary command expected iterable primary response'
 
-                sec_variant = self.instrument.command_dict[secondary_command_key]['Variant']
+                sec_variant = self.instrument.command_dict[secondary_command_key][base]['Variant']
                 self.logger.debug('Secondary command variant : %s' % sec_variant)
-                sec_stp = self.instrument.command_dict[secondary_command_key]['SendToPort']
+                sec_stp = self.instrument.command_dict[secondary_command_key][base]['SendToPort']
                 self.logger.debug('Secondary SendToPort : %s' % sec_stp)
 
                 if self.data_state():
