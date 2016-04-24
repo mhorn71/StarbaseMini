@@ -49,8 +49,8 @@ class Instrument:
 
                 module_list: ['Module Identifier', 'Description', 'Module CB'
                 command_list: ['Command Identifier, 'Description', 'Command Code']
-                command_dict: {command_ident: {plugin_cmdbase: {'Base': plugin_cmdbase,
-                                                 'Code': command_code,
+                command_dict: {plugin_cmdbase: {command_code: {
+                                                 'Identifier': command_ident,
                                                  'Variant': command_variant,
                                                  'Description': command_desc,
                                                  'SendToPort': command_stp,
@@ -338,21 +338,24 @@ class Instrument:
                 # This won't work for multiple parameters so needs a rewrite at some point.
 
                 logger.debug('Adding command to command_dict')
-                self.command_dict.update({command_ident: { plugin_cmdbase : {'Base': plugin_cmdbase,
-                                                          'Code': command_code,
-                                                          'Variant': command_variant,
-                                                          'Description': command_desc,
-                                                          'SendToPort': command_stp,
-                                                          'BlockedData': command_blocked,
-                                                          'SteppedData': command_stepped,
-                                                          'Parameters': {'Choices': parameter_choices,
-                                                                         'Regex': parameter_regex,
-                                                                         'Tooltip': parameter_tooltip},
-                                                          'Response': {'DataTypeName': response_datatype,
-                                                                       'Units': response_units,
-                                                                       'Regex': response_regex}}}})
+
+                self.command_dict.setdefault(plugin_cmdbase, []).append({command_code: {
+                                                                        'Identifier': command_ident,
+                                                                        'Variant': command_variant,
+                                                                        'Description': command_desc,
+                                                                        'SendToPort': command_stp,
+                                                                        'BlockedData': command_blocked,
+                                                                        'SteppedData': command_stepped,
+                                                                        'Parameters': {'Choices': parameter_choices,
+                                                                                        'Regex': parameter_regex,
+                                                                                        'Tooltip': parameter_tooltip},
+                                                                        'Response': {
+                                                                                'DataTypeName': response_datatype,
+                                                                                'Units': response_units,
+                                                                                'Regex': response_regex}}})
+
                 logger.debug('Appending to tmp_command list %s' % command_ident)
-                tmp_command.append(command_ident)
+                tmp_command.append([command_ident,command_desc,command_code])
 
             logger.debug('Appending tmp_command list to command_list : %s' % str(tmp_command))
             self.command_list.append(tmp_command)
