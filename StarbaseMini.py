@@ -231,17 +231,6 @@ class Main(QtGui.QMainWindow):
                 self.config_error = True
             else:
                 # # Generate user configuration if it's missing.
-                # try:
-                #     self.config.check_conf_exists()
-                # except IOError as msg:
-                #     msg = ('Configuration IOError : %s' % str(msg))
-                #     self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-                #     self.fatal_error = True
-                #     self.config_error = True
-                # else:
-                #     # Upgrade release if need.
-                #     # self.config.release_update()
-                #     #  Load and initialise logging configuration from user configuration file.
                 logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
                 self.logger = logging.getLogger('main')
 
@@ -652,6 +641,9 @@ class Main(QtGui.QMainWindow):
 
     def status_message(self, ident, status, response_value, units):
 
+        self.logger.info('################### ' + str(ident) + ' ' + str(status) + ' ' + str(response_value) +
+                         ' ###################')
+
         dateTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         self.ui.statusMessage.insertRow(self.statusMessageIndex)
@@ -715,9 +707,8 @@ class Main(QtGui.QMainWindow):
 
             for cmd in self.instrument.command_list[plugin_index]:
                 self.logger.debug('Populate command combobox with : %s' % str(cmd))
-                self.ui.commandCombobox.addItem(cmd)
-                self.ui.commandCombobox.setItemData(index, self.instrument.command_dict[cmd][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Description'],
-                                                    QtCore.Qt.ToolTipRole)
+                self.ui.commandCombobox.addItem(cmd[0], cmd[2])
+                self.ui.commandCombobox.setItemData(index, cmd[1], QtCore.Qt.ToolTipRole)
 
                 index += 1
         except KeyError as msg:
@@ -733,68 +724,70 @@ class Main(QtGui.QMainWindow):
     def command_parameter_populate(self):
         self.command_parameter_trip = 0
         self.ui.commandParameter.clear()
+
         try:
-            # Check if command has choices.
-            if self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Choices'] == 'None':
-                self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
-                self.ui.choicesComboBox.clear()
-                self.ui.choicesComboBox.setEnabled(False)
+            for command in self.instrument.command_dict[self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]:
+                for key in command.keys():
+                    if key == self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()):
+                        try:
+                            # Check if command has choices.
+                            if command[key]['Parameters']['Choices'] == 'None':
+                                self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
+                                self.ui.choicesComboBox.clear()
+                                self.ui.choicesComboBox.setEnabled(False)
 
-                if self.disable_all_boolean is False:
-                    self.ui.executeButton.setEnabled(True)
-            else:
-                self.ui.choicesComboBox.clear()
+                                if self.disable_all_boolean is False:
+                                    self.ui.executeButton.setEnabled(True)
+                            else:
+                                self.ui.choicesComboBox.clear()
 
-                if self.disable_all_boolean is False:
-                    self.ui.choicesComboBox.setEnabled(True)
-                    self.ui.executeButton.setEnabled(True)
+                                if self.disable_all_boolean is False:
+                                    self.ui.choicesComboBox.setEnabled(True)
+                                    self.ui.executeButton.setEnabled(True)
 
-                # Split the choices up into list.
-                choices = \
-                    (self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]
-                     ['Parameters']['Choices'].split(','))
-                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :',
-                                  str(choices))
-                self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
+                                # Split the choices up into list.
+                                choices = command[key]['Parameters']['Choices'].split(',')
+                                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :',
+                                                  str(choices))
+                                self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
 
-                # Add choices tool tips to combo box.
-                for i in range(len(choices)):
-                    self.ui.choicesComboBox.setItemData(i, (
-                        self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Tooltip']),
-                                                        QtCore.Qt.ToolTipRole)
+                                # Add choices tool tips to combo box.
+                                for i in range(len(choices)):
+                                    self.ui.choicesComboBox.setItemData(i, (command[key]['Parameters']['Tooltip']),
+                                                                        QtCore.Qt.ToolTipRole)
 
-            # Check if command has parameters.
-            if self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Regex'] == 'None':
-                self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
-                self.ui.commandParameter.clear()
-                self.ui.commandParameter.setEnabled(False)
-                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
-            else:
-                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+                            # Check if command has parameters.
+                            if command[key]['Parameters']['Regex'] == 'None':
+                                self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
+                                self.ui.commandParameter.clear()
+                                self.ui.commandParameter.setEnabled(False)
+                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
+                            else:
+                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
 
-                if self.disable_all_boolean is False:
-                    self.ui.commandParameter.setEnabled(True)
-                    self.ui.executeButton.setEnabled(False)
+                                if self.disable_all_boolean is False:
+                                    self.ui.commandParameter.setEnabled(True)
+                                    self.ui.executeButton.setEnabled(False)
 
-                self.ui.commandParameter.setToolTip(self.instrument.command_dict[self.ui.commandCombobox.currentText()]
-                                                    [self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Tooltip'])
-                self.parameter_regex = \
-                    self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Regex']
+                                self.ui.commandParameter.setToolTip(command[key]['Parameters']['Tooltip'])
+                                self.parameter_regex = command[key]['Parameters']['Regex']
 
-                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex :',
-                                  self.parameter_regex)
+                                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex :',
+                                                  self.parameter_regex)
 
-                regexp = QtCore.QRegExp(self.parameter_regex)
-                validator = QtGui.QRegExpValidator(regexp)
-                self.ui.commandParameter.setValidator(validator)
-        except KeyError as msg:
-            if self.command_parameter_trip == 0:
-                self.logger.warning('First Run ignore KeyError : command populate parameters : %s' % str(msg))
-            else:
-                self.logger.critical('ERROR : Command Parameter Populate KeyError : %s' % str(msg))
-                self.status_message('system', 'ERROR', ('Command Parameter KeyError : %s' % str(msg)), None)
-        else:
-            self.command_parameter_trip += 1
+                                regexp = QtCore.QRegExp(self.parameter_regex)
+                                validator = QtGui.QRegExpValidator(regexp)
+                                self.ui.commandParameter.setValidator(validator)
+                        except KeyError as msg:
+                            if self.command_parameter_trip == 0:
+                                self.logger.warning('First Run ignore KeyError : command populate parameters : %s' % str(msg))
+                            else:
+                                self.logger.critical('ERROR : Command Parameter Populate KeyError : %s' % str(msg))
+                                self.status_message('system', 'ERROR', ('Command Parameter KeyError : %s' % str(msg)), None)
+                        else:
+                            self.command_parameter_trip += 1
+        except KeyError:
+            pass
 
     def chart_control_panel(self, number_of_channels, translated):
 
@@ -1227,35 +1220,41 @@ class Main(QtGui.QMainWindow):
         except AttributeError:
             pass
         if self.disable_all_boolean is False and self.load_finish is True:
-            try:
-                if self.instrument.command_dict[self.ui.commandCombobox.currentText()][self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]['Parameters']['Regex'] == 'None':
-                    self.logger.debug('Command parameters regex is None setting parameter entry box to gray')
-                    sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
-                    self.logger.debug('Enabling execute button')
-                    self.ui.executeButton.setEnabled(True)
-                else:
-                    self.ui.executeButton.setEnabled(False)
-                    if state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) == 0:
-                        sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-                    elif state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) > 0:
-                        color = '#c4df9b'  # green
-                        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-                        self.ui.executeButton.setEnabled(True)
-                    elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) == 0:
-                        sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-                    elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) > 0:
-                        color = '#fff79a'  # yellow
-                        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-                    else:
-                        sender.setStyleSheet('QLineEdit { background-color: #f6989d')
-            except KeyError:
-                if self.parameter_check_state_trip == 0:
-                    pass
-                else:
-                    self.logger.debug('Command parameters key error setting parameter entry box to gray')
-                    sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
-            else:
-                self.parameter_check_state_trip += 1
+
+            for command in self.instrument.command_dict[
+                    self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]:
+
+                for key in command.keys():
+                    if key == self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()):
+                        try:
+                            if command[key]['Parameters']['Regex'] == 'None':
+                                self.logger.debug('Command parameters regex is None setting parameter entry box to gray')
+                                sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+                                self.logger.debug('Enabling execute button')
+                                self.ui.executeButton.setEnabled(True)
+                            else:
+                                self.ui.executeButton.setEnabled(False)
+                                if state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) == 0:
+                                    sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+                                elif state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) > 0:
+                                    color = '#c4df9b'  # green
+                                    sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+                                    self.ui.executeButton.setEnabled(True)
+                                elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) == 0:
+                                    sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+                                elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) > 0:
+                                    color = '#fff79a'  # yellow
+                                    sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+                                else:
+                                    sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+                        except KeyError:
+                            if self.parameter_check_state_trip == 0:
+                                pass
+                            else:
+                                self.logger.debug('Command parameters key error setting parameter entry box to gray')
+                                sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+                        else:
+                            self.parameter_check_state_trip += 1
 
     # ----------------------------------------
     # Menu trigger methods.
@@ -1295,114 +1294,120 @@ class Main(QtGui.QMainWindow):
 
     def execute_triggered(self):
         addr = self.instrument.instrument_staribus_address
-        ident = self.ui.commandCombobox.currentText()
-        base = self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())
-        code = self.instrument.command_dict[ident][base]['Code']
-        variant = self.instrument.command_dict[ident][base]['Variant']
-        send_to_port = self.instrument.command_dict[ident][base]['SendToPort']
 
-        self.logger.info('################### Executing command : %s ###################' % ident)
+        for command in self.instrument.command_dict[
+            self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]:
 
-        if self.instrument.command_dict[ident][base]['BlockedData'] == 'None':
-            blocked_data = None
-            self.logger.debug('Blocked data is None')
-        else:
-            blocked_data = self.instrument.command_dict[ident][base]['BlockedData']
-            self.logger.debug('Blocked data is ' + str(blocked_data))
+            for key in command.keys():
+                if key == self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()):
 
-        if self.instrument.command_dict[ident][base]['SteppedData'] == 'None':
-            stepped_data = None
-            self.logger.debug('Stepped data is None')
-        else:
-            stepped_data = self.instrument.command_dict[ident]['SteppedData']
-            self.logger.debug('Stepped data is ' + str(stepped_data))
+                    ident = self.ui.commandCombobox.currentText()
+                    base = self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())
+                    code = self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex())
+                    variant = command[key]['Variant']
+                    send_to_port = command[key]['SendToPort']
 
-        if self.instrument.command_dict[ident][base]['Parameters']['Choices'] == 'None':
-            choice = None
-            self.logger.debug('Choice is None')
-        else:
-            choice = self.ui.choicesComboBox.currentText()
-            self.logger.debug('Choice is ' + str(choice))
+                    self.logger.info('################### Executing command : %s ###################' % ident)
 
-        if self.instrument.command_dict[ident][base]['Parameters']['Regex'] == 'None':
-            parameter = None
-            self.logger.debug('Parameter is None')
-        else:
-            parameter = self.ui.commandParameter.text()
-            self.logger.debug('Parameter is ' + str(parameter))
+                    if command[key]['BlockedData'] == 'None':
+                        blocked_data = None
+                        self.logger.debug('Blocked data is None')
+                    else:
+                        blocked_data = command[key]['BlockedData']
+                        self.logger.debug('Blocked data is ' + str(blocked_data))
 
-        if self.instrument.command_dict[ident][base]['Response']['Units'] == 'None':
-            units = None
-            self.logger.debug('Units is None')
-        else:
-            units = self.instrument.command_dict[ident][base]['Response']['Units']
-            self.logger.debug('Units is ' + str(units))
+                    if command[key]['SteppedData'] == 'None':
+                        stepped_data = None
+                        self.logger.debug('Stepped data is None')
+                    else:
+                        stepped_data = command[key]['SteppedData']
+                        self.logger.debug('Stepped data is ' + str(stepped_data))
 
-        if self.instrument.command_dict[ident][base]['Response']['Regex'] == 'None':
-            response_regex = None
-            self.logger.debug('Response regex is None')
-        else:
-            response_regex = self.instrument.command_dict[ident][base]['Response']['Regex']
-            self.logger.debug('Response regex is ' + str(response_regex))
+                    if command[key]['Parameters']['Choices'] == 'None':
+                        choice = None
+                        self.logger.debug('Choice is None')
+                    else:
+                        choice = self.ui.choicesComboBox.currentText()
+                        self.logger.debug('Choice is ' + str(choice))
 
-        if self.chart_warning == 0:
-            if sys.platform.startswith('win32'):
-                if ident == 'getData' or ident == 'importLocal':
-                    self.status_message('system', 'INFO', 'Chart creation can take a long time. '
-                                                          'Windows may report (Not Responding) please ignore..', None)
-                    self.chart_warning = 1
-            else:
-                if ident == 'getData' or ident == 'importLocal':
-                    self.status_message('system', 'INFO', 'Chart creation can take a long time..', None)
-                    self.chart_warning = 1
+                    if command[key]['Parameters']['Regex'] == 'None':
+                        parameter = None
+                        self.logger.debug('Parameter is None')
+                    else:
+                        parameter = self.ui.commandParameter.text()
+                        self.logger.debug('Parameter is ' + str(parameter))
 
-        response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
-                                                            stepped_data, choice, parameter, response_regex)
+                    if command[key]['Response']['Units'] == 'None':
+                        units = None
+                        self.logger.debug('Units is None')
+                    else:
+                        units = command[key]['Response']['Units']
+                        self.logger.debug('Units is ' + str(units))
 
-        # Now we process the response based on command, probably not the most elegant way of doing things but it works.
+                    if command[key]['Response']['Regex'] == 'None':
+                        response_regex = None
+                        self.logger.debug('Response regex is None')
+                    else:
+                        response_regex = command[key]['Response']['Regex']
+                        self.logger.debug('Response regex is ' + str(response_regex))
 
-        if ident == 'getData' and response[0].startswith('SUCCESS'):
-            # Add the chart widget to the UI.
-            self.chart.clear()
-            if self.chart.add_metadata('data') is not True:
-                self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
-            else:
-                chart_response = self.chart.add_data(self.instrument.instrument_number_of_channels)
-                if chart_response[0].startswith('SUCCESS'):
-                    self.data_from = 'data'
-                    self.status_message(ident, response[0], response[1], units)
-                    self.chart_control_panel(self.instrument.instrument_number_of_channels, self.instrument)
-                    self.ui.chartDecimateCheckBox.setEnabled(True)
-                    self.ui.chartDecimateCheckBox.setChecked(False)
-                    self.ui.chartAutoRangeCheckBox.setEnabled(True)
-                    self.ui.chartAutoRangeCheckBox.setChecked(False)
-                    self.ui.showLegend.setChecked(False)
-                else:
-                    self.status_message(ident, chart_response[0], chart_response[1], None)
-        elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
-            # Add the chart widget to the UI.
-            self.chart.clear()
-            if self.chart.add_metadata('csv') is not True:
-                self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
-            else:
-                chart_response = self.chart.add_data(self.metadata_deconstructor.instrument_number_of_channels)
-                if chart_response[0].startswith('SUCCESS'):
-                    self.data_from = 'csv'
-                    self.status_message(ident, response[0], response[1], units)
-                    self.chart_control_panel(self.metadata_deconstructor.instrument_number_of_channels,
-                                             self.metadata_deconstructor)
-                    self.ui.chartDecimateCheckBox.setEnabled(True)
-                    self.ui.chartDecimateCheckBox.setChecked(False)
-                    self.ui.chartAutoRangeCheckBox.setChecked(True)
-                    self.ui.showLegend.setChecked(False)
-                else:
-                    self.status_message(ident, chart_response[0], chart_response[1], None)
-        elif ident == 'getA2D' and response[0].startswith('SUCCESS'):
-            a2dmessage = 'Channel ID ' + str(parameter) + ' = ' + response[1] + 'mV'
-            self.status_message(ident, response[0], a2dmessage, units)
+                    if self.chart_warning == 0:
+                        if sys.platform.startswith('win32'):
+                            if ident == 'getData' or ident == 'importLocal':
+                                self.status_message('system', 'INFO', 'Chart creation can take a long time. '
+                                                                      'Windows may report (Not Responding) please ignore..', None)
+                                self.chart_warning = 1
+                        else:
+                            if ident == 'getData' or ident == 'importLocal':
+                                self.status_message('system', 'INFO', 'Chart creation can take a long time..', None)
+                                self.chart_warning = 1
 
-        else:
-            self.status_message(ident, response[0], response[1], units)
+                    response = self.command_interpreter.process_command(addr, base, code, variant, send_to_port, blocked_data,
+                                                                        stepped_data, choice, parameter, response_regex)
+
+                    # Now we process the response based on command, probably not the most elegant way of doing things but it works.
+
+                    if ident == 'getData' and response[0].startswith('SUCCESS'):
+                        # Add the chart widget to the UI.
+                        self.chart.clear()
+                        if self.chart.add_metadata('data') is not True:
+                            self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
+                        else:
+                            chart_response = self.chart.add_data(self.instrument.instrument_number_of_channels)
+                            if chart_response[0].startswith('SUCCESS'):
+                                self.data_from = 'data'
+                                self.status_message(ident, response[0], response[1], units)
+                                self.chart_control_panel(self.instrument.instrument_number_of_channels, self.instrument)
+                                self.ui.chartDecimateCheckBox.setEnabled(True)
+                                self.ui.chartDecimateCheckBox.setChecked(False)
+                                self.ui.chartAutoRangeCheckBox.setEnabled(True)
+                                self.ui.chartAutoRangeCheckBox.setChecked(False)
+                                self.ui.showLegend.setChecked(False)
+                            else:
+                                self.status_message(ident, chart_response[0], chart_response[1], None)
+                    elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
+                        # Add the chart widget to the UI.
+                        self.chart.clear()
+                        if self.chart.add_metadata('csv') is not True:
+                            self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
+                        else:
+                            chart_response = self.chart.add_data(self.metadata_deconstructor.instrument_number_of_channels)
+                            if chart_response[0].startswith('SUCCESS'):
+                                self.data_from = 'csv'
+                                self.status_message(ident, response[0], response[1], units)
+                                self.chart_control_panel(self.metadata_deconstructor.instrument_number_of_channels,
+                                                         self.metadata_deconstructor)
+                                self.ui.chartDecimateCheckBox.setEnabled(True)
+                                self.ui.chartDecimateCheckBox.setChecked(False)
+                                self.ui.chartAutoRangeCheckBox.setChecked(True)
+                                self.ui.showLegend.setChecked(False)
+                            else:
+                                self.status_message(ident, chart_response[0], chart_response[1], None)
+                    elif ident == 'getA2D' and response[0].startswith('SUCCESS'):
+                        a2dmessage = 'Channel ID ' + str(parameter) + ' = ' + response[1] + 'mV'
+                        self.status_message(ident, response[0], a2dmessage, units)
+                    else:
+                        self.status_message(ident, response[0], response[1], units)
 
     # ----------------------------------------
     # Chart show legend method.
