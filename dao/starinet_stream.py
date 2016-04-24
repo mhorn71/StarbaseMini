@@ -59,8 +59,11 @@ class StarinetStream:
         self.logger.info("Sending data to starinet instrument")
         self.logger.debug("%s %s", 'UDP socket raw message encoded utf-8', repr(message))
 
-        self.sock.sendto(message, self.starinet_client_address)
-        self.logger.debug('UDP socket message sent to controller')
+        try:
+            self.sock.sendto(message, self.starinet_client_address)
+            self.logger.debug('UDP socket message sent to controller')
+        except OSError:
+            return 'ERROR'
 
         # Number of retries.
         retries = 1
@@ -74,8 +77,18 @@ class StarinetStream:
             except socket.timeout:
                 if retries < 4:
                     # write message to UDP socket.
-                    self.sock.sendto(message, self.starinet_client_address)
-                    self.logger.warning('UDP socket send message retry : %s' % str(retries))
+                    try:
+                        self.sock.sendto(message, self.starinet_client_address)
+                    except OSError as msg:
+                        self.logger.warning('UDP socket send message retry : %s ' % str(retries))
+                        self.logger.warning(str(msg))
+
+                        if retries == 3:
+                            return 'TIMEOUT'
+
+                    else:
+                        self.logger.warning('UDP socket send message retry : %s' % str(retries))
+
                     retries += 1
                 else:
                     self.logger.warning('Timed out waiting for response from controller.')

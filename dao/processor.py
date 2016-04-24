@@ -92,6 +92,8 @@ class DaoProcessor:
 
             if stream_reply == 'TIMEOUT':
                 return 'TIMEOUT', None
+            elif stream_reply == 'ERROR':
+                response = 'ERROR', 'Unable to send to socket.'
             else:
                 response = self.response_message.decipher(stream_reply)
 
