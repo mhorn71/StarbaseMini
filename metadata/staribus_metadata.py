@@ -18,7 +18,7 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
-
+import logging
 import utilities
 
 
@@ -27,6 +27,9 @@ class StaribusMetaDataCreator:
         self.config = parent.config
         self.instrument = parent.instrument
         self.metadata_deconstructor = parent.metadata_deconstructor
+
+        self.loggera = logging.getLogger('StaribusMetaDataCreator.observatory_metadata')
+        self.loggerb = logging.getLogger('StaribusMetaDataCreator.observer_metadata')
 
     def observatory_metadata(self):
         name = self.config.get('ObservatoryMetadata', 'name')
@@ -342,6 +345,11 @@ class StaribusMetaDataDeconstructor:
 
         self.instrument_number_of_channels = None
 
+        self.logger = logging.getLogger('StaribusMetaDataDeconstructor')
+        self.logger_clear = logging.getLogger('StaribusMetaDataDeconstructor.clear')
+        self.logger_meta_parser = logging.getLogger('StaribusMetaDataDeconstructor.meta_parser')
+        self.logger_colour_setter = logging.getLogger('StaribusMetaDataDeconstructor.colour_setter')
+
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
         self.base_channel_names = [None] * 9
         self.base_channel_colours = [None] * 9
@@ -374,37 +382,55 @@ class StaribusMetaDataDeconstructor:
         self.datatype_trip = False
         self.units_trip = False
 
+        self.logger.debug('Initialised')
+
     def clear(self):
 
         self.instrument_identifier = None
+        self.logger_clear.debug('Instrument identifier set to None')
 
         self.instrument_number_of_channels = None
+        self.logger_clear.debug('Instrument number of channels set to None')
 
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
         del self.base_channel_names[:]
+        self.logger_clear.debug('Deleting base channel names')
         del self.base_channel_colours[:]
+        self.logger_clear.debug('Deleting base channel colours')
         del self.base_channel_datatypenames[:]
+        self.logger_clear.debug('Deleting base channel data type names')
         del self.base_channel_units[:]
+        self.logger_clear.debug('Deleting base channel units')
         self.base_channel_names = [None] * 9
+        self.logger_clear.debug('Base channel names set to default n * 9 matrix')
         self.base_channel_colours = [None] * 9
+        self.logger_clear.debug('Base channel colour set to default n * 9 matrix')
         self.base_channel_datatypenames = [None] * 9
+        self.logger_clear.debug('Base channel data type names set to default n * 9 matrix')
         self.base_channel_units = [None] * 9
+        self.logger_clear.debug('Base channel units set to default n * 9 matrix')
 
         # The metadata channel list see below for format etc ...
         del self.channel_names[:]
+        self.logger_clear.debug('Deleting channel names')
 
         # The metadata channel colour list
         del self.channel_colours[:]
+        self.logger_clear.debug('Deleting channel colours')
 
         # The metadata datatypenames list
         del self.channel_datatypenames[:]
+        self.logger_clear.debug('Deleting channel data type names')
 
         # The metadata channel units list.
         del self.channel_units[:]
+        self.logger_clear.debug('Deleting channel units')
 
         self.YaxisLabel = None
+        self.logger_clear.debug('YaxisLabel set to None')
 
         self.XaxisLabel = None
+        self.logger_clear.debug('XaxisLabel set to None')
 
         self.name_idx = 0
         self.colour_idx = 0
@@ -418,217 +444,271 @@ class StaribusMetaDataDeconstructor:
     def meta_parser(self, data):
 
         if re.match('^Observation\.Channel\.Count$', data[0]):
+            self.logger_meta_parser.debug('Channel count set to : %s' % str(data[1]) )
             self.instrument_number_of_channels = data[1]
 
         if re.match('^Observation\.Title$', data[0]):
+            self.logger_meta_parser.debug('Observation title set to : %s' % str(data[1]))
             self.instrument_identifier = data[1]
 
         if re.match('^Observation\.Axis\.Label\.X$', data[0]):
+            self.logger_meta_parser.debug('X Axis label set to : %s' % str(data[1]))
             self.XaxisLabel = data[1]
 
         if re.match('^Observation\.Axis\.Label\.Y\.0$', data[0]):
+            self.logger_meta_parser.debug('Y Axis label set to : %s' % str(data[1]))
             self.YaxisLabel = data[1]
 
         # Channel 1 is the temperature while the data channels start from channel 2 but are referenced in metadata as
         # Channels 0 - 8
 
         if re.match('^Observation\.Channel\.Name\.Temperature$', data[0]):
+            self.logger_meta_parser.debug('Channel temperature name set to : %s' % data[1])
             self.base_channel_names[0] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.Temperature$', data[0]):
+            self.logger_meta_parser.debug('Channel temperature colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[0] = hex_colour
+            self.logger_meta_parser.debug('Channel temperature colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.Temperature$', data[0]):
+            self.logger_meta_parser.debug('Channel temperature datatype set to : %s' % data[1])
             self.base_channel_datatypenames[0] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.Temperature$', data[0]):
+            self.logger_meta_parser.debug('Channel temperature units set to : %s' % data[1])
             self.base_channel_units[0] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.0$', data[0]):
+            self.logger_meta_parser.debug('Channel name 0 set to : %s' % data[1])
             self.base_channel_names[1] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.0$', data[0]):
+            self.logger_meta_parser.debug('Channel 0 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[1] = hex_colour
+                self.logger_meta_parser.debug('Channel 0 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.0$', data[0]):
+            self.logger_meta_parser.debug('Channel 0 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[1] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.0$', data[0]):
+            self.logger_meta_parser.debug('Channel 0 units set to : %s' % data[1])
             self.base_channel_units[1] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.1$', data[0]):
+            self.logger_meta_parser.debug('Channel name 1 set to : %s' % data[1])
             self.base_channel_names[2] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.1$', data[0]):
+            self.logger_meta_parser.debug('Channel 1 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours.insert(2, hex_colour)
+                self.logger_meta_parser.debug('Channel 1 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.1$', data[0]):
+            self.logger_meta_parser.debug('Channel 1 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[2] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.1$', data[0]):
+            self.logger_meta_parser.debug('Channel 1 units set to : %s' % data[1])
             self.base_channel_units[2] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.2$', data[0]):
+            self.logger_meta_parser.debug('Channel name 2 set to : %s' % data[1])
             self.base_channel_names[3] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.2$', data[0]):
+            self.logger_meta_parser.debug('Channel 2 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[3] = hex_colour
+                self.logger_meta_parser.debug('Channel 2 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.2$', data[0]):
+            self.logger_meta_parser.debug('Channel 2 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[3] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.2$', data[0]):
+            self.logger_meta_parser.debug('Channel 2 units set to : %s' % data[1])
             self.base_channel_units[3] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.3$', data[0]):
+            self.logger_meta_parser.debug('Channel name 3 set to : %s' % data[1])
             self.base_channel_names[4] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.3$', data[0]):
+            self.logger_meta_parser.debug('Channel 3 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[4] = hex_colour
+                self.logger_meta_parser.debug('Channel 3 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.3$', data[0]):
+            self.logger_meta_parser.debug('Channel 3 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[4] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.3$', data[0]):
+            self.logger_meta_parser.debug('Channel 3 units set to : %s' % data[1])
             self.base_channel_units[4] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.4$', data[0]):
+            self.logger_meta_parser.debug('Channel name 4 set to : %s' % data[1])
             self.base_channel_names[5] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.4$', data[0]):
+            self.logger_meta_parser.debug('Channel 4 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[5] = hex_colour
+                self.logger_meta_parser.debug('Channel 4 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.4$', data[0]):
+            self.logger_meta_parser.debug('Channel 4 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[5] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.4$', data[0]):
+            self.logger_meta_parser.debug('Channel 4 units set to : %s' % data[1])
             self.base_channel_units[5] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.5$', data[0]):
+            self.logger_meta_parser.debug('Channel name 5 set to : %s' % data[1])
             self.base_channel_names[6] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.5$', data[0]):
+            self.logger_meta_parser.debug('Channel 5 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[6] = hex_colour
+                self.logger_meta_parser.debug('Channel 5 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.5$', data[0]):
+            self.logger_meta_parser.debug('Channel 5 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[6] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.5$', data[0]):
+            self.logger_meta_parser.debug('Channel 5 units set to : %s' % data[1])
             self.base_channel_units[6] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.6$', data[0]):
+            self.logger_meta_parser.debug('Channel name 6 set to : %s' % data[1])
             self.base_channel_names[7] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.6$', data[0]):
+            self.logger_meta_parser.debug('Channel 6 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[7] = hex_colour
+                self.logger_meta_parser.debug('Channel 6 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.6$', data[0]):
+            self.logger_meta_parser.debug('Channel 6 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[7] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.6$', data[0]):
+            self.logger_meta_parser.debug('Channel 6 units set to : %s' % data[1])
             self.base_channel_units[7] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.7$', data[0]):
+            self.logger_meta_parser.debug('Channel name 7 set to : %s' % data[1])
             self.base_channel_names[8] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.7$', data[0]):
+            self.logger_meta_parser.debug('Channel 7 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[8] = hex_colour
+                self.logger_meta_parser.debug('Channel 7 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.7$', data[0]):
+            self.logger_meta_parser.debug('Channel 7 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[8] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.7$', data[0]):
+            self.logger_meta_parser.debug('Channel 7 units set to : %s' % data[1])
             self.base_channel_units[8] = data[1]
             self.units_idx += 1
 
         if re.match('^Observation\.Channel\.Name\.8$', data[0]):
+            self.logger_meta_parser.debug('Channel name 8 set to : %s' % data[1])
             self.base_channel_names[9] = data[1]
             self.name_idx += 1
 
         if re.match('^Observation\.Channel\.Colour\.8$', data[0]):
+            self.logger_meta_parser.debug('Channel 8 colour found : %s' % data[1])
             hex_colour = self.colour_setter(data[1])
 
             if hex_colour is not None:
                 self.base_channel_colours[9] = hex_colour
+                self.logger_meta_parser.debug('Channel 8 colour set to : %s' % hex_colour)
 
             self.colour_idx += 1
 
         if re.match('^Observation\.Channel\.DataType\.8$', data[0]):
+            self.logger_meta_parser.debug('Channel 8 datatype set to : %s' % data[1])
             self.base_channel_datatypenames[9] = data[1]
             self.datatype_idx += 1
 
         if re.match('^Observation\.Channel\.Units\.8$', data[0]):
+            self.logger_meta_parser.debug('Channel 8 units set to : %s' % data[1])
             self.base_channel_units[9] = data[1]
             self.units_idx += 1
 
