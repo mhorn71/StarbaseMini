@@ -84,6 +84,7 @@ class Main(QtGui.QMainWindow):
         self.command_interpreter = None
         self.configurationManager = None
         self.chart = None
+        self.data_source = None
         self.starinet_relay_initialised = False
 
         # Initialise UI
@@ -278,9 +279,6 @@ class Main(QtGui.QMainWindow):
                     self.instrument_loader()
 
 
-                # if self.instrument.instrument_staribus_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
-                #     self.instrument_autodetector()
-
                 if self.fatal_error is False:
                     self.datatranslator_loader()
 
@@ -328,42 +326,37 @@ class Main(QtGui.QMainWindow):
 
     def instrument_selection(self, item):
 
-        if self.saved_data_state is not False:
+        if self.data_source == 'instrument':
+            if self.saved_data_state is not False:
 
-            message = 'WARNING:  You have unsaved data.\n\nIf you change the instrument, ' + \
-                      'you will be able to save the unsaved data!\n\nDo you want to change instruments?'
-            header = 'HELLO'
+                message = 'WARNING:  You have unsaved data.\n\nIf you change the instrument, ' + \
+                          'you will be able to save the unsaved data!\n\nDo you want to change instruments?'
+                header = 'HELLO'
 
-            result = QtGui.QMessageBox.question(None,
-                                                header,
-                                                message,
-                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                result = QtGui.QMessageBox.question(None,
+                                                    header,
+                                                    message,
+                                                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
-            if result == QtGui.QMessageBox.Yes:
-                self.datatranslator.clear()
-                self.saved_data_state = False
-                self.config.set('Application', 'instrument_identifier', item)
-                self.initialise_configuration()
-                self.instrument_item = item
-                self.ui.chartDecimateCheckBox.setEnabled(False)
-                self.ui.chartAutoRangeCheckBox.setEnabled(False)
-                self.ui.showLegend.setEnabled(False)
-            else:
-                for action in self.ui.menuInstrument.actions():
-                    if action.text() == self.instrument_item:
-                        action.setChecked(True)
+                if result == QtGui.QMessageBox.Yes:
+                    self.datatranslator.clear()
+                    self.saved_data_state = False
+                    self.config.set('Application', 'instrument_identifier', item)
+                    self.initialise_configuration()
+                    self.instrument_item = item
+                    self.ui.chartDecimateCheckBox.setEnabled(False)
+                    self.ui.chartAutoRangeCheckBox.setEnabled(False)
+                    self.ui.showLegend.setEnabled(False)
+                else:
+                    for action in self.ui.menuInstrument.actions():
+                        if action.text() == self.instrument_item:
+                            action.setChecked(True)
 
 
         else:
             self.config.set('Application', 'instrument_identifier', item)
             self.initialise_configuration()
             self.instrument_item = item
-
-            # if self.instrument.instrument_number_of_channels != self.chart.channel_count:
-            #     pass
-            # else:
-            #     self.ui.chartDecimateCheckBox.setEnabled(False)
-            #     self.ui.showLegend.setEnabled(False)
 
 
     # ----------------------------------------
@@ -587,15 +580,15 @@ class Main(QtGui.QMainWindow):
     def chart_loader(self):
         if self.first_initialisation is True:
             try:
-                self.chart = charting.Chart(self.ui, self.metadata_deconstructor, self.config)
-                self.chart.chart_instrument_setup(self.datatranslator, self.instrument)
+                self.chart = charting.Chart(self.ui, self.config)
+                self.chart.chart_instrument_setup(self.datatranslator, self.instrument, self.metadata_deconstructor)
             except Exception as msg:
                 # msg = ('Charting failed to initialise - %s' % str(msg))
                 self.logger.critical(str(msg))
                 self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
         else:
             try:
-                self.chart.chart_instrument_setup(self.datatranslator, self.instrument)
+                self.chart.chart_instrument_setup(self.datatranslator, self.instrument, self.metadata_deconstructor)
             except Exception as msg:
                 # msg = ('Charting failed to initialise - %s' % str(msg))
                 self.logger.critical(str(msg))
@@ -1369,6 +1362,10 @@ class Main(QtGui.QMainWindow):
 
                     if ident == 'getData' and response[0].startswith('SUCCESS'):
                         # Add the chart widget to the UI.
+
+                        self.logger.debug('Instrument Number of Channels : ' + str(
+                            self.instrument.instrument_number_of_channels))
+
                         self.chart.clear()
                         if self.chart.add_metadata('data') is not True:
                             self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
@@ -1383,10 +1380,14 @@ class Main(QtGui.QMainWindow):
                                 self.ui.chartAutoRangeCheckBox.setEnabled(True)
                                 self.ui.chartAutoRangeCheckBox.setChecked(False)
                                 self.ui.showLegend.setChecked(False)
+                                self.data_source = 'instrument'
                             else:
                                 self.status_message(ident, chart_response[0], chart_response[1], None)
                     elif ident == 'importLocal' and response[0].startswith('SUCCESS'):
                         # Add the chart widget to the UI.
+                        self.logger.debug('Imported data Number of Channels : ' + str(
+                            self.metadata_deconstructor.instrument_number_of_channels))
+
                         self.chart.clear()
                         if self.chart.add_metadata('csv') is not True:
                             self.status_message(ident, 'PREMATURE_TERMINATION', 'Unable to add chart metadata', None)
@@ -1395,12 +1396,14 @@ class Main(QtGui.QMainWindow):
                             if chart_response[0].startswith('SUCCESS'):
                                 self.data_from = 'csv'
                                 self.status_message(ident, response[0], response[1], units)
+
                                 self.chart_control_panel(self.metadata_deconstructor.instrument_number_of_channels,
                                                          self.metadata_deconstructor)
                                 self.ui.chartDecimateCheckBox.setEnabled(True)
                                 self.ui.chartDecimateCheckBox.setChecked(False)
                                 self.ui.chartAutoRangeCheckBox.setChecked(True)
                                 self.ui.showLegend.setChecked(False)
+                                self.data_source = 'imported'
                             else:
                                 self.status_message(ident, chart_response[0], chart_response[1], None)
                     elif ident == 'getA2D' and response[0].startswith('SUCCESS'):
