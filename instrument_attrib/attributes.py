@@ -813,15 +813,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
     def warning_message(self):
         QtGui.QMessageBox.information(None, 'WARNING', 'Blank fields not allowed')
 
-    def exit_message(self):
-        QtGui.QMessageBox.information(None, 'NOTICE', 'Application restart will be need\nfor changes to take effect.')
 
     def write(self, tree, new_file):
 
         tree.write(new_file)
 
         self.response_message = 'SUCCESS', 'Instrument attributes saved, calling reinitialisation.'
-
-        # self.exit_message()
 
         self.close()
