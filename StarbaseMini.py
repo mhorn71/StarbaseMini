@@ -351,12 +351,29 @@ class Main(QtGui.QMainWindow):
                     for action in self.ui.menuInstrument.actions():
                         if action.text() == self.instrument_item:
                             action.setChecked(True)
+            else:
+                self.ui.chartDecimateCheckBox.setEnabled(False)
+                self.ui.chartAutoRangeCheckBox.setEnabled(False)
+                self.ui.showLegend.setEnabled(False)
+                self.config.set('Application', 'instrument_identifier', item)
+                self.initialise_configuration()
+                self.instrument_item = item
 
+        elif self.data_source == 'imported':
+            if self.saved_data_state is not True:
+                self.ui.chartDecimateCheckBox.setEnabled(False)
+                self.ui.chartAutoRangeCheckBox.setEnabled(False)
+                self.ui.showLegend.setEnabled(False)
 
+            self.config.set('Application', 'instrument_identifier', item)
+            self.initialise_configuration()
+            self.instrument_item = item
+            self.data_source = 'instrument'
         else:
             self.config.set('Application', 'instrument_identifier', item)
             self.initialise_configuration()
             self.instrument_item = item
+            self.data_source = 'instrument'
 
 
     # ----------------------------------------
