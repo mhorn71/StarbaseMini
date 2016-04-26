@@ -35,6 +35,9 @@ def importer(datatranslator, metadata):
     App_Config = config_utilities.ConfigLoader()
     data_path = App_Config.get('Application', 'instrument_data_path')
 
+    obser_trip = 0
+    date_trip = 0
+
     # Get home path in case instrument data path isn't set.
     home = os.path.expanduser("~")
 
@@ -42,27 +45,38 @@ def importer(datatranslator, metadata):
     try:
         if os.path.isdir(data_path):
             fname = QtGui.QFileDialog.getOpenFileName(None, 'Import File', data_path, "CSV files (*.csv)")
+            logger.debug('Data path set to : ' + data_path)
         else:
             fname = QtGui.QFileDialog.getOpenFileName(None, 'Import File', home, "CSV files (*.csv)")
+            logger.debug('Data path set to : ' + home)
     except TypeError:
         fname = QtGui.QFileDialog.getOpenFileName(None, 'Import File', home, "CSV files (*.csv)")
+        logger.debug('Data path set to : ' + home)
 
     # Return ABORT if no File selected.
     if fname == '':
+        logger.debug('No file selected ABORT.')
         return 'ABORT', None
     else:
         datatranslator.clear()
+        logger.debug('Datatranslator clear called.')
         metadata.clear()
+        logger.debug('Metadata clear called.')
         try:
             with open(fname) as csvfile:
+                logger.debug('Opening file : ' + fname)
                 reader = csv.reader(csvfile)
+                logger.debug('CSV reader called.')
                 for row in reader:
                     if len(row) == 0:  # bodge for windows as we seems to get a row of zero length sometimes
+                        logger.debug('Zero length row found ignoring.')
                         pass
                     else:
                         if row[0].startswith('Obser'):
+                            obser_trip += 1
                             metadata.meta_parser(row)
                         elif re.match('^\d\d\d\d-\d\d-\d\d$', row[0]):
+                            date_trip += 1
 
                             if metadata.instrument_number_of_channels is None:
                                 logger.critical('Unable to locate observation channel count')
@@ -74,7 +88,18 @@ def importer(datatranslator, metadata):
                                 logger.critical('Unable to parse row :%s' % str(row))
                                 return 'PREMATURE_TERMINATION', 'Unable to parse data'
                         else:
+                            logger.debug('No valid rows found.')
                             pass
+
+                if obser_trip == 0:
+                    logger.warning('No row starting with Obser!!!')
+                else:
+                    logger.debug('Found %s rows starting with Obser.' % str(obser_trip))
+
+                if date_trip == 0:
+                    logger.warning('No row starting with date!!!')
+                else:
+                    logger.debug('Found %s rows starting with date.' % str(date_trip))
 
         except IOError as msg:
             logger.critical(str(msg))
