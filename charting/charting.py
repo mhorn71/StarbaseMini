@@ -126,10 +126,14 @@ class Chart:
         data_type = data_type.lower()
         if data_type == 'data':
             self.attributes = self.instrument
+            self.logger.debug('add_metdata data_type set to : ' + 'data')
+            self.logger.debug('add_metadata self.attributes type : ' + str(type(self.instrument)))
         elif data_type == 'csv':
             self.attributes = self.metadata
+            self.logger.debug('add_metadata data_type set to : ' + 'csv')
+            self.logger.debug('add_metadata self.attributes type : ' +  str(type(self.metadata)))
         else:
-            self.logger.critical('Unknown data type : %s' % data_type)
+            self.logger.critical('add_metdata Unknown data type : %s' % data_type)
             return False
 
         self.set_scale()
@@ -191,11 +195,16 @@ class Chart:
 
         try:
             number_of_channels = int(number_of_channels)
+            self.logger.debug('add_data to chart channel count : ' + str(number_of_channels))
         except AttributeError as msg:
             self.logger.critical('Channel count not found : %s' % str(msg))
             return 'PREMATURE_TERMINATION', str(msg)
 
         self.channel_count = number_of_channels
+
+        self.logger.debug('add_data data_array length : ' + str(len(self.datatranslator.data_array)))
+        self.logger.debug('add_data channel colour length : ' +  str(len(self.attributes.channel_colours)))
+        self.logger.debug('add_data channel names length : ' + str(len(self.attributes.channel_names)))
 
         try:
             for i in range(number_of_channels):
