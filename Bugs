@@ -1,5 +1,7 @@
-Things to do
+GMT Regex will match GMT+00:0 which is incorrect.
+GMT Tooltip references UTC when it shouldn't.
 
-Used Instrument Identified in Metadata and Datatranslator should have used Instrument Description.
+----- Check above bugs are actually resolved. ----
 
-datatranslator create arrary needs change to add number of channels.
+BUG -  If you import data other than for the one selected after downloading data from the set instrument the import will fail.
+

@@ -39,9 +39,12 @@ def importer(datatranslator, metadata):
     home = os.path.expanduser("~")
 
     # Check if instrument data path exists and if so open folder to choose file.
-    if os.path.isdir(data_path):
-        fname = QtGui.QFileDialog.getOpenFileName(None, 'Import File', data_path, "CSV files (*.csv)")
-    else:
+    try:
+        if os.path.isdir(data_path):
+            fname = QtGui.QFileDialog.getOpenFileName(None, 'Import File', data_path, "CSV files (*.csv)")
+        else:
+            fname = QtGui.QFileDialog.getOpenFileName(None, 'Import File', home, "CSV files (*.csv)")
+    except TypeError:
         fname = QtGui.QFileDialog.getOpenFileName(None, 'Import File', home, "CSV files (*.csv)")
 
     # Return ABORT if no File selected.
