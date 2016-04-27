@@ -44,7 +44,7 @@ import metadata
 import charting
 import instrument_attrib
 
-version = '2.0.2'
+version = '2.0.3'
 
 
 class Main(QtGui.QMainWindow):
@@ -482,12 +482,14 @@ class Main(QtGui.QMainWindow):
                     self.logger.info('Initialising Command Interpreter for Starinet')
                     self.command_interpreter.start(self)
                     message = ('Initialised Starinet Instrument : %s ' % self.instrument_identifier)
+                    self.setWindowTitle('StarbaseMini -- Ver %s -- %s' % (version, self.instrument_identifier))
                     self.status_message('system', 'INFO', message, None)
                 elif self.instrument.instrument_staribus_address != 'None':
                     if self.staribus2starinet_relay_boolean == 'True':
                         self.logger.debug('Main Staribus 2 Starinet Routine being run')
                         self.logger.info('Initialising Command Interpreter for Staribus2Starinet')
                         message = ('Initialised Staribus2Starinet Instrument : %s ' % self.instrument_identifier)
+                        self.setWindowTitle('StarbaseMini -- Ver %s -- %s' % (version, self.instrument_identifier))
                         self.status_message('system', 'INFO', message, None)
                         self.command_interpreter.start(self)
                     else:
@@ -504,6 +506,7 @@ class Main(QtGui.QMainWindow):
                             self.logger.debug('Main Staribus check_serial Routine failure')
                             self.disable_all()
                             message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
+                            self.setWindowTitle('StarbaseMini -- Ver %s -- %s' % (version, self.instrument_identifier))
                             self.status_message('system', 'INFO', message, None)
                             self.status_message('system', 'WARNING',
                                                 'Unable to open serial port - UI controls disabled.', None)
@@ -1574,7 +1577,7 @@ class Main(QtGui.QMainWindow):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     myapp = Main()
-    myapp.setWindowTitle('StarbaseMini -- Ver %s' % version)
+    # myapp.setWindowTitle('StarbaseMini -- Ver %s' % version)
     myapp.showMaximized()
     myapp.show()
     x = app.exec_()
