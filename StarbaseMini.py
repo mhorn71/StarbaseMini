@@ -1578,7 +1578,6 @@ class Main(QtGui.QMainWindow):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     myapp = Main()
-    # myapp.setWindowTitle('StarbaseMini -- Ver %s' % version)
     myapp.showMaximized()
     myapp.show()
     x = app.exec_()
