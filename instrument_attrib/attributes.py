@@ -77,9 +77,12 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.colorDialog.setOption(QtGui.QColorDialog.ShowAlphaChannel, False)
         self.colorDialog.setOption(QtGui.QColorDialog.DontUseNativeDialog, False)
 
-        self.buttonBox.accepted.connect(self.accept_called)
+        # self.buttonBox.accepted.connect(self.accept_called)
         self.buttonBox.rejected.connect(self.reject_called)
+        self.buttonBox.button(QtGui.QDialogButtonBox.Ok).clicked.connect(self.accept_called)
         self.buttonBox.button(QtGui.QDialogButtonBox.RestoreDefaults).clicked.connect(self.defaults_called)
+
+        self.accepted_state = True
 
         self.PickerButton0.clicked.connect(self.chan0_picker)
         self.PickerButton1.clicked.connect(self.chan1_picker)
@@ -129,6 +132,46 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.StaribusAutodetectCheckBox.stateChanged.connect(self.autodetect_checkbox)
 
+        # dialog contentes
+
+        self.ChanLabel0Orig = None
+        self.ChanColour0Orig = None
+        self.ChanLabel1Orig = None
+        self.ChanColour1Orig = None
+        self.ChanLabel2Orig = None
+        self.ChanColour2Orig = None
+        self.ChanLabel3Orig = None
+        self.ChanColour3Orig = None
+        self.ChanLabel4Orig = None
+        self.ChanColour4Orig = None
+        self.ChanLabel5Orig = None
+        self.ChanColour5Orig = None
+        self.ChanLabel6Orig = None
+        self.ChanColour6Orig = None
+        self.ChanLabel7Orig = None
+        self.ChanColour7Orig = None
+        self.ChanLabel8Orig = None
+        self.ChanColour8Orig = None
+
+        self.Chan0Enabled = False
+        self.Chan1Enabled = False
+        self.Chan2Enabled = False
+        self.Chan3Enabled = False
+        self.Chan4Enabled = False
+        self.Chan5Enabled = False
+        self.Chan6Enabled = False
+        self.Chan7Enabled = False
+        self.Chan8Enabled = False
+
+        self.StaribusPortOrig = None
+        self.RS485Orig = None
+        self.AutodetectOrig = None
+        self.StaribusAddressOrig = None
+        self.BaudrateOrig = None
+        self.TimeoutOrig = None
+        self.StarinetAddressOrig = None
+        self.StarinetPortOrig = None
+
 
     def autodetect_checkbox(self):
         if self.StaribusAutodetectCheckBox.isChecked():
@@ -151,7 +194,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             if sys.platform.startswith('win32'):
                 self.StaribusPortLineEdit.setToolTip('The com port to which the instrument is attached, such as COM1')
             else:
-                self.StaribusPortLineEdit.setToolTip('The full path and serial port the instrument is attached, ')
+                self.StaribusPortLineEdit.setToolTip('The full path and serial port name the instrument is attached to. ')
 
     def Picker0(self):
 
@@ -160,6 +203,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
                                              'border-width: 1px; border-radius: 3px;' +
                                              'border-color: beige; padding: 5px;' +
                                              'margin-top: 0px; }')
+            
+            
     def Picker1(self):
         if re.match(constants.channel_hex_color, self.Chan1ColourLineEdit.text()):
             self.PickerButton1.setStyleSheet('QPushButton { background-color: ' + self.Chan1ColourLineEdit.text() + ';' +
@@ -229,6 +274,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan0ColourLineEdit.textChanged.connect(self.Picker0)
         self.Chan0ColourLineEdit.textChanged.emit(self.Chan0ColourLineEdit.text())
 
+        self.ChanLabel0Orig = self.instrument.channel_names[0]
+        self.ChanColour0Orig = self.instrument.channel_colours[0]
+
         self.PickerButton0.setEnabled(True)
 
     def channel1(self):
@@ -246,6 +294,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan1ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan1ColourRegex))
         self.Chan1ColourLineEdit.textChanged.connect(self.parameter_check_state)
         self.Chan1ColourLineEdit.textChanged.emit(self.Chan1ColourLineEdit.text())
+
+        self.ChanLabel1Orig = self.instrument.channel_names[1]
+        self.ChanColour1Orig = self.instrument.channel_colours[1]
 
         self.PickerButton1.setEnabled(True)
 
@@ -265,6 +316,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan2ColourLineEdit.textChanged.connect(self.parameter_check_state)
         self.Chan2ColourLineEdit.textChanged.emit(self.Chan2ColourLineEdit.text())
 
+        self.ChanLabel2Orig = self.instrument.channel_names[2]
+        self.ChanColour2Orig = self.instrument.channel_colours[2]
+
         self.PickerButton2.setEnabled(True)
 
     def channel3(self):
@@ -282,6 +336,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan3ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan3ColourRegex))
         self.Chan3ColourLineEdit.textChanged.connect(self.parameter_check_state)
         self.Chan3ColourLineEdit.textChanged.emit(self.Chan3ColourLineEdit.text())
+
+        self.ChanLabel3Orig = self.instrument.channel_names[3]
+        self.ChanColour3Orig = self.instrument.channel_colours[3]
 
         self.PickerButton3.setEnabled(True)
 
@@ -301,6 +358,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan4ColourLineEdit.textChanged.connect(self.parameter_check_state)
         self.Chan4ColourLineEdit.textChanged.emit(self.Chan4ColourLineEdit.text())
 
+        self.ChanLabel4Orig = self.instrument.channel_names[4]
+        self.ChanColour4Orig = self.instrument.channel_colours[4]
+
         self.PickerButton4.setEnabled(True)
 
     def channel5(self):
@@ -318,6 +378,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan5ColourLineEdit.setValidator(QtGui.QRegExpValidator(Chan5ColourRegex))
         self.Chan5ColourLineEdit.textChanged.connect(self.parameter_check_state)
         self.Chan5ColourLineEdit.textChanged.emit(self.Chan5ColourLineEdit.text())
+
+        self.ChanLabel5Orig = self.instrument.channel_names[5]
+        self.ChanColour5Orig = self.instrument.channel_colours[5]
 
         self.PickerButton5.setEnabled(True)
 
@@ -337,6 +400,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan6ColourLineEdit.textChanged.connect(self.Picker6)
         self.Chan6ColourLineEdit.textChanged.emit(self.Chan6ColourLineEdit.text())
 
+        self.ChanLabel6Orig = self.instrument.channel_names[6]
+        self.ChanColour6Orig = self.instrument.channel_colours[6]
+
         self.PickerButton6.setEnabled(True)
 
     def channel7(self):
@@ -354,6 +420,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan7ColourLineEdit.textChanged.connect(self.parameter_check_state)
         self.Chan7ColourLineEdit.textChanged.connect(self.Picker7)
         self.Chan7ColourLineEdit.textChanged.emit(self.Chan7ColourLineEdit.text())
+
+        self.ChanLabel7Orig = self.instrument.channel_names[7]
+        self.ChanColour7Orig = self.instrument.channel_colours[7]
 
         self.PickerButton7.setEnabled(True)
 
@@ -373,6 +442,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan8ColourLineEdit.textChanged.connect(self.Picker8)
         self.Chan8ColourLineEdit.textChanged.emit(self.Chan8ColourLineEdit.text())
 
+        self.ChanLabel8Orig = self.instrument.channel_names[8]
+        self.ChanColour8Orig = self.instrument.channel_colours[8]
+
         self.PickerButton8.setEnabled(True)
 
     def enable_channel_items(self):
@@ -380,21 +452,35 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         if self.instrument.instrument_number_of_channels == '2':
             self.channel0()
             self.channel1()
+            self.Chan0Enabled = True
+            self.Chan1Enabled = True
         elif self.instrument.instrument_number_of_channels == '3':
             self.channel0()
             self.channel1()
             self.channel2()
+            self.Chan0Enabled = True
+            self.Chan1Enabled = True
+            self.Chan2Enabled = True
         elif self.instrument.instrument_number_of_channels == '4':
             self.channel0()
             self.channel1()
             self.channel2()
             self.channel3()
+            self.Chan0Enabled = True
+            self.Chan1Enabled = True
+            self.Chan2Enabled = True
+            self.Chan3Enabled = True
         elif self.instrument.instrument_number_of_channels == '5':
             self.channel0()
             self.channel1()
             self.channel2()
             self.channel3()
             self.channel4()
+            self.Chan0Enabled = True
+            self.Chan1Enabled = True
+            self.Chan2Enabled = True
+            self.Chan3Enabled = True
+            self.Chan4Enabled = True
         elif self.instrument.instrument_number_of_channels == '6':
             self.channel0()
             self.channel1()
@@ -402,6 +488,12 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.channel3()
             self.channel4()
             self.channel5()
+            self.Chan0Enabled = True
+            self.Chan1Enabled = True
+            self.Chan2Enabled = True
+            self.Chan3Enabled = True
+            self.Chan4Enabled = True
+            self.Chan5Enabled = True
         elif self.instrument.instrument_number_of_channels == '7':
             self.channel0()
             self.channel1()
@@ -410,6 +502,13 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.channel4()
             self.channel5()
             self.channel6()
+            self.Chan0Enabled = True
+            self.Chan1Enabled = True
+            self.Chan2Enabled = True
+            self.Chan3Enabled = True
+            self.Chan4Enabled = True
+            self.Chan5Enabled = True
+            self.Chan6Enabled = True
         elif self.instrument.instrument_number_of_channels == '8':
             self.channel0()
             self.channel1()
@@ -419,6 +518,14 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.channel5()
             self.channel6()
             self.channel7()
+            self.Chan0Enabled = True
+            self.Chan1Enabled = True
+            self.Chan2Enabled = True
+            self.Chan3Enabled = True
+            self.Chan4Enabled = True
+            self.Chan5Enabled = True
+            self.Chan6Enabled = True
+            self.Chan7Enabled = True
         elif self.instrument.instrument_number_of_channels == '9':
             self.channel0()
             self.channel1()
@@ -429,6 +536,15 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.channel6()
             self.channel7()
             self.channel8()
+            self.Chan0Enabled = True
+            self.Chan1Enabled = True
+            self.Chan2Enabled = True
+            self.Chan3Enabled = True
+            self.Chan4Enabled = True
+            self.Chan5Enabled = True
+            self.Chan6Enabled = True
+            self.Chan7Enabled = True
+            self.Chan8Enabled = True
 
     def set(self, instrument, instrument_file):
 
@@ -614,15 +730,23 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         if state == QtGui.QValidator.Acceptable and len(sender.text()) == 0:
             color = '#ffffff'  # white
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+            self.accepted_state = False
         elif state == QtGui.QValidator.Acceptable:
             color = '#c4df9b'  # green
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
+            self.accepted_state = True
         elif state == QtGui.QValidator.Intermediate and len(sender.text()) == 0:
             color = '#f6989d'  # red
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+            self.accepted_state = False
         elif state == QtGui.QValidator.Intermediate:
             color = '#fff79a'  # yellow
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+            self.accepted_state = False
         else:
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
 
@@ -703,112 +827,203 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         else:
             self.response_message = 'SUCCESS', 'Instrument attributes reset defaults'
 
-
         self.hide()
 
     def reject_called(self):
-        self.response_message = 'ABORT', None
-        self.reload = False
-        self.hide()
+
+        state = True
+
+        if self.Chan0Enabled is True:
+
+            if self.Chan0ColourLineEdit.text() != self.ChanColour0Orig:
+                state = False
+
+            if self.Chan0LabelEdit.text() != self.ChanLabel0Orig:
+                state = False
+
+        if self.Chan1Enabled is True:
+
+            if self.Chan1ColourLineEdit.text() != self.ChanColour1Orig:
+                state = False
+
+            if self.Chan1LabelEdit.text() != self.ChanLabel1Orig:
+                state = False
+
+        if self.Chan2Enabled is True:
+
+            if self.Chan2ColourLineEdit.text() != self.ChanColour2Orig:
+                state = False
+
+            if self.Chan2LabelEdit.text() != self.ChanLabel2Orig:
+                state = False
+
+        if self.Chan3Enabled is True:
+
+            if self.Chan3ColourLineEdit.text() != self.ChanColour3Orig:
+                state = False
+
+            if self.Chan3LabelEdit.text() != self.ChanLabel3Orig:
+                state = False
+
+        if self.Chan4Enabled is True:
+
+            if self.Chan4ColourLineEdit.text() != self.ChanColour4Orig:
+                state = False
+
+            if self.Chan4LabelEdit.text() != self.ChanLabel4Orig:
+                state = False
+
+        if self.Chan5Enabled is True:
+
+            if self.Chan5ColourLineEdit.text() != self.ChanColour5Orig:
+                state = False
+
+            if self.Chan5LabelEdit.text() != self.ChanLabel5Orig:
+                state = False
+
+        if self.Chan6Enabled is True:
+
+            if self.Chan6ColourLineEdit.text() != self.ChanColour6Orig:
+                state = False
+
+            if self.Chan6LabelEdit.text() != self.ChanLabel6Orig:
+                state = False
+
+        if self.Chan7Enabled is True:
+
+            if self.Chan7ColourLineEdit.text() != self.ChanColour7Orig:
+                state = False
+
+            if self.Chan7LabelEdit.text() != self.ChanLabel7Orig:
+                state = False
+
+        if self.Chan8Enabled is True:
+
+            if self.Chan6ColourLineEdit.text() != self.ChanColour6Orig:
+                state = False
+
+            if self.Chan8LabelEdit.text() != self.ChanLabel8Orig:
+                state = False
+
+        if state is True:
+            self.response_message = 'ABORT', None
+            self.reload = False
+            self.hide()
+        elif state is False:
+            result = QtGui.QMessageBox.question(None,
+                                                "Confirm Exit...",
+                                                'You have unsaved changes do you want to save them?',
+                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+            if result == QtGui.QMessageBox.Yes:
+                self.accept_called()
+            else:
+                self.response_message = 'ABORT', None
+                self.reload = False
+                self.hide()
 
     def accept_called(self):
 
-        self.create_lists()
+        if self.accepted_state is True:
 
-        execute_state = True
+            self.create_lists()
 
-        # Check .starbasemini/instruments exists otherwise create.
-        if os.path.isdir(self.home_path) is not True:
-            os.makedirs(self.home_path)
+            execute_state = True
 
-        # get the instrument xml file minus the original path
-        file = self.instrument_file.split(os.path.sep)
-        file = file[-1]
+            # Check .starbasemini/instruments exists otherwise create.
+            if os.path.isdir(self.home_path) is not True:
+                os.makedirs(self.home_path)
 
-        # set the new xml to use the users home path location.
-        new_file = self.home_path + file
+            # get the instrument xml file minus the original path
+            file = self.instrument_file.split(os.path.sep)
+            file = file[-1]
 
-        #import xml file
-        tree = ET.parse(self.instrument_file)
+            # set the new xml to use the users home path location.
+            new_file = self.home_path + file
 
-        staribusaddr = self.comboBox.currentText()
-        staribusaddr = staribusaddr.zfill(3)
+            #import xml file
+            tree = ET.parse(self.instrument_file)
 
-        staribusaddress = tree.find('StaribusAddress')
-        staribusaddress.text = staribusaddr
+            staribusaddr = self.comboBox.currentText()
+            staribusaddr = staribusaddr.zfill(3)
 
-        starinetaddress = tree.find('StarinetAddress')
+            staribusaddress = tree.find('StaribusAddress')
+            staribusaddress.text = staribusaddr
 
-        if self.starinetaddressbool:
-            if len(self.StarinetAddressLineEdit.text()) != 0:
-                starinetaddress.text = self.StarinetAddressLineEdit.text()
+            starinetaddress = tree.find('StarinetAddress')
+
+            if self.starinetaddressbool:
+                if len(self.StarinetAddressLineEdit.text()) != 0:
+                    starinetaddress.text = self.StarinetAddressLineEdit.text()
+                else:
+                    self.warning_message()
+                    execute_state = False
+
+            starinetport = tree.find('StarinetPort')
+
+            if self.starinetportbool:
+                if len(self.StarinetPortLineEdit.text()) != 0:
+                    starinetport.text = self.StarinetPortLineEdit.text()
+                else:
+                    self.warning_message()
+                    execute_state = False
+
+            staribusport = tree.find('StaribusPort')
+            if self.StaribusPortLineEdit.isEnabled():
+                staribusport.text = self.StaribusPortLineEdit.text()
+
+            staribustype = tree.find('StaribusPortType')
+            if self.RS485checkBox.isEnabled():
+                if self.RS485checkBox.isChecked():
+                    staribustype.text = 'RS485'
+                else:
+                    staribustype.text = 'RS232'
+
+            staribusauto = tree.find('StaribusPortAutodetect')
+            if self.StaribusAutodetectCheckBox.isEnabled():
+                if self.StaribusAutodetectCheckBox.isChecked():
+                    staribusauto.text = 'True'
+                else:
+                    staribusauto.text = 'False'
+
+            staribusbaud = tree.find('StaribusPortBaudrate')
+            if self.BaudrateCombobox.isEnabled():
+                staribusbaud.text = self.BaudrateCombobox.currentText()
+
+            staribustimeout = tree.find('StaribusPortTimeout')
+            staribustimeout.text = self.TimeoutCombobox.currentText()
+
+            channel_metadata = tree.findall('ChannelMetadata')
+
+            if len(self.channel_labels) == int(self.instrument.instrument_number_of_channels):
+
+                chanidx = 0
+
+                for metadata in channel_metadata:
+                    ChannelLabel = metadata.find('ChannelLabel')
+                    ChannelLabel.text = self.channel_labels[chanidx]
+                    chanidx += 1
+
             else:
                 self.warning_message()
                 execute_state = False
 
-        starinetport = tree.find('StarinetPort')
+            if len(self.channel_colours) == int(self.instrument.instrument_number_of_channels):
 
-        if self.starinetportbool:
-            if len(self.StarinetPortLineEdit.text()) != 0:
-                starinetport.text = self.StarinetPortLineEdit.text()
+                chanidx = 0
+
+                for metadata in channel_metadata:
+                    ChannelColour = metadata.find('ChannelColour')
+                    ChannelColour.text = self.channel_colours[chanidx]
+                    chanidx += 1
             else:
                 self.warning_message()
                 execute_state = False
 
-        staribusport = tree.find('StaribusPort')
-        if self.StaribusPortLineEdit.isEnabled():
-            staribusport.text = self.StaribusPortLineEdit.text()
-
-        staribustype = tree.find('StaribusPortType')
-        if self.RS485checkBox.isEnabled():
-            if self.RS485checkBox.isChecked():
-                staribustype.text = 'RS485'
-            else:
-                staribustype.text = 'RS232'
-
-        staribusauto = tree.find('StaribusPortAutodetect')
-        if self.StaribusAutodetectCheckBox.isEnabled():
-            if self.StaribusAutodetectCheckBox.isChecked():
-                staribusauto.text = 'True'
-            else:
-                staribusauto.text = 'False'
-
-        staribusbaud = tree.find('StaribusPortBaudrate')
-        if self.BaudrateCombobox.isEnabled():
-            staribusbaud.text = self.BaudrateCombobox.currentText()
-
-        staribustimeout = tree.find('StaribusPortTimeout')
-        staribustimeout.text = self.TimeoutCombobox.currentText()
-
-        channel_metadata = tree.findall('ChannelMetadata')
-
-        if len(self.channel_labels) == int(self.instrument.instrument_number_of_channels):
-
-            chanidx = 0
-
-            for metadata in channel_metadata:
-                ChannelLabel = metadata.find('ChannelLabel')
-                ChannelLabel.text = self.channel_labels[chanidx]
-                chanidx += 1
-
+            if execute_state:
+                self.write(tree, new_file)
         else:
-            self.warning_message()
-            execute_state = False
-
-        if len(self.channel_colours) == int(self.instrument.instrument_number_of_channels):
-
-            chanidx = 0
-
-            for metadata in channel_metadata:
-                ChannelColour = metadata.find('ChannelColour')
-                ChannelColour.text = self.channel_colours[chanidx]
-                chanidx += 1
-        else:
-            self.warning_message()
-            execute_state = False
-
-        if execute_state:
-            self.write(tree, new_file)
+            self.response_message = 'ABORT', 'Invalid data entered.'
 
     def warning_message(self):
         QtGui.QMessageBox.information(None, 'WARNING', 'Blank fields not allowed')
