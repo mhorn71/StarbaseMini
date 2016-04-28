@@ -144,6 +144,11 @@ class CommandInterpreter:
 
             response = self.dao_processor.star_message(addr, base, code, variant, param)
 
+            if param is not None and response[1] is None:
+                response_list = list(response)
+                response_list[1] = str(param)
+                response = tuple(response_list)
+
         else:
 
             if base == '80' and code == '00':  # Import Local

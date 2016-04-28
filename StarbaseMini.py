@@ -1431,14 +1431,7 @@ class Main(QtGui.QMainWindow):
                         a2dmessage = 'Channel ID ' + str(parameter) + ' = ' + response[1] + 'mV'
                         self.status_message(ident, response[0], a2dmessage, units)
                     else:
-                        if parameter != None:
-                            status_response = parameter
-                        elif choice != None:
-                            status_response = choice
-                        else:
-                            status_response = response[1]
-
-                        self.status_message(ident, response[0], status_response, units)
+                        self.status_message(ident, response[0], response[1], units)
 
     # ----------------------------------------
     # Chart show legend method.
