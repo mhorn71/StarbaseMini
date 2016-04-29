@@ -21,6 +21,7 @@ import sys
 import os
 import urllib
 import hashlib
+import threading
 from functools import partial
 import logging
 import xml.etree.ElementTree as eTree
@@ -49,6 +50,7 @@ class Upgrader:
             return False
 
     def detect_upgrade(self, current_version):
+
         try:
             xml_str = urllib.request.urlopen(self.xml_url)
         except (urllib.error.HTTPError, urllib.error.URLError) as msg:
