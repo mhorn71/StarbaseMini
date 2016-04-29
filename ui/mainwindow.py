@@ -2,12 +2,12 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Fri Apr 29 21:46:06 2016
+# Created: Fri Apr 29 21:53:19 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -29,7 +29,12 @@ class Ui_MainWindow(object):
         self.gridLayout_3 = QtGui.QGridLayout(self.groupBox_3)
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.statusMessage = QtGui.QTableWidget(self.groupBox_3)
-        self.statusMessage.setStyleSheet("QTableWidget QHeaderView {\n"
+        self.statusMessage.setStyleSheet("QTableWidget {\n"
+"    font-size: 11px;\n"
+"    background-color: \'#FFFFE0\';\n"
+"}\n"
+"\n"
+"QTableWidget QHeaderView {\n"
 "    font-size: 11px;\n"
 "}\n"
 "\n"

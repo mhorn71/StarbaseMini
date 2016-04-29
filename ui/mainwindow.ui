@@ -54,7 +54,12 @@
        <item row="0" column="0">
         <widget class="QTableWidget" name="statusMessage">
          <property name="styleSheet">
-          <string notr="true">QTableWidget QHeaderView {
+          <string notr="true">QTableWidget {
+    font-size: 11px;
+    background-color: '#FFFFE0';
+}
+
+QTableWidget QHeaderView {
     font-size: 11px;
 }
 
