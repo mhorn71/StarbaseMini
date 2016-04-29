@@ -68,30 +68,6 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.original_channel_colours = []
         self.channel_colours = []
 
-        # self.original_staribus_address = None
-        # self.staribus_address = None
-        #
-        # self.original_staribus_port = None
-        # self.staribus_port = None
-        #
-        # self.original_staribus_autodetect = None
-        # self.staribus_autodetect = None
-        #
-        # self.original_staribus_type = None
-        # self.staribus_type = None
-        #
-        # self.original_staribus_baudrate = None
-        # self.staribus_baudrate = None
-        #
-        # self.original_staribus_timeout = None
-        # self.staribus_timeout = None
-        #
-        # self.original_starinet_address = None
-        # self.starinet_address = None
-        #
-        # self.original_starinet_port = None
-        # self.starinet_port = None
-
         self.response_message = 'ABORT', None
         self.reload = False
 
@@ -175,32 +151,6 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.instrument = instrument
         self.instrument_file = instrument_file
-
-        # Save the original configuration
-
-        if self.instrument.instrument_staribus_address != 'None':
-            self.original_staribus_address = self.instrument.instrument_staribus_address
-
-        if self.instrument.instrument_staribus_port != 'None':
-            self.original_staribus_port = self.instrument.instrument_staribus_port
-
-        if self.instrument.instrument_staribus_autodetect != 'None':
-            self.original_staribus_autodetect = self.instrument.instrument_staribus_autodetect
-
-        if self.instrument.instrument_staribus_type != 'None':
-            self.original_staribus_type = self.instrument.instrument_staribus_type
-
-        if self.instrument.instrument_staribus_baudrate != 'None':
-            self.original_staribus_baudrate = self.instrument.instrument_staribus_baudrate
-
-        if self.instrument.instrument_staribus_timeout != 'None':
-            self.original_staribus_timeout = self.instrument.instrument_staribus_timeout
-
-        if self.instrument.instrument_starinet_address != 'None':
-            self.original_starinet_address = self.instrument.instrument_starinet_address
-
-        if self.instrument.instrument_starinet_port != 'None':
-            self.original_starinet_port = self.instrument.instrument_starinet_port
 
         # Create both channel label and colour list, one to change and one to check against.
 
@@ -1052,11 +1002,3 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.response_message = 'SUCCESS', 'Instrument attributes saved, calling reinitialisation.'
 
             self.close()
-
-    # def write(self, tree, new_file):
-    #
-    #     tree.write(new_file)
-    #
-    #     self.response_message = 'SUCCESS', 'Instrument attributes saved, calling reinitialisation.'
-
-        # self.close()
