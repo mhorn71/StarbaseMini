@@ -256,6 +256,7 @@ class Main(QtGui.QMainWindow):
                     self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
                     self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
                     self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
+                    self.instrument_upgrade = self.config.get('Application', 'instrument_upgrade')
                 except (ValueError, KeyError, ValueError) as msg:
                     self.logger.critical('Configuration ValueError : %s' % str(msg))
                     msg = ('Configuration ValueError : %s exiting.' % str(msg))
@@ -301,8 +302,9 @@ class Main(QtGui.QMainWindow):
 
             if self.first_initialisation is True:
 
-                # Run the updater but we'll wait 1 seconds before executing it so the main window has appeared.
-                QtCore.QTimer.singleShot(750, self.updateCaption)
+                if self.instrument_upgrade == 'True':
+                    # Run the updater but we'll wait 1 seconds before executing it so the main window has appeared.
+                    QtCore.QTimer.singleShot(750, self.updateCaption)
 
                 # This is just a trial to workout how to add menu items that are checkable
                 # http://stackoverflow.com/questions/20019489/pyside-adding-a-toggle-option-action-to-the-menu-bar
