@@ -32,7 +32,7 @@ logger = logging.getLogger('instrument.attributes_updater')
 
 
 class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
-    def __init__(self):
+    def __init__(self, parent=None):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
 
@@ -934,6 +934,29 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.response_message = 'SUCCESS', 'Instrument attributes reset defaults'
 
         self.hide()
+
+    def closeEvent(self, event):
+
+        if self.configuration_changed() is True:
+            self.response_message = 'ABORT', None
+            self.reload = False
+            self.hide()
+        elif self.configuration_changed() is False and self.configuration_check() is False:
+            self.response_message = 'ABORT', None
+            self.reload = False
+            self.hide()
+        elif self.configuration_changed() is False:
+            result = QtGui.QMessageBox.question(None,
+                                                "Confirm Exit...",
+                                                'You have unsaved changes do you want to save them?',
+                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+            if result == QtGui.QMessageBox.Yes:
+                self.accept_called()
+            else:
+                self.response_message = 'ABORT', None
+                self.reload = False
+                self.hide()
 
     def reject_called(self):
 
