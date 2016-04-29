@@ -28,13 +28,25 @@ import xml.etree.ElementTree as eTree
 from PyQt4 import QtGui, QtCore
 
 
+##  Base url is now starbasemini_version_2.xml
+
+
 class Upgrader:
-    def __init__(self):
+    def __init__(self, parent=None):
         self.baseurl = 'http://ukraa.com/ftpupload/'
 
-        self.xml_url = self.baseurl + 'starbasemini_version.xml'
+        self.xml_url = self.baseurl + 'starbasemini_version_2.xml'
 
         self.logger = logging.getLogger('utilities.upgrade_detect')
+
+    def Is64Windows(self):
+        return 'PROGRAMFILES(X86)' in os.environ
+
+    def GetProgramFiles32(self):
+        if self.Is64Windows():
+            return True
+        else:
+            return False
 
     def detect_upgrade(self, current_version):
         try:
@@ -60,9 +72,14 @@ class Upgrader:
                         md5hash = xmldom.findtext('machash')
                         status = self.downloader(minifile, md5hash)
                     elif sys.platform.startswith('win32'):
-                        minifile = xmldom.findtext('windows')
-                        md5hash = xmldom.findtext('winhash')
-                        status = self.downloader(minifile, md5hash)
+                        if self.GetProgramFiles32():
+                            minifile = xmldom.findtext('windows64')
+                            md5hash = xmldom.findtext('win64hash')
+                            status = self.downloader(minifile, md5hash)
+                        else:
+                            minifile = xmldom.findtext('windows32')
+                            md5hash = xmldom.findtext('win32hash')
+                            status = self.downloader(minifile, md5hash)
                     elif sys.platform.startswith('linux'):
                         if os.uname()[4].startswith('arm'):
                             minifile = xmldom.findtext('arm')
