@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Mon Apr 11 22:06:29 2016
+# Created: Fri Apr 29 21:46:06 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,6 +29,13 @@ class Ui_MainWindow(object):
         self.gridLayout_3 = QtGui.QGridLayout(self.groupBox_3)
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.statusMessage = QtGui.QTableWidget(self.groupBox_3)
+        self.statusMessage.setStyleSheet("QTableWidget QHeaderView {\n"
+"    font-size: 11px;\n"
+"}\n"
+"\n"
+"QTableWidget QHeaderView::section {\n"
+"    height: 18px;\n"
+"}")
         self.statusMessage.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.statusMessage.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.statusMessage.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
@@ -124,7 +131,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, "")
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.UserInst.setObjectName("UserInst")
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 2, 124, 443))

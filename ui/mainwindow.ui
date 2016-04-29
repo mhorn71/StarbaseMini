@@ -53,6 +53,15 @@
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
         <widget class="QTableWidget" name="statusMessage">
+         <property name="styleSheet">
+          <string notr="true">QTableWidget QHeaderView {
+    font-size: 11px;
+}
+
+QTableWidget QHeaderView::section {
+    height: 18px;
+}</string>
+         </property>
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
@@ -256,8 +265,8 @@ QToolBox::tab:selected { /* italicize selected tabs */
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>129</width>
-             <height>521</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <attribute name="label">
