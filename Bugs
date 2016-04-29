@@ -10,4 +10,3 @@ Update - Add a pop up if instruments attributes have changed but discard is call
 getData attempts to create chart even if no data is present to create it from
 update_detect not aware of x64 Windows version, plus add wait for mainwindow to appear before displaying.
 xml_utils instrument importer needs to check the XML is valid more.
-instrument attributes - pop up appears even when saving data.

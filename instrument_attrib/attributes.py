@@ -59,6 +59,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.instrument = None
         self.instrument_file = None
 
+        # Accept called state
+        self.accept_called_state = False
+
         # Either Staribus or Starinet.
         self.instrument_type = 'staribus'
 
@@ -887,26 +890,28 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
     def closeEvent(self, event):
 
-        if self.configuration_changed() is True:
-            self.response_message = 'ABORT', None
-            self.reload = False
-            self.hide()
-        elif self.configuration_changed() is False and self.configuration_check() is False:
-            self.response_message = 'ABORT', None
-            self.reload = False
-            self.hide()
-        elif self.configuration_changed() is False:
-            result = QtGui.QMessageBox.question(None,
-                                                "Confirm Exit...",
-                                                'You have unsaved changes do you want to save them?',
-                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if self.accept_called_state is False:
 
-            if result == QtGui.QMessageBox.Yes:
-                self.accept_called()
-            else:
+            if self.configuration_changed() is True:
                 self.response_message = 'ABORT', None
                 self.reload = False
                 self.hide()
+            elif self.configuration_changed() is False and self.configuration_check() is False:
+                self.response_message = 'ABORT', None
+                self.reload = False
+                self.hide()
+            elif self.configuration_changed() is False:
+                result = QtGui.QMessageBox.question(None,
+                                                    "Confirm Exit...",
+                                                    'You have unsaved changes do you want to save them?',
+                                                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+                if result == QtGui.QMessageBox.Yes:
+                    self.accept_called()
+                else:
+                    self.response_message = 'ABORT', None
+                    self.reload = False
+                    self.hide()
 
     def reject_called(self):
 
@@ -933,72 +938,74 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
     def accept_called(self):
 
-            # Check .starbasemini/instruments exists otherwise create.
-            if os.path.isdir(self.home_path) is not True:
-                os.makedirs(self.home_path)
+        self.accept_called_state = True
 
-            # get the instrument xml file minus the original path
-            file = self.instrument_file.split(os.path.sep)
-            file = file[-1]
+        # Check .starbasemini/instruments exists otherwise create.
+        if os.path.isdir(self.home_path) is not True:
+            os.makedirs(self.home_path)
 
-            # set the new xml to use the users home path location.
-            new_file = self.home_path + file
+        # get the instrument xml file minus the original path
+        file = self.instrument_file.split(os.path.sep)
+        file = file[-1]
 
-            # import xml file
-            tree = ET.parse(self.instrument_file)
+        # set the new xml to use the users home path location.
+        new_file = self.home_path + file
 
-            if self.instrument.instrument_staribus_port != 'None':
-                staribus_port = tree.find('StaribusPort')
-                staribus_port.text = self.StaribusPortLineEdit.text()
+        # import xml file
+        tree = ET.parse(self.instrument_file)
 
-            if self.instrument.instrument_staribus_autodetect != 'None':
-                staribus_autodetect = tree.find('StaribusPortAutodetect')
+        if self.instrument.instrument_staribus_port != 'None':
+            staribus_port = tree.find('StaribusPort')
+            staribus_port.text = self.StaribusPortLineEdit.text()
 
-                if self.StaribusAutodetectCheckBox.isEnabled():
-                    if self.StaribusAutodetectCheckBox.isChecked():
-                        staribus_autodetect.text = 'True'
-                    else:
-                        staribus_autodetect.text = 'False'
+        if self.instrument.instrument_staribus_autodetect != 'None':
+            staribus_autodetect = tree.find('StaribusPortAutodetect')
 
-            if self.instrument.instrument_staribus_address != 'None':
-                staribus_address = tree.find('StaribusAddress')
-                staribus_address.text = self.comboBox.currentText().zfill(3)
+            if self.StaribusAutodetectCheckBox.isEnabled():
+                if self.StaribusAutodetectCheckBox.isChecked():
+                    staribus_autodetect.text = 'True'
+                else:
+                    staribus_autodetect.text = 'False'
 
-            if self.instrument.instrument_staribus_baudrate != 'None':
-                staribus_baudrate = tree.find('StaribusPortBaudrate')
-                staribus_baudrate.text = self.BaudrateCombobox.currentText()
+        if self.instrument.instrument_staribus_address != 'None':
+            staribus_address = tree.find('StaribusAddress')
+            staribus_address.text = self.comboBox.currentText().zfill(3)
 
-            if self.instrument.instrument_staribus_timeout != 'None':
-                staribus_timeout = tree.find('StaribusPortTimeout')
-                staribus_timeout.text = self.TimeoutCombobox.currentText()
+        if self.instrument.instrument_staribus_baudrate != 'None':
+            staribus_baudrate = tree.find('StaribusPortBaudrate')
+            staribus_baudrate.text = self.BaudrateCombobox.currentText()
 
-            if self.instrument.instrument_starinet_address != 'None':
-                starinet_address = tree.find('StarinetAddress')
-                starinet_address.text = self.StarinetAddressLineEdit.text()
+        if self.instrument.instrument_staribus_timeout != 'None':
+            staribus_timeout = tree.find('StaribusPortTimeout')
+            staribus_timeout.text = self.TimeoutCombobox.currentText()
 
-            if self.instrument.instrument_starinet_port != 'None':
-                starinet_port = tree.find('StarinetPort')
-                starinet_port.text = self.StarinetPortLineEdit.text()
+        if self.instrument.instrument_starinet_address != 'None':
+            starinet_address = tree.find('StarinetAddress')
+            starinet_address.text = self.StarinetAddressLineEdit.text()
+
+        if self.instrument.instrument_starinet_port != 'None':
+            starinet_port = tree.find('StarinetPort')
+            starinet_port.text = self.StarinetPortLineEdit.text()
 
 
-            channel_metadata = tree.findall('ChannelMetadata')
+        channel_metadata = tree.findall('ChannelMetadata')
 
-            chanidx = 0
+        chanidx = 0
 
-            for metadata in channel_metadata:
-                ChannelLabel = metadata.find('ChannelLabel')
-                ChannelLabel.text = self.channel_labels[chanidx]
-                chanidx += 1
+        for metadata in channel_metadata:
+            ChannelLabel = metadata.find('ChannelLabel')
+            ChannelLabel.text = self.channel_labels[chanidx]
+            chanidx += 1
 
-            chanidx = 0
+        chanidx = 0
 
-            for metadata in channel_metadata:
-                ChannelColour = metadata.find('ChannelColour')
-                ChannelColour.text = self.channel_colours[chanidx]
-                chanidx += 1
+        for metadata in channel_metadata:
+            ChannelColour = metadata.find('ChannelColour')
+            ChannelColour.text = self.channel_colours[chanidx]
+            chanidx += 1
 
-            tree.write(new_file)
+        tree.write(new_file)
 
-            self.response_message = 'SUCCESS', 'Instrument attributes saved, calling reinitialisation.'
+        self.response_message = 'SUCCESS', 'Instrument attributes saved, calling reinitialisation.'
 
-            self.close()
+        self.close()
