@@ -236,6 +236,9 @@ class Main(QtGui.QMainWindow):
                 self.logger = logging.getLogger('main')
 
                 if self.first_initialisation is True:
+                    # Try upgrading configuration
+                    self.config.release_update()
+
                     self.logger.info('**************************** APPLICATION STARTUP ****************************')
 
                 # Enable all UI components.
@@ -298,8 +301,8 @@ class Main(QtGui.QMainWindow):
 
             if self.first_initialisation is True:
 
-                # Run the updater but we'll wait 5 seconds before executing it so the main window has appeared.
-                QtCore.QTimer.singleShot(5000, self.updateCaption)
+                # Run the updater but we'll wait 1 seconds before executing it so the main window has appeared.
+                QtCore.QTimer.singleShot(750, self.updateCaption)
 
                 # This is just a trial to workout how to add menu items that are checkable
                 # http://stackoverflow.com/questions/20019489/pyside-adding-a-toggle-option-action-to-the-menu-bar
@@ -321,6 +324,8 @@ class Main(QtGui.QMainWindow):
                 self.first_initialisation = False
 
     def updateCaption(self):
+
+        self.status_message('system', 'INFO', 'Checking for application upgrade.', None)
         upgrade = utilities.Upgrader()
         message = upgrade.detect_upgrade(version)
 

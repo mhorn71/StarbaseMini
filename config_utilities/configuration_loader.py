@@ -19,6 +19,7 @@ __author__ = 'mark'
 
 import configparser
 from os import path, makedirs
+import config_utilities.release_update as rlu
 
 
 class ConfigLoader:
@@ -40,7 +41,7 @@ class ConfigLoader:
         self.config_file = 'starbaseMini.conf'
         self.logger = None
         self.config = configparser.RawConfigParser()
-        self.version = 4
+        self.version = 5
         self.current_version = 0
 
         home = path.expanduser("~")
@@ -57,10 +58,8 @@ class ConfigLoader:
                 raise OSError(msg)
             else:
                 self.config_home = home
-                import config_utilities.release_update as rlu
         else:
             self.config_home = home
-            import config_utilities.release_update as rlu
 
         self.conf_file = self.config_home + self.config_file
 
@@ -83,19 +82,14 @@ class ConfigLoader:
 
                 # Add Application Release Number
                 self.config.add_section('Release')
-                self.config.set('Release', 'version', '4')
+                self.config.set('Release', 'version', '5')
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')
                 self.config.set('Application', 'instrument_data_path', '')
                 self.config.set('Application', 'instrument_identifier', 'Staribus 4 Channel Logger')
                 self.config.set('Application', 'instrument_autodetect', 'True')
-
-                # Add Staribus Port section
-                # self.config.add_section('StaribusPort')
-                # self.config.set('StaribusPort', 'staribus_port', 'COM1')
-                # self.config.set('StaribusPort', 'baudrate', '57600')
-                # self.config.set('StaribusPort', 'timeout', '20')
+                self.config.set('Application', 'instrument_upgrade', 'True')
 
                 # Add StarinetConnector section.
                 self.config.add_section('StarinetRelay')

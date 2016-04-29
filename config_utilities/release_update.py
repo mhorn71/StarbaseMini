@@ -19,15 +19,15 @@ __author__ = 'mark'
 
 import os
 import logging
-import sys
 
 upgradelog = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'upgrade.log'
 
-logging.basicConfig(filename=upgradelog,level=logging.INFO)
+logging.basicConfig(filename=upgradelog, level=logging.INFO)
 
 def update(config_object, version):
 
     if version == 2:
+
         logging.info('Upgrading configuration to version 2')
 
         config_object.add_section('Legend')
@@ -79,3 +79,8 @@ def update(config_object, version):
                         logging.info('Renaming file - ' + name + ' to ' + name + '.revison3bak')
         except (OSError, IOError) as msg:
             logging.critical(msg)
+
+    if version == 5:
+
+        config_object.set('Application', 'instrument_upgrade', 'True')
+        logging.info('Added option \'instrument_upgrade\' to \'Application\' set to \'True\'')

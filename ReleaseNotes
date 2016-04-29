@@ -1,3 +1,10 @@
+2.0.4
+
+Fixed -  Upgrade detect bug where the routine couldn't distinguish between 32 and 64 bit Windows versions.
+Fixed -  Status Window header size wasn't being set by CSS for some reason so the size change is now set by QtDesigner.
+Fixed -  Configuration updater wasn't running, when configuration change detected.
+Update - Added timer so the upgrade detect waits five seconds before running this allows time for the main UI to appear.
+
 2.0.3
 
 Fixed -  Error occured when importing and no data save path was found, now defaults to home folder if missing.
