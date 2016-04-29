@@ -941,6 +941,10 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.response_message = 'ABORT', None
             self.reload = False
             self.hide()
+        elif self.configuration_changed() is False and self.configuration_check() is False:
+            self.response_message = 'ABORT', None
+            self.reload = False
+            self.hide()
         elif self.configuration_changed() is False:
             result = QtGui.QMessageBox.question(None,
                                                 "Confirm Exit...",
