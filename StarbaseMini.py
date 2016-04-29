@@ -298,9 +298,8 @@ class Main(QtGui.QMainWindow):
 
             if self.first_initialisation is True:
 
-                upgrade = utilities.Upgrader()
-
-                message = upgrade.detect_upgrade(version)
+                # Run the updater but we'll wait 5 seconds before executing it so the main window has appeared.
+                QtCore.QTimer.singleShot(5000, self.updateCaption)
 
                 # This is just a trial to workout how to add menu items that are checkable
                 # http://stackoverflow.com/questions/20019489/pyside-adding-a-toggle-option-action-to-the-menu-bar
@@ -319,10 +318,14 @@ class Main(QtGui.QMainWindow):
                     self.ui.menuInstrument.addAction(ag)
                     self.connect(ag, QtCore.SIGNAL('triggered()'), lambda item=item: self.instrument_selection(item))
 
-                if message is not None:
-                    self.status_message('system', message[0], message[1], None)
-
                 self.first_initialisation = False
+
+    def updateCaption(self):
+        upgrade = utilities.Upgrader()
+        message = upgrade.detect_upgrade(version)
+
+        if message is not None:
+            self.status_message('system', message[0], message[1], None)
 
     def instrument_selection(self, item):
 
