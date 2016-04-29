@@ -1,3 +1,8 @@
 2.0.3
 
-Fixed -  Error occured when importing and no data save path was found, now defaults to home folder is data save path missing.
+Fixed -  Error occured when importing and no data save path was found, now defaults to home folder if missing.
+Fixed -  Error where data translator wasn't initialised when instruments were changed.
+Fixed -  Issue where you could save instruments attributes data that wasn't compliant
+
+Update - Added pop up box when instrument attributes are changed but dialog is cancelled.
+Update - When adding a parameter or choice if no responseValue to received then the parameter or choice set is displayed.
