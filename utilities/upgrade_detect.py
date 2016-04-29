@@ -21,7 +21,7 @@ import sys
 import os
 import urllib
 import hashlib
-import threading
+import socket
 from functools import partial
 import logging
 import xml.etree.ElementTree as eTree
@@ -52,9 +52,10 @@ class Upgrader:
     def detect_upgrade(self, current_version):
 
         try:
-            xml_str = urllib.request.urlopen(self.xml_url)
-        except (urllib.error.HTTPError, urllib.error.URLError) as msg:
+            xml_str = urllib.request.urlopen(self.xml_url, timeout=2)
+        except (urllib.error.HTTPError, urllib.error.URLError, ConnectionResetError, socket.timeout) as msg:
             self.logger.warning('Unable to download upgrade information from : ' + self.xml_url)
+            return 'ABORT', 'Unable to download upgrade information from : ' + self.xml_url
         else:
             xmldom = eTree.parse(xml_str)  # Open and parse xml document.
             revision = xmldom.findtext('revision')
@@ -99,6 +100,8 @@ class Upgrader:
                 return None
 
     def downloader(self, minifile, md5hash):
+
+        socket.setdefaulttimeout(2)
 
         in_file = self.baseurl + minifile
 
