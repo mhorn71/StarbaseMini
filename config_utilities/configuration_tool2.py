@@ -84,7 +84,9 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Setup checkbox slots.
         self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
+        self.relayCheckBox.clicked.connect(self.relay_checkbox_triggered)
         self.S2SCheckBox.stateChanged.connect(self.s2s_checkbox_triggered)
+        self.S2SCheckBox.clicked.connect(self.s2s_checkbox_triggered)
 
         # Setup slots for button box save
         self.chooserButton.clicked.connect(self.chooser_triggered)
@@ -370,21 +372,59 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     def relay_checkbox_triggered(self):
         if self.relayCheckBox.checkState():
-            self.ipAddressLineEdit.setEnabled(True)
-            self.portLineEdit.setEnabled(True)
+            if self.S2SCheckBox.isChecked():
+
+                result = QtGui.QMessageBox.question(None,
+                                                    "Configuration mismatch",
+                                                    "\tWARNING!!\n\nYou are trying to enable the Relay while the\n"
+                                                    "Staribus to Starinet converter is enabled."
+                                                    "\n\nPress Cancel to leave original configuration or Ok to enable Relay.",
+                                                    QtGui.QMessageBox.Cancel,QtGui.QMessageBox.Ok)
+
+                if result == QtGui.QMessageBox.Ok:
+                    self.S2SCheckBox.setChecked(False)
+                    self.ipAddressLineEdit.setEnabled(True)
+                    self.portLineEdit.setEnabled(True)
+                elif result == QtGui.QMessageBox.Cancel:
+                    self.relayCheckBox.setChecked(False)
+            else:
+
+                self.ipAddressLineEdit.setEnabled(True)
+                self.portLineEdit.setEnabled(True)
         else:
             self.ipAddressLineEdit.setEnabled(False)
             self.portLineEdit.setEnabled(False)
+
+        self.valid_configuration()
 
     # Staribus to Starinet check box trigger
 
     def s2s_checkbox_triggered(self):
         if self.S2SCheckBox.checkState():
-            self.S2SIpAddressLineEdit.setEnabled(True)
-            self.S2SPort.setEnabled(True)
+            if self.relayCheckBox.isChecked():
+                result = QtGui.QMessageBox.question(None,
+                                                    "Configuration mismatch",
+                                                    "\tWARNING!!\n\nYou are trying to enable the Staribus to\n"
+                                                    "Starinet converter while the Relay is enabled."
+                                                    "\n\nPress Cancel to leave original configuration or Ok to enable the converter.",
+                                                    QtGui.QMessageBox.Cancel, QtGui.QMessageBox.Ok)
+
+                if result == QtGui.QMessageBox.Ok:
+                    self.relayCheckBox.setChecked(False)
+                    self.S2SIpAddressLineEdit.setEnabled(True)
+                    self.S2SPort.setEnabled(True)
+                elif result == QtGui.QMessageBox.Cancel:
+                    self.S2SCheckBox.setChecked(False)
+
+            else:
+                self.S2SIpAddressLineEdit.setEnabled(True)
+                self.S2SPort.setEnabled(True)
+
         else:
             self.S2SIpAddressLineEdit.setEnabled(False)
             self.S2SPort.setEnabled(False)
+
+        self.valid_configuration()
 
     # Data save path chooser trigger
 
@@ -396,6 +436,36 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             pass
         else:
             self.savepathLineEdit.setText(file)
+
+    # Save button state check, this enables or disables the save button depending on valid contents.
+
+    def save_button_state(self):
+
+        if self.valid_configuration():
+            self.saveButton.setEnabled(True)
+        elif self.valid_configuration() is False:
+            self.saveButton.setEnabled(False)
+
+    # Valid configuration returns true for valid and false for invalid configuration.
+
+    def valid_configuration(self):
+        pass
+
+        # if self.S2SCheckBox.isChecked() and self.relayCheckBox.isChecked():
+        #     result = QtGui.QMessageBox.question(None,
+        #                                         "Configuration mismatch",
+        #                                         "\tWARNING!!\n\nBoth Staribus / Starinet Relay and Staribus to\n"
+        #                                         "Starinet Instrument Converter are enabled.\n\n"
+        #                                         "Please enable one or t'other.",
+        #                                         QtGui.QMessageBox.Ok)
+
+            # if result == QtGui.QMessageBox.Ok:
+            #     return False
+
+    # Configuration changed, checks to see if configuration has changed.
+
+    def configuration_changed(self):
+        return False
 
     # Parameter check state changes the colour of the line edit boxes depending on contents.
 
@@ -423,7 +493,31 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         else:
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
 
+    def closeEvent(self, event):
 
+        print('Close event called.')
+
+        # if self.accept_called_state is False:
+
+        if self.configuration_changed() is True:
+            self.response_message = 'ABORT', None
+            self.reload = False
+            self.hide()
+        # elif self.configuration_changed() is False: # and self.configuration_check() is False:
+        #     self.response_message = 'ABORT', None
+        #     self.reload = False
+        #     self.hide()
+        elif self.configuration_changed() is False:
+            result = QtGui.QMessageBox.question(None,
+                                                "Confirm Exit...",
+                                                'You have unsaved changes do you want to save them?',
+                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+            if result == QtGui.QMessageBox.Yes:
+                pass
+            else:
+                self.response_message = 'ABORT', None
+                self.close()
 
 
     # Exit trigger
