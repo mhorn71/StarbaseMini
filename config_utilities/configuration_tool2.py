@@ -83,12 +83,12 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.legend_font = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large']
 
         # Setup checkbox slots.
-        # self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
-        # self.S2SCheckBox.stateChanged.connect(self.s2s_checkbox_triggered)
+        self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
+        self.S2SCheckBox.stateChanged.connect(self.s2s_checkbox_triggered)
 
         # Setup slots for button box save
-        # self.chooserButton.clicked.connect(self.chooser_triggered)
-        # self.cancelButton.clicked.connect(self.exit_triggered)
+        self.chooserButton.clicked.connect(self.chooser_triggered)
+        self.cancelButton.clicked.connect(self.exit_triggered)
         # self.saveButton.clicked.connect(self.save_triggered)
 
         # Load the contents of the UI
@@ -96,9 +96,11 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     def load_ui(self):
 
-        #loads the ui with the current configuration from disk.
+        ## loads the ui with the current configuration from disk.
 
-        # Load 'General' Tab Box
+        ##########################
+        ### Load 'General' Tab ###
+        ##########################
 
         # Setup data save path line edit box.
 
@@ -161,6 +163,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.portLineEdit.textChanged.emit(self.portLineEdit.text())
 
         # Setup staribus to starinet check box and line edits.
+
         staribus2starinet_active = self.application_conf.get('Staribus2Starinet', 'active')
 
         if staribus2starinet_active == 'True':
@@ -198,9 +201,203 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.LegendFontComboBox.addItems(self.legend_font)
         self.LegendFontComboBox.setCurrentIndex(self.legend_font.index(self.application_conf.get('Legend', 'font')))
 
+        #######################################
+        ### Load 'Observatory Metadata' Tab ###
+        #######################################
 
 
+        self.OyNameLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'name'))
+        self.OyNameLineEdit.setToolTip('The name of the Observatory')
 
+        self.OyNameLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_name)))
+        self.OyNameLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyNameLineEdit.textChanged.emit(self.OyNameLineEdit.text())
+
+        self.OyDescriptionLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'description'))
+        self.OyDescriptionLineEdit.setToolTip('The description of the Observatory')
+
+        self.OyDescriptionLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_description)))
+        self.OyDescriptionLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyDescriptionLineEdit.textChanged.emit(self.OyDescriptionLineEdit.text())
+
+        self.OyEmailLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'contact_email'))
+        self.OyEmailLineEdit.setToolTip('The email address of the Observatory')
+
+        self.OyEmailLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_email)))
+        self.OyEmailLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyEmailLineEdit.textChanged.emit(self.OyEmailLineEdit.text())
+
+        self.OyTelephoneLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'contact_telephone'))
+        self.OyTelephoneLineEdit.setToolTip('The telephone number of the Observatory')
+
+        self.OyTelephoneLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_telephone)))
+        self.OyTelephoneLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyTelephoneLineEdit.textChanged.emit(self.OyTelephoneLineEdit.text())
+
+        self.OyUrlLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'contact_url'))
+        self.OyUrlLineEdit.setToolTip('The Observatory website URL')
+
+        self.OyUrlLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_url)))
+        self.OyUrlLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyUrlLineEdit.textChanged.emit(self.OyUrlLineEdit.text())
+
+        self.OyCountryLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'country'))
+        self.OyCountryLineEdit.setToolTip('The two character Country containing the Observatory (ISO 3166)\n'
+                                          'Country Codes: https://www.iso.org/obp/ui/#search/code/')
+
+        self.OyCountryLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_country)))
+        self.OyCountryLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyCountryLineEdit.textChanged.emit(self.OyCountryLineEdit.text())
+
+        self.OyTimezoneLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'timezone'))
+        self.OyTimezoneLineEdit.setToolTip('The TimeZone containing the Observatory  GMT-23:59 to GMT+00:00 '
+                                           'to GMT+23:59')
+
+        self.OyTimezoneLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_timezone)))
+        self.OyTimezoneLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyTimezoneLineEdit.textChanged.emit(self.OyTimezoneLineEdit.text())
+
+        self.OyDatumLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'geodetic_datum'))
+        self.OyDatumLineEdit.setEnabled(False)
+        self.OyDatumLineEdit.setToolTip('The GeodeticDatum used by the Observatory - Can not be changed!')
+
+        self.OyDatumLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_datum)))
+        self.OyDatumLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyDatumLineEdit.textChanged.emit(self.OyDatumLineEdit.text())
+
+        self.OyMagLatitudeLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'geomagnetic_latitude'))
+        self.OyMagLatitudeLineEdit.setToolTip('The GeomagneticLatitude of the Observatory (North is positive) '
+                                              '-89:59:59.9999 to +00:00:00.0000 to +89:59:59.9999')
+
+        self.OyMagLatitudeLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_geomag_latitude)))
+        self.OyMagLatitudeLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyMagLatitudeLineEdit.textChanged.emit(self.OyMagLatitudeLineEdit.text())
+
+        self.OyMagLongitudeLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'geomagnetic_longitude'))
+        self.OyMagLongitudeLineEdit.setToolTip('The GeomagneticLongitude of the Observatory (West is positive)  '
+                                               '-179:59:59.9999 to +000:00:00.0000 to +179:59:59.9999')
+
+        self.OyMagLongitudeLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_geomag_longitude)))
+        self.OyMagLongitudeLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyMagLongitudeLineEdit.textChanged.emit(self.OyMagLongitudeLineEdit.text())
+
+        self.OyModelLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'geomagnetic_model'))
+        self.OyModelLineEdit.setEnabled(False)
+        self.OyModelLineEdit.setToolTip('The GeomagneticModel used by the Observatory - Can not be changed!')
+
+        self.OyModelLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_geomag_model)))
+        self.OyModelLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyModelLineEdit.textChanged.emit(self.OyModelLineEdit.text())
+
+        self.OyLatitudeLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'latitude'))
+        self.OyLatitudeLineEdit.setToolTip('The Latitude of the Framework (North is positive)  -89:59:59.9999 to '
+                                           '+00:00:00.0000 to +89:59:59.9999')
+
+        self.OyLatitudeLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_latitude)))
+        self.OyLatitudeLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyLatitudeLineEdit.textChanged.emit(self.OyLatitudeLineEdit.text())
+
+        self.OyLongitudeLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'longitude'))
+        self.OyLongitudeLineEdit.setToolTip('The Longitude of the Observatory (West is positive)  '
+                                            '-179:59:59.9999 to +000:00:00.0000 to +179:59:59.999')
+
+        self.OyLongitudeLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_longitude)))
+        self.OyLongitudeLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyLongitudeLineEdit.textChanged.emit(self.OyLongitudeLineEdit.text())
+
+        self.OyHaslLineEdit.setText(self.application_conf.get('ObservatoryMetadata', 'hasl'))
+        self.OyHaslLineEdit.setToolTip('The observatory height above sea level.')
+
+        self.OyHaslLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observatory_hasl)))
+        self.OyHaslLineEdit.textChanged.connect(self.parameter_check_state)
+        self.OyHaslLineEdit.textChanged.emit(self.OyHaslLineEdit.text())
+
+        ####################################
+        ### Load 'Observer Metadata' Tab ###
+        ####################################
+
+        self.ObNameLineEdit.setText(self.application_conf.get('ObserverMetadata', 'name'))
+        self.ObNameLineEdit.setToolTip('The name of the Observer')
+
+        self.ObNameLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_name)))
+        self.ObNameLineEdit.textChanged.connect(self.parameter_check_state)
+        self.ObNameLineEdit.textChanged.emit(self.ObNameLineEdit.text())
+
+        self.ObDescriptionLineEdit.setText(self.application_conf.get('ObserverMetadata', 'description'))
+        self.ObDescriptionLineEdit.setToolTip('The description of the Observer')
+
+        self.ObDescriptionLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_description)))
+        self.ObDescriptionLineEdit.textChanged.connect(self.parameter_check_state)
+        self.ObDescriptionLineEdit.textChanged.emit(self.ObDescriptionLineEdit.text())
+
+        self.ObEmailLineEdit.setText(self.application_conf.get('ObserverMetadata', 'contact_email'))
+        self.ObEmailLineEdit.setToolTip('The email address of the Observer')
+
+        self.ObEmailLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_email)))
+        self.ObEmailLineEdit.textChanged.connect(self.parameter_check_state)
+        self.ObEmailLineEdit.textChanged.emit(self.ObEmailLineEdit.text())
+
+        self.ObTelephoneLineEdit.setText(self.application_conf.get('ObserverMetadata', 'contact_telephone'))
+        self.ObTelephoneLineEdit.setToolTip('The Observer telephone number')
+
+        self.ObTelephoneLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_telephone)))
+        self.ObTelephoneLineEdit.textChanged.connect(self.parameter_check_state)
+        self.ObTelephoneLineEdit.textChanged.emit(self.ObTelephoneLineEdit.text())
+
+        self.ObUrlLineEdit.setText(self.application_conf.get('ObserverMetadata', 'contact_url'))
+        self.ObUrlLineEdit.setToolTip('The Observer website URL')
+
+        self.ObUrlLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_url)))
+        self.ObUrlLineEdit.textChanged.connect(self.parameter_check_state)
+        self.ObUrlLineEdit.textChanged.emit(self.ObUrlLineEdit.text())
+
+        self.ObCountryLineEdit.setText(self.application_conf.get('ObserverMetadata', 'country'))
+        self.ObCountryLineEdit.setToolTip('The two character Country containing the Observatory (ISO 3166)\n'
+                                          'Country Codes: https://www.iso.org/obp/ui/#search/code/')
+
+        self.ObCountryLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_country)))
+        self.ObCountryLineEdit.textChanged.connect(self.parameter_check_state)
+        self.ObCountryLineEdit.textChanged.emit(self.ObCountryLineEdit.text())
+
+        self.ObNotesLineEdit.setText(self.application_conf.get('ObserverMetadata', 'notes'))
+        self.ObNotesLineEdit.setToolTip('The Observer Notes')
+
+        self.ObNotesLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_notes)))
+        self.ObNotesLineEdit.textChanged.connect(self.parameter_check_state)
+        self.ObNotesLineEdit.textChanged.emit(self.ObNotesLineEdit.text())
+
+    #  Relay check box trigger
+
+    def relay_checkbox_triggered(self):
+        if self.relayCheckBox.checkState():
+            self.ipAddressLineEdit.setEnabled(True)
+            self.portLineEdit.setEnabled(True)
+        else:
+            self.ipAddressLineEdit.setEnabled(False)
+            self.portLineEdit.setEnabled(False)
+
+    # Staribus to Starinet check box trigger
+
+    def s2s_checkbox_triggered(self):
+        if self.S2SCheckBox.checkState():
+            self.S2SIpAddressLineEdit.setEnabled(True)
+            self.S2SPort.setEnabled(True)
+        else:
+            self.S2SIpAddressLineEdit.setEnabled(False)
+            self.S2SPort.setEnabled(False)
+
+    # Data save path chooser trigger
+
+    def chooser_triggered(self):
+
+        file = str(QtGui.QFileDialog.getExistingDirectory(QtGui.QFileDialog(), "Select Directory"))
+
+        if len(file) == 0:
+            pass
+        else:
+            self.savepathLineEdit.setText(file)
+
+    # Parameter check state changes the colour of the line edit boxes depending on contents.
 
     def parameter_check_state(self, *args, **kwargs):
 
@@ -225,3 +422,12 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
         else:
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+
+
+
+
+    # Exit trigger
+
+    def exit_triggered(self):
+        self.response_message = 'ABORT', None
+        self.close()
