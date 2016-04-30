@@ -161,6 +161,15 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.S2SIpAddressLineEdit.setEnabled(False)
             self.S2SPort.setEnabled(False)
 
+        # Set up upgrade checkbox
+
+        upgrade_check = self.application_conf.get('Application', 'instrument_upgrade')
+
+        if upgrade_check == 'True':
+            self.UpgradecheckBox.setChecked(True)
+        elif upgrade_check == 'False':
+            self.UpgradecheckBox.setChecked(False)
+
         # Chart legend
         self.legendLocationComboBox.addItems(self.legend_loc)
         self.legendLocationComboBox.setCurrentIndex(self.legend_loc.index(
@@ -440,6 +449,12 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         # Logging Level
         self.application_conf.set('logger_root', 'level', self.loglevelComboBox.itemText(
             self.loglevelComboBox.currentIndex()))
+
+        # UpgradeCheckbox
+        if self.UpgradecheckBox.checkState():
+            self.application_conf.set('Application', 'instrument_upgrade', 'True')
+        else:
+            self.application_conf.set('Application', 'instrument_upgrade', 'False')
 
         # Staribus2Starinet
         if self.S2SCheckBox.checkState():
