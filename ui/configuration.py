@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'configuration.ui'
 #
-# Created: Sun Apr 17 16:43:33 2016
+# Created: Sat Apr 30 12:49:58 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -120,6 +120,20 @@ class Ui_ConfigurationDialog(object):
         self.groupBox.setObjectName("groupBox")
         self.gridLayout_2 = QtGui.QGridLayout(self.groupBox)
         self.gridLayout_2.setObjectName("gridLayout_2")
+        self.horizontalLayout_22 = QtGui.QHBoxLayout()
+        self.horizontalLayout_22.setObjectName("horizontalLayout_22")
+        self.label_30 = QtGui.QLabel(self.groupBox)
+        self.label_30.setObjectName("label_30")
+        self.horizontalLayout_22.addWidget(self.label_30)
+        self.loglevelComboBox = QtGui.QComboBox(self.groupBox)
+        self.loglevelComboBox.setObjectName("loglevelComboBox")
+        self.horizontalLayout_22.addWidget(self.loglevelComboBox)
+        spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_22.addItem(spacerItem5)
+        self.UpgradecheckBox = QtGui.QCheckBox(self.groupBox)
+        self.UpgradecheckBox.setObjectName("UpgradecheckBox")
+        self.horizontalLayout_22.addWidget(self.UpgradecheckBox)
+        self.gridLayout_2.addLayout(self.horizontalLayout_22, 1, 0, 1, 1)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtGui.QLabel(self.groupBox)
@@ -132,17 +146,6 @@ class Ui_ConfigurationDialog(object):
         self.chooserButton.setObjectName("chooserButton")
         self.horizontalLayout_2.addWidget(self.chooserButton)
         self.gridLayout_2.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
-        self.horizontalLayout_22 = QtGui.QHBoxLayout()
-        self.horizontalLayout_22.setObjectName("horizontalLayout_22")
-        self.label_30 = QtGui.QLabel(self.groupBox)
-        self.label_30.setObjectName("label_30")
-        self.horizontalLayout_22.addWidget(self.label_30)
-        self.loglevelComboBox = QtGui.QComboBox(self.groupBox)
-        self.loglevelComboBox.setObjectName("loglevelComboBox")
-        self.horizontalLayout_22.addWidget(self.loglevelComboBox)
-        spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_22.addItem(spacerItem5)
-        self.gridLayout_2.addLayout(self.horizontalLayout_22, 1, 0, 1, 1)
         self.gridLayout_4.addWidget(self.groupBox, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtGui.QWidget()
@@ -380,9 +383,10 @@ class Ui_ConfigurationDialog(object):
         self.label_34.setText(QtGui.QApplication.translate("ConfigurationDialog", "Columns", None, QtGui.QApplication.UnicodeUTF8))
         self.label_35.setText(QtGui.QApplication.translate("ConfigurationDialog", "Font Size", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("ConfigurationDialog", "General", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_30.setText(QtGui.QApplication.translate("ConfigurationDialog", "Log Level", None, QtGui.QApplication.UnicodeUTF8))
+        self.UpgradecheckBox.setText(QtGui.QApplication.translate("ConfigurationDialog", "Check for upgrade, requires internet access.", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("ConfigurationDialog", "Data Save Path", None, QtGui.QApplication.UnicodeUTF8))
         self.chooserButton.setText(QtGui.QApplication.translate("ConfigurationDialog", "Chooser", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_30.setText(QtGui.QApplication.translate("ConfigurationDialog", "Log Level", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("ConfigurationDialog", "General", None, QtGui.QApplication.UnicodeUTF8))
         self.label_9.setText(QtGui.QApplication.translate("ConfigurationDialog", "Name", None, QtGui.QApplication.UnicodeUTF8))
         self.label_10.setText(QtGui.QApplication.translate("ConfigurationDialog", "Description", None, QtGui.QApplication.UnicodeUTF8))

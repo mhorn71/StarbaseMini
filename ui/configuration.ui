@@ -247,27 +247,6 @@
             <string>General</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
-            <item row="0" column="0">
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>Data Save Path</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="savepathLineEdit"/>
-              </item>
-              <item>
-               <widget class="QPushButton" name="chooserButton">
-                <property name="text">
-                 <string>Chooser</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
             <item row="1" column="0">
              <layout class="QHBoxLayout" name="horizontalLayout_22">
               <item>
@@ -292,6 +271,34 @@
                  </size>
                 </property>
                </spacer>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="UpgradecheckBox">
+                <property name="text">
+                 <string>Check for upgrade, requires internet access.</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Data Save Path</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="savepathLineEdit"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="chooserButton">
+                <property name="text">
+                 <string>Chooser</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
