@@ -903,7 +903,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             elif self.configuration_changed() is False:
                 result = QtGui.QMessageBox.warning(None,
                                                     "Confirm Exit...",
-                                                    'You have unsaved changes do you want to save them?',
+                                                    '\n\nSave changes?',
                                                     QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
                 if result == QtGui.QMessageBox.Yes:
@@ -925,8 +925,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.hide()
         elif self.configuration_changed() is False:
             result = QtGui.QMessageBox.warning(None,
-                                               "Confirm Exit...",
-                                               "You have unsaved changes do you want to save them?",
+                                               "Confirm Exit...\n",
+                                               "\n\nSave changes?",
                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
             if result == QtGui.QMessageBox.Yes:
