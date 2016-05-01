@@ -1,11 +1,19 @@
 2.0.4
 
-Fixed -  Upgrade detect bug where the routine couldn't distinguish between 32 and 64 bit Windows versions.
+Fixed -  Application upgrade notification bug where the routine couldn't distinguish between 32 and 64 bit Windows versions.
 Fixed -  Status Window header size wasn't being set by CSS for some reason so the size change is now set by QtDesigner.
 Fixed -  Configuration updater wasn't running, when configuration change detected.
 Fixed -  Instrument attributes confirm pop up appeared even when save pressed.
+Fixed -  Bug in configuration regex which allowed longitudes, latitudes and hasl to be blank.
 
-Update - Added timer so the upgrade detect waits five seconds before running this allows time for the main UI to appear.
+Update - Added timer so the application upgrade notification check waits 750 milliseconds
+         before running this allows time for the main UI to appear.
+
+Update - Added ability to be able to turn on or off application upgrade notification check.
+Update - Changed pop ups which indicate a warning from QMessagebox.question to QMessagebox.warning.
+Update - Completely rewrote the configuration tool, pop ups should now appear when data has changed, save button should
+         be disabled is configuration isn't valid.  A pop up alert will appear is you set both the relay and staribus to
+         starinet converter.  On startup if the data save path isn't set you'll be asked to set.
 
 2.0.3
 
