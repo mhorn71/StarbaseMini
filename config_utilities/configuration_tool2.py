@@ -374,7 +374,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         if self.relayCheckBox.checkState():
             if self.S2SCheckBox.isChecked():
 
-                result = QtGui.QMessageBox.question(None,
+                result = QtGui.QMessageBox.warning(None,
                                                     "Configuration mismatch",
                                                     "\tWARNING!!\n\nYou are trying to enable the Relay while the\n"
                                                     "Staribus to Starinet converter is enabled."
@@ -402,7 +402,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
     def s2s_checkbox_triggered(self):
         if self.S2SCheckBox.checkState():
             if self.relayCheckBox.isChecked():
-                result = QtGui.QMessageBox.question(None,
+                result = QtGui.QMessageBox.warning(None,
                                                     "Configuration mismatch",
                                                     "\tWARNING!!\n\nYou are trying to enable the Staribus to\n"
                                                     "Starinet converter while the Relay is enabled."
@@ -451,16 +451,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
     def valid_configuration(self):
         pass
 
-        # if self.S2SCheckBox.isChecked() and self.relayCheckBox.isChecked():
-        #     result = QtGui.QMessageBox.question(None,
-        #                                         "Configuration mismatch",
-        #                                         "\tWARNING!!\n\nBoth Staribus / Starinet Relay and Staribus to\n"
-        #                                         "Starinet Instrument Converter are enabled.\n\n"
-        #                                         "Please enable one or t'other.",
-        #                                         QtGui.QMessageBox.Ok)
-
-            # if result == QtGui.QMessageBox.Ok:
-            #     return False
 
     # Configuration changed, checks to see if configuration has changed.
 
@@ -508,9 +498,9 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         #     self.reload = False
         #     self.hide()
         elif self.configuration_changed() is False:
-            result = QtGui.QMessageBox.question(None,
+            result = QtGui.QMessageBox.warning(None,
                                                 "Confirm Exit...",
-                                                'You have unsaved changes do you want to save them?',
+                                                '\n\nSave changes?',
                                                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
             if result == QtGui.QMessageBox.Yes:
