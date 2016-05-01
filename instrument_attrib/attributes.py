@@ -902,9 +902,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
                 self.hide()
             elif self.configuration_changed() is False:
                 result = QtGui.QMessageBox.warning(None,
-                                                    "Confirm Exit...",
-                                                    '\n\nSave changes?',
-                                                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                                   "Confirm Exit...",
+                                                   "\n\nSave changes?",
+                                                   QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
                 if result == QtGui.QMessageBox.Yes:
                     self.accept_called()
