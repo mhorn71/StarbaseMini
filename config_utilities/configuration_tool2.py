@@ -20,6 +20,7 @@ __author__ = 'mark'
 import logging
 import sys
 import os
+import re
 
 from PyQt4 import QtGui, QtCore
 
@@ -91,10 +92,29 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         # Setup slots for button box save
         self.chooserButton.clicked.connect(self.chooser_triggered)
         self.cancelButton.clicked.connect(self.exit_triggered)
-        # self.saveButton.clicked.connect(self.save_triggered)
+        self.saveButton.clicked.connect(self.save_triggered)
+
+        # This sets a trip so we don't keep showing the pop up warning about data save path not being set.
+        self.update_path_trip = 0
+
+        # This set a trip so we don't run the changed config check if we save the data and exit
+        self.save_trip = False
 
         # Load the contents of the UI
         self.load_ui()
+
+    def update_path(self):
+
+        result = QtGui.QMessageBox.warning(None,
+                                           "Configuration mismatch",
+                                           "\tWARNING!!\n\nYou have no data save path set."
+                                           "\n\nPress Cancel to set later or Ok to open configuration.",
+                                           QtGui.QMessageBox.Cancel, QtGui.QMessageBox.Ok)
+
+        if result == QtGui.QMessageBox.Ok:
+            self.show()
+        elif result == QtGui.QMessageBox.Cancel:
+            pass
 
     def load_ui(self):
 
@@ -106,13 +126,14 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Setup data save path line edit box.
 
-        data_save_path = self.application_conf.get('Application', 'instrument_data_path')
-
-        # Setup data save path, show warning if None.
-        if data_save_path is None:
+        if self.application_conf.get('Application', 'instrument_data_path') == 'Warning: Please set path for exported data.':
             self.savepathLineEdit.setText('Warning: Please set path for exported data.')
+
+            if self.update_path_trip == 0:
+                QtCore.QTimer.singleShot(250, self.update_path)
+                self.update_path_trip += 1
         else:
-            self.savepathLineEdit.setText(data_save_path)
+            self.savepathLineEdit.setText(self.application_conf.get('Application', 'instrument_data_path'))
 
         self.savepathLineEdit.setToolTip('The full path where you wish to save your downloaded data.')
 
@@ -139,13 +160,13 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         elif upgrade_check == 'False':
             self.UpgradecheckBox.setChecked(False)
 
-        # Setup starinetConnector (Relay) check box and line edits.
+        # Setup starinet relay check box and line edits.
 
-        starinetConnector_active = self.application_conf.get('StarinetRelay', 'active')
+        starinetRelay_active = self.application_conf.get('StarinetRelay', 'active')
 
-        if starinetConnector_active == 'True':
+        if starinetRelay_active == 'True':
             self.relayCheckBox.setChecked(True)
-        elif starinetConnector_active == 'False':
+        elif starinetRelay_active == 'False':
             self.ipAddressLineEdit.setEnabled(False)
             self.portLineEdit.setEnabled(False)
 
@@ -395,8 +416,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.ipAddressLineEdit.setEnabled(False)
             self.portLineEdit.setEnabled(False)
 
-        self.valid_configuration()
-
     # Staribus to Starinet check box trigger
 
     def s2s_checkbox_triggered(self):
@@ -424,8 +443,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.S2SIpAddressLineEdit.setEnabled(False)
             self.S2SPort.setEnabled(False)
 
-        self.valid_configuration()
-
     # Data save path chooser trigger
 
     def chooser_triggered(self):
@@ -441,21 +458,247 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     def save_button_state(self):
 
-        if self.valid_configuration():
+        if self.configuration_check():
             self.saveButton.setEnabled(True)
-        elif self.valid_configuration() is False:
+        elif self.configuration_check() is False:
             self.saveButton.setEnabled(False)
-
-    # Valid configuration returns true for valid and false for invalid configuration.
-
-    def valid_configuration(self):
-        pass
-
 
     # Configuration changed, checks to see if configuration has changed.
 
     def configuration_changed(self):
-        return False
+
+        trip = 32
+
+        # Check data save path.
+
+        if self.savepathLineEdit.text() != self.application_conf.get('Application', 'instrument_data_path'):
+            trip -= 1
+
+        # Check log level
+
+        if self.loglevelComboBox.currentText() != self.application_conf.get('logger_root', 'level'):
+            trip -= 1
+
+        # Check upgrade checkbox
+
+        if self.UpgradecheckBox.isChecked():
+            upgrade = "True"
+        else:
+            upgrade = "False"
+
+        if upgrade != self.application_conf.get('Application', 'instrument_upgrade'):
+            trip -= 1
+
+        # Check Starinet relay section
+
+        if self.relayCheckBox.isChecked():
+            starinetRelay = "True"
+        else:
+            starinetRelay = "False"
+
+        if starinetRelay != self.application_conf.get('StarinetRelay', 'active'):
+            trip -= 1
+
+        if self.ipAddressLineEdit.text() != self.application_conf.get('StarinetRelay', 'address'):
+            trip -= 1
+
+        if self.portLineEdit.text() != self.application_conf.get('StarinetRelay', 'starinet_port'):
+            trip -= 1
+
+        # Check Staribus to Starinet section
+
+        if self.S2SCheckBox.isChecked():
+            staribus2starinet = "True"
+        else:
+            staribus2starinet = "False"
+
+        if staribus2starinet != self.application_conf.get('Staribus2Starinet', 'active'):
+            trip -= 1
+
+        if self.S2SIpAddressLineEdit.text() != self.application_conf.get('Staribus2Starinet', 'address'):
+            trip -= 1
+
+        if self.S2SPort.text() != self.application_conf.get('Staribus2Starinet', 'starinet_port'):
+            trip -= 1
+
+        # Check legend section
+
+        if self.legendLocationComboBox.currentText() != self.application_conf.get('Legend', 'location'):
+            trip -= 1
+
+        if str(self.LegendColSpinBox.value()) != self.application_conf.get('Legend', 'columns'):
+            trip -= 1
+
+        if self.LegendFontComboBox.currentText() != self.application_conf.get('Legend', 'font'):
+            trip -= 1
+
+        # Check Observatory Metadata.
+
+        if self.OyNameLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'name'):
+            trip -= 1
+
+        if self.OyDescriptionLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'description'):
+            trip -= 1
+
+        if self.OyEmailLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'contact_email'):
+            trip -= 1
+
+        if self.OyTelephoneLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'contact_telephone'):
+            trip -= 1
+
+        if self.OyUrlLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'contact_url'):
+            trip -= 1
+
+        if self.OyCountryLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'country'):
+            trip -= 1
+
+        if self.OyTimezoneLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'timezone'):
+            trip -= 1
+
+        if self.OyDatumLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'geodetic_datum'):
+            trip -= 1
+
+        if self.OyMagLatitudeLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'geomagnetic_latitude'):
+            trip -= 1
+
+        if self.OyMagLongitudeLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'geomagnetic_longitude'):
+            trip -= 1
+
+        if self.OyModelLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'geomagnetic_model'):
+            trip -= 1
+
+        if self.OyLatitudeLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'latitude'):
+            trip -= 1
+
+        if self.OyLongitudeLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'longitude'):
+            trip -= 1
+
+        if self.OyHaslLineEdit.text() != self.application_conf.get('ObservatoryMetadata', 'hasl'):
+            trip -= 1
+
+        # Check Observer Metadata.
+
+        if self.ObNameLineEdit.text() != self.application_conf.get('ObserverMetadata', 'name'):
+            trip -= 1
+
+        if self.ObDescriptionLineEdit.text() != self.application_conf.get('ObserverMetadata', 'description'):
+            trip -= 1
+
+        if self.ObEmailLineEdit.text() != self.application_conf.get('ObserverMetadata', 'contact_email'):
+            trip -= 1
+
+        if self.ObTelephoneLineEdit.text() != self.application_conf.get('ObserverMetadata', 'contact_telephone'):
+            trip -= 1
+
+        if self.ObUrlLineEdit.text() != self.application_conf.get('ObserverMetadata', 'contact_url'):
+            trip -= 1
+
+        if self.ObCountryLineEdit.text() != self.application_conf.get('ObserverMetadata', 'country'):
+            trip -= 1
+
+        if self.ObNotesLineEdit.text() != self.application_conf.get('ObserverMetadata', 'notes'):
+            trip -= 1
+
+        if trip == 32:
+            return False
+        else:
+            return True
+
+    # Configuration validation check.
+
+    def configuration_check(self):
+
+        trip = 32
+
+        # Check Starinet relay section
+
+        if not re.match(constants.starinet_ip, self.ipAddressLineEdit.text()):
+            trip -= 1
+
+
+        if not re.match(constants.starinet_port, self.portLineEdit.text()):
+            trip -= 1
+
+        # Check Staribus to Starinet section
+
+        if not re.match(constants.starinet_ip, self.S2SIpAddressLineEdit.text()):
+            trip -= 1
+
+
+        if not re.match(constants.starinet_port, self.S2SPort.text()):
+            trip -= 1
+
+        # Check Observatory Metadata.
+
+        if not re.match(constants.observatory_name, self.OyNameLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_description, self.OyDescriptionLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_email, self.OyEmailLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_telephone, self.OyTelephoneLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_url, self.OyUrlLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_country, self.OyCountryLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_timezone, self.OyTimezoneLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_datum, self.OyDatumLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_geomag_latitude, self.OyMagLatitudeLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_geomag_longitude, self.OyMagLongitudeLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_geomag_model, self.OyModelLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_latitude, self.OyLatitudeLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_longitude, self.OyLongitudeLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observatory_hasl, self.OyHaslLineEdit.text()):
+            trip -= 1
+
+        # Check Observer Metadata.
+
+        if not re.match(constants.observer_name, self.ObNameLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observer_description, self.ObDescriptionLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observer_email, self.ObEmailLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observer_telephone, self.ObTelephoneLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observer_url, self.ObUrlLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observer_country, self.ObCountryLineEdit.text()):
+            trip -= 1
+
+        if not re.match(constants.observer_notes, self.ObNotesLineEdit.text()):
+            trip -= 1
+
+        if trip == 32:
+            return True
+        else:
+            return False
 
     # Parameter check state changes the colour of the line edit boxes depending on contents.
 
@@ -474,44 +717,127 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         if state == QtGui.QValidator.Acceptable and len(sender.text()) == 0:
             color = '#ffffff'  # white
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.save_button_state()
         elif state == QtGui.QValidator.Acceptable:
             color = '#c4df9b'  # green
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.save_button_state()
         elif state == QtGui.QValidator.Intermediate:
             color = '#fff79a'  # yellow
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.save_button_state()
         else:
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+            self.save_button_state()
 
     def closeEvent(self, event):
 
-        print('Close event called.')
-
-        # if self.accept_called_state is False:
-
-        if self.configuration_changed() is True:
-            self.response_message = 'ABORT', None
-            self.reload = False
+        if self.save_trip is True:
             self.hide()
-        # elif self.configuration_changed() is False: # and self.configuration_check() is False:
-        #     self.response_message = 'ABORT', None
-        #     self.reload = False
-        #     self.hide()
-        elif self.configuration_changed() is False:
-            result = QtGui.QMessageBox.warning(None,
-                                                "Confirm Exit...",
-                                                '\n\nSave changes?',
-                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            self.save_trip = False
+        else:
 
-            if result == QtGui.QMessageBox.Yes:
-                pass
+            if self.configuration_changed() is False:
+                self.response_message = 'ABORT', None
+                self.reload = False
+                self.hide()
+                self.load_ui()
+            elif self.configuration_changed() and self.configuration_check():
+                result = QtGui.QMessageBox.warning(None,
+                                                    "Confirm Exit...",
+                                                    '\n\nSave changes?',
+                                                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+                if result == QtGui.QMessageBox.Yes:
+                    self.save_triggered()
+                else:
+                    self.response_message = 'ABORT', None
+                    self.close()
+                    self.load_ui()
             else:
                 self.response_message = 'ABORT', None
-                self.close()
+                self.reload = False
+                self.hide()
+                self.load_ui()
 
-
-    # Exit trigger
+    # Exit
 
     def exit_triggered(self):
-        self.response_message = 'ABORT', None
+        if self.configuration_changed():
+            self.close()
+        else:
+            self.response_message = 'ABORT', None
+            self.load_ui()
+            self.close()
+
+    def save_triggered(self):
+
+        self.save_trip = True
+
+        # Application
+        self.application_conf.set('Application', 'instrument_data_path', self.savepathLineEdit.text())
+
+        # Logging Level
+        self.application_conf.set('logger_root', 'level', self.loglevelComboBox.itemText(
+            self.loglevelComboBox.currentIndex()))
+
+        # UpgradeCheckbox
+        if self.UpgradecheckBox.checkState():
+            self.application_conf.set('Application', 'instrument_upgrade', 'True')
+        else:
+            self.application_conf.set('Application', 'instrument_upgrade', 'False')
+
+        # Staribus2Starinet
+        if self.S2SCheckBox.checkState():
+            self.application_conf.set('Staribus2Starinet', 'active', 'True')
+        else:
+            self.application_conf.set('Staribus2Starinet', 'active', 'False')
+
+        self.application_conf.set('Staribus2Starinet', 'address', self.S2SIpAddressLineEdit.text())
+        self.application_conf.set('Staribus2Starinet', 'starinet_port', self.S2SPort.text())
+
+        # StarinetConnector
+        if self.relayCheckBox.checkState():
+            self.application_conf.set('StarinetRelay', 'active', 'True')
+        else:
+            self.application_conf.set('StarinetRelay', 'active', 'False')
+
+        self.application_conf.set('StarinetRelay', 'address', self.ipAddressLineEdit.text())
+        self.application_conf.set('StarinetRelay', 'starinet_port', self.portLineEdit.text())
+
+        # Chart Legend
+        self.application_conf.set('Legend', 'location',
+                                  self.legendLocationComboBox.itemText(self.legendLocationComboBox.currentIndex()))
+
+        self.application_conf.set('Legend', 'columns', str(self.LegendColSpinBox.value()))
+
+        self.application_conf.set('Legend', 'font',
+                                  self.LegendFontComboBox.itemText(self.LegendFontComboBox.currentIndex()))
+
+        # ObservatoryMetadata
+        self.application_conf.set('ObservatoryMetadata', 'name', self.OyNameLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'description', self.OyDescriptionLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'contact_email', self.OyEmailLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'contact_telephone', self.OyTelephoneLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'contact_url', self.OyUrlLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'country', self.OyCountryLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'timezone', self.OyTimezoneLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'geomagnetic_latitude', self.OyMagLatitudeLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'geomagnetic_longitude', self.OyMagLongitudeLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'latitude', self.OyLatitudeLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'longitude', self.OyLongitudeLineEdit.text())
+        self.application_conf.set('ObservatoryMetadata', 'hasl', self.OyHaslLineEdit.text())
+
+        # ObserverMetadata
+        self.application_conf.set('ObserverMetadata', 'name', self.ObNameLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'description', self.ObDescriptionLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'contact_email', self.ObEmailLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'contact_telephone', self.ObTelephoneLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'contact_url', self.ObUrlLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'country', self.ObCountryLineEdit.text())
+        self.application_conf.set('ObserverMetadata', 'notes', self.ObNotesLineEdit.text())
+
+        self.response_message = 'SUCCESS', 'Configuration saved.'
+
+        self.load_ui()
         self.close()
