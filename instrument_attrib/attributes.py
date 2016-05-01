@@ -344,42 +344,47 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
     def configuration_check(self):
 
+        trip = 5
+
         # Check to see if the channel colours are valid.
         for channel_colour in self.channel_colours:
             if re.match(constants.channel_hex_color, channel_colour):
                 pass
             else:
-                return False
+                trip -= 1
 
         # Check to see if the channel labels are valid.
         for channel_label in self.channel_labels:
             if re.match(constants.channel_name, channel_label):
                 pass
             else:
-                return False
+                trip -= 1
 
         # Check to see if the staribus port are valid.
         if self.instrument.instrument_staribus_port != 'None':
             if re.match(constants.staribus_port, self.StaribusPortLineEdit.text()):
                 pass
             else:
-                return False
+                trip -= 1
 
         # Check to see if the starinet address are valid.
         if self.instrument.instrument_starinet_address != 'None':
             if re.match(constants.starinet_ip, self.StarinetAddressLineEdit.text()):
                 pass
             else:
-                return False
+                trip -= 1
 
         # Check to see if the starinet port are valid.
         if self.instrument.instrument_starinet_port != 'None':
             if re.match(constants.starinet_port, self.StarinetPortLineEdit.text()):
                 pass
             else:
-                return False
+                trip -= 1
 
-        return True
+        if trip == 5:
+            return True
+        else:
+            return False
 
     # Run the configuration check routine and depending on response set OK button setEnabled true or false.
     def save_button_state(self):
