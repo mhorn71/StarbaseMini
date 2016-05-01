@@ -901,7 +901,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
                 self.reload = False
                 self.hide()
             elif self.configuration_changed() is False:
-                result = QtGui.QMessageBox.question(None,
+                result = QtGui.QMessageBox.warning(None,
                                                     "Confirm Exit...",
                                                     'You have unsaved changes do you want to save them?',
                                                     QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
@@ -924,10 +924,10 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.reload = False
             self.hide()
         elif self.configuration_changed() is False:
-            result = QtGui.QMessageBox.question(None,
-                                                "Confirm Exit...",
-                                                'You have unsaved changes do you want to save them?',
-                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            result = QtGui.QMessageBox.warning(None,
+                                               "Confirm Exit...",
+                                               "You have unsaved changes do you want to save them?",
+                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
             if result == QtGui.QMessageBox.Yes:
                 self.accept_called()
