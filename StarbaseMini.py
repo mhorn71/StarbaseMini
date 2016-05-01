@@ -343,7 +343,7 @@ class Main(QtGui.QMainWindow):
                           'you will be able to save the unsaved data!\n\nDo you want to change instruments?'
                 header = 'HELLO'
 
-                result = QtGui.QMessageBox.question(None,
+                result = QtGui.QMessageBox.warning(None,
                                                     header,
                                                     message,
                                                     QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
@@ -1568,9 +1568,9 @@ class Main(QtGui.QMainWindow):
 
     def closeEvent(self, event):
         if self.saved_data_state is False:
-            message = 'Are you sure you want to exit?'
+            message = '\n\nAre you sure you want to exit?'
         else:
-            message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to exit?'
+            message = '\n\nWARNING:  You have unsaved data.\nAre you sure you want to exit?'
 
         result = QtGui.QMessageBox.question(None,
                                             "Confirm Exit...",
