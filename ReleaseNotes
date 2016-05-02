@@ -1,25 +1,48 @@
-2.0.4
+Version : 2.0.4
+===============
 
 Fixed -  Application upgrade notification bug where the routine couldn't distinguish between 32 and 64 bit Windows versions.
+
 Fixed -  Status Window header size wasn't being set by CSS for some reason so the size change is now set by QtDesigner.
+
 Fixed -  Configuration updater wasn't running, when configuration change detected.
+
 Fixed -  Instrument attributes confirm pop up appeared even when save pressed.
+
 Fixed -  Bug in configuration regex which allowed longitudes, latitudes and hasl to be blank.
+
+Fixed -  Save pop up appeared even when data save path hadn't changed but was blank.
+
+Fixed -  Configuration tool widget could not parse stylesheet.
+
+Fixed -  Blank fields in Instrument Attributes appeared white instead of red.
+
+Fixed -  Configuration tool allowed blank entry boxes, which isn't allowed.
 
 Update - Added timer so the application upgrade notification check waits 750 milliseconds
          before running this allows time for the main UI to appear.
 
 Update - Added ability to be able to turn on or off application upgrade notification check.
-Update - Changed pop ups which indicate a warning from QMessagebox.question to QMessagebox.warning.
-Update - Completely rewrote the configuration tool, pop ups should now appear when data has changed, save button should
-         be disabled is configuration isn't valid.  A pop up alert will appear is you set both the relay and staribus to
-         starinet converter.  On startup if the data save path isn't set you'll be asked to set.
 
-2.0.3
+Update - Changed pop ups which indicate a warning from QMessagebox.question to QMessagebox.warning.
+
+Update - Completely rewrote the configuration tool, pop ups should now appear when data has changed, save button should
+         be disabled is configuration isn't valid.
+
+Update - A pop up alert will appear is you set both the relay and staribus to
+         starinet converter.
+
+Update - On startup if the data save path isn't set you'll be asked to set.
+
+Version : 2.0.3
+===============
 
 Fixed -  Error occured when importing and no data save path was found, now defaults to home folder if missing.
+
 Fixed -  Error where data translator wasn't initialised when instruments were changed.
+
 Fixed -  Issue where you could save instruments attributes data that wasn't compliant
 
 Update - Added pop up box when instrument attributes are changed but dialog is cancelled.
+
 Update - When adding a parameter or choice if no responseValue to received then the parameter or choice set is displayed.
