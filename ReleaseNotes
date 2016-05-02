@@ -19,21 +19,21 @@ Fixed -  Blank fields in Instrument Attributes appeared white instead of red.
 
 Fixed -  Configuration tool allowed blank entry boxes, which isn't allowed.
 
-Update - Added timer so the application upgrade notification check waits 750 milliseconds
-         before running this allows time for the main UI to appear.
+Update - Added timer so the application upgrade notification check waits 750 milliseconds before running this allows time for the main UI to appear.
 
 Update - Added ability to be able to turn on or off application upgrade notification check.
 
 Update - Changed pop ups which indicate a warning from QMessagebox.question to QMessagebox.warning.
 
-Update - Completely rewrote the configuration tool, pop ups should now appear when data has changed, save button should
-         be disabled is configuration isn't valid.
+Update - Completely rewrote the configuration tool, pop ups should now appear when data has changed, save button should be disabled is configuration isn't valid.
 
-Update - A pop up alert will appear is you set both the relay and staribus to
-         starinet converter.
+Update - A pop up alert will appear is you set both the relay and staribus to starinet converter.
 
 Update - On startup if the data save path isn't set you'll be asked to set.
 
+Update - Added release note dialog.
+
+===============
 Version : 2.0.3
 ===============
 
