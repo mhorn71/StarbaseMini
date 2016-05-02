@@ -336,6 +336,8 @@ class Main(QtGui.QMainWindow):
 
         if message is not None:
             self.status_message('system', message[0], message[1], None)
+        else:
+            self.status_message('system', 'INFO', 'No upgrade currently available.', None)
 
     def instrument_selection(self, item):
 
