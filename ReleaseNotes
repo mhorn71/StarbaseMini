@@ -19,7 +19,7 @@ Fixed -  Blank fields in Instrument Attributes appeared white instead of red.
 
 Fixed -  Configuration tool allowed blank entry boxes, which isn't allowed.
 
-Update - Added timer so the application upgrade notification check waits 750 milliseconds before running this allows time for the main UI to appear.
+Update - Added timer so the application upgrade notification check waits 50 milliseconds before running this allows time for the main UI to appear.
 
 Update - Added ability to be able to turn on or off application upgrade notification check.
 
