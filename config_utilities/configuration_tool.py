@@ -107,8 +107,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         result = QtGui.QMessageBox.warning(None,
                                            "Configuration mismatch",
-                                           "\tWARNING!!\n\nYou have no data save path set."
-                                           "\n\nPress Cancel to set later or Ok to open configuration.",
+                                           "<p align='center'>WARNING!!<br><br>You have no data save path set."
+                                           "<br>Press Cancel to set later or Ok to open configuration.</p>",
                                            QtGui.QMessageBox.Cancel, QtGui.QMessageBox.Ok)
 
         if result == QtGui.QMessageBox.Ok:
@@ -401,11 +401,11 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             if self.S2SCheckBox.isChecked():
 
                 result = QtGui.QMessageBox.warning(None,
-                                                    "Configuration mismatch",
-                                                    "\tWARNING!!\n\nYou are trying to enable the Relay while the\n"
-                                                    "Staribus to Starinet converter is enabled."
-                                                    "\n\nPress Cancel to leave original configuration or Ok to enable Relay.",
-                                                    QtGui.QMessageBox.Cancel,QtGui.QMessageBox.Ok)
+                                                   None,
+                                                   "<p align='center'>WARNING!!<br><br>You are trying to enable the Relay while the "
+                                                   "Staribus to Starinet converter is enabled."
+                                                   "<br><br>Press Cancel to leave original configuration or Ok to enable Relay.</p>",
+                                                   QtGui.QMessageBox.Cancel,QtGui.QMessageBox.Ok)
 
                 if result == QtGui.QMessageBox.Ok:
                     self.S2SCheckBox.setChecked(False)
@@ -427,11 +427,11 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         if self.S2SCheckBox.checkState():
             if self.relayCheckBox.isChecked():
                 result = QtGui.QMessageBox.warning(None,
-                                                    "Configuration mismatch",
-                                                    "\tWARNING!!\n\nYou are trying to enable the Staribus to\n"
-                                                    "Starinet converter while the Relay is enabled."
-                                                    "\n\nPress Cancel to leave original configuration or Ok to enable the converter.",
-                                                    QtGui.QMessageBox.Cancel, QtGui.QMessageBox.Ok)
+                                                   None,
+                                                   "<p align='center'>WARNING!!<br><br>You are trying to enable the Staribus to "
+                                                   "Starinet converter while the Relay is enabled."
+                                                   "<br><br>Press Cancel to leave original configuration or Ok to enable the converter.</p>",
+                                                   QtGui.QMessageBox.Cancel, QtGui.QMessageBox.Ok)
 
                 if result == QtGui.QMessageBox.Ok:
                     self.relayCheckBox.setChecked(False)
@@ -754,9 +754,9 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
                 self.load_ui()
             elif self.configuration_changed() and self.configuration_check():
                 result = QtGui.QMessageBox.warning(None,
-                                                    "Confirm Exit...",
-                                                    '\n\nSave changes?',
-                                                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                                   None,
+                                                   '<br><br>Save changes?',
+                                                   QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
                 if result == QtGui.QMessageBox.Yes:
                     self.save_triggered()

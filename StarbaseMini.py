@@ -1571,9 +1571,9 @@ class Main(QtGui.QMainWindow):
 
     def closeEvent(self, event):
         if self.saved_data_state is False:
-            message = '\n\nAre you sure you want to exit?'
+            message = "<br><p align='center'>Are you sure you want to exit?</p>"
         else:
-            message = '\n\nWARNING:  You have unsaved data.\nAre you sure you want to exit?'
+            message = "<br><p align='center'>WARNING:  You have unsaved data.\nAre you sure you want to exit?</p>"
 
         result = QtGui.QMessageBox.question(None,
                                             "Confirm Exit...",
