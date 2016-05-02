@@ -852,7 +852,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             pass
 
         if state == QtGui.QValidator.Acceptable and len(sender.text()) == 0:
-            color = '#ffffff'  # white
+            color = '#f6989d'  # white
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
             self.accepted_state = False
         elif state == QtGui.QValidator.Acceptable:
