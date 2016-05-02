@@ -127,7 +127,12 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         # Setup data save path line edit box.
 
         if self.application_conf.get('Application', 'instrument_data_path') == 'Warning: Please set path for exported data.':
-            self.savepathLineEdit.setText('Warning: Please set path for exported data.')
+            self.savepathLineEdit.setText(self.application_conf.get('Application', 'instrument_data_path'))
+
+            if self.update_path_trip == 0:
+                QtCore.QTimer.singleShot(250, self.update_path)
+                self.update_path_trip += 1
+        elif self.application_conf.get('Application', 'instrument_data_path') is None:
 
             if self.update_path_trip == 0:
                 QtCore.QTimer.singleShot(250, self.update_path)
@@ -471,8 +476,9 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Check data save path.
 
-        if self.savepathLineEdit.text() != self.application_conf.get('Application', 'instrument_data_path'):
-            trip -= 1
+        if self.application_conf.get('Application', 'instrument_data_path') is not None:
+            if self.savepathLineEdit.text() != self.application_conf.get('Application', 'instrument_data_path'):
+                trip -= 1
 
         # Check log level
 
@@ -715,7 +721,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             pass
 
         if state == QtGui.QValidator.Acceptable and len(sender.text()) == 0:
-            color = '#ffffff'  # white
+            color = '#f6989d'  # red
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
             self.save_button_state()
         elif state == QtGui.QValidator.Acceptable:
