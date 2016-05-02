@@ -636,28 +636,28 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Check Observatory Metadata.
 
-        if not re.match(constants.observatory_name, self.OyNameLineEdit.text()):
+        if not re.match(constants.observatory_name, self.OyNameLineEdit.text()) or len(self.OyNameLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observatory_description, self.OyDescriptionLineEdit.text()):
+        if not re.match(constants.observatory_description, self.OyDescriptionLineEdit.text()) or len(self.OyDescriptionLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observatory_email, self.OyEmailLineEdit.text()):
+        if not re.match(constants.observatory_email, self.OyEmailLineEdit.text()) or len(self.OyEmailLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observatory_telephone, self.OyTelephoneLineEdit.text()):
+        if not re.match(constants.observatory_telephone, self.OyTelephoneLineEdit.text()) or len(self.OyTelephoneLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observatory_url, self.OyUrlLineEdit.text()):
+        if not re.match(constants.observatory_url, self.OyUrlLineEdit.text()) or len(self.OyUrlLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observatory_country, self.OyCountryLineEdit.text()):
+        if not re.match(constants.observatory_country, self.OyCountryLineEdit.text()) or len(self.OyCountryLineEdit.text()) ==0:
             trip -= 1
 
         if not re.match(constants.observatory_timezone, self.OyTimezoneLineEdit.text()):
             trip -= 1
 
-        if not re.match(constants.observatory_datum, self.OyDatumLineEdit.text()):
+        if not re.match(constants.observatory_datum, self.OyDatumLineEdit.text()) or len(self.OyNameLineEdit.text()) ==0:
             trip -= 1
 
         if not re.match(constants.observatory_geomag_latitude, self.OyMagLatitudeLineEdit.text()):
@@ -680,25 +680,25 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Check Observer Metadata.
 
-        if not re.match(constants.observer_name, self.ObNameLineEdit.text()):
+        if not re.match(constants.observer_name, self.ObNameLineEdit.text()) or len(self.ObNameLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observer_description, self.ObDescriptionLineEdit.text()):
+        if not re.match(constants.observer_description, self.ObDescriptionLineEdit.text()) or len(self.ObDescriptionLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observer_email, self.ObEmailLineEdit.text()):
+        if not re.match(constants.observer_email, self.ObEmailLineEdit.text()) or len(self.ObEmailLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observer_telephone, self.ObTelephoneLineEdit.text()):
+        if not re.match(constants.observer_telephone, self.ObTelephoneLineEdit.text()) or len(self.ObTelephoneLineEdit.text()) ==0:
             trip -= 1
 
-        if not re.match(constants.observer_url, self.ObUrlLineEdit.text()):
+        if not re.match(constants.observer_url, self.ObUrlLineEdit.text()) or len(self.ObUrlLineEdit.text()) ==0:
             trip -= 1
 
         if not re.match(constants.observer_country, self.ObCountryLineEdit.text()):
             trip -= 1
 
-        if not re.match(constants.observer_notes, self.ObNotesLineEdit.text()):
+        if not re.match(constants.observer_notes, self.ObNotesLineEdit.text()) or len(self.ObNotesLineEdit.text()) ==0:
             trip -= 1
 
         if trip == 32:
@@ -726,6 +726,10 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.save_button_state()
         elif state == QtGui.QValidator.Acceptable:
             color = '#c4df9b'  # green
+            sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.save_button_state()
+        elif state == QtGui.QValidator.Intermediate and len(sender.text()) == 0:
+            color = '#f6989d'  # red
             sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
             self.save_button_state()
         elif state == QtGui.QValidator.Intermediate:
