@@ -713,6 +713,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
      <string>Info</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="actionReleaseNotes"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -778,6 +779,11 @@ QToolBox::tab:selected { /* italicize selected tabs */
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionReleaseNotes">
+   <property name="text">
+    <string>ReleaseNotes</string>
    </property>
   </action>
  </widget>
