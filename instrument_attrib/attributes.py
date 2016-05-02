@@ -348,37 +348,27 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         # Check to see if the channel colours are valid.
         for channel_colour in self.channel_colours:
-            if re.match(constants.channel_hex_color, channel_colour):
-                pass
-            else:
+            if not re.match(constants.channel_hex_color, channel_colour):
                 trip -= 1
 
         # Check to see if the channel labels are valid.
         for channel_label in self.channel_labels:
-            if re.match(constants.channel_name, channel_label):
-                pass
-            else:
+            if not re.match(constants.channel_name, channel_label) or len(channel_label) == 0:
                 trip -= 1
 
         # Check to see if the staribus port are valid.
         if self.instrument.instrument_staribus_port != 'None':
-            if re.match(constants.staribus_port, self.StaribusPortLineEdit.text()):
-                pass
-            else:
+            if not re.match(constants.staribus_port, self.StaribusPortLineEdit.text()):
                 trip -= 1
 
         # Check to see if the starinet address are valid.
         if self.instrument.instrument_starinet_address != 'None':
-            if re.match(constants.starinet_ip, self.StarinetAddressLineEdit.text()):
-                pass
-            else:
+            if not re.match(constants.starinet_ip, self.StarinetAddressLineEdit.text()):
                 trip -= 1
 
         # Check to see if the starinet port are valid.
         if self.instrument.instrument_starinet_port != 'None':
-            if re.match(constants.starinet_port, self.StarinetPortLineEdit.text()):
-                pass
-            else:
+            if not re.match(constants.starinet_port, self.StarinetPortLineEdit.text()):
                 trip -= 1
 
         if trip == 5:
