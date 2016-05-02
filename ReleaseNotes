@@ -1,3 +1,11 @@
+Version : 2.0.5
+===============
+
+Fixed -  Issue where popups didn't look consistent across platforms moved to html markup.
+
+Update -  Added status message saying 'No upgrade currently available.' if upgrade check is enabled.
+
+===============
 Version : 2.0.4
 ===============
 

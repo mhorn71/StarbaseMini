@@ -1,12 +1,5 @@
-GMT Regex will match GMT+00:0 which is incorrect.
-GMT Tooltip references UTC when it shouldn't.
 
------ Check above bugs are actually resolved. ----
-
-BUG -  Configuration upgrader not working.
-
-Update - Add a pop up if instruments attributes have changed but discard is called.
 
 getData attempts to create chart even if no data is present to create it from
-update_detect not aware of x64 Windows version, plus add wait for mainwindow to appear before displaying.
+
 xml_utils instrument importer needs to check the XML is valid more.
