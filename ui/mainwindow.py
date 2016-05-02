@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Fri Apr 29 21:53:19 2016
+# Created: Mon May  2 11:38:05 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -379,9 +379,12 @@ class Ui_MainWindow(object):
         self.actionInstrument_Attrib.setObjectName("actionInstrument_Attrib")
         self.actionAbout = QtGui.QAction(MainWindow)
         self.actionAbout.setObjectName("actionAbout")
+        self.actionReleaseNotes = QtGui.QAction(MainWindow)
+        self.actionReleaseNotes.setObjectName("actionReleaseNotes")
         self.menuFile.addAction(self.actionConfiguration)
         self.menuFile.addAction(self.actionExit)
         self.menuAbout.addAction(self.actionAbout)
+        self.menuAbout.addAction(self.actionReleaseNotes)
         self.menuEdit.addAction(self.actionInstrument_Attrib)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
@@ -430,4 +433,5 @@ class Ui_MainWindow(object):
         self.actionInstrument_Attributes.setText(QtGui.QApplication.translate("MainWindow", "Instrument Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.actionInstrument_Attrib.setText(QtGui.QApplication.translate("MainWindow", "Instrument Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionReleaseNotes.setText(QtGui.QApplication.translate("MainWindow", "ReleaseNotes", None, QtGui.QApplication.UnicodeUTF8))
 
