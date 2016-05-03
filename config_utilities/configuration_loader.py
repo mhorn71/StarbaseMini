@@ -44,7 +44,17 @@ class ConfigLoader:
         self.version = 5
         self.current_version = 0
 
-        home = path.expanduser("~")
+        if path.isfile('user_home.txt'):
+            try:
+                file = open('user_home.txt', 'r')
+            except IOError:
+                raise FileNotFoundError("Fatal error unable to detect user home!!\nContact developer for help.")
+            else:
+                home = file.read()
+                home.strip('\r\n')
+                file.close()
+        else:
+            home = path.expanduser("~")
 
         if not path.isdir(home):
             raise FileNotFoundError("Fatal error unable to detect user home!!\nContact developer for help.")
