@@ -19,14 +19,12 @@ __author__ = 'mark'
 
 import logging
 import sys
-import os
 import re
 
 from PyQt4 import QtGui, QtCore
 
 from ui import Ui_ConfigurationDialog
 import config_utilities
-import xml_utilities
 import constants
 
 logger = logging.getLogger('core.configTool')
@@ -59,22 +57,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Set the default reponse message to abort
         self.response_message = 'ABORT', None
-
-        # Initialise the users instruments.xml if it's present in the .starbasemini/instruments folder.
-
-        self.instruments_local = None
-
-        instruments_xml_user = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'instruments' + \
-                            os.path.sep + 'instruments.xml'
-
-        if os.path.isfile(instruments_xml_user):
-            self.instruments_local = xml_utilities.Instruments(instruments_xml_user)
-
-        instruments_system = 'instruments' + os.path.sep + 'instruments.xml'
-
-        # Initialise the default instruments.xml file from the installaton path, instruments folder.
-
-        self.instruments = xml_utilities.Instruments('instruments' + os.path.sep + 'instruments.xml')
 
         # Combo box contents
         self.log_levels = ['INFO', 'DEBUG']
