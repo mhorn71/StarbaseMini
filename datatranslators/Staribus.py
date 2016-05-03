@@ -305,10 +305,14 @@ class StaribusParser:
         if re.match('^0305000[1-4]$', command):  # setRate
             self.logger.debug('CV conversion padding to four places.')
             param = param.zfill(4)
+        elif re.match('^04030004$', command):  # setGain for Magnetometer.
+            param = param
+            self.logger.debug('Magnetometer setGain not changing parameter format.')
         elif re.match('^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$', param):  # integer conversion
             # 0 - 255 ... 000 - 255
             param = param.zfill(3)
             self.logger.debug('Integer conversion padding to three places.')
+
         if re.match('^00000000$', command):  # reset
 
             if param == 'soft':
