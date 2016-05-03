@@ -187,6 +187,9 @@ class Main(QtGui.QMainWindow):
         # Initialise Command Interpreter Class
         self.command_interpreter = interpreter.CommandInterpreter()
 
+        # Initialise the instrument loader class
+        self.instrument = xml_utilities.Instrument()
+
         # Attempt at allowing configuration changes
         self.first_initialisation = True
 
@@ -397,11 +400,16 @@ class Main(QtGui.QMainWindow):
 
     def instrument_loader(self):
 
+        # Make sure the instrument attributes are reset to defaults before loading XML
+
+        self.instrument.clear_instrument()
+
         instrument_found = False
 
-        sep = os.path.sep
+        # sep = os.path.sep
 
-        instruments_local_home = os.path.expanduser('~') + sep + '.starbasemini' + sep + 'instruments' + sep
+        instruments_local_home = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'instruments'\
+                                 + os.path.sep
 
         instruments_local = instruments_local_home + 'instruments.xml'
 
@@ -418,7 +426,7 @@ class Main(QtGui.QMainWindow):
             try:
                 filename = my_instruments.get_filename(self.instrument_identifier)
                 filename = instruments_local_home + filename
-                self.instrument = xml_utilities.Instrument(filename)
+                self.instrument.load_xml(filename)
                 self.instrument_file = filename
             except (FileNotFoundError, ValueError, LookupError, AttributeError, UnboundLocalError) as msg:
                 self.logger.info('Instrument not found in user home location')
@@ -440,11 +448,11 @@ class Main(QtGui.QMainWindow):
                     filename_system = instruments_system_home + filename
 
                     if os.path.isfile(filename_local):
-                        self.instrument = xml_utilities.Instrument(filename_local)
+                        self.instrument.load_xml(filename_local)
                         file = filename_local
                         self.instrument_file = filename_local
                     else:
-                        self.instrument = xml_utilities.Instrument(filename_system)
+                        self.instrument.load_xml(filename_system)
                         file = filename_system
                         self.instrument_file = filename_system
                 except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
