@@ -26,7 +26,7 @@ logger = logging.getLogger('xml_utilities.Instrument')
 
 
 class Instrument:
-    def __init__(self, xml_file):
+    def __init__(self):
 
         '''
         Parses the instrument XMl to provide module and command lists, commands are also converted to dictionary.
