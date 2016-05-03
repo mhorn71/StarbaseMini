@@ -56,3 +56,5 @@ unix_path = '^.*$'
 
 channel_name = '^.*$'
 channel_hex_color = '^#([A-F0-9]{6})$'
+
+datatranslator = '^StaribusBlock$'
