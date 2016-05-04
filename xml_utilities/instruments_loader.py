@@ -22,7 +22,7 @@ import logging
 
 
 class Instruments:
-    def __init__(self, instrument_xml_file):
+    def load_xml(self, instrument_xml_file):
         '''
         Initialise Instruments Class
         :param instrument_xml_file: include the relative path in relationship to this module
