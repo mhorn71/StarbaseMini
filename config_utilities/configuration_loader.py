@@ -39,6 +39,7 @@ class ConfigLoader:
         # Some basic attributes.
 
         self.config_file = 'starbaseMini.conf'
+        self.user_instruments = 'instruments' + path.sep + 'instruments.xml'
         self.logger = None
         self.config = configparser.RawConfigParser()
         self.version = 5
@@ -48,28 +49,31 @@ class ConfigLoader:
             try:
                 file = open('user_home.txt', 'r')
             except IOError:
-                raise FileNotFoundError("Fatal error unable to detect user home!!\nContact developer for help.")
+                raise FileNotFoundError("Fatal error unable to open user_home.txt!!\nContact developer for help.")
             else:
-                home = file.read()
-                home.strip('\r\n')
+                # This looks a little weird as we strip the path sep and then added it back this is so we don't end
+                # up with a double seperater
+                self.user_home = file.read()
+                self.user_home.strip(path.sep)
+                self.user_home = self.user_home + path.sep
                 file.close()
         else:
-            home = path.expanduser("~")
+            self.user_home = path.expanduser("~")
 
-        if not path.isdir(home):
+        if not path.isdir(self.user_home):
             raise FileNotFoundError("Fatal error unable to detect user home!!\nContact developer for help.")
 
-        home += path.sep + '.starbasemini' + path.sep
+        self.user_home += path.sep + '.starbasemini' + path.sep
 
-        if not path.isdir(home):
+        if not path.isdir(self.user_home):
             try:
-                makedirs(home)
+                makedirs(self.user_home)
             except OSError as msg:
                 raise OSError(msg)
             else:
-                self.config_home = home
+                self.config_home = self.user_home
         else:
-            self.config_home = home
+            self.config_home = self.user_home
 
         self.conf_file = self.config_home + self.config_file
 
