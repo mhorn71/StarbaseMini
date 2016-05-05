@@ -23,24 +23,35 @@ import logging
 
 class Instruments:
     def load_xml(self, instrument_xml_file):
+
         '''
         Initialise Instruments Class
         :param instrument_xml_file: include the relative path in relationship to this module
         and instrument xml file name.
         :return: object instance.
         '''
-        logger = logging.getLogger('xml_utilities.Instruments')
+
+        logger = logging.getLogger('xml_utilities.Instruments.load_xml')
+
         # Create an xml dom object for Instruments XML.
+
         try:
+
             # The tree root is the top level Instruments tag.
             self.xmldom = eTree.parse(instrument_xml_file)  # Open and parse xml document.
+
         except FileNotFoundError:
-            logger.debug('XML File not found : %s' % instrument_xml_file)
+
+            logger.critical('Unable to load XML File : %s' % instrument_xml_file)
+
             raise FileNotFoundError(instrument_xml_file)
+
         else:
-            logger.debug('XML File found : %s' % instrument_xml_file)
+
+            logger.info('Loading XML File : %s' % instrument_xml_file)
 
     def get_names(self):
+
         '''
         Gets a list of instrument names from instruments.xml
         :return: list of names.
@@ -50,17 +61,20 @@ class Instruments:
         logger = logging.getLogger('xml_utilities.Instruments.get_names')
 
         tmp_names = []
+
         for instrument in self.xmldom.findall('Instrument'):
-            logger.debug('Instrument Name Object at : %s' % str(instrument))
 
             name = instrument.findtext('Name')
-            logger.debug('Instrument Name Object Name : %s' % instrument.findtext('Name'))
 
             if name is None:
+
                 raise AttributeError('INVALID_XML')
+
             else:
+
                 tmp_names.append(name)
-                logger.debug('Appending Instrument Name to return list : %s' % name)
+
+                logger.info('Registering instrument name : %s' % name)
 
         if len(tmp_names) == 0:
             raise IndexError('INVALID_XML')
@@ -77,16 +91,15 @@ class Instruments:
 
         logger = logging.getLogger('xml_utilities.Instruments.get_filename')
 
-        logger.debug('Instrument Name : %s' % instrument_name)
+        logger.debug('Locating instrument name : %s' % instrument_name)
 
         for instrument in self.xmldom.findall('Instrument'):
 
-            logger.debug('Instrument Object at : %s' % str(instrument))
-            logger.debug('Instrument Object Name : %s' % instrument.findtext('Name'))
-
             if instrument.findtext('Name') == instrument_name:
+
                 return_name = instrument.findtext('File')
-                logger.debug('Instrument Filename : %s' % return_name)
+
+                logger.info('Locating instrument filename : %s' % return_name)
 
         if return_name is None:
             raise AttributeError('Instrument XML file not found.')
