@@ -487,9 +487,11 @@ class CommandInterpreter():
 
         # All instrument XML commands should be send to port if not return PREMATURE_TERMINATION
 
+        print(command_list[4])
+
         if command_list[4] != 'True':
 
-            response = command_list[0], 'PREMATURE_TERMINATION', 'Instrument commands should be send to port true.', None, None
+            return command_list[0], 'PREMATURE_TERMINATION', 'Instrument commands should be send to port true.', None, None
 
         # Ok if we got this far then we must at least have some data so let's try to run it.
 
