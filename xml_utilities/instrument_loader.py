@@ -188,21 +188,21 @@ class Instrument:
 
             self.instrument_description = self.xmldom.findtext('Description')
 
-            self.instrument_staribus_address = self.xmldom.findtext('StaribusAddress')
+            self.instrument_staribus_address = self.xmldom.findtext('StaribusAddress', default='None')
 
-            self.instrument_starinet_address = self.xmldom.findtext('StarinetAddress')
+            self.instrument_starinet_address = self.xmldom.findtext('StarinetAddress', default='None')
 
-            self.instrument_starinet_port = self.xmldom.findtext('StarinetPort')
+            self.instrument_starinet_port = self.xmldom.findtext('StarinetPort', default='None')
 
-            self.instrument_staribus_type = self.xmldom.findtext('StaribusPortType')
+            self.instrument_staribus_type = self.xmldom.findtext('StaribusPortType', default='None')
 
-            self.instrument_staribus_port = self.xmldom.findtext('StaribusPort')
+            self.instrument_staribus_port = self.xmldom.findtext('StaribusPort', default='None')
 
-            self.instrument_staribus_baudrate = self.xmldom.findtext('StaribusPortBaudrate')
+            self.instrument_staribus_baudrate = self.xmldom.findtext('StaribusPortBaudrate', default='None')
 
             self.instrument_staribus_timeout = self.xmldom.findtext('StaribusPortTimeout')
 
-            self.instrument_staribus_autodetect = self.xmldom.findtext('StaribusPortAutodetect')
+            self.instrument_staribus_autodetect = self.xmldom.findtext('StaribusPortAutodetect', default='None')
 
             self.instrument_number_of_channels = self.xmldom.findtext('NumberOfChannels')
 
@@ -387,13 +387,13 @@ class Instrument:
             try:
                 chart_metadata_dom = self.xmldom.find('ChartMetadata')
     
-                self.YaxisLabel = chart_metadata_dom.findtext('YaxisLabel')
+                self.YaxisLabel = chart_metadata_dom.findtext('YaxisLabel', default='NODATA')
                 
                 self.YaxisRange = chart_metadata_dom.findtext('YaxisRange')
                 
                 self.YaxisScale = chart_metadata_dom.findtext('YaxisScale')
                 
-                self.XaxisLabel = chart_metadata_dom.findtext('XaxisLabel')
+                self.XaxisLabel = chart_metadata_dom.findtext('XaxisLabel', default='NODATA')
 
             except IndexError as msg:
 
@@ -449,13 +449,13 @@ class Instrument:
             try:
                 for channel_metadata in self.xmldom.findall('ChannelMetadata'):
 
-                    self.channel_names.append(channel_metadata.findtext('ChannelLabel'))
+                    self.channel_names.append(channel_metadata.findtext('ChannelLabel', default='NODATA'))
 
                     self.channel_colours.append(channel_metadata.findtext('ChannelColour'))
 
                     self.channel_datatypenames.append(channel_metadata.findtext('ChannelDataTypeName'))
 
-                    self.channel_units.append(channel_metadata.findtext('ChannelUnit'))
+                    self.channel_units.append(channel_metadata.findtext('ChannelUnit', default='NODATA'))
 
                     channel_item_count += 1
                     
@@ -474,7 +474,7 @@ class Instrument:
             else:
 
                 logger.debug('Channel Label %s added to channel_names list.' %
-                             channel_metadata.findtext('ChannelLabel'))
+                             channel_metadata.findtext('ChannelLabel', default='NODATA'))
 
                 logger.debug('Channel Colour %s added to channel_colour list.' %
                              channel_metadata.findtext('ChannelColour'))
@@ -483,7 +483,7 @@ class Instrument:
                              channel_metadata.findtext('ChannelDataTypeName'))
 
                 logger.debug('Channel Unit %s added to channel_units list.' %
-                             channel_metadata.findtext('ChannelUnit'))
+                             channel_metadata.findtext('ChannelUnit', default='NODATA'))
 
                 # First check the amount of ChannelMetadata keys matches the Number of Channels.
 
@@ -568,68 +568,113 @@ class Instrument:
                         command_desc = command.findtext('Description')
                         logger.debug('Command description : %s' % command_desc)
 
-                        command_stp = command.findtext('SendToPort')
+                        command_stp = command.findtext('SendToPort', default='False')
                         logger.debug('Command send to port : %s' % command_stp)
 
-                        command_blocked = command.findtext('BlockedDataCommand')
+                        command_blocked = command.findtext('BlockedDataCommand', default='None')
                         logger.debug('Command - blocked command : %s' % str(command_blocked))
 
-                        command_stepped = command.findtext('SteppedDataCommand')
+                        command_stepped = command.findtext('SteppedDataCommand', default='None')
                         logger.debug('Command - stepped command : %s' % str(command_stepped))
 
                         logger.debug('Iterating over command parameter.')
 
-                        for parameter in command.iter('Parameter'):
+                        # Check to see if we have Parameter key
 
-                            traffic_data_type = parameter.findtext('TrafficDataType')
+                        if command.find('Parameter') is None:
+
+                            logger.debug('No Parameter key found setting key/values to None.')
+
+                            traffic_data_type = 'None'
                             logger.debug('Command parameter traffic data type : %s' % traffic_data_type)
 
-                            parameter_choices = parameter.findtext('Choices')
+                            parameter_choices = 'None'
                             logger.debug('Command parameter choices : %s' % parameter_choices)
 
-                            parameter_regex = parameter.findtext('Regex')
+                            parameter_regex = 'None'
                             logger.debug('Command parameter regex : %s' % parameter_regex)
 
-                            parameter_tooltip = parameter.findtext('Tooltip')
+                            parameter_tooltip = 'None'
                             logger.debug('Command parameter tooltip : %s' % parameter_tooltip)
 
-                        logger.debug('Iterating over command response')
+                        else:
 
-                        for response in command.iter('Response'):
+                            for parameter in command.iter('Parameter'):
 
-                            response_datatype = response.findtext('DataTypeName')
+                                traffic_data_type = parameter.findtext('TrafficDataType', default='None')
+                                logger.debug('Command parameter traffic data type : %s' % traffic_data_type)
+
+                                parameter_choices = parameter.findtext('Choices', default='None')
+                                logger.debug('Command parameter choices : %s' % parameter_choices)
+
+                                parameter_regex = parameter.findtext('Regex', default='None')
+                                logger.debug('Command parameter regex : %s' % parameter_regex)
+
+                                parameter_tooltip = parameter.findtext('Tooltip', default='None')
+                                logger.debug('Command parameter tooltip : %s' % parameter_tooltip)
+
+                        # Check response key is present if not set all key/values to None otherwise iterate over the
+                        # response key.
+
+                        if command.find('Response') is None:
+
+                            logger.debug('No Response key found setting key/values to None.')
+
+                            response_datatype = 'None'
                             logger.debug('Command response data type name : %s' % response_datatype)
 
-                            response_units = response.findtext('Units')
+                            response_units = 'None'
                             logger.debug('Command response units : %s' % response_units)
 
-                            response_regex = response.findtext('Regex')
+                            response_regex = 'None'
                             logger.debug('Command response regex : %s' % response_regex)
+
+                        else:
+
+                            for response in command.iter('Response'):
+
+                                response_datatype = response.findtext('DataTypeName', default='None')
+                                logger.debug('Command response data type name : %s' % response_datatype)
+
+                                response_units = response.findtext('Units', default='None')
+                                logger.debug('Command response units : %s' % response_units)
+
+                                response_regex = response.findtext('Regex', default='None')
+                                logger.debug('Command response regex : %s' % response_regex)
 
                         # This won't work for multiple parameters so needs a rewrite at some point.
 
-                        logger.debug('Adding command to command_dict')
+                        logger.debug('Adding command %s to command_dict' % command_ident)
 
-                        self.command_dict.setdefault(plugin_cmdbase, []).append({command_code: {
-                            'Identifier': command_ident,
-                            'Variant': command_variant,
-                            'Description': command_desc,
-                            'SendToPort': command_stp,
-                            'BlockedData': command_blocked,
-                            'SteppedData': command_stepped,
-                            'Parameters': {'TrafficDataType': traffic_data_type,
-                                           'Choices': parameter_choices,
-                                           'Regex': parameter_regex,
-                                           'Tooltip': parameter_tooltip},
-                            'Response': {
-                                'DataTypeName': response_datatype,
-                                'Units': response_units,
-                                'Regex': response_regex}}})
+                        try:
+                            self.command_dict.setdefault(plugin_cmdbase, []).append({command_code: {
+                                'Identifier': command_ident,
+                                'Variant': command_variant,
+                                'Description': command_desc,
+                                'SendToPort': command_stp,
+                                'BlockedData': command_blocked,
+                                'SteppedData': command_stepped,
+                                'Parameters': {'TrafficDataType': traffic_data_type,
+                                               'Choices': parameter_choices,
+                                               'Regex': parameter_regex,
+                                               'Tooltip': parameter_tooltip},
+                                'Response': {
+                                    'DataTypeName': response_datatype,
+                                    'Units': response_units,
+                                    'Regex': response_regex}}})
 
-                        logger.debug('Appending to tmp_command list %s' % command_ident)
+                        except UnboundLocalError:
 
-                        tmp_command.append([command_ident, command_desc, command_code])
+                            logger.critical('INVALID_XML : missing element!!')
 
-                    logger.debug('Appending tmp_command list to command_list : %s' % str(tmp_command))
+                            raise LookupError('INVALID_XML : missing element!!')
+
+                        else:
+
+                            logger.debug('Appending to tmp_command list %s' % command_ident)
+
+                            tmp_command.append([command_ident, command_desc, command_code])
+
+                            logger.debug('Appending tmp_command list to command_list : %s' % str(tmp_command))
 
                     self.command_list.append(tmp_command)
