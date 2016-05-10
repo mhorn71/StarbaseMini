@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Mon May  2 11:38:05 2016
+# Created: Sat May  7 18:48:49 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -136,7 +136,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, "")
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
         self.UserInst.setObjectName("UserInst")
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 2, 124, 443))
@@ -358,6 +358,10 @@ class Ui_MainWindow(object):
         self.menuEdit.setObjectName("menuEdit")
         self.menuInstrument = QtGui.QMenu(self.menubar)
         self.menuInstrument.setObjectName("menuInstrument")
+        self.menuTools = QtGui.QMenu(self.menubar)
+        self.menuTools.setObjectName("menuTools")
+        self.menuSegment_Data = QtGui.QMenu(self.menuTools)
+        self.menuSegment_Data.setObjectName("menuSegment_Data")
         MainWindow.setMenuBar(self.menubar)
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
@@ -381,14 +385,31 @@ class Ui_MainWindow(object):
         self.actionAbout.setObjectName("actionAbout")
         self.actionReleaseNotes = QtGui.QAction(MainWindow)
         self.actionReleaseNotes.setObjectName("actionReleaseNotes")
+        self.actionOpen = QtGui.QAction(MainWindow)
+        self.actionOpen.setObjectName("actionOpen")
+        self.actionSave_RawData = QtGui.QAction(MainWindow)
+        self.actionSave_RawData.setObjectName("actionSave_RawData")
+        self.actionSave_Processed_Data = QtGui.QAction(MainWindow)
+        self.actionSave_Processed_Data.setObjectName("actionSave_Processed_Data")
+        self.actionDay = QtGui.QAction(MainWindow)
+        self.actionDay.setObjectName("actionDay")
+        self.actionWeek = QtGui.QAction(MainWindow)
+        self.actionWeek.setObjectName("actionWeek")
+        self.menuFile.addAction(self.actionOpen)
+        self.menuFile.addAction(self.actionSave_RawData)
+        self.menuFile.addAction(self.actionSave_Processed_Data)
         self.menuFile.addAction(self.actionConfiguration)
         self.menuFile.addAction(self.actionExit)
         self.menuAbout.addAction(self.actionAbout)
         self.menuAbout.addAction(self.actionReleaseNotes)
         self.menuEdit.addAction(self.actionInstrument_Attrib)
+        self.menuSegment_Data.addAction(self.actionDay)
+        self.menuSegment_Data.addAction(self.actionWeek)
+        self.menuTools.addAction(self.menuSegment_Data.menuAction())
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuInstrument.menuAction())
+        self.menubar.addAction(self.menuTools.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -422,7 +443,9 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
         self.menuEdit.setTitle(QtGui.QApplication.translate("MainWindow", " Edit", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuInstrument.setTitle(QtGui.QApplication.translate("MainWindow", "Instrument", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuInstrument.setTitle(QtGui.QApplication.translate("MainWindow", "Instruments", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuTools.setTitle(QtGui.QApplication.translate("MainWindow", "Tools", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuSegment_Data.setTitle(QtGui.QApplication.translate("MainWindow", "Segment Data", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "Configuration", None, QtGui.QApplication.UnicodeUTF8))
         self.actionControllerEditor.setText(QtGui.QApplication.translate("MainWindow", "Futurlec Controller", None, QtGui.QApplication.UnicodeUTF8))
@@ -434,4 +457,9 @@ class Ui_MainWindow(object):
         self.actionInstrument_Attrib.setText(QtGui.QApplication.translate("MainWindow", "Instrument Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReleaseNotes.setText(QtGui.QApplication.translate("MainWindow", "ReleaseNotes", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Open", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSave_RawData.setText(QtGui.QApplication.translate("MainWindow", "Save Raw Data", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSave_Processed_Data.setText(QtGui.QApplication.translate("MainWindow", "Save Processed Data", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDay.setText(QtGui.QApplication.translate("MainWindow", "Day", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionWeek.setText(QtGui.QApplication.translate("MainWindow", "Week", None, QtGui.QApplication.UnicodeUTF8))
 

@@ -270,8 +270,8 @@ QToolBox::tab:selected { /* italicize selected tabs */
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>129</width>
+             <height>521</height>
             </rect>
            </property>
            <attribute name="label">
@@ -705,6 +705,9 @@ QToolBox::tab:selected { /* italicize selected tabs */
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave_RawData"/>
+    <addaction name="actionSave_Processed_Data"/>
     <addaction name="actionConfiguration"/>
     <addaction name="actionExit"/>
    </widget>
@@ -723,12 +726,26 @@ QToolBox::tab:selected { /* italicize selected tabs */
    </widget>
    <widget class="QMenu" name="menuInstrument">
     <property name="title">
-     <string>Instrument</string>
+     <string>Instruments</string>
     </property>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <widget class="QMenu" name="menuSegment_Data">
+     <property name="title">
+      <string>Segment Data</string>
+     </property>
+     <addaction name="actionDay"/>
+     <addaction name="actionWeek"/>
+    </widget>
+    <addaction name="menuSegment_Data"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuInstrument"/>
+   <addaction name="menuTools"/>
    <addaction name="menuAbout"/>
   </widget>
   <action name="actionExit">
@@ -784,6 +801,31 @@ QToolBox::tab:selected { /* italicize selected tabs */
   <action name="actionReleaseNotes">
    <property name="text">
     <string>ReleaseNotes</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave_RawData">
+   <property name="text">
+    <string>Save Raw Data</string>
+   </property>
+  </action>
+  <action name="actionSave_Processed_Data">
+   <property name="text">
+    <string>Save Processed Data</string>
+   </property>
+  </action>
+  <action name="actionDay">
+   <property name="text">
+    <string>Day</string>
+   </property>
+  </action>
+  <action name="actionWeek">
+   <property name="text">
+    <string>Week</string>
    </property>
   </action>
  </widget>
