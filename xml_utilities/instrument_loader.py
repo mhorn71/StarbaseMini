@@ -57,7 +57,8 @@ class Instrument:
                                                  'SendToPort': command_stp,
                                                  'BlockedData': command_blocked,
                                                  'SteppedData': command_stepped,
-                                                 'Parameters': {'Choices': parameter_choices,
+                                                 'Parameters': {'TrafficDataType': traffic_data_ype
+                                                                'Choices': parameter_choices,
                                                                 'Regex': parameter_regex,
                                                                 'Tooltip': parameter_tooltip},
                                                  'Response': {'DataType': response_datatype,
@@ -531,6 +532,8 @@ class Instrument:
 
                         raise LookupError('INVALID_XML : Core plugin is missing!!')
 
+                # TODO Add extra checking or XML here to make sure it all looks sane.
+
                 logger.debug('Iterating though plugins and appending data to lists')
 
                 for plugin in self.xmldom.iter('Plugin'):
@@ -578,6 +581,9 @@ class Instrument:
 
                         for parameter in command.iter('Parameter'):
 
+                            traffic_data_type = parameter.findtext('TrafficDataType')
+                            logger.debug('Command parameter traffic data type : %s' % traffic_data_type)
+
                             parameter_choices = parameter.findtext('Choices')
                             logger.debug('Command parameter choices : %s' % parameter_choices)
 
@@ -611,7 +617,8 @@ class Instrument:
                             'SendToPort': command_stp,
                             'BlockedData': command_blocked,
                             'SteppedData': command_stepped,
-                            'Parameters': {'Choices': parameter_choices,
+                            'Parameters': {'TrafficDataType': traffic_data_type,
+                                           'Choices': parameter_choices,
                                            'Regex': parameter_regex,
                                            'Tooltip': parameter_tooltip},
                             'Response': {
