@@ -26,7 +26,6 @@ import core
 import dao
 import datatypes
 
-
 class CommandInterpreter():
     def __init__(self, data_store):
 
@@ -483,15 +482,7 @@ class CommandInterpreter():
 
         if command_list is None:
 
-            return 'system', 'PREMATURE_TERMINATION', 'Command not found!!', None, None
-
-        # All instrument XML commands should be send to port if not return PREMATURE_TERMINATION
-
-        print(command_list[4])
-
-        if command_list[4] != 'True':
-
-            return command_list[0], 'PREMATURE_TERMINATION', 'Instrument commands should be send to port true.', None, None
+            return 'system', 'PREMATURE_TERMINATION', 'Command not found!!', None
 
         # Ok if we got this far then we must at least have some data so let's try to run it.
 
@@ -517,20 +508,29 @@ class CommandInterpreter():
 
         if command_list[5] is None and command_list[6] is None:
 
-            response = self.single_command(instrument_address, command_list[0], command_list[1], command_list[2],
-                                           command_list[3], command_list[8], command_list[9], command_list[11],
-                                           command_list[10])
+            if command_list[4] == 'True':
+
+                response = self.single_command(instrument_address, command_list[0], command_list[1], command_list[2],
+                                               command_list[3], command_list[8], command_list[9], command_list[11],
+                                               command_list[10])
+
+            else:
+
+                logger.critical('Unable to run command as send to port is true and there are no single commands with that setting')
+
+                return command_list[0], 'PREMATURE_TERMINATION', 'Unable to run command with send to port false', None
+
         elif command_list[5] is not None:
 
             response = self.blocked_command(instrument_address, command_list[0], command_list[1], command_list[5])
 
         elif command_list[6] is not None:
 
-            response = command_list[0], 'ABORT', 'Stepped data command is not yet implemented.', None, None
+            response = command_list[0], 'ABORT', 'Stepped data command is not yet implemented.', None
 
         else:
 
-            response = command_list[0], 'PREMATURE_TERMINATION', None, None, None
+            response = command_list[0], 'PREMATURE_TERMINATION', None, None
 
         return response
 
@@ -599,13 +599,13 @@ class CommandInterpreter():
 
         if self.check_response(response, response_regex):
 
-            response = (ident, response[0], response[1], units, None)
+            response = (ident, response[0], response[1], units)
 
             return response
 
         else:
 
-            return ident, 'PREMATURE_TERMINATION', None, None, None
+            return ident, 'PREMATURE_TERMINATION', None, None
 
     # Blocked command
 
@@ -625,7 +625,7 @@ class CommandInterpreter():
 
             logger.warning("BlockedDataCommand hasn't enough command codes specified.")
 
-            return ident, 'PREMATURE_TERMINATION', 'Only one command specified in blocked command, must be minimum of two', None, None
+            return ident, 'PREMATURE_TERMINATION', 'Only one command specified in blocked command, must be minimum of two', None
 
         # We assume that a blocked data command is getData.
 
@@ -637,11 +637,19 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Unable to locate primary command in instrument dictionary.")
 
-            return ident, 'PREMATURE_TERMINATION', 'Unable to locate primary command in instrument dictionary', None, None
+            return ident, 'PREMATURE_TERMINATION', 'Unable to locate primary command in instrument dictionary', None
 
         else:
 
             logger.debug('Blocked data command primary command appears to be : %s' % primary_command_list[0])
+
+        # Check send to port is true for primary command otherwise we don't know what to do with it.
+
+        if primary_command_list[4] != 'True':
+
+            logger.critical('Unable to run command as send to port is true and there are no single commands with that setting')
+
+            return primary_command_list[0], 'PREMATURE_TERMINATION', 'Unable to run command with send to port false', None
 
         # Try to locate the secondary command in the instrument dictionary.
 
@@ -651,11 +659,19 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Unable to locate secondary command in instrument dictionary.")
 
-            return ident, 'PREMATURE_TERMINATION', 'Unable to locate secondary command in instrument dictionary', None, None
+            return ident, 'PREMATURE_TERMINATION', 'Unable to locate secondary command in instrument dictionary', None
 
         else:
 
             logger.debug('Blocked data command primary command appears to be : %s' % secondary_command_list[0])
+
+        # Check send to port is true for primary command otherwise we don't know what to do with it.
+
+        if secondary_command_list[4] != 'True':
+
+            logger.critical('Unable to run command as send to port is true and there are no single commands with that setting')
+
+            return secondary_command_list[0], 'PREMATURE_TERMINATION', 'Unable to run command with send to port false', None
 
         # primary / secondary command_list will have the following values to indexes as stated below,
         # or None if parse fails.
@@ -672,19 +688,19 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand primary command has choices which is not allowed.")
 
-            return ident, 'INVALID_XML', 'Primary command has choices!!', None, None
+            return ident, 'INVALID_XML', 'Primary command has choices!!', None
 
         if primary_command_list[9] is not None:
 
             logger.critical("BlockedDataCommand primary command requires parameter which is not allowed.")
 
-            return ident, 'INVALID_XML', 'Primary command requires parameter which is not allowed!!', None, None
+            return ident, 'INVALID_XML', 'Primary command requires parameter which is not allowed!!', None
 
         if primary_command_list[11] is None:
 
             logger.critical("BlockedDataCommand Primary command hasn't a response regex which is not allowed.")
 
-            return ident, 'INVALID_XML', "Primary command hasn't a response regex which is not allowed!!", None, None
+            return ident, 'INVALID_XML', "Primary command hasn't a response regex which is not allowed!!", None
 
         else:
 
@@ -694,7 +710,7 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Primary command hasn't a data type name which is not allowed.")
 
-            return ident, 'INVALID_XML', "Primary command hasn't a data type name which is not allowed!!", None, None
+            return ident, 'INVALID_XML', "Primary command hasn't a data type name which is not allowed!!", None
 
         else:
 
@@ -706,13 +722,13 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand secondary command has choices which is not allowed.")
 
-            return ident, 'INVALID_XML', 'Secondary command has choices which is not allowed.!!', None, None
+            return ident, 'INVALID_XML', 'Secondary command has choices which is not allowed.!!', None
 
         if secondary_command_list[9] is None:
 
             logger.critical("BlockedDataCommand Secondary command hasn't a parameter regex which is not allowed.")
 
-            return ident, 'INVALID_XML', "Secondary command hasn't a parameter regex which is not allowed!!", None, None
+            return ident, 'INVALID_XML', "Secondary command hasn't a parameter regex which is not allowed!!", None
 
         else:
 
@@ -722,7 +738,7 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Secondary command hasn't a response regex which is not allowed.")
 
-            return ident, 'INVALID_XML', "Secondary command hasn't a response regex which is not allowed!!", None, None
+            return ident, 'INVALID_XML', "Secondary command hasn't a response regex which is not allowed!!", None
 
         else:
 
@@ -732,7 +748,7 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Secondary command hasn't a data type name which is not allowed.")
 
-            return ident, 'INVALID_XML', "Secondary command hasn't a data type name which is not allowed!!", None, None
+            return ident, 'INVALID_XML', "Secondary command hasn't a data type name which is not allowed!!", None
 
         else:
 
@@ -744,7 +760,7 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand primary and secondary data types do not match!!")
 
-            return ident, 'INVALID_XML', "Primary and secondary data types do not match which is not allowed!!", None, None
+            return ident, 'INVALID_XML', "Primary and secondary data types do not match which is not allowed!!", None
 
         # command_list : index - ( ident : 0, base : 1 , code : 2, variant : 3, send_to_port : 4, blocked_data : 5,
         # stepped_data : 6, traffic_data_type : 7, choice : 8, parameter : 9, units : 10, response_regex : 11,
@@ -762,13 +778,13 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Unable to parse primary command!!")
 
-            return ident, 'INVALID_XML', "Unable to parse primary command", None, None
+            return ident, 'INVALID_XML', "Unable to parse primary command", None
 
         # Next we check the response status is SUCCESS otherwise we'll return PREMATURE_TERMINATION.
 
         if not response[1].startswith('SUCCESS'):
 
-            return ident, 'PREMATURE_TERMINATION', None, None, None
+            return ident, 'PREMATURE_TERMINATION', None, None
 
         # If Primary command is SUCCESS then we're going to try run the secondary command.  Again we make the assumption
         # that the primary command response with be a number which we're going to iterate over.
@@ -781,7 +797,7 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Unable to convert primary response value to integer!!")
 
-            return ident, 'PREMATURE_TEMINATION', "Unable to convert primary response value to integer", None, None
+            return ident, 'PREMATURE_TEMINATION', "Unable to convert primary response value to integer", None
 
         #  Now deduct one as we always get a block count plus one
 
@@ -793,17 +809,25 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Block count less than one.!!")
 
-            return ident, 'PREMATURE_TEMINATION', "NODATA", None, None
+            return ident, 'PREMATURE_TEMINATION', "NODATA", None
+
+        # Double check the any previous RawData has been saved as this will destroy it otherwise.
+
+        if not self.data_state():
+
+            return ident, 'ABORT', None, None
 
         #  Set the data store back to consistent state.
 
         self.data_store.clear()
 
+        # Check the data store is in a good state to start with.
+
         if not self.data_store.default_state:
 
             logger.critical('Uable to reset data store.')
 
-            return ident, 'PREMATURE_TERMINATION', 'Unable to reset data store.', None, None
+            return ident, 'PREMATURE_TERMINATION', 'Unable to reset data store.', None
 
         # Setup progress dialog.
 
@@ -830,7 +854,11 @@ class CommandInterpreter():
 
             if progressDialog.wasCanceled():
 
-                return ident, 'ABORT', None, None, None
+                # Reset the data store again just to make sure we leave things in a sane state.
+
+                self.data_store.clear()
+
+                return ident, 'ABORT', None, None
 
             # Change count to the correct DataType to provide to secondary command as a parameter.
 
@@ -848,7 +876,7 @@ class CommandInterpreter():
 
                 logger.critical("BlockedDataCommand Unable to parse seconadry command!!")
 
-                return ident, 'INVALID_XML', "Unable to parse secondary command", None, None
+                return ident, 'INVALID_XML', "Unable to parse secondary command", None
 
             # Check secondary command response is SUCCESS and if not return the error and hide progress dialog.
 
@@ -856,13 +884,13 @@ class CommandInterpreter():
 
                 progressDialog.hide()
 
-                return ident, response[1], None, None, None
+                return ident, response[1], None, None
 
             # Append raw data to data store list if we have data.
 
             if len(response[2]) > 0:
 
-                self.data_store.RawData.append(response[2])
+                self.data_store.RawDataBlocks.append(response[2])
 
                 # set the data source to instrument so we know where it came from and can run datatranslators etc in the
                 # command interpreter.
@@ -876,19 +904,23 @@ class CommandInterpreter():
             # if the data store has somekind of data then return the original command ident, with the controller reponse
             # of the last run command and set the the last tuple to 'data'
 
-            if len(self.data_store.RawData) > 0:
+            if len(self.data_store.RawDataBlocks) > 0:
+
+                # set RawDataBlocksAvailable to True
+
+                self.data_store.RawDataBlocksAvailable = True
 
                 # A quick reminder of the response tuple layout
 
                 # response = command identification, status, response value from controller, command units, data store trigger
 
-                response = ident, response[1], None, None, True
+                response = ident, response[1], None, None
 
             else:
 
                 logger.warning('Data store appears to have no data.')
 
-                response = ident, 'PREMATURE_TERMINATION', None, None, None
+                response = ident, 'PREMATURE_TERMINATION', None, None
 
                 # Reset the data store.
 
@@ -898,70 +930,16 @@ class CommandInterpreter():
 
                     logger.critical('Unable to reset data store defaults.')
 
-                    response = ident, 'PREMATURE_TERMINATION', 'Critical error has occurred please check log file.', None, None
+                    response = ident, 'PREMATURE_TERMINATION', 'Critical error has occurred please check log file.', None
 
         return response
-
-
-
-
-
-
-
-
-
-
-
-        #         for i in range(count):
-        #
-        #             progressDialog.setValue(i)
-        #
-        #             if progressDialog.wasCanceled():
-        #                 return 'ABORT', None
-        #
-        #             # if primary response is HexInteger convert integer to hex and fill to four chars with zeros.
-        #             if pri_datatype == 'HexInteger':
-        #                 datafile = hex(i).split('x')[1].upper().zfill(4)  # change count to hex
-        #             else:
-        #                 datafile = i
-        #
-        #             secondary_command_response = self.single(addr, base, command_codes[1],
-        #                                                      sec_variant, None, datafile, sec_stp)
-        #
-        #             if secondary_command_response[0].startswith('SUCCESS'):
-        #                 pass
-        #             else:
-        #                 progressDialog.hide()
-        #                 return secondary_command_response
-        #
-        #             # Check primary response is valid
-        #             if self.check_response(secondary_command_response):
-        #
-        #                 if self.parent.datatranslator.block_parser(secondary_command_response[1], sec_variant):
-        #                     pass
-        #                 else:
-        #                     self.logger.warning('Unable to parse block : %s' % str(datafile))
-        #                     self.logger.warning('Failed data  : %s' % repr(secondary_command_response[1]))
-        #             else:
-        #                 progressDialog.hide()
-        #                 return 'PREMATURE_TERMINATION', 'NODATA'
-        #
-        #         self.parent.datatranslator.create_data_array(self.instrument.instrument_number_of_channels)
-        #         self.parent.saved_data_state = True
-        #         self.data_type = 'data'
-        #
-        #         if len(self.parent.datatranslator.data_array) == 0:
-        #             return 'PREMATURE_TERMINATION', 'NODATA'
-        #         else:
-        #             return 'SUCCESS', None
-        #     else:
-        #         return 'PREMATURE_TERMINATION', None
 
     def data_state(self):
         '''
         :return: True is it's safe to destroy any unsaved data, else False.
         '''
-        if not self.data_state:
+
+        if self.data_store.RawDataSaved is False and len(self.data_store.RawDataBlocks) > 0:
 
             message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to continue this will ' + \
                       ' overwrite the unsaved data?'
@@ -973,8 +951,13 @@ class CommandInterpreter():
                                                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
 
             if result == QtGui.QMessageBox.Yes:
+
                 return True
+
             else:
+
                 return False
+
         else:
+
             return True
