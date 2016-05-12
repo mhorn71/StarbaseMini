@@ -128,18 +128,19 @@ class Instrument:
         self.instrument_staribus_autodetect = 'None'
         self.instrument_number_of_channels = 'None'
         self.instrument_datatranslator = 'None'
+        self.instrument_staribus2Starinet = 'None'
 
     def clear_instrument(self):
 
         logger = logging.getLogger('xml_utilities.Instrument.clear_instrument')
         logger.info('Clearing instrument attributes')
 
-        del self.module_list[:]
-        del self.command_list[:]
-        del self.channel_names[:]
-        del self.channel_colours[:]
-        del self.channel_datatypenames[:]
-        del self.channel_units[:]
+        self.module_list.clear()
+        self.command_list.clear()
+        self.channel_names.clear()
+        self.channel_colours.clear()
+        self.channel_datatypenames.clear()
+        self.channel_units.clear()
 
         self.command_dict.clear()
 
@@ -160,6 +161,7 @@ class Instrument:
         self.instrument_staribus_autodetect = 'None'
         self.instrument_number_of_channels = 'None'
         self.instrument_datatranslator = 'None'
+        self.instrument_staribus2Starinet = 'None'
 
     def load_xml(self, xml_file):
 
@@ -208,6 +210,8 @@ class Instrument:
 
             self.instrument_datatranslator = self.xmldom.findtext('DataTranslator')
 
+            self.instrument_staribus2starinet = self.xmldom.findtext('Staribus2Starinet', default='False')
+
         except IndexError as msg:
 
             logger.critical('INVALID_XML Header IndexError : %s' % str(msg))
@@ -232,6 +236,7 @@ class Instrument:
             logger.info('Instrument staribus port baudrate : %s' % self.instrument_staribus_baudrate)
             logger.info('Instrument staribus port timeout : %s' % self.instrument_staribus_timeout)
             logger.info('Instrument staribus port autodetect : %s' % self.instrument_staribus_autodetect)
+            logger.info('Instrument staribus 2 starinet converter enabled : %s' % self.instrument_staribus2starinet)
             logger.info('Instrument number of channels : %s' % self.instrument_number_of_channels)
             logger.info('Instrument data translator : %s' % self.instrument_datatranslator)
 
@@ -284,17 +289,20 @@ class Instrument:
 
                 raise ValueError('INVALID_XML : Starbus Address out of range %s' % self.instrument_staribus_address)
 
+            # TODO add check for Starinet Instrument but with Staribus2Starinet enabled.from
+            # TODO check that if Staribus2Starinet is enabled and instrument type is correct that we have IP and Port set.
+
             # Check attributes for either Staribus or Starinet make sense overall
 
             if instrument == 'staribus':
 
-                if self.instrument_starinet_address != 'None':
+                if self.instrument_starinet_address != 'None' and self.instrument_staribus2starinet != 'True':
 
                     logger.critical('Staribus instrument address but Starinet address is not None')
 
                     raise ValueError('INVALID_XML : Staribus instrument address but Starinet address is not None')
 
-                if self.instrument_starinet_port != 'None':
+                if self.instrument_starinet_port != 'None' and self.instrument_staribus2starinet != 'True':
 
                     logger.critical('Staribus instrument address but Starinet port is not None')
 
@@ -325,6 +333,12 @@ class Instrument:
                     raise ValueError('INVALID_XML : Staribus autodetect not True or False')
 
             if instrument == 'starinet':
+
+                if self.instrument_staribus2starinet != 'False':
+
+                    logger.critical('Starinet instrument address but Staribus2Starinet converter enabled!')
+
+                    raise ValueError('Starinet instrument address but Staribus2Starinet converter enabled!')
 
                 if self.instrument_staribus_type != 'None':
 
@@ -370,7 +384,7 @@ class Instrument:
                 raise ValueError('INVALID_XML : Data Translator invalid')
 
             # Check that staribus timeout is valid
-            if not re.match('^20|30|40|50|60$', self.instrument_staribus_timeout):
+            if not re.match(constants.staribus_timeout, self.instrument_staribus_timeout):
 
                 logger.critical('Staribus timeout invalid')
 
