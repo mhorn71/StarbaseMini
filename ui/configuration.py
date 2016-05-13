@@ -2,12 +2,13 @@
 
 # Form implementation generated from reading ui file 'configuration.ui'
 #
-# Created: Sat Apr 30 12:49:58 2016
+# Created: Wed May 11 14:29:48 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+
 
 class Ui_ConfigurationDialog(object):
     def setupUi(self, ConfigurationDialog):
@@ -58,32 +59,7 @@ class Ui_ConfigurationDialog(object):
         self.gridLayout_5.addLayout(self.horizontalLayout_7, 1, 0, 1, 1)
         self.gridLayout_4.addWidget(self.groupBox_3, 1, 0, 1, 1)
         spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_4.addItem(spacerItem2, 4, 0, 1, 1)
-        self.groupBox_4 = QtGui.QGroupBox(self.tab)
-        self.groupBox_4.setObjectName("groupBox_4")
-        self.horizontalLayout_32 = QtGui.QHBoxLayout(self.groupBox_4)
-        self.horizontalLayout_32.setObjectName("horizontalLayout_32")
-        self.horizontalLayout_31 = QtGui.QHBoxLayout()
-        self.horizontalLayout_31.setObjectName("horizontalLayout_31")
-        self.S2SCheckBox = QtGui.QCheckBox(self.groupBox_4)
-        self.S2SCheckBox.setObjectName("S2SCheckBox")
-        self.horizontalLayout_31.addWidget(self.S2SCheckBox)
-        self.label_31 = QtGui.QLabel(self.groupBox_4)
-        self.label_31.setObjectName("label_31")
-        self.horizontalLayout_31.addWidget(self.label_31)
-        self.S2SIpAddressLineEdit = QtGui.QLineEdit(self.groupBox_4)
-        self.S2SIpAddressLineEdit.setObjectName("S2SIpAddressLineEdit")
-        self.horizontalLayout_31.addWidget(self.S2SIpAddressLineEdit)
-        self.label_32 = QtGui.QLabel(self.groupBox_4)
-        self.label_32.setObjectName("label_32")
-        self.horizontalLayout_31.addWidget(self.label_32)
-        self.S2SPort = QtGui.QLineEdit(self.groupBox_4)
-        self.S2SPort.setObjectName("S2SPort")
-        self.horizontalLayout_31.addWidget(self.S2SPort)
-        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_31.addItem(spacerItem3)
-        self.horizontalLayout_32.addLayout(self.horizontalLayout_31)
-        self.gridLayout_4.addWidget(self.groupBox_4, 2, 0, 1, 1)
+        self.gridLayout_4.addItem(spacerItem2, 3, 0, 1, 1)
         self.groupBox_5 = QtGui.QGroupBox(self.tab)
         self.groupBox_5.setObjectName("groupBox_5")
         self.gridLayout_8 = QtGui.QGridLayout(self.groupBox_5)
@@ -111,10 +87,10 @@ class Ui_ConfigurationDialog(object):
         self.LegendFontComboBox = QtGui.QComboBox(self.groupBox_5)
         self.LegendFontComboBox.setObjectName("LegendFontComboBox")
         self.horizontalLayout_33.addWidget(self.LegendFontComboBox)
-        spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_33.addItem(spacerItem4)
+        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_33.addItem(spacerItem3)
         self.gridLayout_8.addLayout(self.horizontalLayout_33, 0, 0, 1, 1)
-        self.gridLayout_4.addWidget(self.groupBox_5, 3, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.groupBox_5, 2, 0, 1, 1)
         self.groupBox = QtGui.QGroupBox(self.tab)
         self.groupBox.setStyleSheet("")
         self.groupBox.setObjectName("groupBox")
@@ -128,8 +104,8 @@ class Ui_ConfigurationDialog(object):
         self.loglevelComboBox = QtGui.QComboBox(self.groupBox)
         self.loglevelComboBox.setObjectName("loglevelComboBox")
         self.horizontalLayout_22.addWidget(self.loglevelComboBox)
-        spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_22.addItem(spacerItem5)
+        spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_22.addItem(spacerItem4)
         self.UpgradecheckBox = QtGui.QCheckBox(self.groupBox)
         self.UpgradecheckBox.setObjectName("UpgradecheckBox")
         self.horizontalLayout_22.addWidget(self.UpgradecheckBox)
@@ -346,14 +322,14 @@ class Ui_ConfigurationDialog(object):
         self.ObNotesLineEdit.setObjectName("ObNotesLineEdit")
         self.horizontalLayout_29.addWidget(self.ObNotesLineEdit)
         self.gridLayout_7.addLayout(self.horizontalLayout_29, 6, 0, 1, 1)
-        spacerItem6 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_7.addItem(spacerItem6, 7, 0, 1, 1)
+        spacerItem5 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_7.addItem(spacerItem5, 7, 0, 1, 1)
         self.tabWidget.addTab(self.tab_3, "")
         self.verticalLayout.addWidget(self.tabWidget)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem7 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem7)
+        spacerItem6 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem6)
         self.saveButton = QtGui.QPushButton(ConfigurationDialog)
         self.saveButton.setObjectName("saveButton")
         self.horizontalLayout.addWidget(self.saveButton)
@@ -374,10 +350,6 @@ class Ui_ConfigurationDialog(object):
         self.relayCheckBox.setText(QtGui.QApplication.translate("ConfigurationDialog", "Active", None, QtGui.QApplication.UnicodeUTF8))
         self.label_7.setText(QtGui.QApplication.translate("ConfigurationDialog", "IP Address", None, QtGui.QApplication.UnicodeUTF8))
         self.label_8.setText(QtGui.QApplication.translate("ConfigurationDialog", "Port", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox_4.setTitle(QtGui.QApplication.translate("ConfigurationDialog", "Staribus to Starinet Instrument Converter", None, QtGui.QApplication.UnicodeUTF8))
-        self.S2SCheckBox.setText(QtGui.QApplication.translate("ConfigurationDialog", "Enable", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_31.setText(QtGui.QApplication.translate("ConfigurationDialog", "IP Address", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_32.setText(QtGui.QApplication.translate("ConfigurationDialog", "Port", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_5.setTitle(QtGui.QApplication.translate("ConfigurationDialog", "Chart Legend Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.label_33.setText(QtGui.QApplication.translate("ConfigurationDialog", "Legend Location", None, QtGui.QApplication.UnicodeUTF8))
         self.label_34.setText(QtGui.QApplication.translate("ConfigurationDialog", "Columns", None, QtGui.QApplication.UnicodeUTF8))

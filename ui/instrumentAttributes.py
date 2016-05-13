@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Fri Apr 15 19:21:52 2016
+# Created: Wed May 11 14:21:49 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -285,6 +285,9 @@ class Ui_InstrumentAttributesDialog(object):
         self.StaribusAutodetectCheckBox = QtGui.QCheckBox(self.groupBox)
         self.StaribusAutodetectCheckBox.setObjectName("StaribusAutodetectCheckBox")
         self.horizontalLayout.addWidget(self.StaribusAutodetectCheckBox)
+        self.Staribus2StarinetCheckBox = QtGui.QCheckBox(self.groupBox)
+        self.Staribus2StarinetCheckBox.setObjectName("Staribus2StarinetCheckBox")
+        self.horizontalLayout.addWidget(self.Staribus2StarinetCheckBox)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -371,6 +374,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.label_15.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Staribus Port", None, QtGui.QApplication.UnicodeUTF8))
         self.RS485checkBox.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "RS485", None, QtGui.QApplication.UnicodeUTF8))
         self.StaribusAutodetectCheckBox.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Autodetect", None, QtGui.QApplication.UnicodeUTF8))
+        self.Staribus2StarinetCheckBox.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Staribus2Starinet", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Staribus Address", None, QtGui.QApplication.UnicodeUTF8))
         self.label_16.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Baudrate", None, QtGui.QApplication.UnicodeUTF8))
         self.label_17.setText(QtGui.QApplication.translate("InstrumentAttributesDialog", "Timeout", None, QtGui.QApplication.UnicodeUTF8))
