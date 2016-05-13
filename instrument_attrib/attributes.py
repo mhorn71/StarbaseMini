@@ -87,8 +87,6 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.PickerButton7.clicked.connect(self.chan7_picker)
         self.PickerButton8.clicked.connect(self.chan8_picker)
 
-        # TODO Enabled state
-
         # State change triggers
         self.StaribusAutodetectCheckBox.stateChanged.connect(self.autodetect_checkbox)
         self.Staribus2StarinetCheckBox.stateChanged.connect(self.Staribus2Starinet_checkbox)
@@ -616,8 +614,6 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
                 self.StarinetPortLineEdit.setText(self.instrument.instrument_starinet_port)
 
-            # TODO we need to change below so we can't select address 0 when Staribus Instrument is selected.
-
             # Staribus address, comboBox is the Staribus Address.
             for i in range(1, 253):
                 self.comboBox.addItem(str(i))
@@ -735,8 +731,6 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.StarinetPortLineEdit.setStyleSheet('QLineEdit { background-color: }')
 
     def configuration_changed(self):
-
-        # TODO this still trips when it shouldn't.
 
         # Check to see if the channel colours have changed.
         result = [i for i, j in zip(self.channel_colours, self.original_channel_colours) if i == j]
@@ -1447,8 +1441,6 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         # import xml file
         tree = ET.parse(self.instrument_file)
-
-        # TODO Move Staribus2Starinet Parameters to XML
 
         # http://stackoverflow.com/questions/22772739/python-xml-etree-elementtree-append-to-subelement
 
