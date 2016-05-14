@@ -43,6 +43,7 @@ import metadata
 import charting
 import instrument_attrib
 import datastore
+import core
 
 version = '3.0.0'
 
@@ -155,9 +156,9 @@ class Main(QtGui.QMainWindow):
 
         # Initialise data translator classes
 
-        self.instrument_datatranslator = None  #  We set this class later once we know what instrument is enabled.
+        self.instrument_datatranslator = None  # We set this class later once we know what instrument is enabled.
 
-        self.csv_datatranslator = datatranslators.CsvParser()  # TODO Check the csv data translator works.
+        self.csv_datatranslator = datatranslators.CsvParser(self.data_store)  # TODO Check the csv data translator works.
 
         # Initialise meta data classes
 
@@ -479,46 +480,77 @@ class Main(QtGui.QMainWindow):
 
         # TODO Add logger calls
 
-        if self.starinet_relay_state:
+        # TODO change data_store checks to data_store.data_state
 
-            self.status_message('system', 'PREMATURE_TERMINATION',
-                                'Starinet Relay is running please restart the application.')
+        print("Datastore length : %s" % str(len(self.data_store.RawData)))
+        print("Datastore RawDataSaved : %s" % str(self.data_store.RawDataSaved))
+
+        if len(self.data_store.RawData) > 0 and self.data_store.RawDataSaved is False:
+
+            message = 'WARNING:  You have unsaved data.\n\nIf you change the instrument, ' + \
+                      'you will be able to save the unsaved data!\n\nDo you want to change instruments?'
+
+            header = 'HELLO'
+
+            result = QtGui.QMessageBox.warning(None,
+                                               header,
+                                               message,
+                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+            if result == QtGui.QMessageBox.Yes:
+
+                self.data_store.clear()
+
+                self.instrument_selection(item)
+
+
+            else:
+                for action in self.ui.menuInstrument.actions():
+                    if action.text() == self.previous_instrument_menu_item:
+                        action.setChecked(True)
 
         else:
 
-            self.previous_instrument_menu_item = item
+            if self.starinet_relay_state:
 
-            try:
-
-                self.application_configuration.set('Application', 'instrument_identifier', item)
-
-            except (IOError, ValueError) as msg:
-
-                # Reset the menu check tick back at the original menu item.
-
-                for action in self.ui.menuInstrument.actions():
-
-                    if action.text() == self.instrument_item:
-
-                        action.setChecked(True)
-
-                self.status_message('system', 'ABORT', 'Unable to set instrument - ' + str(msg), None)
+                self.status_message('system', 'PREMATURE_TERMINATION',
+                                    'Starinet Relay is running please restart the application.')
 
             else:
 
-                if not self.instrument_xml_loader():
+                self.previous_instrument_menu_item = item
 
-                    # Reset the menu check tick back to the original menu item.
+                try:
+
+                    self.application_configuration.set('Application', 'instrument_identifier', item)
+
+                except (IOError, ValueError) as msg:
+
+                    # Reset the menu check tick back at the original menu item.
 
                     for action in self.ui.menuInstrument.actions():
 
-                        if action.text() == self.instrument_item:
+                        if action.text() == self.previous_instrument_menu_item:
 
                             action.setChecked(True)
 
-                    self.status_message('system', 'ABORT', 'Unable to set instrument', None)
+                    self.status_message('system', 'ABORT', 'Unable to set instrument - ' + str(msg), None)
 
-                    self.disable_control_panel()
+                else:
+
+                    if not self.instrument_xml_loader():
+
+                        # Reset the menu check tick back to the original menu item.
+
+                        for action in self.ui.menuInstrument.actions():
+
+                            if action.text() == self.previous_instrument_menu_item:
+
+                                action.setChecked(True)
+
+                        self.status_message('system', 'ABORT', 'Unable to set instrument', None)
+
+                        self.disable_control_panel()
 
     def instrument_xml_loader(self):
 
@@ -608,6 +640,8 @@ class Main(QtGui.QMainWindow):
                 return True
 
     def application_state_control(self):
+
+        # TODO initate datatranslator for but the most serious errors.
 
         logger = logging.getLogger('StarbaseMini.application_state_control')
 
@@ -717,7 +751,7 @@ class Main(QtGui.QMainWindow):
 
             # Check if Staribus to Starinet converter is enabled and if is have we a staribus instrument
 
-            if self.application_configuration.get('Staribus2Starinet', 'active') == 'True' and \
+            if self.instrument.instrument_staribus2starinet == 'True' and \
                     self.instrument.instrument_staribus_address == '000':
 
                 logger.warning('Staribus to Starinet converter enabled but Starinet instrument selected')
@@ -730,11 +764,15 @@ class Main(QtGui.QMainWindow):
 
             # If we have Staribus to Starinet converter enabled is the configuration sane.
 
-            elif self.application_configuration.get('Staribus2Starinet', 'active') == 'True':
+            # TODO Move Staribus2Starinet Parameters to XML
+
+            # self.instrument_staribus2Starinet = self.xmldom.findtext('Staribus2Starinet', default='False')
+
+            elif self.instrument.instrument_staribus2starinet == 'True':
 
                 logger.info('Staribus to Starinet converter found.')
 
-                if not utilities.check_ip(self.application_configuration.get('Staribus2Starinet', 'address')):
+                if not utilities.check_ip(self.instrument.instrument_starinet_address):
 
                     logger.warning('Starinet converter IP address invalid')
 
@@ -743,7 +781,7 @@ class Main(QtGui.QMainWindow):
 
                     self.disable_control_panel()
 
-                elif not utilities.check_starinet_port(self.application_configuration.get('Staribus2Starinet', 'starinet_port')):
+                elif not utilities.check_starinet_port(self.instrument.instrument_starinet_port):
 
                     logger.warning('Starinet converter port invalid')
 
@@ -888,8 +926,11 @@ class Main(QtGui.QMainWindow):
 
                 logger.info('Initialising StaribusBlock datatranslator')
 
-                self.instrument_datatranslator = \
-                    datatranslators.StaribusParser(self.instrument.instrument_number_of_channels)
+                self.instrument_datatranslator = datatranslators.StaribusBlockParser()
+
+                # Make sure the datatranslator is reset to default values,
+
+                self.instrument_datatranslator.clear()
 
                 # load interpreter_class_loader
 
@@ -1073,6 +1114,8 @@ class Main(QtGui.QMainWindow):
 
             self.ui.moduleCombobox.blockSignals(False)
 
+            self.ui.commandCombobox.setFocus()
+
             logger.debug('Unblocked module combobox signals.')
 
     def populate_ui_command(self):
@@ -1164,6 +1207,8 @@ class Main(QtGui.QMainWindow):
 
                                 self.ui.choicesComboBox.setEnabled(True)
 
+                                self.ui.choicesComboBox.setFocus()
+
                                 self.ui.executeButton.setEnabled(True)
 
                                 # Split the choices up into list.
@@ -1199,6 +1244,8 @@ class Main(QtGui.QMainWindow):
                                 self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
 
                                 self.ui.commandParameter.setEnabled(True)
+
+                                self.ui.commandParameter.setFocus()
 
                                 logger.debug('Unblocking command parameter line edit signals.')
 
@@ -1280,6 +1327,8 @@ class Main(QtGui.QMainWindow):
         logger.debug('Choice : %s' % self.ui.choicesComboBox.currentText())
         logger.debug('Parameter : %s' % self.ui.commandParameter.text())
 
+        self.ui.executeButton.blockSignals(True)
+
         # Interpreter_reponse will always return a tuple consisting of command identification, status, data, units
 
         interpreter_response = self.command_interpreter.process_command(self.ui.moduleCombobox.itemData(
@@ -1297,6 +1346,9 @@ class Main(QtGui.QMainWindow):
 
         # TODO Once we call whatever we're going to call when RawDataBlocksAvailable is true we must set it back to false.
 
+        # TODO remove data_store.print_state
+        self.data_store.print_state()
+
         if self.data_store.RawDataBlocksAvailable:  # Do we have data to translate?  True or False
 
             print(str(self.data_store.DataSource))
@@ -1312,30 +1364,58 @@ class Main(QtGui.QMainWindow):
 
             self.status_message(interpreter_response[0], interpreter_response[1], interpreter_response[2], interpreter_response[3])
 
+        self.ui.executeButton.blockSignals(False)
+
     def open_csv_file(self):
-        print('Open file')
+
+        # TODO remote data_store.print_state it's only here as store check.
+        self.data_store.print_state()
 
         if not self.data_state_check():
-            self.status_message('openCsv', 'ABORT', None, None)
+            self.status_message('openCsv', 'ABORT', self.data_state_check()[1], None)
         else:
-            pass
 
-        #
-        #         response = core.importer(self.parent.datatranslator, self.parent.metadata_deconstructor)
-        #
-        #         if response[0].startswith('SUCCESS'):
-        #             self.parent.datatranslator.create_data_array(
-        #                 self.parent.metadata_deconstructor.instrument_number_of_channels)
-        #             self.data_type = 'csv'
-        #
-        #     else:
-        #         return 'ABORT', None
-        #
+            # Reset the data store.
 
-        #
+            self.data_store.clear()
 
-        # else:
-        #     response = 'PREMATURE_TERMINATION', 'Unknown command.'
+            # Now get the path and filename of the CSV file we want to open.
+
+            response = core.importer(self.application_configuration.user_home, self.application_configuration.get('Application', 'instrument_data_path'))
+
+            # If response[0] starts with Success we run the csv_parse
+
+            if response[0].startswith('SUCCESS'):
+
+                response = self.csv_datatranslator.parse(response[1], self.instrument_datatranslator)
+
+                # TODO remove self.data_store.print_state()
+
+                self.data_store.print_state()
+                print(response)
+
+                # if response[0] starts with success we see if we can run the metadata deconstructor.
+
+                if response[0].startswith('SUCCESS'):
+
+                    # Make certain the metadata deconstructor is reset and run the meta_parser if we appear to have data
+
+                    if len(self.data_store.MetadataCsv) != 0:
+
+                        self.metadata_deconstructor.clear()
+
+                        self.metadata_deconstructor.meta_parser(self.data_store)
+
+                    pass
+
+                else:
+
+                    self.status_message('openCSV', response[0], response[1], None)
+
+            else:
+
+                self.status_message('openCSV', 'ABORT', None, None)
+
 
     def save_data(self, type):
         print('Save data : %s' % type)
@@ -1394,10 +1474,10 @@ class Main(QtGui.QMainWindow):
         :return: True is it's safe to destroy any unsaved data, else False.
         '''
 
-        if self.data_store.RawDataSaved is False and len(self.data_store.RawData) > 0:
+        if self.data_store.data_state() is False:
 
-            message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to continue this will ' + \
-                      ' overwrite the unsaved data?'
+            message = ('WARNING:  ' + self.data_store.data_state()[1] +
+                       '\n\nAre you sure you want to continue this will ' + ' overwrite the unsaved data?')
             header = ''
 
             result = QtGui.QMessageBox.question(None,
@@ -1521,6 +1601,8 @@ class Main(QtGui.QMainWindow):
         logger = logging.getLogger('StarbaseMini.instrument_attrib_triggered')
 
         logger.info('Calling edit instrument attributes.')
+
+        self.instrument_attributes_dialog.reset_dialog()
 
         self.instrument_attributes_dialog.set(self.instrument,
                                               self.instrument_filenames[self.instrument_names.index(
