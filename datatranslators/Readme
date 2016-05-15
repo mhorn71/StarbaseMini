@@ -1,10 +1,2 @@
 The data translator decipher the payload into channel data.  If you write a new translator you'll also need to create
 a new metadata creator.  Also add the translator name to configuration_regex.
-
-Things to aware of :
-
-setRate for CV 0001 - 0004 with have leading zeros added to the decimal integer with a max length of 4, i.e 1 = 0001
-
-getA2D will have leading zeros added to decimal integer with a max length of 3, i.e 1 = 001
-
-boolean True and False will be converted to Y or N for CV 0001 - 0004 all text however will be returned lowercase.
