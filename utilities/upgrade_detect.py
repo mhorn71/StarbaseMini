@@ -51,6 +51,8 @@ class Upgrader:
 
     def detect_upgrade(self, current_version):
 
+        socket.setdefaulttimeout(2)
+
         try:
             xml_str = urllib.request.urlopen(self.xml_url, timeout=2)
         except (urllib.error.HTTPError, urllib.error.URLError, ConnectionResetError, socket.timeout) as msg:

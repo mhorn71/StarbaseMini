@@ -15,3 +15,4 @@ from utilities.hex_byte_check import check_hexbyte_string
 from utilities.hex_word_check import check_hexword_string
 from utilities.upgrade_detect import Upgrader
 from utilities.release_notes_dialog import ReleaseNote
+from utilities.data_state_dialog import data_state_check
