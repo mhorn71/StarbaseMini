@@ -333,7 +333,7 @@
     </ChannelMetadata>
 
     <ChannelMetadata>
-        <ChannelLabel>Channel 1</ChannelLabel>
+        <ChannelLabel>Channel 0</ChannelLabel>
         <ChannelColour>#5DA5DA</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>

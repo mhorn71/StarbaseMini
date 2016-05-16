@@ -273,42 +273,42 @@
     </ChannelMetadata>
 
     <ChannelMetadata>
-        <ChannelLabel>Channel 1</ChannelLabel>
+        <ChannelLabel>Channel 0</ChannelLabel>
         <ChannelColour>#0000FF</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
-        <ChannelLabel>Channel 2</ChannelLabel>
+        <ChannelLabel>Channel 1</ChannelLabel>
         <ChannelColour>#FFFF00</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
-        <ChannelLabel>Channel 3</ChannelLabel>
+        <ChannelLabel>Channel 2</ChannelLabel>
         <ChannelColour>#00FF00</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
-        <ChannelLabel>Channel 4</ChannelLabel>
+        <ChannelLabel>Channel 3</ChannelLabel>
         <ChannelColour>#996633</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
-        <ChannelLabel>Channel 5</ChannelLabel>
+        <ChannelLabel>Channel 4</ChannelLabel>
         <ChannelColour>#FF8000</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
-        <ChannelLabel>Channel 6</ChannelLabel>
+        <ChannelLabel>Channel 5</ChannelLabel>
         <ChannelColour>#FF00FF</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
