@@ -27,22 +27,12 @@ from PyQt4 import QtGui
 import config_utilities
 
 
-# TODO probably a complete rewrite.
-
-# TODO pass home path from StarbaseMini
-
-# TODO pass datastore.
-
-# TODO pass data_save path
-
 def importer(user_home, data_home):
 
     logger = logging.getLogger('core.importer')
 
-    # obser_trip = 0
-    # date_trip = 0
-
     # Check if instrument data path exists and if so open folder to choose file.
+    
     try:
         if os.path.isdir(data_home):
             file_name = QtGui.QFileDialog.getOpenFileName(None, 'Import File', data_home, "CSV files (*.csv)")

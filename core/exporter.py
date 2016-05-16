@@ -25,9 +25,6 @@ from PyQt4 import QtGui
 
 import config_utilities
 
-
-# TODO Probably a complete rewrite.
-
 def exporter(instrument, metadata_creator, data_store, user_home, data_home):
 
     logger = logging.getLogger('core.exporter')
