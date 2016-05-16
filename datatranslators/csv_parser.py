@@ -135,8 +135,6 @@ class CsvParser:
 
                             return 'PREMATURE_TERMINATION', 'Unable to parse data.'
 
-                    # TODO change this so we create np array instead of bog standard list.
-
                     self.data_store.RawDataCsv.append(data_line)
 
         if len(self.data_store.RawDataCsv) != 0:

@@ -22,7 +22,6 @@ import datetime
 import re
 import numpy as np
 
-# TODO move self.logger to straight logger.
 
 class StaribusBlockParser:
     def __init__(self):
@@ -44,8 +43,6 @@ class StaribusBlockParser:
         self.parsed_data_list.clear()
 
     def block_parser(self, data_store):
-
-        # TODO move all appends to data_store.RawData
 
         logger = logging.getLogger('datatranslator.StaribusBlockParser.block_parser')
 
