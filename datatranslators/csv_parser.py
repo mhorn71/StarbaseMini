@@ -55,7 +55,7 @@ class CsvParser:
                 if line.startswith('Obser'):
                     metadata_list.append(line.strip('\n'))
                 elif re.match('^\d\d\d\d-\d\d-\d\d', line):
-                    data_list.append(line.strip('\n'))
+                    data_list.append(line.strip('\r\n'))
 
         # If the metadata list appears to have data append it to data_store.MetadataCsv
 
