@@ -244,6 +244,15 @@ QToolBox::tab:selected { /* italicize selected tabs */
              </item>
              <item row="7" column="0">
               <widget class="QPushButton" name="executeButton">
+               <property name="styleSheet">
+                <string notr="true">QPushButton[enabled=&quot;true&quot;] {
+															background-color : #c4df9b
+															}
+
+QPushButton[enabled=&quot;false&quot;]{
+															background-color : #f6989d
+															}</string>
+               </property>
                <property name="text">
                 <string>Execute</string>
                </property>
@@ -270,8 +279,8 @@ QToolBox::tab:selected { /* italicize selected tabs */
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>129</width>
-             <height>521</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <attribute name="label">
@@ -741,6 +750,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
      <addaction name="actionWeek"/>
     </widget>
     <addaction name="menuSegment_Data"/>
+    <addaction name="actionMetadata"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -826,6 +836,11 @@ QToolBox::tab:selected { /* italicize selected tabs */
   <action name="actionWeek">
    <property name="text">
     <string>Week</string>
+   </property>
+  </action>
+  <action name="actionMetadata">
+   <property name="text">
+    <string>Metadata</string>
    </property>
   </action>
  </widget>

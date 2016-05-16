@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Sat May  7 18:48:49 2016
+# Created: Mon May 16 14:11:39 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -130,13 +130,20 @@ class Ui_MainWindow(object):
         self.choicesComboBox.setObjectName("choicesComboBox")
         self.gridLayout.addWidget(self.choicesComboBox, 6, 0, 1, 1)
         self.executeButton = QtGui.QPushButton(self.layoutWidget1)
+        self.executeButton.setStyleSheet("QPushButton[enabled=\"true\"] {\n"
+"                                                            background-color : #c4df9b\n"
+"                                                            }\n"
+"\n"
+"QPushButton[enabled=\"false\"]{\n"
+"                                                            background-color : #f6989d\n"
+"                                                            }")
         self.executeButton.setObjectName("executeButton")
         self.gridLayout.addWidget(self.executeButton, 7, 0, 1, 1)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, "")
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.UserInst.setObjectName("UserInst")
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 2, 124, 443))
@@ -395,6 +402,8 @@ class Ui_MainWindow(object):
         self.actionDay.setObjectName("actionDay")
         self.actionWeek = QtGui.QAction(MainWindow)
         self.actionWeek.setObjectName("actionWeek")
+        self.actionMetadata = QtGui.QAction(MainWindow)
+        self.actionMetadata.setObjectName("actionMetadata")
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave_RawData)
         self.menuFile.addAction(self.actionSave_Processed_Data)
@@ -406,6 +415,7 @@ class Ui_MainWindow(object):
         self.menuSegment_Data.addAction(self.actionDay)
         self.menuSegment_Data.addAction(self.actionWeek)
         self.menuTools.addAction(self.menuSegment_Data.menuAction())
+        self.menuTools.addAction(self.actionMetadata)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuInstrument.menuAction())
@@ -462,4 +472,5 @@ class Ui_MainWindow(object):
         self.actionSave_Processed_Data.setText(QtGui.QApplication.translate("MainWindow", "Save Processed Data", None, QtGui.QApplication.UnicodeUTF8))
         self.actionDay.setText(QtGui.QApplication.translate("MainWindow", "Day", None, QtGui.QApplication.UnicodeUTF8))
         self.actionWeek.setText(QtGui.QApplication.translate("MainWindow", "Week", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionMetadata.setText(QtGui.QApplication.translate("MainWindow", "Metadata", None, QtGui.QApplication.UnicodeUTF8))
 
