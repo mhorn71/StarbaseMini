@@ -21,23 +21,16 @@ import re
 import logging
 import utilities
 
-# TODO pass all three application_configuration, instrument_dictionary, and metadata_deconstructor objects
-
-# TODO remove all del list[:] move to list.clear()
-
-# TODO move self.logger to straight loggers in each method.
-
-# TODO add a lot more notes on how this works.
-
 
 class StaribusMetaDataCreator:
     def __init__(self, parent):
+
         self.application_configuration = parent.application_configuration
+
         self.instrument = parent.instrument
+
         self.metadata_deconstructor = parent.metadata_deconstructor
 
-        self.loggera = logging.getLogger('StaribusMetaDataCreator.observatory_metadata')
-        self.loggerb = logging.getLogger('StaribusMetaDataCreator.observer_metadata')
 
     def observatory_metadata(self):
 
