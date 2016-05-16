@@ -350,8 +350,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     #  Relay check box trigger
 
-    # TODO need to fix this as Staribus2Starinet is now set in the Instrument Attributes.
-
     def relay_checkbox_triggered(self):
 
         if self.relayCheckBox.checkState():
