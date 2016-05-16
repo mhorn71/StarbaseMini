@@ -68,8 +68,8 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         # Setup checkbox slots.
         self.relayCheckBox.stateChanged.connect(self.relay_checkbox_triggered)
         self.relayCheckBox.clicked.connect(self.relay_checkbox_triggered)
-        self.S2SCheckBox.stateChanged.connect(self.s2s_checkbox_triggered)
-        self.S2SCheckBox.clicked.connect(self.s2s_checkbox_triggered)
+        # self.S2SCheckBox.stateChanged.connect(self.s2s_checkbox_triggered)
+        # self.S2SCheckBox.clicked.connect(self.s2s_checkbox_triggered)
 
         # Setup slots for button box save
         self.chooserButton.clicked.connect(self.chooser_triggered)
@@ -171,34 +171,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         self.portLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.starinet_port)))
         self.portLineEdit.textChanged.connect(self.parameter_check_state)
         self.portLineEdit.textChanged.emit(self.portLineEdit.text())
-
-        # Setup staribus to starinet check box and line edits.
-
-        staribus2starinet_active = self.application_conf.get('Staribus2Starinet', 'active')
-
-        if staribus2starinet_active == 'True':
-            self.S2SCheckBox.setChecked(True)
-        elif staribus2starinet_active == 'False':
-            self.S2SIpAddressLineEdit.setEnabled(False)
-            self.S2SPort.setEnabled(False)
-
-        self.S2SIpAddressLineEdit.setText(self.application_conf.get('Staribus2Starinet', 'address'))
-        self.S2SIpAddressLineEdit.setToolTip(
-            'The IPv4 address of the relay or instrument.\nIPv4 Address only IPv6 not '
-            'supported.')
-
-        self.S2SIpAddressLineEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.starinet_ip)))
-        self.S2SIpAddressLineEdit.textChanged.connect(self.parameter_check_state)
-        self.S2SIpAddressLineEdit.textChanged.emit(self.S2SIpAddressLineEdit.text())
-
-
-        self.S2SPort.setText(self.application_conf.get('Staribus2Starinet', 'starinet_port'))
-        self.S2SPort.setToolTip('Port can be in the range 1 - 65535, default is 1205')
-
-        self.S2SPort.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.starinet_port)))
-        self.S2SPort.textChanged.connect(self.parameter_check_state)
-        self.S2SPort.textChanged.emit(self.S2SPort.text())
-
 
         # Setup chart legend, font and column combo boxes
 
@@ -378,57 +350,21 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     #  Relay check box trigger
 
+    # TODO need to fix this as Staribus2Starinet is now set in the Instrument Attributes.
+
     def relay_checkbox_triggered(self):
+
         if self.relayCheckBox.checkState():
-            if self.S2SCheckBox.isChecked():
 
-                result = QtGui.QMessageBox.warning(None,
-                                                   None,
-                                                   "<p align='center'>WARNING!!<br><br>You are trying to enable the Relay while the "
-                                                   "Staribus to Starinet converter is enabled."
-                                                   "<br><br>Press Cancel to leave original configuration or Ok to enable Relay.</p>",
-                                                   QtGui.QMessageBox.Cancel,QtGui.QMessageBox.Ok)
+            self.ipAddressLineEdit.setEnabled(True)
 
-                if result == QtGui.QMessageBox.Ok:
-                    self.S2SCheckBox.setChecked(False)
-                    self.ipAddressLineEdit.setEnabled(True)
-                    self.portLineEdit.setEnabled(True)
-                elif result == QtGui.QMessageBox.Cancel:
-                    self.relayCheckBox.setChecked(False)
-            else:
+            self.portLineEdit.setEnabled(True)
 
-                self.ipAddressLineEdit.setEnabled(True)
-                self.portLineEdit.setEnabled(True)
         else:
+
             self.ipAddressLineEdit.setEnabled(False)
+
             self.portLineEdit.setEnabled(False)
-
-    # Staribus to Starinet check box trigger
-
-    def s2s_checkbox_triggered(self):
-        if self.S2SCheckBox.checkState():
-            if self.relayCheckBox.isChecked():
-                result = QtGui.QMessageBox.warning(None,
-                                                   None,
-                                                   "<p align='center'>WARNING!!<br><br>You are trying to enable the Staribus to "
-                                                   "Starinet converter while the Relay is enabled."
-                                                   "<br><br>Press Cancel to leave original configuration or Ok to enable the converter.</p>",
-                                                   QtGui.QMessageBox.Cancel, QtGui.QMessageBox.Ok)
-
-                if result == QtGui.QMessageBox.Ok:
-                    self.relayCheckBox.setChecked(False)
-                    self.S2SIpAddressLineEdit.setEnabled(True)
-                    self.S2SPort.setEnabled(True)
-                elif result == QtGui.QMessageBox.Cancel:
-                    self.S2SCheckBox.setChecked(False)
-
-            else:
-                self.S2SIpAddressLineEdit.setEnabled(True)
-                self.S2SPort.setEnabled(True)
-
-        else:
-            self.S2SIpAddressLineEdit.setEnabled(False)
-            self.S2SPort.setEnabled(False)
 
     # Data save path chooser trigger
 
@@ -437,8 +373,11 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         file = str(QtGui.QFileDialog.getExistingDirectory(QtGui.QFileDialog(), "Select Directory"))
 
         if len(file) == 0:
+
             pass
+
         else:
+
             self.savepathLineEdit.setText(file)
 
     # Save button state check, this enables or disables the save button depending on valid contents.
@@ -446,15 +385,18 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
     def save_button_state(self):
 
         if self.configuration_check():
+
             self.saveButton.setEnabled(True)
+
         elif self.configuration_check() is False:
+
             self.saveButton.setEnabled(False)
 
     # Configuration changed, checks to see if configuration has changed.
 
     def configuration_changed(self):
 
-        trip = 32
+        trip = 29
 
         # Check data save path.
 
@@ -491,22 +433,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             trip -= 1
 
         if self.portLineEdit.text() != self.application_conf.get('StarinetRelay', 'starinet_port'):
-            trip -= 1
-
-        # Check Staribus to Starinet section
-
-        if self.S2SCheckBox.isChecked():
-            staribus2starinet = "True"
-        else:
-            staribus2starinet = "False"
-
-        if staribus2starinet != self.application_conf.get('Staribus2Starinet', 'active'):
-            trip -= 1
-
-        if self.S2SIpAddressLineEdit.text() != self.application_conf.get('Staribus2Starinet', 'address'):
-            trip -= 1
-
-        if self.S2SPort.text() != self.application_conf.get('Staribus2Starinet', 'starinet_port'):
             trip -= 1
 
         # Check legend section
@@ -587,7 +513,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         if self.ObNotesLineEdit.text() != self.application_conf.get('ObserverMetadata', 'notes'):
             trip -= 1
 
-        if trip == 32:
+        if trip == 29:
             return False
         else:
             return True
@@ -596,7 +522,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     def configuration_check(self):
 
-        trip = 32
+        trip = 30
 
         # Check Starinet relay section
 
@@ -605,15 +531,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
 
         if not re.match(constants.starinet_port, self.portLineEdit.text()):
-            trip -= 1
-
-        # Check Staribus to Starinet section
-
-        if not re.match(constants.starinet_ip, self.S2SIpAddressLineEdit.text()):
-            trip -= 1
-
-
-        if not re.match(constants.starinet_port, self.S2SPort.text()):
             trip -= 1
 
         # Check Observatory Metadata.
@@ -683,7 +600,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
         if not re.match(constants.observer_notes, self.ObNotesLineEdit.text()) or len(self.ObNotesLineEdit.text()) ==0:
             trip -= 1
 
-        if trip == 32:
+        if trip == 30:
             return True
         else:
             return False
@@ -778,15 +695,6 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
             self.application_conf.set('Application', 'instrument_upgrade', 'True')
         else:
             self.application_conf.set('Application', 'instrument_upgrade', 'False')
-
-        # Staribus2Starinet
-        if self.S2SCheckBox.checkState():
-            self.application_conf.set('Staribus2Starinet', 'active', 'True')
-        else:
-            self.application_conf.set('Staribus2Starinet', 'active', 'False')
-
-        self.application_conf.set('Staribus2Starinet', 'address', self.S2SIpAddressLineEdit.text())
-        self.application_conf.set('Staribus2Starinet', 'starinet_port', self.S2SPort.text())
 
         # StarinetConnector
         if self.relayCheckBox.checkState():

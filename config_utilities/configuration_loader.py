@@ -325,6 +325,9 @@ class ConfigLoader:
         except IOError as msg:
             raise IOError(msg)
 
+    def check_state(self):
+        return True
+
 
 if __name__ == '__main__':
     x = ConfigLoader()
