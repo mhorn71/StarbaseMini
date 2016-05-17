@@ -23,9 +23,8 @@ import logging
 
 from PyQt4 import QtGui
 
-import config_utilities
 
-def exporter(instrument, metadata_creator, data_store, user_home, data_home):
+def exporter(metadata_creator, data_store, user_home, data_home):
 
     logger = logging.getLogger('core.exporter')
 
@@ -34,15 +33,20 @@ def exporter(instrument, metadata_creator, data_store, user_home, data_home):
 
     # Check if instrument data path exists and if so open folder to choose file.
     if os.path.isdir(data_home):
+
         data_file = data_home + os.path.sep + filename
+
     else:
+
         data_file = user_home + os.path.sep + filename
 
     fname = QtGui.QFileDialog.getSaveFileName(None, 'Export File', data_file, "CSV files (*.csv)")
 
     # Return ABORT if no File selected.
     if fname == '':
+
         return 'ABORT', None
+
     else:
 
         csv = ''
@@ -68,6 +72,7 @@ def exporter(instrument, metadata_creator, data_store, user_home, data_home):
             data += '\r\n'
 
             # Append date and data to csv
+
             csv += date + ',' + data
 
         if len(csv) == 0:
@@ -78,7 +83,7 @@ def exporter(instrument, metadata_creator, data_store, user_home, data_home):
 
             try:
 
-                file = open(fname, 'a+')
+                file = open(fname, 'w')
 
             except IOError as msg:
 
@@ -99,15 +104,24 @@ def exporter(instrument, metadata_creator, data_store, user_home, data_home):
                 elif data_store.DataSource == 'Controller':
 
                     if metadata_creator.observatory_metadata() is not None:
+
                         file.write(metadata_creator.observatory_metadata())
 
                     if metadata_creator.observer_metadata() is not None:
+
                         file.write(metadata_creator.observer_metadata())
 
                     if metadata_creator.observation_metadata() is not None:
+
                         file.write(metadata_creator.observation_metadata())
 
+                    if data_store.ObserverationNoteMetadata is not None:
+
+                        file.write(data_store.ObserverationNoteMetadata)
+
             file.write(csv)
+
+            file.close()
 
             logger.info('File Exported : %s' % fname)
 
