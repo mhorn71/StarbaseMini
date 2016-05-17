@@ -21,8 +21,25 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Observation Notes</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
-    <widget class="QTextEdit" name="metadataEdit">
+    <widget class="QTextBrowser" name="metadataEdit">
      <property name="font">
       <font>
        <family>Courier</family>
@@ -31,15 +48,8 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Observation Notes</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
-    <widget class="QTextEdit" name="metadataNotesEdit">
+    <widget class="QTextBrowser" name="metadataNotesEdit">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -52,15 +62,8 @@
        <pointsize>14</pointsize>
       </font>
      </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Close|QDialogButtonBox::Save</set>
+     <property name="readOnly">
+      <bool>false</bool>
      </property>
     </widget>
    </item>

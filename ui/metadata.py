@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'metatdata.ui'
+# Form implementation generated from reading ui file 'metadata.ui'
 #
-# Created: Mon May 16 14:01:31 2016
+# Created: Mon May 16 16:19:06 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,29 +18,30 @@ class Ui_MetadataDialog(object):
         self.label = QtGui.QLabel(MetadataDialog)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.metadataEdit = QtGui.QTextEdit(MetadataDialog)
+        self.label_2 = QtGui.QLabel(MetadataDialog)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
+        self.buttonBox = QtGui.QDialogButtonBox(MetadataDialog)
+        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Close|QtGui.QDialogButtonBox.Save)
+        self.buttonBox.setObjectName("buttonBox")
+        self.gridLayout.addWidget(self.buttonBox, 4, 0, 1, 1)
+        self.metadataEdit = QtGui.QTextBrowser(MetadataDialog)
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(14)
         self.metadataEdit.setFont(font)
         self.metadataEdit.setObjectName("metadataEdit")
         self.gridLayout.addWidget(self.metadataEdit, 1, 0, 1, 1)
-        self.label_2 = QtGui.QLabel(MetadataDialog)
-        self.label_2.setObjectName("label_2")
-        self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
-        self.metadataNotesEdit = QtGui.QTextEdit(MetadataDialog)
+        self.metadataNotesEdit = QtGui.QTextBrowser(MetadataDialog)
         self.metadataNotesEdit.setMaximumSize(QtCore.QSize(16777215, 81))
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(14)
         self.metadataNotesEdit.setFont(font)
+        self.metadataNotesEdit.setReadOnly(False)
         self.metadataNotesEdit.setObjectName("metadataNotesEdit")
         self.gridLayout.addWidget(self.metadataNotesEdit, 3, 0, 1, 1)
-        self.buttonBox = QtGui.QDialogButtonBox(MetadataDialog)
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Close|QtGui.QDialogButtonBox.Save)
-        self.buttonBox.setObjectName("buttonBox")
-        self.gridLayout.addWidget(self.buttonBox, 4, 0, 1, 1)
 
         self.retranslateUi(MetadataDialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), MetadataDialog.accept)

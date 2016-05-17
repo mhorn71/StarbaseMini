@@ -142,9 +142,13 @@ class Main(QtGui.QMainWindow):
 
         self.command_interpreter = interpreter.CommandInterpreter(self.data_store)
 
-        # Initialise dialog class
+        # Initialise release notes dialog class
 
         self.release_note_dialog = utilities.ReleaseNote()
+
+        # Initialise metadata dialog class
+
+        self.metadata_viewer_editor_dialog = metadata.MetadataViewerEditor(self.data_store)
 
         # Initialise the configuration tool class
 
@@ -158,7 +162,7 @@ class Main(QtGui.QMainWindow):
 
         self.instrument_datatranslator = None  # We set this class later once we know what instrument is enabled.
 
-        self.csv_datatranslator = datatranslators.CsvParser(self.data_store)  # TODO Check the csv data translator works.
+        self.csv_datatranslator = datatranslators.CsvParser(self.data_store)
 
         # Initialise meta data classes
 
@@ -191,6 +195,8 @@ class Main(QtGui.QMainWindow):
         self.ui.actionDay.triggered.connect(lambda: self.segment_data('day'))
 
         self.ui.actionWeek.triggered.connect(lambda: self.segment_data('week'))
+
+        self.ui.actionMetadata.triggered.connect(self.metadata_viewer_editor)
 
         # Run once trip
 
@@ -300,9 +306,9 @@ class Main(QtGui.QMainWindow):
 
         # First make sure the Instrument Name and File lists are blank
 
-        del self.instrument_names[:]
+        self.instrument_names.clear()
 
-        del self.instrument_filenames[:]
+        self.instrument_filenames.clear()
 
         # local = xml held in the user home folder under .starbasemini/instruments
         # base = xml held in the application root folder under instrumetns.
@@ -599,9 +605,6 @@ class Main(QtGui.QMainWindow):
                 sys.exit(1)
         else:
 
-            # self.status_message('system', 'INFO', 'Initialising Instrument - %s' %
-            #                     self.application_configuration.get('Application', 'instrument_identifier'), None)
-
             self.setWindowTitle('StarbaseMini -- Version %s -- %s' %
                                 (version, self.application_configuration.get('Application', 'instrument_identifier')))
 
@@ -631,17 +634,44 @@ class Main(QtGui.QMainWindow):
                     self.disable_control_panel()
             else:
                 # We've now appear to have a valid application configuration and instrument.xml
-                # Now we application state control which will load the application state and UI components if needed.
 
-                self.application_state_control()
+                # Now we see if we can load the datatranslator and if we can run the application state control
+
+                if self.instrument_datatranslator_class_loader():
+
+                    self.application_state_control()
+
+                    self.ui.actionOpen.setEnabled(True)
+
+                    self.ui.actionSave_RawData.setEnabled(True)
+
+                    self.ui.actionSave_Processed_Data.setEnabled(True)
+
+                    self.ui.actionDay.setEnabled(True)
+
+                    self.ui.actionWeek.setEnabled(True)
+
+                else:
+
+                    self.ui.actionOpen.setEnabled(False)
+
+                    self.ui.actionSave_RawData.setEnabled(False)
+
+                    self.ui.actionSave_Processed_Data.setEnabled(False)
+
+                    self.ui.actionDay.setEnabled(False)
+
+                    self.ui.actionWeek.setEnabled(False)
+
+                    self.disable_control_panel()
+
+                    self.status_message('system', 'INVALID_XML', 'Unable to load data translator!!', None)
 
                 self.run_once = False
 
                 return True
 
     def application_state_control(self):
-
-        # TODO initate datatranslator for but the most serious errors.
 
         logger = logging.getLogger('StarbaseMini.application_state_control')
 
@@ -764,10 +794,6 @@ class Main(QtGui.QMainWindow):
 
             # If we have Staribus to Starinet converter enabled is the configuration sane.
 
-            # TODO Move Staribus2Starinet Parameters to XML
-
-            # self.instrument_staribus2Starinet = self.xmldom.findtext('Staribus2Starinet', default='False')
-
             elif self.instrument.instrument_staribus2starinet == 'True':
 
                 logger.info('Staribus to Starinet converter found.')
@@ -796,9 +822,9 @@ class Main(QtGui.QMainWindow):
 
                     # At this point we make the assumption the application and instrument configuration are valid.
 
-                    # Call data translator class loader
+                    # load interpreter_class_loader
 
-                    self.instrument_datatranslator_class_loader()
+                    self.interpreter_class_loader()
 
             # If we have a Starinet instrument is the configuration sane
 
@@ -810,8 +836,7 @@ class Main(QtGui.QMainWindow):
 
                     logger.warning('Starinet IP address invalid')
 
-                    self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet IP address invalid.',
-                                        None)
+                    self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet IP address invalid.', None)
 
                     self.disable_control_panel()
 
@@ -819,8 +844,7 @@ class Main(QtGui.QMainWindow):
 
                     logger.warning('Starinet port invalid')
 
-                    self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet port invalid.',
-                                        None)
+                    self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet port invalid.', None)
 
                     self.disable_control_panel()
 
@@ -830,9 +854,9 @@ class Main(QtGui.QMainWindow):
 
                     # At this point we make the assumption the application and instrument configuration are valid.
 
-                    # Call data translator class loader
+                    # load interpreter_class_loader
 
-                    self.instrument_datatranslator_class_loader()
+                    self.interpreter_class_loader()
 
             # Instrument appears to be Staribus check configuration is sane.
 
@@ -859,9 +883,9 @@ class Main(QtGui.QMainWindow):
 
                         # At this point we make the assumption the application and instrument configuration are valid.
 
-                        # Call data translator class loader
+                        # load interpreter_class_loader
 
-                        self.instrument_datatranslator_class_loader()
+                        self.interpreter_class_loader()
 
                 else:
 
@@ -882,9 +906,9 @@ class Main(QtGui.QMainWindow):
 
                         # At this point we make the assumption the application and instrument configuration are valid.
 
-                        # Call data translator class loader
+                        # load interpreter_class_loader
 
-                        self.instrument_datatranslator_class_loader()
+                        self.interpreter_class_loader()
 
             else:
 
@@ -896,17 +920,7 @@ class Main(QtGui.QMainWindow):
 
             # Chart loader
 
-            # # Now we start loading the UI components.
-
-            # self.populate_ui_module()
-
-            # self.populate_ui_command()
-
-            # self.command_parameter_populate()
-
     def instrument_datatranslator_class_loader(self):
-
-        # TODO Check how data translator works and sort out logic.
 
         logger = logging.getLogger('StarbaseMini.datatranslator_class_loader')
 
@@ -918,7 +932,7 @@ class Main(QtGui.QMainWindow):
 
             self.status_message('system', 'CRITICAL_ERROR', 'Unable to locate Instrument DataTranslator', None)
 
-            self.disable_control_panel()
+            return False
 
         else:
 
@@ -932,9 +946,11 @@ class Main(QtGui.QMainWindow):
 
                 self.instrument_datatranslator.clear()
 
-                # load interpreter_class_loader
+                # Tell the data store about the data translator so we can parse data blocks.
 
-                self.interpreter_class_loader()
+                self.data_store.block_parser = self.instrument_datatranslator
+
+                return True
 
     def interpreter_class_loader(self):
 
@@ -1312,11 +1328,6 @@ class Main(QtGui.QMainWindow):
 
             self.ui.executeButton.setEnabled(False)
 
-    def data_source(self):
-
-        # TODO Write section so we know where the data is coming from.
-
-        pass
 
     def execute_triggered(self):
 
@@ -1342,23 +1353,30 @@ class Main(QtGui.QMainWindow):
         # If interpreter_response data store parameter is not None then we'll send the status back after we attempt
         # to process the data otherwise we call statusMessage now.
 
-        # TODO remove below print statement it's here for testing only.
-
-        # TODO Once we call whatever we're going to call when RawDataBlocksAvailable is true we must set it back to false.
-
-        # TODO remove data_store.print_state
-        self.data_store.print_state()
 
         if self.data_store.RawDataBlocksAvailable:  # Do we have data to translate?  True or False
 
-            print(str(self.data_store.DataSource))
+            # Create the data store arrays
 
-            print('We appeared to have data to display')
+            if self.data_store.create_arrays():
 
-            print(self.data_store.RawDataBlocks)
+                self.status_message(interpreter_response[0], interpreter_response[1], interpreter_response[2],
+                                    interpreter_response[3])
 
-            self.status_message(interpreter_response[0], interpreter_response[1], interpreter_response[2],
-                                interpreter_response[3])
+                # TODO call chart routines.
+
+                # TODO remove data_store.print_state
+
+                # self.data_store.print_state()
+
+                # Set RawDataBlocksAvailable back to False
+
+                self.data_store.RawDataBlocksAvailable = False
+
+            else:
+
+                self.status_message(interpreter_response[0], 'PREMATURE_TERMINATION', 'Unable to parse data!', None)
+
 
         else:
 
@@ -1368,11 +1386,8 @@ class Main(QtGui.QMainWindow):
 
     def open_csv_file(self):
 
-        # TODO remote data_store.print_state it's only here as store check.
-        self.data_store.print_state()
-
-        if not self.data_state_check():
-            self.status_message('openCsv', 'ABORT', self.data_state_check()[1], None)
+        if not utilities.data_state_check(self.data_store):
+            self.status_message('openCsv', 'ABORT', self.data_store.data_state()[1], None)
         else:
 
             # Reset the data store.
@@ -1391,8 +1406,7 @@ class Main(QtGui.QMainWindow):
 
                 # TODO remove self.data_store.print_state()
 
-                self.data_store.print_state()
-                print(response)
+                # self.data_store.print_state()
 
                 # if response[0] starts with success we see if we can run the metadata deconstructor.
 
@@ -1406,7 +1420,17 @@ class Main(QtGui.QMainWindow):
 
                         self.metadata_deconstructor.meta_parser(self.data_store)
 
-                    pass
+                    # Create the data store arrays
+
+                    if self.data_store.create_arrays():
+
+                        self.status_message('openCSV', response[0], response[1], None)
+
+                        # TODO call chart routines.
+
+                    else:
+
+                        self.status_message('openCSV', 'PREMATURE_TERMINATON', 'Unable to parse data!', None)
 
                 else:
 
@@ -1418,19 +1442,36 @@ class Main(QtGui.QMainWindow):
 
 
     def save_data(self, type):
-        print('Save data : %s' % type)
 
-        # elif base == '81' and code == '00':  # Export RawData
-        #
-        #     if self.data_type == 'data':
-        #         response = core.exporter(self.parent.datatranslator, self.instrument, self.parent.metadata_creator,
-        #                                  'data')
-        #     elif self.data_type == 'csv':
-        #         response = core.exporter(self.parent.datatranslator, self.parent.metadata_deconstructor,
-        #                                  self.parent.metadata_creator, 'csv')
-        #
-        #     if response[0].startswith('SUCCESS'):
-        #         self.parent.saved_data_state = False
+        if type == 'raw':
+
+            if len(self.data_store.RawData) == 0:
+
+                print('PREMATURE_TERMINATION')
+
+            else:
+
+                response = core.exporter(self.instrument, self.metadata_creator, self.data_store,
+                                         self.application_configuration.user_home,
+                                         self.application_configuration.get('Application', 'instrument_data_path'))
+
+                if response[0].startswith('SUCCESS'):
+                    self.data_store.RawDataSaved = True
+
+                self.status_message('saveRawData', response[0], response[1], None)
+
+        elif type == 'processed':
+
+            # TODO need to write ProcessedData export routine will also require small rewrite of core.exporter
+
+            if len(self.data_store.ProcessedData) == 0:
+
+                self.status_message('saveProcessedData', 'PREMATURE_TERMINATION', 'No data found!', None)
+
+            else:
+
+                self.status_message('saveProcessData', 'PREMATURE_TERMINATION', 'Command not yet implemented.')
+
 
     def segment_data(self, period):
         print('Segment data : %s' % period)
@@ -1466,38 +1507,6 @@ class Main(QtGui.QMainWindow):
         #     if response[0].startswith('SUCCESS'):
         #         self.parent.saved_data_state = False
 
-    # This will show a pop up dialog if we have RawData that hasn't been saved.
-
-    def data_state_check(self):
-
-        '''
-        :return: True is it's safe to destroy any unsaved data, else False.
-        '''
-
-        if self.data_store.data_state() is False:
-
-            message = ('WARNING:  ' + self.data_store.data_state()[1] +
-                       '\n\nAre you sure you want to continue this will ' + ' overwrite the unsaved data?')
-            header = ''
-
-            result = QtGui.QMessageBox.question(None,
-                                                header,
-                                                message,
-                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-
-            if result == QtGui.QMessageBox.Yes:
-
-                return True
-
-            else:
-
-                return False
-
-        else:
-
-            return True
-
-
     ############################  BELOW MIGHT GET CHANGED IT'S FROM STARBASEMINI II ##############################
 
     def disable_control_panel(self):
@@ -1527,6 +1536,8 @@ class Main(QtGui.QMainWindow):
         self.ui.choicesComboBox.setEnabled(False)
 
         self.ui.executeButton.setEnabled(False)
+
+        self.status_message('system', 'INFO', 'Instrument control panel disabled.', None)
 
     def status_message(self, ident, status, response_value, units):
 
@@ -1649,6 +1660,17 @@ class Main(QtGui.QMainWindow):
     def release_notes_triggered(self):
 
         self.release_note_dialog.exec_()
+
+    def metadata_viewer_editor(self):
+
+        self.metadata_viewer_editor_dialog.clear()
+
+        self.metadata_viewer_editor_dialog.update_ui()
+
+        self.metadata_viewer_editor_dialog.exec_()
+
+        self.status_message('metadata', self.metadata_viewer_editor_dialog.response_message[0],
+                            self.metadata_viewer_editor_dialog.response_message[1], None)
 
 
 if __name__ == '__main__':
