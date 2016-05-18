@@ -284,8 +284,6 @@ class SegmentTimeSeries:
 
             logger.debug('Writing to file :%s' % self.write_file_name)
 
-            logger.debug('Writing to file :%s' % self.write_file_name)
-
         except IOError as msg:
 
             logger.critical(str(msg))
