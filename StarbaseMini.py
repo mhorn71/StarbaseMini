@@ -22,8 +22,6 @@ import os
 import logging.config
 import logging
 import datetime
-import threading
-import time
 
 from PyQt4 import QtGui, QtCore
 
@@ -187,6 +185,9 @@ class Main(QtGui.QMainWindow):
         # Initialise Command Interpreter Class
         self.command_interpreter = interpreter.CommandInterpreter()
 
+        # Initialise the instruments loader class
+        self.instruments = xml_utilities.Instruments()
+
         # Initialise the instrument loader class
         self.instrument = xml_utilities.Instrument()
 
@@ -217,130 +218,130 @@ class Main(QtGui.QMainWindow):
         # Run instrument configuration initialisation.
         self.initialise_configuration()
 
-    # Initialise configuration.
-    def initialise_configuration(self):
+    # # Initialise configuration.
+    # def initialise_configuration(self):
+    #
+    #     if self.starinet_relay_initialised is True:
+    #         self.disable_all()
+    #         self.status_message('system', 'INFO', 'Starinet relay is initialised please restart the application.', None)
+    #     else:
+    #
+    #         self.ui.moduleCombobox.clear()
+    #         self.ui.commandCombobox.clear()
+    #
+    #         try:
+    #             self.config = config_utilities.ConfigLoader()
+    #         except (FileNotFoundError, OSError, ValueError) as msg:
+    #             msg = ('Configuration Tool : %s' % str(msg))
+    #             self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+    #             self.disable_all()
+    #             self.fatal_error = True
+    #             self.config_error = True
+    #         else:
+    #             # # Generate user configuration if it's missing.
+    #             logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
+    #             self.logger = logging.getLogger('main')
+    #
+    #             if self.first_initialisation is True:
+    #                 # Try upgrading configuration
+    #                 self.config.release_update()
+    #
+    #                 self.logger.info('**************************** APPLICATION STARTUP ****************************')
+    #
+    #             # Enable all UI components.
+    #             self.enable_all()
+    #
+    #             # Load application parameters.
+    #             try:
+    #                 self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
+    #                 self.logger.info('############################## Initialising ' + self.instrument_identifier +
+    #                                  ' ##############################')
+    #                 self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
+    #                 self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
+    #                 self.starinet_address = self.config.get('StarinetRelay', 'address')
+    #                 self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
+    #                 self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
+    #                 self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
+    #                 self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
+    #                 self.instrument_upgrade = self.config.get('Application', 'instrument_upgrade')
+    #             except (ValueError, KeyError, ValueError) as msg:
+    #                 self.logger.critical('Configuration ValueError : %s' % str(msg))
+    #                 msg = ('Configuration ValueError : %s exiting.' % str(msg))
+    #                 self.fatal_error = True
+    #                 self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+    #             else:
+    #                 self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
+    #                 self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
+    #                 self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
+    #                 self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
+    #                 self.logger.info('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
+    #                 self.logger.info('Initial parameter for staribus2starinet_relay_boolean : %s' %
+    #                                  self.staribus2starinet_relay_boolean)
+    #                 self.logger.info('Initial parameter for staribus2starinet_relay_address : %s' %
+    #                                  self.staribus2starinet_address)
+    #                 self.logger.info('Initial parameter for staribus2starinet_relay_port : %s' %
+    #                                  self.staribus2starinet_port)
+    #
+    #                 # Initialise configurationManager & charting.
+    #                 if self.config_error is False:
+    #                     self.configurationManager = config_utilities.ConfigManager()
+    #
+    #             if self.fatal_error is False:
+    #                 self.instrument_loader()
+    #
+    #
+    #             if self.fatal_error is False:
+    #                 self.datatranslator_loader()
+    #
+    #             # Initialise charting.
+    #             if self.config_error is False:
+    #                 self.chart_loader()
+    #
+    #             if self.fatal_error is False and self.config_error is False:
+    #                 # Initialise command interpreter
+    #                 self.instrument_interpreter_loader()
+    #                 # Fire populate_ui_module for the first time.
+    #                 self.populate_ui_module()
+    #
+    #                 self.load_finish = True
+    #
+    #         self.instrument_attributes = instrument_attrib.InstrumentAttrib()
+    #
+    #         if self.first_initialisation is True:
+    #
+    #             if self.instrument_upgrade == 'True':
+    #                 # Run the updater but we'll wait 1 seconds before executing it so the main window has appeared.
+    #                 QtCore.QTimer.singleShot(50, self.updateCaption)
+    #
+    #             # This is just a trial to workout how to add menu items that are checkable
+    #             # http://stackoverflow.com/questions/20019489/pyside-adding-a-toggle-option-action-to-the-menu-bar
+    #             # See also
+    #             # http://stackoverflow.com/questions/1100775/create-pyqt-menu-from-a-list-of-strings
+    #
+    #             action = QtGui.QActionGroup(self.ui.menuInstrument, exclusive=True)
+    #
+    #             for item in self.instruments.get_names():
+    #                 ag = QtGui.QAction(item, action, checkable=True)
+    #
+    #                 if self.config.get('Application', 'instrument_identifier') == item:
+    #                     ag.setChecked(True)
+    #                     self.instrument_item = item
+    #
+    #                 self.ui.menuInstrument.addAction(ag)
+    #                 self.connect(ag, QtCore.SIGNAL('triggered()'), lambda item=item: self.instrument_selection(item))
+    #
+    #             self.first_initialisation = False
 
-        if self.starinet_relay_initialised is True:
-            self.disable_all()
-            self.status_message('system', 'INFO', 'Starinet relay is initialised please restart the application.', None)
-        else:
-
-            self.ui.moduleCombobox.clear()
-            self.ui.commandCombobox.clear()
-
-            try:
-                self.config = config_utilities.ConfigLoader()
-            except (FileNotFoundError, OSError, ValueError) as msg:
-                msg = ('Configuration Tool : %s' % str(msg))
-                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-                self.disable_all()
-                self.fatal_error = True
-                self.config_error = True
-            else:
-                # # Generate user configuration if it's missing.
-                logging.config.fileConfig(self.config.conf_file, disable_existing_loggers=False)
-                self.logger = logging.getLogger('main')
-
-                if self.first_initialisation is True:
-                    # Try upgrading configuration
-                    self.config.release_update()
-
-                    self.logger.info('**************************** APPLICATION STARTUP ****************************')
-
-                # Enable all UI components.
-                self.enable_all()
-
-                # Load application parameters.
-                try:
-                    self.instrument_identifier = self.config.get('Application', 'instrument_identifier')
-                    self.logger.info('############################## Initialising ' + self.instrument_identifier +
-                                     ' ##############################')
-                    self.instrument_data_path = self.config.get('Application', 'instrument_data_path')
-                    self.starinet_relay_boolean = self.config.get('StarinetRelay', 'active')
-                    self.starinet_address = self.config.get('StarinetRelay', 'address')
-                    self.starinet_port = self.config.get('StarinetRelay', 'starinet_port')
-                    self.staribus2starinet_relay_boolean = self.config.get('Staribus2Starinet', 'active')
-                    self.staribus2starinet_address = self.config.get('Staribus2Starinet', 'address')
-                    self.staribus2starinet_port = self.config.get('Staribus2Starinet', 'starinet_port')
-                    self.instrument_upgrade = self.config.get('Application', 'instrument_upgrade')
-                except (ValueError, KeyError, ValueError) as msg:
-                    self.logger.critical('Configuration ValueError : %s' % str(msg))
-                    msg = ('Configuration ValueError : %s exiting.' % str(msg))
-                    self.fatal_error = True
-                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-                else:
-                    self.logger.info('Instrument Identifier : %s' % self.instrument_identifier)
-                    self.logger.info('Initial parameter for instrument_data_path : %s' % self.instrument_data_path)
-                    self.logger.info('Initial parameter for starinet_relay_boolean : %s' % self.starinet_relay_boolean)
-                    self.logger.info('Initial parameter for starinet_relay_address : %s' % self.starinet_address)
-                    self.logger.info('Initial parameter for starinet_relay_port : %s' % self.starinet_port)
-                    self.logger.info('Initial parameter for staribus2starinet_relay_boolean : %s' %
-                                     self.staribus2starinet_relay_boolean)
-                    self.logger.info('Initial parameter for staribus2starinet_relay_address : %s' %
-                                     self.staribus2starinet_address)
-                    self.logger.info('Initial parameter for staribus2starinet_relay_port : %s' %
-                                     self.staribus2starinet_port)
-
-                    # Initialise configurationManager & charting.
-                    if self.config_error is False:
-                        self.configurationManager = config_utilities.ConfigManager()
-
-                if self.fatal_error is False:
-                    self.instrument_loader()
-
-
-                if self.fatal_error is False:
-                    self.datatranslator_loader()
-
-                # Initialise charting.
-                if self.config_error is False:
-                    self.chart_loader()
-
-                if self.fatal_error is False and self.config_error is False:
-                    # Initialise command interpreter
-                    self.instrument_interpreter_loader()
-                    # Fire populate_ui_module for the first time.
-                    self.populate_ui_module()
-
-                    self.load_finish = True
-
-            self.instrument_attributes = instrument_attrib.InstrumentAttrib()
-
-            if self.first_initialisation is True:
-
-                if self.instrument_upgrade == 'True':
-                    # Run the updater but we'll wait 1 seconds before executing it so the main window has appeared.
-                    QtCore.QTimer.singleShot(50, self.updateCaption)
-
-                # This is just a trial to workout how to add menu items that are checkable
-                # http://stackoverflow.com/questions/20019489/pyside-adding-a-toggle-option-action-to-the-menu-bar
-                # See also
-                # http://stackoverflow.com/questions/1100775/create-pyqt-menu-from-a-list-of-strings
-
-                action = QtGui.QActionGroup(self.ui.menuInstrument, exclusive=True)
-
-                for item in self.configurationManager.instruments.get_names():
-                    ag = QtGui.QAction(item, action, checkable=True)
-
-                    if self.config.get('Application', 'instrument_identifier') == item:
-                        ag.setChecked(True)
-                        self.instrument_item = item
-
-                    self.ui.menuInstrument.addAction(ag)
-                    self.connect(ag, QtCore.SIGNAL('triggered()'), lambda item=item: self.instrument_selection(item))
-
-                self.first_initialisation = False
-
-    def updateCaption(self):
-
-        self.status_message('system', 'INFO', 'Checking for application upgrade.', None)
-        upgrade = utilities.Upgrader()
-        message = upgrade.detect_upgrade(version)
-
-        if message is not None:
-            self.status_message('system', message[0], message[1], None)
-        else:
-            self.status_message('system', 'INFO', 'No upgrade currently available.', None)
+    # def updateCaption(self):
+    #
+    #     self.status_message('system', 'INFO', 'Checking for application upgrade.', None)
+    #     upgrade = utilities.Upgrader()
+    #     message = upgrade.detect_upgrade(version)
+    #
+    #     if message is not None:
+    #         self.status_message('system', message[0], message[1], None)
+    #     else:
+    #         self.status_message('system', 'INFO', 'No upgrade currently available.', None)
 
     def instrument_selection(self, item):
 
@@ -398,224 +399,220 @@ class Main(QtGui.QMainWindow):
     # Instrument loader method.
     # ----------------------------------------
 
-    def instrument_loader(self):
+    # def instrument_loader(self):
+    #
+    #     # Make sure the instrument attributes are reset to defaults before loading XML
+    #
+    #     self.instrument.clear_instrument()
+    #
+    #     instrument_found = True
+    #
+    #     instruments_local_home = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'instruments'\
+    #                              + os.path.sep
+    #
+    #     instruments_local = instruments_local_home + 'instruments.xml'
+    #
+    #     instruments_system_home = 'instruments' + os.path.sep
+    #
+    #     instruments_system = instruments_system_home + 'instruments.xml'
+    #
+    #     # First see if we have a local instrument.
+    #     try:
+    #         self.instruments.load_xml(instruments_local)
+    #     except (FileNotFoundError, ValueError, LookupError, AttributeError):
+    #         self.logger.info('No instruments found in user home location')
+    #     else:
+    #         try:
+    #             filename = instruments_local_home + self.instruments.get_filename(self.instrument_identifier)
+    #             self.instrument.load_xml(filename)
+    #             self.instrument_file = filename
+    #         except (FileNotFoundError, ValueError, LookupError, AttributeError, UnboundLocalError):
+    #             self.logger.info('Instrument not found in user home location')
+    #         else:
+    #             instrument_found = False
+    #
+    #     if instrument_found:
+    #         # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
+    #         try:
+    #             self.instruments.load_xml(instruments_system)
+    #         except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
+    #             self.fatal_error = True
+    #             self.logger.critical('Unable to load instruments.xml %s' % str(msg))
+    #             self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+    #         else:
+    #             try:
+    #                 filename_local = instruments_local_home + self.instruments.get_filename(self.instrument_identifier)
+    #                 filename_system = instruments_system_home + self.instruments.get_filename(self.instrument_identifier)
+    #
+    #                 if os.path.isfile(filename_local):
+    #                     self.instrument.load_xml(filename_local)
+    #                     file = filename_local
+    #                     self.instrument_file = filename_local
+    #                 else:
+    #                     self.instrument.load_xml(filename_system)
+    #                     file = filename_system
+    #                     self.instrument_file = filename_system
+    #             except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
+    #                 self.logger.critical('Unable to load instrument xml %s' % str(msg))
+    #                 self.fatal_error = True
+    #                 self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+    #             else:
+    #                 self.logger.debug('Instrument XML found at : %s' % file)
+    #                 self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
+    #
+    #     if self.instrument is not None:
+    #         if self.instrument.instrument_staribus_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
+    #             self.instrument_autodetector()
 
-        # Make sure the instrument attributes are reset to defaults before loading XML
-
-        self.instrument.clear_instrument()
-
-        instrument_found = False
-
-        # sep = os.path.sep
-
-        instruments_local_home = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'instruments'\
-                                 + os.path.sep
-
-        instruments_local = instruments_local_home + 'instruments.xml'
-
-        instruments_system_home = 'instruments' + os.path.sep
-
-        instruments_system = instruments_system_home + 'instruments.xml'
-
-        # First see if we have a local instrument.
-        try:
-            my_instruments = xml_utilities.Instruments(instruments_local)
-        except (FileNotFoundError, ValueError, LookupError, AttributeError):
-            self.logger.info('No instruments found in user home location')
-        else:
-            try:
-                filename = my_instruments.get_filename(self.instrument_identifier)
-                filename = instruments_local_home + filename
-                self.instrument.load_xml(filename)
-                self.instrument_file = filename
-            except (FileNotFoundError, ValueError, LookupError, AttributeError, UnboundLocalError) as msg:
-                self.logger.info('Instrument not found in user home location')
-            else:
-                instrument_found = True
-
-        if instrument_found is not True:
-            # Load set instrument XML, selectedInstrument returns the relative path and XML file name.
-            try:
-                my_instruments = xml_utilities.Instruments(instruments_system)
-            except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
-                self.fatal_error = True
-                self.logger.critical('Unable to load instruments.xml %s' % str(msg))
-                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-            else:
-                try:
-                    filename = my_instruments.get_filename(self.instrument_identifier)
-                    filename_local = instruments_local_home + filename
-                    filename_system = instruments_system_home + filename
-
-                    if os.path.isfile(filename_local):
-                        self.instrument.load_xml(filename_local)
-                        file = filename_local
-                        self.instrument_file = filename_local
-                    else:
-                        self.instrument.load_xml(filename_system)
-                        file = filename_system
-                        self.instrument_file = filename_system
-                except (FileNotFoundError, ValueError, LookupError, AttributeError) as msg:
-                    self.logger.critical('Unable to load instrument xml %s' % str(msg))
-                    self.fatal_error = True
-                    self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-                else:
-                    self.logger.debug('Instrument XML found at : %s' % file)
-                    self.logger.info('Instrument XML loaded for : %s', self.instrument_identifier)
-
-        if self.instrument is not None:
-            if self.instrument.instrument_staribus_autodetect == 'True' and self.staribus2starinet_relay_boolean == 'False':
-                self.instrument_autodetector()
-
-        # Setup StarinetConnector if enabled.
-        if self.starinet_relay_boolean == 'True':
-            self.starinet_relay_initialised = True
-            self.starinet_connector_loader()
-            self.ui.menuInstrument.setEnabled(False)
-        else:
-            self.ui.menuInstrument.setEnabled(True)
+        # # Setup StarinetConnector if enabled.
+        # if self.starinet_relay_boolean == 'True':
+        #     self.starinet_relay_initialised = True
+        #     self.starinet_connector_loader()
+        #     self.ui.menuInstrument.setEnabled(False)
+        # else:
+        #     self.ui.menuInstrument.setEnabled(True)
 
 
     # ----------------------------------------
     # Datatranslator loader method.
     # ----------------------------------------
 
-    def datatranslator_loader(self):
-        # Initialise datatranslator, added new datatranslators here.
-        if self.instrument.instrument_datatranslator == 'StaribusBlock':
-            self.datatranslator = datatranslators.StaribusParser(self.instrument.instrument_number_of_channels)
-            # Initialise metadata
-            self.metadata_deconstructor = metadata.StaribusMetaDataDeconstructor()
-            self.metadata_creator = metadata.StaribusMetaDataCreator(self)
-        else:
-            self.logger.critical('Unable to locate Instrument DataTranslator')
-            self.status_message('system', 'CRITICAL_ERROR', 'Unable to locate Instrument DataTranslator', None)
-            self.fatal_error = True
+    # def datatranslator_loader(self):
+    #     # Initialise datatranslator, added new datatranslators here.
+    #     if self.instrument.instrument_datatranslator == 'StaribusBlock':
+    #         self.datatranslator = datatranslators.StaribusParser(self.instrument.instrument_number_of_channels)
+    #         # Initialise metadata
+    #         self.metadata_deconstructor = metadata.StaribusMetaDataDeconstructor()
+    #         self.metadata_creator = metadata.StaribusMetaDataCreator(self)
+    #     else:
+    #         self.logger.critical('Unable to locate Instrument DataTranslator')
+    #         self.status_message('system', 'CRITICAL_ERROR', 'Unable to locate Instrument DataTranslator', None)
+    #         self.fatal_error = True
 
     # ----------------------------------------
     # Instrument interpreter loader method.
     # ----------------------------------------
 
-    def instrument_interpreter_loader(self):
-        # Initialise Command Interpreter
-        try:
-            if self.starinet_relay_boolean == 'False':
-                if self.instrument.instrument_starinet_address != 'None':
-                    self.logger.debug('Main Starinet Routine being run')
-                    self.logger.info('Initialising Command Interpreter for Starinet')
-                    self.command_interpreter.start(self)
-                    message = ('Initialised Starinet Instrument : %s ' % self.instrument_identifier)
-                    self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, self.instrument_identifier))
-                    self.status_message('system', 'INFO', message, None)
-                elif self.instrument.instrument_staribus_address != 'None':
-                    if self.staribus2starinet_relay_boolean == 'True':
-                        self.logger.debug('Main Staribus 2 Starinet Routine being run')
-                        self.logger.info('Initialising Command Interpreter for Staribus2Starinet')
-                        message = ('Initialised Staribus2Starinet Instrument : %s ' % self.instrument_identifier)
-                        self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, self.instrument_identifier))
-                        self.status_message('system', 'INFO', message, None)
-                        self.command_interpreter.start(self)
-                    else:
-                        self.logger.debug('Main Staribus Routine being run')
-                        self.command_interpreter.close()
-
-                        if utilities.check_serial_port(self.instrument.instrument_staribus_port):
-                            self.logger.debug('Main Staribus check_serial Routine success')
-                            self.logger.info('Initialising Command Interpreter for Staribus')
-                            self.command_interpreter.start(self)
-                            message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
-                            self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, self.instrument_identifier))
-                            self.status_message('system', 'INFO', message, None)
-                        else:
-                            self.logger.debug('Main Staribus check_serial Routine failure')
-                            self.disable_all()
-                            message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
-                            self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, self.instrument_identifier))
-                            self.status_message('system', 'INFO', message, None)
-                            self.status_message('system', 'WARNING',
-                                                'Unable to open serial port - UI controls disabled.', None)
-                else:
-                    self.logger.critical('Unable able to determine stream type.')
-                    self.status_message('system', 'ERROR',
-                                        'Unable able to determine stream type - UI controls disabled.', None)
-                    self.disable_all()
-        except (TypeError, IOError) as msg:
-            self.logger.critical(str(msg))
-            message = str(msg) + ' - UI controls disabled.'
-            self.status_message('system', 'CRITICAL_ERROR', message, None)
-            self.disable_all()
+    # def instrument_interpreter_loader(self):
+    #     # Initialise Command Interpreter
+    #     try:
+    #         if self.starinet_relay_boolean == 'False':
+    #             if self.instrument.instrument_starinet_address != 'None':
+    #                 self.logger.debug('Main Starinet Routine being run')
+    #                 self.logger.info('Initialising Command Interpreter for Starinet')
+    #                 self.command_interpreter.start(self)
+    #                 message = ('Initialised Starinet Instrument : %s ' % self.instrument_identifier)
+    #                 self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, self.instrument_identifier))
+    #                 self.status_message('system', 'INFO', message, None)
+    #             elif self.instrument.instrument_staribus_address != 'None':
+    #                 if self.staribus2starinet_relay_boolean == 'True':
+    #                     self.logger.debug('Main Staribus 2 Starinet Routine being run')
+    #                     self.logger.info('Initialising Command Interpreter for Staribus2Starinet')
+    #                     message = ('Initialised Staribus2Starinet Instrument : %s ' % self.instrument_identifier)
+    #                     self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, self.instrument_identifier))
+    #                     self.status_message('system', 'INFO', message, None)
+    #                     self.command_interpreter.start(self)
+    #                 else:
+    #                     self.logger.debug('Main Staribus Routine being run')
+    #                     self.command_interpreter.close()
+    #
+    #                     if utilities.check_serial_port(self.instrument.instrument_staribus_port):
+    #                         self.logger.debug('Main Staribus check_serial Routine success')
+    #                         self.logger.info('Initialising Command Interpreter for Staribus')
+    #                         self.command_interpreter.start(self)
+    #                         message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
+    #                         self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, self.instrument_identifier))
+    #                         self.status_message('system', 'INFO', message, None)
+    #                     else:
+    #                         self.logger.debug('Main Staribus check_serial Routine failure')
+    #                         self.disable_all()
+    #                         message = ('Initialised Staribus Instrument : %s ' % self.instrument_identifier)
+    #                         self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, self.instrument_identifier))
+    #                         self.status_message('system', 'INFO', message, None)
+    #                         self.status_message('system', 'WARNING',
+    #                                             'Unable to open serial port - UI controls disabled.', None)
+    #             else:
+    #                 self.logger.critical('Unable able to determine stream type.')
+    #                 self.status_message('system', 'ERROR',
+    #                                     'Unable able to determine stream type - UI controls disabled.', None)
+    #                 self.disable_all()
+    #     except (TypeError, IOError) as msg:
+    #         self.logger.critical(str(msg))
+    #         message = str(msg) + ' - UI controls disabled.'
+    #         self.status_message('system', 'CRITICAL_ERROR', message, None)
+    #         self.disable_all()
 
     # ----------------------------------------
     # Instrument autodetect method.
     # ----------------------------------------
 
-    def instrument_autodetector(self):
-        self.logger.info('Instrument autodetect is True.')
-        if self.instrument.instrument_starinet_address != 'None':
-            self.logger.info('Instrument autodetect true however instrument appears to be Starinet.')
-            self.instrument_autodetect_status_boolean = False
-        else:
-            ports = utilities.serial_port_scanner()
-            if ports is None:
-                self.logger.warning('No serial ports found to scan for instrument.')
-                self.instrument_autodetect_status_boolean = False
-            else:
-                instrument_port = utilities.check_serial_port_staribus_instrument(
-                    self.instrument.instrument_staribus_address, ports, self.instrument.instrument_staribus_baudrate)
-                if instrument_port is None:
-                    self.logger.warning('Staribus instrument not found for address %s' %
-                                        self.instrument.instrument_staribus_address)
-                    self.instrument_autodetect_status_boolean = False
-                elif len(instrument_port) > 1:
-                    self.logger.warning('Multiple Staribus instruments found defaulting to first.')
-                    self.status_message('system', 'WARNING',
-                                        'Multiple Staribus instruments found defaulting to first.', None)
-                    self.logger.info('Setting serial port to %s' % instrument_port[0])
-                    self.instrument.instrument_staribus_port = instrument_port[0]
-                    self.instrument_autodetect_status_boolean = True
-                else:
-                    self.status_message('system', 'INFO',  ('%s instrument found.' %
-                                                            self.instrument.instrument_identifier), None)
-                    self.logger.info('Setting serial port to %s' % instrument_port[0])
-                    self.instrument.instrument_staribus_port = instrument_port[0]
-                    self.instrument_autodetect_status_boolean = True
+    # def instrument_autodetector(self):
+    #     self.logger.info('Instrument autodetect is True.')
+    #     if self.instrument.instrument_starinet_address != 'None':
+    #         self.logger.info('Instrument autodetect true however instrument appears to be Starinet.')
+    #         self.instrument_autodetect_status_boolean = False
+    #     else:
+    #         ports = utilities.serial_port_scanner()
+    #         if ports is None:
+    #             self.logger.warning('No serial ports found to scan for instrument.')
+    #             self.instrument_autodetect_status_boolean = False
+    #         else:
+    #             instrument_port = utilities.check_serial_port_staribus_instrument(
+    #                 self.instrument.instrument_staribus_address, ports, self.instrument.instrument_staribus_baudrate)
+    #             if instrument_port is None:
+    #                 self.logger.warning('Staribus instrument not found for address %s' %
+    #                                     self.instrument.instrument_staribus_address)
+    #                 self.instrument_autodetect_status_boolean = False
+    #             elif len(instrument_port) > 1:
+    #                 self.logger.warning('Multiple Staribus instruments found defaulting to first.')
+    #                 self.status_message('system', 'WARNING',
+    #                                     'Multiple Staribus instruments found defaulting to first.', None)
+    #                 self.logger.info('Setting serial port to %s' % instrument_port[0])
+    #                 self.instrument.instrument_staribus_port = instrument_port[0]
+    #                 self.instrument_autodetect_status_boolean = True
+    #             else:
+    #                 self.status_message('system', 'INFO',  ('%s instrument found.' %
+    #                                                         self.instrument.instrument_identifier), None)
+    #                 self.logger.info('Setting serial port to %s' % instrument_port[0])
+    #                 self.instrument.instrument_staribus_port = instrument_port[0]
+    #                 self.instrument_autodetect_status_boolean = True
 
     # ----------------------------------------
     # Starinet connector loader method.
     # ----------------------------------------
 
-    def starinet_connector_loader(self):
-        if self.command_interpreter is not None:
-            self.command_interpreter.close()
-
-        if self.instrument.instrument_staribus_autodetect == 'True':
-            self.instrument_autodetector()
-
-            if self.instrument_autodetect_status_boolean:
-                self.disable_all()
-                starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.instrument.instrument_staribus_port,
-                                                          self.instrument.instrument_staribus_baudrate, self.instrument.instrument_staribus_timeout)
-                self.logger.info('Starinet relay initialised.')
-                msg = 'Starinet relay initialised.'
-                self.status_message('system', 'INFO', msg, None)
-            else:
-                self.disable_all()
-                self.logger.critical('Starinet relay cannot initialise no instrument found.')
-                msg = 'Starinet relay cannot initialise no instrument found.'
-                self.status_message('system', 'ERROR', msg, None)
-        else:
-            if self.instrument.instrument_staribus_port is None:
-                self.disable_all()
-                self.logger.critical('Starinet relay cannot initialise as serial port isn\'t set.')
-                msg = 'Starinet relay cannot initialise as serial port isn\'t set.'
-                self.status_message('system', 'ERROR', msg, None)
-            else:
-                self.disable_all()
-                starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.instrument.instrument_staribus_port,
-                                                          self.instrument.instrument_staribus_baudrate, self.instrument.instrument_staribus_timeout)
-                self.logger.info('Starinet relay initialised.')
-                msg = 'Starinet relay initialised.'
-                self.status_message('system', 'INFO', msg, None)
+    # def starinet_connector_loader(self):
+    #     if self.command_interpreter is not None:
+    #         self.command_interpreter.close()
+    #
+    #     if self.instrument.instrument_staribus_autodetect == 'True':
+    #         self.instrument_autodetector()
+    #
+    #         if self.instrument_autodetect_status_boolean:
+    #             self.disable_all()
+    #             starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.instrument.instrument_staribus_port,
+    #                                                       self.instrument.instrument_staribus_baudrate, self.instrument.instrument_staribus_timeout)
+    #             self.logger.info('Starinet relay initialised.')
+    #             msg = 'Starinet relay initialised.'
+    #             self.status_message('system', 'INFO', msg, None)
+    #         else:
+    #             self.disable_all()
+    #             self.logger.critical('Starinet relay cannot initialise no instrument found.')
+    #             msg = 'Starinet relay cannot initialise no instrument found.'
+    #             self.status_message('system', 'ERROR', msg, None)
+    #     else:
+    #         if self.instrument.instrument_staribus_port is None:
+    #             self.disable_all()
+    #             self.logger.critical('Starinet relay cannot initialise as serial port isn\'t set.')
+    #             msg = 'Starinet relay cannot initialise as serial port isn\'t set.'
+    #             self.status_message('system', 'ERROR', msg, None)
+    #         else:
+    #             self.disable_all()
+    #             starinet_connector.StarinetConnectorStart(self.starinet_address, self.starinet_port, self.instrument.instrument_staribus_port,
+    #                                                       self.instrument.instrument_staribus_baudrate, self.instrument.instrument_staribus_timeout)
+    #             self.logger.info('Starinet relay initialised.')
+    #             msg = 'Starinet relay initialised.'
+    #             self.status_message('system', 'INFO', msg, None)
 
     # ----------------------------------------
     # Chart loader method.
@@ -709,122 +706,122 @@ class Main(QtGui.QMainWindow):
     # For here on is the UI populate methods.
     # ----------------------------------------
 
-    def populate_ui_module(self):
-        self.ui_module_trip = 0
-        try:
-            # populate module combobox.
-            self.logger.debug('Populating module combobox')
+    # def populate_ui_module(self):
+    #     self.ui_module_trip = 0
+    #     try:
+    #         # populate module combobox.
+    #         self.logger.debug('Populating module combobox')
+    #
+    #         index = 0
+    #
+    #         for plugin in self.instrument.module_list:
+    #             self.logger.debug('Populate module combobox with : %s' % str(plugin))
+    #             self.ui.moduleCombobox.addItem(plugin[0], plugin[2])
+    #             self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
+    #
+    #             index += 1
+    #     except KeyError as msg:
+    #         if self.ui_module_trip == 0:
+    #             self.logger.warning('First Run ignore KeyError : populate_ui_module : %s' % str(msg))
+    #         else:
+    #             self.logger.critical('Populate UI Module KeyError. %s' % str(msg))
+    #             self.status_message('system', 'ERROR', ('Populate UI Module KeyError. %s' % str(msg)), None)
+    #     else:
+    #         self.ui_module_trip += 1
 
-            index = 0
-
-            for plugin in self.instrument.module_list:
-                self.logger.debug('Populate module combobox with : %s' % str(plugin))
-                self.ui.moduleCombobox.addItem(plugin[0], plugin[2])
-                self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
-
-                index += 1
-        except KeyError as msg:
-            if self.ui_module_trip == 0:
-                self.logger.warning('First Run ignore KeyError : populate_ui_module : %s' % str(msg))
-            else:
-                self.logger.critical('Populate UI Module KeyError. %s' % str(msg))
-                self.status_message('system', 'ERROR', ('Populate UI Module KeyError. %s' % str(msg)), None)
-        else:
-            self.ui_module_trip += 1
-
-    def populate_ui_command(self):
-        self.ui_command_trip = 0
-        try:
-            self.logger.debug('Populating command combobox.')
-            plugin_index = self.ui.moduleCombobox.currentIndex()
-
-            self.ui.commandCombobox.clear()
-
-            index = 0
-
-            for cmd in self.instrument.command_list[plugin_index]:
-                self.logger.debug('Populate command combobox with : %s' % str(cmd))
-                self.ui.commandCombobox.addItem(cmd[0], cmd[2])
-                self.ui.commandCombobox.setItemData(index, cmd[1], QtCore.Qt.ToolTipRole)
-
-                index += 1
-        except KeyError as msg:
-            if self.ui_command_trip == 0:
-                self.logger.warning('First Run ignore KeyError : populate_ui_command : %s' % str(msg))
-            else:
-                self.logger.critical('Populate UI Command KeyError : %s' % str(msg))
-                self.status_message('system', 'ERROR', ('Populate UI Command KeyError : %s' % str(msg)), None)
-        else:
-            self.ui_command_trip += 1
+    # def populate_ui_command(self):
+    #     self.ui_command_trip = 0
+    #     try:
+    #         self.logger.debug('Populating command combobox.')
+    #         plugin_index = self.ui.moduleCombobox.currentIndex()
+    #
+    #         self.ui.commandCombobox.clear()
+    #
+    #         index = 0
+    #
+    #         for cmd in self.instrument.command_list[plugin_index]:
+    #             self.logger.debug('Populate command combobox with : %s' % str(cmd))
+    #             self.ui.commandCombobox.addItem(cmd[0], cmd[2])
+    #             self.ui.commandCombobox.setItemData(index, cmd[1], QtCore.Qt.ToolTipRole)
+    #
+    #             index += 1
+    #     except KeyError as msg:
+    #         if self.ui_command_trip == 0:
+    #             self.logger.warning('First Run ignore KeyError : populate_ui_command : %s' % str(msg))
+    #         else:
+    #             self.logger.critical('Populate UI Command KeyError : %s' % str(msg))
+    #             self.status_message('system', 'ERROR', ('Populate UI Command KeyError : %s' % str(msg)), None)
+    #     else:
+    #         self.ui_command_trip += 1
 
     # Get the command parameters for the current set command.
-    def command_parameter_populate(self):
-        self.command_parameter_trip = 0
-        self.ui.commandParameter.clear()
-
-        try:
-            for command in self.instrument.command_dict[self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]:
-                for key in command.keys():
-                    if key == self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()):
-                        try:
-                            # Check if command has choices.
-                            if command[key]['Parameters']['Choices'] == 'None':
-                                self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
-                                self.ui.choicesComboBox.clear()
-                                self.ui.choicesComboBox.setEnabled(False)
-
-                                if self.disable_all_boolean is False:
-                                    self.ui.executeButton.setEnabled(True)
-                            else:
-                                self.ui.choicesComboBox.clear()
-
-                                if self.disable_all_boolean is False:
-                                    self.ui.choicesComboBox.setEnabled(True)
-                                    self.ui.executeButton.setEnabled(True)
-
-                                # Split the choices up into list.
-                                choices = command[key]['Parameters']['Choices'].split(',')
-                                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :',
-                                                  str(choices))
-                                self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
-
-                                # Add choices tool tips to combo box.
-                                for i in range(len(choices)):
-                                    self.ui.choicesComboBox.setItemData(i, (command[key]['Parameters']['Tooltip']),
-                                                                        QtCore.Qt.ToolTipRole)
-
-                            # Check if command has parameters.
-                            if command[key]['Parameters']['Regex'] == 'None':
-                                self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
-                                self.ui.commandParameter.clear()
-                                self.ui.commandParameter.setEnabled(False)
-                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
-                            else:
-                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-
-                                if self.disable_all_boolean is False:
-                                    self.ui.commandParameter.setEnabled(True)
-                                    self.ui.executeButton.setEnabled(False)
-
-                                self.ui.commandParameter.setToolTip(command[key]['Parameters']['Tooltip'])
-                                self.parameter_regex = command[key]['Parameters']['Regex']
-
-                                self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex :',
-                                                  self.parameter_regex)
-
-                                regexp = QtCore.QRegExp(self.parameter_regex)
-                                validator = QtGui.QRegExpValidator(regexp)
-                                self.ui.commandParameter.setValidator(validator)
-                        except KeyError as msg:
-                            if self.command_parameter_trip == 0:
-                                self.logger.warning('First Run ignore KeyError : command populate parameters : %s' % str(msg))
-                            else:
-                                self.logger.critical('ERROR : Command Parameter Populate KeyError : %s' % str(msg))
-                                self.status_message('system', 'ERROR', ('Command Parameter KeyError : %s' % str(msg)), None)
-                        else:
-                            self.command_parameter_trip += 1
-        except KeyError:
-            pass
+    # def command_parameter_populate(self):
+    #     self.command_parameter_trip = 0
+    #     self.ui.commandParameter.clear()
+    #
+    #     try:
+    #         for command in self.instrument.command_dict[self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]:
+    #             for key in command.keys():
+    #                 if key == self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()):
+    #                     try:
+    #                         # Check if command has choices.
+    #                         if command[key]['Parameters']['Choices'] == 'None':
+    #                             self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
+    #                             self.ui.choicesComboBox.clear()
+    #                             self.ui.choicesComboBox.setEnabled(False)
+    #
+    #                             if self.disable_all_boolean is False:
+    #                                 self.ui.executeButton.setEnabled(True)
+    #                         else:
+    #                             self.ui.choicesComboBox.clear()
+    #
+    #                             if self.disable_all_boolean is False:
+    #                                 self.ui.choicesComboBox.setEnabled(True)
+    #                                 self.ui.executeButton.setEnabled(True)
+    #
+    #                             # Split the choices up into list.
+    #                             choices = command[key]['Parameters']['Choices'].split(',')
+    #                             self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :',
+    #                                               str(choices))
+    #                             self.ui.choicesComboBox.addItems(choices)  # Add choices to combobox.
+    #
+    #                             # Add choices tool tips to combo box.
+    #                             for i in range(len(choices)):
+    #                                 self.ui.choicesComboBox.setItemData(i, (command[key]['Parameters']['Tooltip']),
+    #                                                                     QtCore.Qt.ToolTipRole)
+    #
+    #                         # Check if command has parameters.
+    #                         if command[key]['Parameters']['Regex'] == 'None':
+    #                             self.logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
+    #                             self.ui.commandParameter.clear()
+    #                             self.ui.commandParameter.setEnabled(False)
+    #                             self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
+    #                         else:
+    #                             self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+    #
+    #                             if self.disable_all_boolean is False:
+    #                                 self.ui.commandParameter.setEnabled(True)
+    #                                 self.ui.executeButton.setEnabled(False)
+    #
+    #                             self.ui.commandParameter.setToolTip(command[key]['Parameters']['Tooltip'])
+    #                             self.parameter_regex = command[key]['Parameters']['Regex']
+    #
+    #                             self.logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex :',
+    #                                               self.parameter_regex)
+    #
+    #                             regexp = QtCore.QRegExp(self.parameter_regex)
+    #                             validator = QtGui.QRegExpValidator(regexp)
+    #                             self.ui.commandParameter.setValidator(validator)
+    #                     except KeyError as msg:
+    #                         if self.command_parameter_trip == 0:
+    #                             self.logger.warning('First Run ignore KeyError : command populate parameters : %s' % str(msg))
+    #                         else:
+    #                             self.logger.critical('ERROR : Command Parameter Populate KeyError : %s' % str(msg))
+    #                             self.status_message('system', 'ERROR', ('Command Parameter KeyError : %s' % str(msg)), None)
+    #                     else:
+    #                         self.command_parameter_trip += 1
+    #     except KeyError:
+    #         pass
 
     def chart_control_panel(self, number_of_channels, translated):
 
@@ -1245,53 +1242,53 @@ class Main(QtGui.QMainWindow):
     # Parameter check state method.
     # ----------------------------------------
 
-    def parameter_check_state(self, *args, **kwargs):
-
-        # This bit is a bit of bodge as parameter check state will trigger when loading and raise
-        # AttributeError so we just ignore it, not ideal!
-
-        try:
-            sender = self.sender()
-            validator = sender.validator()
-            state = validator.validate(sender.text(), 0)[0]
-        except AttributeError:
-            pass
-        if self.disable_all_boolean is False and self.load_finish is True:
-
-            for command in self.instrument.command_dict[
-                    self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]:
-
-                for key in command.keys():
-                    if key == self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()):
-                        try:
-                            if command[key]['Parameters']['Regex'] == 'None':
-                                self.logger.debug('Command parameters regex is None setting parameter entry box to gray')
-                                sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
-                                self.logger.debug('Enabling execute button')
-                                self.ui.executeButton.setEnabled(True)
-                            else:
-                                self.ui.executeButton.setEnabled(False)
-                                if state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) == 0:
-                                    sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-                                elif state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) > 0:
-                                    color = '#c4df9b'  # green
-                                    sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-                                    self.ui.executeButton.setEnabled(True)
-                                elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) == 0:
-                                    sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
-                                elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) > 0:
-                                    color = '#fff79a'  # yellow
-                                    sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-                                else:
-                                    sender.setStyleSheet('QLineEdit { background-color: #f6989d')
-                        except KeyError:
-                            if self.parameter_check_state_trip == 0:
-                                pass
-                            else:
-                                self.logger.debug('Command parameters key error setting parameter entry box to gray')
-                                sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
-                        else:
-                            self.parameter_check_state_trip += 1
+    # def parameter_check_state(self, *args, **kwargs):
+    #
+    #     # This bit is a bit of bodge as parameter check state will trigger when loading and raise
+    #     # AttributeError so we just ignore it, not ideal!
+    #
+    #     try:
+    #         sender = self.sender()
+    #         validator = sender.validator()
+    #         state = validator.validate(sender.text(), 0)[0]
+    #     except AttributeError:
+    #         pass
+    #     if self.disable_all_boolean is False and self.load_finish is True:
+    #
+    #         for command in self.instrument.command_dict[
+    #                 self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex())]:
+    #
+    #             for key in command.keys():
+    #                 if key == self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()):
+    #                     try:
+    #                         if command[key]['Parameters']['Regex'] == 'None':
+    #                             self.logger.debug('Command parameters regex is None setting parameter entry box to gray')
+    #                             sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+    #                             self.logger.debug('Enabling execute button')
+    #                             self.ui.executeButton.setEnabled(True)
+    #                         else:
+    #                             self.ui.executeButton.setEnabled(False)
+    #                             if state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) == 0:
+    #                                 sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+    #                             elif state == QtGui.QValidator.Acceptable and len(self.ui.commandParameter.text()) > 0:
+    #                                 color = '#c4df9b'  # green
+    #                                 sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+    #                                 self.ui.executeButton.setEnabled(True)
+    #                             elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) == 0:
+    #                                 sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+    #                             elif state == QtGui.QValidator.Intermediate and len(self.ui.commandParameter.text()) > 0:
+    #                                 color = '#fff79a'  # yellow
+    #                                 sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+    #                             else:
+    #                                 sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+    #                     except KeyError:
+    #                         if self.parameter_check_state_trip == 0:
+    #                             pass
+    #                         else:
+    #                             self.logger.debug('Command parameters key error setting parameter entry box to gray')
+    #                             sender.setStyleSheet('QLineEdit { background-color: #EDEDED }')
+    #                     else:
+    #                         self.parameter_check_state_trip += 1
 
     # ----------------------------------------
     # Menu trigger methods.
@@ -1579,28 +1576,28 @@ class Main(QtGui.QMainWindow):
             self.chart_show_legend_triggered()
             self.manual_channel_trigger(number_of_channels)
 
-    def closeEvent(self, event):
-        if self.saved_data_state is False:
-            message = "<br><p align='center'>Are you sure you want to exit?</p>"
-        else:
-            message = "<br><p align='center'>WARNING:  You have unsaved data.\nAre you sure you want to exit?</p>"
-
-        result = QtGui.QMessageBox.question(None,
-                                            "Confirm Exit...",
-                                            message,
-                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        event.ignore()
-
-        if result == QtGui.QMessageBox.Yes:
-            event.accept()
-
-    def help_about_triggered(self):
-        QtGui.QMessageBox.information(None, None, "<p align='center'>StarbaseMini " + version + "<br><br>(c) 2016 Mark Horn<br>"
-                                                     "<br>mhorn71@gmail.com</p>")
-
-    def release_notes_triggered(self):
-
-        self.release_note.exec_()
+    # def closeEvent(self, event):
+    #     if self.saved_data_state is False:
+    #         message = "<br><p align='center'>Are you sure you want to exit?</p>"
+    #     else:
+    #         message = "<br><p align='center'>WARNING:  You have unsaved data.\nAre you sure you want to exit?</p>"
+    #
+    #     result = QtGui.QMessageBox.question(None,
+    #                                         "Confirm Exit...",
+    #                                         message,
+    #                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+    #     event.ignore()
+    #
+    #     if result == QtGui.QMessageBox.Yes:
+    #         event.accept()
+    #
+    # def help_about_triggered(self):
+    #     QtGui.QMessageBox.information(None, None, "<p align='center'>StarbaseMini " + version + "<br><br>(c) 2016 Mark Horn<br>"
+    #                                                  "<br>mhorn71@gmail.com</p>")
+    #
+    # def release_notes_triggered(self):
+    #
+    #     self.release_note.exec_()
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)

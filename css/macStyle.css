@@ -59,3 +59,22 @@ QLineEdit::disabled {
     min-width: 568px;
 }
 
+QPushButton#executeButton:enabled {
+            background-color: #c4df9b ;
+            }
+
+QPushButton#executeButton:disabled {
+            background-color: #b6c3d1 ;
+            }
+
+QPushButton#executeButton:pressed {
+            background-color: #000000 ;
+            }
+
+QPushButton#executeButton {
+        margin-left: 6px;
+        margin-right: 6px;
+        border-radius: 5px;
+        padding: 0.2em 0.2em 0.3em 0.2em;
+}
+

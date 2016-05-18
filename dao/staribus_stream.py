@@ -24,6 +24,11 @@ import datetime
 
 import serial
 
+# TODO move self.loggers to straight logger.
+
+# TODO add code notes.
+
+# TODO improve code layout.
 
 class StaribusStream:
     def __init__(self, serial_port, serial_baudrate, serial_timeout):

@@ -57,7 +57,7 @@ class Chart:
     vertical then delete the temporary widget. Set the vertical layout name to mplvl
     '''
 
-    def __init__(self, ui, config):
+    def __init__(self, ui):
         '''
 
         :param ui: The UI to which we need for displaying the chart.
@@ -73,7 +73,7 @@ class Chart:
         self.datatranslator = None
         self.metadata = None
         self.instrument = None
-        self.config = config
+        self.config = None
         self.attributes = None
         self.run_once = False
         self.count = 0  # Just a generic counter for testing purposes.
@@ -84,7 +84,6 @@ class Chart:
         self.decimate_array = []
 
         mpl.rcParams['font.monospace'] = 'Courier New'
-        mpl.rcParams['savefig.directory'] = self.config.get('Application', 'instrument_data_path')
         mpl.rcParams['savefig.bbox'] = 'tight'
         mpl.rcParams['axes.linewidth'] = 0.5
         mpl.rcParams['axes.facecolor'] = "#FDFDF0"
@@ -107,10 +106,13 @@ class Chart:
 
         self.logger.info('Initialised charting.')
 
-    def chart_instrument_setup(self, datatranslator, instrument, metadata):
+    def chart_instrument_setup(self, datatranslator, instrument, metadata, application_configuration):
         self.datatranslator = datatranslator
         self.instrument = instrument
         self.metadata = metadata
+        self.application_configuration = application_configuration
+
+        mpl.rcParams['savefig.directory'] = self.application_configuration.get('Application', 'instrument_data_path')
 
 
     def clear(self):
@@ -294,15 +296,15 @@ class Chart:
     def chart_legend(self, state):
 
         fontP = FontProperties()
-        fontP.set_size(self.config.get('Legend', 'font'))
+        fontP.set_size(self.application_configuration.get('Legend', 'font'))
 
         if state is True:
-            self.ax1f1.legend(prop=fontP, loc=self.config.get('Legend', 'location'),
-                              ncol=int(self.config.get('Legend', 'columns'))).set_visible(True)
+            self.ax1f1.legend(prop=fontP, loc=self.application_configuration.get('Legend', 'location'),
+                              ncol=int(self.application_configuration.get('Legend', 'columns'))).set_visible(True)
 
             # # # set the linewidth of each legend object
-            for legend_handle in self.ax1f1.legend(prop=fontP, loc=self.config.get('Legend', 'location'),
-                                                   ncol=int(self.config.get('Legend', 'columns'))).legendHandles:
+            for legend_handle in self.ax1f1.legend(prop=fontP, loc=self.application_configuration.get('Legend', 'location'),
+                                                   ncol=int(self.application_configuration.get('Legend', 'columns'))).legendHandles:
                 legend_handle.set_linewidth(10.0)
 
         elif state is False:

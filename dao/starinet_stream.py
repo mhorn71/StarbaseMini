@@ -56,7 +56,7 @@ class StarinetStream:
 
         message = message.encode()
 
-        self.logger.info("Sending data to starinet instrument")
+        self.logger.info("Sending data to starinet instrument : %s" % str(self.starinet_client_address))
         self.logger.debug("%s %s", 'UDP socket raw message encoded utf-8', repr(message))
 
         try:

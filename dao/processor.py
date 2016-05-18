@@ -22,43 +22,63 @@ import logging
 
 
 class DaoProcessor:
-    def __init__(self, serial_port, serial_baudrate, serial_timeout, starinet_address,
-                 starinet_port, stream, staribus_port_type):
+    def __init__(self):
 
         self.logger = logging.getLogger('dao.DaoProcessor')
 
         self.command_message = dao.StaribusCommandMessage()
         self.response_message = dao.StaribusResponseMessage()
 
-        starinet_address = starinet_address
-        starinet_port = starinet_port
+    def start(self, serial_port, serial_baudrate, serial_timeout, starinet_address,
+              starinet_port, stream, staribus_port_type):
+
+        logger = logging.getLogger('dao.DaoProcessor.start')
 
         if stream == 'Starinet':
-            self.logger.debug('Starinet Stream selected')
+
+            logger.debug('Starinet Stream selected')
+
             # we use the serial_timeout as well for the StarinetStream.
+
             try:
+
                 self.message_stream = dao.StarinetStream(starinet_address, starinet_port, serial_timeout)
+
             except IOError as msg:
+
                 raise IOError(msg)
+
             else:
-                self.logger.debug('Stream set to Starinet')
+
+                logger.debug('Stream set to Starinet')
+
         else:
-            self.logger.debug('Staribus Stream selected')
+
+            logger.debug('Staribus Stream selected')
+
             if staribus_port_type == 'RS232':
 
                 try:
+
                     self.message_stream = dao.StaribusStream(serial_port, serial_baudrate, serial_timeout)
+
                 except IOError as msg:
+
                     raise IOError(msg)
+
                 else:
-                    self.logger.debug('Stream set to Staribus')
+
+                    logger.debug('Stream set to Staribus')
+
             elif staribus_port_type == 'RS485':
+
                 # Need to write the RS485 stream interface.
+
                 pass
 
 
             else:
-                raise IOError('Unknown port type')
+                raise IOError('Unknown port type : %s' % staribus_port_type)
 
     def close(self):
         try:
@@ -78,23 +98,37 @@ class DaoProcessor:
                  Error messsages returned : MALFORMED_MESSAGE, ERROR, TIMEOUT
         '''
 
+        logger = logging.getLogger('dao.DaoProcessor.star_message')
+
         # Construct the Staribus Message this works for both Staribus and Starinet.
+
         constructed_message = self.command_message.construct(addr, base, code, variant, param)
-        self.logger.debug('Message command string : %s' % repr(constructed_message))
+
+        logger.debug('Message command string : %s' % repr(constructed_message))
 
         if constructed_message == 'MALFORMED_MESSAGE':
+
             return 'MALFORMED_MESSAGE', None
+
         else:
+
             try:
+
                 stream_reply = self.message_stream.stream(constructed_message)
+
             except IOError as msg:
+
                 return 'ERROR', str(msg)
 
             if stream_reply == 'TIMEOUT':
+
                 return 'TIMEOUT', None
+
             elif stream_reply == 'ERROR':
+
                 response = 'ERROR', 'Unable to send to socket.'
             else:
+
                 response = self.response_message.decipher(stream_reply)
 
             return response

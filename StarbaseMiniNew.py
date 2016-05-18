@@ -170,6 +170,13 @@ class Main(QtGui.QMainWindow):
 
         self.metadata_creator = metadata.StaribusMetaDataCreator(self)
 
+        # Initialise segment time series class and run the setup.
+
+        self.segmenter = core.SegmentTimeSeries()
+
+        self.segmenter.data_setup(self.metadata_creator, self.data_store, self.application_configuration.user_home,
+                                  self.application_configuration.get('Application', 'instrument_data_path'))
+
         # Initialise mpl chart class
 
         self.chart = charting.Chart(self.ui)
@@ -192,9 +199,13 @@ class Main(QtGui.QMainWindow):
 
         self.ui.actionSave_Processed_Data.triggered.connect(lambda: self.save_data('processed'))
 
-        self.ui.actionDay.triggered.connect(lambda: self.segment_data('day'))
+        self.ui.SegmentRawDataDay.triggered.connect(lambda: self.segment_data('day', 'raw'))
 
-        self.ui.actionWeek.triggered.connect(lambda: self.segment_data('week'))
+        self.ui.SegmentRawDataWeek.triggered.connect(lambda: self.segment_data('week', 'raw'))
+
+        self.ui.SegmentProcessDataDay.triggered.connect(lambda: self.segment_data('day', 'processed'))
+
+        self.ui.SegmentProcessDataWeek.triggered.connect(lambda: self.segment_data('week', 'processed'))
 
         self.ui.actionMetadata.triggered.connect(self.metadata_viewer_editor)
 
@@ -1440,18 +1451,17 @@ class Main(QtGui.QMainWindow):
 
                 self.status_message('openCSV', 'ABORT', None, None)
 
-
     def save_data(self, type):
 
         if type == 'raw':
 
             if len(self.data_store.RawData) == 0:
 
-                print('PREMATURE_TERMINATION')
+                self.status_message('saveRawData', 'PREMATURE_TERMINATION', 'No data found!', None)
 
             else:
 
-                response = core.exporter(self.instrument, self.metadata_creator, self.data_store,
+                response = core.exporter(self.metadata_creator, self.data_store,
                                          self.application_configuration.user_home,
                                          self.application_configuration.get('Application', 'instrument_data_path'))
 
@@ -1470,42 +1480,17 @@ class Main(QtGui.QMainWindow):
 
             else:
 
-                self.status_message('saveProcessData', 'PREMATURE_TERMINATION', 'Command not yet implemented.')
+                self.status_message('saveProcessedData', 'PREMATURE_TERMINATION', 'Command not yet implemented.')
 
 
-    def segment_data(self, period):
-        print('Segment data : %s' % period)
+    def segment_data(self, period, type):
 
-        # elif base == '50' and code == '00':  # Segment Time Series.
-        #
-        #     if self.data_type == 'data':
-        #         choice = choice.lower()
-        #
-        #         # look at how exporter works.
-        #
-        #         self.segmenter.data_setup(self.parent.datatranslator, self.instrument, self.parent.metadata_creator,
-        #                                   'data')
-        #
-        #         if choice == 'day':
-        #             response = self.segmenter.segment_day()
-        #         elif choice == 'week':
-        #             response = self.segmenter.segment_week()
-        #
-        #     elif self.data_type == 'csv':
-        #         choice = choice.lower()
-        #
-        #         # look at how exporter works.
-        #
-        #         self.segmenter.data_setup(self.parent.datatranslator, self.parent.metadata_deconstructor,
-        #                                   self.parent.metadata_creator, 'csv')
-        #
-        #         if choice == 'day':
-        #             response = self.segmenter.segment_day()
-        #         elif choice == 'week':
-        #             response = self.segmenter.segment_week()
-        #
-        #     if response[0].startswith('SUCCESS'):
-        #         self.parent.saved_data_state = False
+        segment_data_identifity = 'segmentData.' + str(period)
+
+        response = self.segmenter.segment_timeseries(type, period)
+
+        self.status_message(segment_data_identifity, response[0], response[1], None)
+
 
     ############################  BELOW MIGHT GET CHANGED IT'S FROM STARBASEMINI II ##############################
 

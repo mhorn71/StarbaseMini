@@ -3,3 +3,35 @@
 getData attempts to create chart even if no data is present to create it from
 
 xml_utils instrument importer needs to check the XML is valid more.
+
+DataTypes = setGain requires parameter to formated as 1, 2, 3, or 4 whereas getA2D requires the parameter to sent as 001, 002 etc ....
+
+
+#  Major issue ....   instruments loader requires the XML to be specified, I need to return both local and base instrument
+  names ... yikkies ... here be dragons.
+
+QTableWidget won't allow you to select line to copy.
+
+Instrument attributes only initiates correctly on start, unless I reinit the class after UI load.
+
+
+List to do ...
+
+DataTranslator
+
+MetaDataContructor
+
+MetaDataDeconstructor.
+
+Importer
+
+
+When get run getData we copy the data blocks sent from the controller to  :  RawDataBlocks and set
+
+		RawDataBlocksAvailable = True
+		DataSource = ‘instrument’
+
+Once we run the the RawDataBlocks through the data translator successfully we set  : RawData
+
+		RawDataBlocksAvailable = False
+		RawDataSaved = False

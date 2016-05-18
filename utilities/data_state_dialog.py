@@ -22,13 +22,11 @@ from PyQt4 import QtGui
 
 def data_state_check(data_store):
 
-    # TODO move this to it's own module.
-
     '''
     :return: True is it's safe to destroy any unsaved data, else False.
     '''
 
-    if data_store.data_state() is False:
+    if data_store.data_state()[0] is False:
 
         message = ('WARNING:  ' + data_store.data_state()[1] +
                    '\n\nAre you sure you want to continue this will ' + ' overwrite the unsaved data?')

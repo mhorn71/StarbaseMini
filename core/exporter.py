@@ -23,6 +23,7 @@ import logging
 
 from PyQt4 import QtGui
 
+# TODO enable ability to export both Raw and Processed Data.
 
 def exporter(metadata_creator, data_store, user_home, data_home):
 

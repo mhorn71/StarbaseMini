@@ -1,9 +1,41 @@
-Version : 2.0.5
+Version : 3.0.0
 ===============
 
 Fixed -  Issue where popups didn't look consistent across platforms moved to html markup.
 
+Fixed -  Magnetometer setGain sent parameter in the wrong format.
+
+Fixed -  Issue where invalid instrument XML could be reported as validated.
+
+Fixed -  Issue where by user supplied instrument xml wasn't being loaded.
+
+Fixed -  Issue where by if a file was exported and replaced an already existing file the data was appended instead of over written.
+
 Update -  Added status message saying 'No upgrade currently available.' if upgrade check is enabled.
+
+Update -  Added the ability to add a file called user_home.txt in the application root if we're unable to determine users home folder.
+
+Update -  Added Open to File menu, used to import Starbase compatible CSV files.
+
+Update -  Added Save Raw Data and Save Processed Data options to File menu.
+
+Update -  Added Tools menu with one command Segment Data with two submenus raw and process with Day and Week options.
+
+Update -  Added TrafficDataType to all instrument xml.
+
+Update -  Completely rewritten Main routine with extra xml checking.
+
+Update -  Ui widget item focus changes to next logical step.
+
+Update -  Execute button colour changes depending on state.
+
+Update -  Moved Staribus to Starinet converter to instrument attributes.
+
+Update -  Allowed CSV file imports as long as data translator can be loaded.
+
+Update -  Moved data state dialog to utilities module.
+
+Update -  Added metadata viewer with the ability to add observation notes.
 
 ===============
 Version : 2.0.4
