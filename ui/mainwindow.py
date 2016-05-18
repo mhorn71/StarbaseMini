@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Mon May 16 14:11:39 2016
+# Created: Wed May 18 14:16:09 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -143,7 +143,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, "")
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
         self.UserInst.setObjectName("UserInst")
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 2, 124, 443))
@@ -369,6 +369,10 @@ class Ui_MainWindow(object):
         self.menuTools.setObjectName("menuTools")
         self.menuSegment_Data = QtGui.QMenu(self.menuTools)
         self.menuSegment_Data.setObjectName("menuSegment_Data")
+        self.menuRawData = QtGui.QMenu(self.menuSegment_Data)
+        self.menuRawData.setObjectName("menuRawData")
+        self.menuProcessedData = QtGui.QMenu(self.menuSegment_Data)
+        self.menuProcessedData.setObjectName("menuProcessedData")
         MainWindow.setMenuBar(self.menubar)
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
@@ -404,6 +408,14 @@ class Ui_MainWindow(object):
         self.actionWeek.setObjectName("actionWeek")
         self.actionMetadata = QtGui.QAction(MainWindow)
         self.actionMetadata.setObjectName("actionMetadata")
+        self.SegmentRawDataDay = QtGui.QAction(MainWindow)
+        self.SegmentRawDataDay.setObjectName("SegmentRawDataDay")
+        self.SegmentRawDataWeek = QtGui.QAction(MainWindow)
+        self.SegmentRawDataWeek.setObjectName("SegmentRawDataWeek")
+        self.SegmentProcessDataDay = QtGui.QAction(MainWindow)
+        self.SegmentProcessDataDay.setObjectName("SegmentProcessDataDay")
+        self.SegmentProcessDataWeek = QtGui.QAction(MainWindow)
+        self.SegmentProcessDataWeek.setObjectName("SegmentProcessDataWeek")
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave_RawData)
         self.menuFile.addAction(self.actionSave_Processed_Data)
@@ -412,8 +424,12 @@ class Ui_MainWindow(object):
         self.menuAbout.addAction(self.actionAbout)
         self.menuAbout.addAction(self.actionReleaseNotes)
         self.menuEdit.addAction(self.actionInstrument_Attrib)
-        self.menuSegment_Data.addAction(self.actionDay)
-        self.menuSegment_Data.addAction(self.actionWeek)
+        self.menuRawData.addAction(self.SegmentRawDataDay)
+        self.menuRawData.addAction(self.SegmentRawDataWeek)
+        self.menuProcessedData.addAction(self.SegmentProcessDataDay)
+        self.menuProcessedData.addAction(self.SegmentProcessDataWeek)
+        self.menuSegment_Data.addAction(self.menuRawData.menuAction())
+        self.menuSegment_Data.addAction(self.menuProcessedData.menuAction())
         self.menuTools.addAction(self.menuSegment_Data.menuAction())
         self.menuTools.addAction(self.actionMetadata)
         self.menubar.addAction(self.menuFile.menuAction())
@@ -452,10 +468,12 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Chart", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuEdit.setTitle(QtGui.QApplication.translate("MainWindow", " Edit", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuEdit.setTitle(QtGui.QApplication.translate("MainWindow", "Instrument Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.menuInstrument.setTitle(QtGui.QApplication.translate("MainWindow", "Instruments", None, QtGui.QApplication.UnicodeUTF8))
         self.menuTools.setTitle(QtGui.QApplication.translate("MainWindow", "Tools", None, QtGui.QApplication.UnicodeUTF8))
         self.menuSegment_Data.setTitle(QtGui.QApplication.translate("MainWindow", "Segment Data", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuRawData.setTitle(QtGui.QApplication.translate("MainWindow", "RawData", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuProcessedData.setTitle(QtGui.QApplication.translate("MainWindow", "ProcessedData", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "Configuration", None, QtGui.QApplication.UnicodeUTF8))
         self.actionControllerEditor.setText(QtGui.QApplication.translate("MainWindow", "Futurlec Controller", None, QtGui.QApplication.UnicodeUTF8))
@@ -473,4 +491,8 @@ class Ui_MainWindow(object):
         self.actionDay.setText(QtGui.QApplication.translate("MainWindow", "Day", None, QtGui.QApplication.UnicodeUTF8))
         self.actionWeek.setText(QtGui.QApplication.translate("MainWindow", "Week", None, QtGui.QApplication.UnicodeUTF8))
         self.actionMetadata.setText(QtGui.QApplication.translate("MainWindow", "Metadata", None, QtGui.QApplication.UnicodeUTF8))
+        self.SegmentRawDataDay.setText(QtGui.QApplication.translate("MainWindow", "Day", None, QtGui.QApplication.UnicodeUTF8))
+        self.SegmentRawDataWeek.setText(QtGui.QApplication.translate("MainWindow", "Week", None, QtGui.QApplication.UnicodeUTF8))
+        self.SegmentProcessDataDay.setText(QtGui.QApplication.translate("MainWindow", "Day", None, QtGui.QApplication.UnicodeUTF8))
+        self.SegmentProcessDataWeek.setText(QtGui.QApplication.translate("MainWindow", "Week", None, QtGui.QApplication.UnicodeUTF8))
 

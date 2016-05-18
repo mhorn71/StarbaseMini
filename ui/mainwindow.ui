@@ -279,8 +279,8 @@ QPushButton[enabled=&quot;false&quot;]{
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>129</width>
+             <height>521</height>
             </rect>
            </property>
            <attribute name="label">
@@ -729,7 +729,7 @@ QPushButton[enabled=&quot;false&quot;]{
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string> Edit</string>
+     <string>Instrument Attributes</string>
     </property>
     <addaction name="actionInstrument_Attrib"/>
    </widget>
@@ -746,8 +746,22 @@ QPushButton[enabled=&quot;false&quot;]{
      <property name="title">
       <string>Segment Data</string>
      </property>
-     <addaction name="actionDay"/>
-     <addaction name="actionWeek"/>
+     <widget class="QMenu" name="menuRawData">
+      <property name="title">
+       <string>RawData</string>
+      </property>
+      <addaction name="SegmentRawDataDay"/>
+      <addaction name="SegmentRawDataWeek"/>
+     </widget>
+     <widget class="QMenu" name="menuProcessedData">
+      <property name="title">
+       <string>ProcessedData</string>
+      </property>
+      <addaction name="SegmentProcessDataDay"/>
+      <addaction name="SegmentProcessDataWeek"/>
+     </widget>
+     <addaction name="menuRawData"/>
+     <addaction name="menuProcessedData"/>
     </widget>
     <addaction name="menuSegment_Data"/>
     <addaction name="actionMetadata"/>
@@ -841,6 +855,26 @@ QPushButton[enabled=&quot;false&quot;]{
   <action name="actionMetadata">
    <property name="text">
     <string>Metadata</string>
+   </property>
+  </action>
+  <action name="SegmentRawDataDay">
+   <property name="text">
+    <string>Day</string>
+   </property>
+  </action>
+  <action name="SegmentRawDataWeek">
+   <property name="text">
+    <string>Week</string>
+   </property>
+  </action>
+  <action name="SegmentProcessDataDay">
+   <property name="text">
+    <string>Day</string>
+   </property>
+  </action>
+  <action name="SegmentProcessDataWeek">
+   <property name="text">
+    <string>Week</string>
    </property>
   </action>
  </widget>
