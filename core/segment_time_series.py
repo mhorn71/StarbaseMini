@@ -21,7 +21,6 @@ import os
 import re
 import logging
 
-# TODO Probably a complete rewrite.
 
 class SegmentTimeSeries:
     def __init__(self):
