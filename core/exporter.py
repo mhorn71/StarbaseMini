@@ -29,7 +29,7 @@ def exporter(metadata_creator, data_store, user_home, data_home):
     logger = logging.getLogger('core.exporter')
 
     # Default filename
-    filename = 'RawData_' + datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = 'RawData_' + datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
 
     # Check if instrument data path exists and if so open folder to choose file.
     if os.path.isdir(data_home):
