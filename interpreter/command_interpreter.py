@@ -25,6 +25,7 @@ from PyQt4 import QtGui
 import core
 import dao
 import datatypes
+import utilities
 
 class CommandInterpreter():
     def __init__(self, data_store):
@@ -118,15 +119,11 @@ class CommandInterpreter():
         # Set starinet_address and starinet_port to None these parameter will get set depending on supplied
         # configuration
 
-        starinet_address = None
-
-        starinet_port = None
-
         if self.instrument.instrument_staribus_address != '000':
 
             logger.debug('Instrument appears to be Staribus')
 
-            if self.application_configuration.get('Staribus2Starinet', 'active') == 'False':
+            if self.instrument.instrument_staribus2Starinet == 'False':
 
                 logger.info('Setting stream to Staribus')
 
@@ -138,22 +135,14 @@ class CommandInterpreter():
 
                 stream = 'Starinet'
 
-                starinet_address = self.application_configuration.get('Staribus2Starinet', 'address')
-
-                starinet_port = self.application_configuration.get('Staribus2Starinet', 'starinet_port')
-
                 logger.debug('Routing staribus packets to IP : %s Port : %s' %
-                             (self.application_configuration.get('Staribus2Starinet', 'address'),
-                              self.application_configuration.get('Staribus2Starinet', 'starinet_port')))
+                             (self.instrument.instrument_starinet_address,
+                              self.instrument.instrument_starinet_port))
         else:
 
             logger.debug('Setting stream to Starinet')
 
             stream = 'Starinet'
-
-            starinet_address = self.instrument.instrument_starinet_address
-
-            starinet_port = self.instrument.instrument_starinet_port
 
             logger.debug('Starinet address and port : %s:%s' % (self.instrument.instrument_starinet_address,
                                                                 self.instrument.instrument_starinet_port))
@@ -163,7 +152,9 @@ class CommandInterpreter():
             self.dao_processor.start(self.instrument.instrument_staribus_port,
                                      self.instrument.instrument_staribus_baudrate,
                                      self.instrument.instrument_staribus_timeout,
-                                     starinet_address, starinet_port, stream, self.instrument.instrument_staribus_type)
+                                     self.instrument.instrument_starinet_address,
+                                     self.instrument.instrument_starinet_port,
+                                     stream, self.instrument.instrument_staribus_type)
         except IOError as msg:
 
             logger.critical('Unable to initiate dao.DaoProcessor : %s' % str(msg))
@@ -486,20 +477,6 @@ class CommandInterpreter():
 
         # Ok if we got this far then we must at least have some data so let's try to run it.
 
-        # Next check to see if we have Staribus instrument with Staribus2Starinet converter active, and if so change
-        # address to 000
-
-        if self.application_configuration.get('Staribus2Starinet', 'active') == 'True' and \
-                self.instrument.instrument_staribus_address != '000':
-
-            logger.debug('Staribus to Starinet active setting instrument address to 000')
-
-            instrument_address = '000'
-
-        else:
-
-            instrument_address = self.instrument.instrument_staribus_address
-
         # Now we find out what type of command we're running, single, blocked or stepped.
 
         # command_list : index - ( ident : 0, base : 1 , code : 2, variant : 3, send_to_port : 4, blocked_data : 5,
@@ -510,9 +487,9 @@ class CommandInterpreter():
 
             if command_list[4] == 'True':
 
-                response = self.single_command(instrument_address, command_list[0], command_list[1], command_list[2],
-                                               command_list[3], command_list[8], command_list[9], command_list[11],
-                                               command_list[10])
+                response = self.single_command(self.instrument.instrument_staribus_address, command_list[0],
+                                               command_list[1], command_list[2], command_list[3], command_list[8],
+                                               command_list[9], command_list[11], command_list[10])
 
             else:
 
@@ -522,7 +499,8 @@ class CommandInterpreter():
 
         elif command_list[5] is not None:
 
-            response = self.blocked_command(instrument_address, command_list[0], command_list[1], command_list[5])
+            response = self.blocked_command(self.instrument.instrument_staribus_address, command_list[0],
+                                            command_list[1], command_list[5])
 
         elif command_list[6] is not None:
 
@@ -813,7 +791,7 @@ class CommandInterpreter():
 
         # Double check the any previous RawData has been saved as this will destroy it otherwise.
 
-        if not self.data_state():
+        if not utilities.data_state_check(self.data_store):
 
             return ident, 'ABORT', None, None
 
@@ -825,9 +803,13 @@ class CommandInterpreter():
 
         if not self.data_store.default_state:
 
-            logger.critical('Uable to reset data store.')
+            logger.critical('Unable to reset data store.')
 
             return ident, 'PREMATURE_TERMINATION', 'Unable to reset data store.', None
+
+        # Tell the data store the number of channels.
+
+        self.data_store.channel_count = self.instrument.instrument_number_of_channels
 
         # Setup progress dialog.
 
@@ -895,7 +877,7 @@ class CommandInterpreter():
                 # set the data source to instrument so we know where it came from and can run datatranslators etc in the
                 # command interpreter.
 
-                self.data_store.DataSource = 'instrument'
+                self.data_store.DataSource = 'Controller'
 
             counter -= 1
 
@@ -933,31 +915,3 @@ class CommandInterpreter():
                     response = ident, 'PREMATURE_TERMINATION', 'Critical error has occurred please check log file.', None
 
         return response
-
-    def data_state(self):
-        '''
-        :return: True is it's safe to destroy any unsaved data, else False.
-        '''
-
-        if self.data_store.RawDataSaved is False and len(self.data_store.RawDataBlocks) > 0:
-
-            message = 'WARNING:  You have unsaved data.\n\nAre you sure you want to continue this will ' + \
-                      ' overwrite the unsaved data?'
-            header = ''
-
-            result = QtGui.QMessageBox.question(None,
-                                                header,
-                                                message,
-                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-
-            if result == QtGui.QMessageBox.Yes:
-
-                return True
-
-            else:
-
-                return False
-
-        else:
-
-            return True
