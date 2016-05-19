@@ -23,16 +23,35 @@ import logging
 
 from PyQt4 import QtGui
 
-# TODO enable ability to export both Raw and Processed Data.
 
-def exporter(metadata_creator, data_store, user_home, data_home):
+def exporter(type, metadata_creator, data_store, user_home, data_home):
 
     logger = logging.getLogger('core.exporter')
 
     # Default filename
-    filename = 'RawData_' + datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
+
+    if type == 'processed':
+
+        filename = 'ProcessedData_' + datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
+
+        data_source = data_store.ProcessedData
+
+        if len(data_source) == 0:
+
+            return 'PREMATURE_TERMINATION', 'No processed data to export.'
+
+    else:
+
+        filename = 'RawData_' + datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
+
+        data_source = data_store.RawData
+
+        if len(data_source) == 0:
+
+            return 'PREMATURE_TERMINATION', 'No raw data to export.'
 
     # Check if instrument data path exists and if so open folder to choose file.
+
     if os.path.isdir(data_home):
 
         data_file = data_home + os.path.sep + filename
@@ -41,10 +60,11 @@ def exporter(metadata_creator, data_store, user_home, data_home):
 
         data_file = user_home + os.path.sep + filename
 
-    fname = QtGui.QFileDialog.getSaveFileName(None, 'Export File', data_file, "CSV files (*.csv)")
+    file_name = QtGui.QFileDialog.getSaveFileName(None, 'Export File', data_file, "CSV files (*.csv)")
 
     # Return ABORT if no File selected.
-    if fname == '':
+
+    if file_name == '':
 
         return 'ABORT', None
 
@@ -54,7 +74,7 @@ def exporter(metadata_creator, data_store, user_home, data_home):
 
         # for each list in data_store.RawData
 
-        for lista in data_store.RawData:
+        for lista in data_source:
 
             # Convert from numpy array to normal list
 
@@ -84,13 +104,13 @@ def exporter(metadata_creator, data_store, user_home, data_home):
 
             try:
 
-                file = open(fname, 'w')
+                file = open(file_name, 'w')
 
             except IOError as msg:
 
                 logger.critical(str(msg))
 
-                return 'PREMATURE_TERMINATION', 'Unable to create file'
+                return 'PREMATURE_TERMINATION', ('Unable to create file : %s' % file_name)
 
             else:
 
@@ -124,6 +144,18 @@ def exporter(metadata_creator, data_store, user_home, data_home):
 
             file.close()
 
-            logger.info('File Exported : %s' % fname)
+            logger.info('File Exported : %s' % file_name)
 
-            return 'SUCCESS', fname
+            if type == 'processed':
+
+                data_store.ProcessedDataSaved = True
+
+                logger.info('ProcessDataSaved set to True')
+
+            else:
+
+                data_store.RawDataSaved = True
+
+                logger.info('RawDataSaved set to True')
+
+            return 'SUCCESS', file_name

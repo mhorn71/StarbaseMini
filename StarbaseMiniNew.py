@@ -238,7 +238,7 @@ class Main(QtGui.QMainWindow):
 
         self.ui.statusMessage.setColumnWidth(0, 115)  # Datetime Column
 
-        self.ui.statusMessage.setColumnWidth(1, 110)  # Ident Column
+        self.ui.statusMessage.setColumnWidth(1, 175)  # Ident Column
 
         self.ui.statusMessage.setColumnWidth(2, 182)  # Status Column
 
@@ -497,7 +497,7 @@ class Main(QtGui.QMainWindow):
 
         # TODO Add logger calls
 
-        # TODO change data_store checks to data_store.data_state
+        # TODO change data_store checks to data_store.data_state and use utilities.data_state_dialog.
 
         print("Datastore length : %s" % str(len(self.data_store.RawData)))
         print("Datastore RawDataSaved : %s" % str(self.data_store.RawDataSaved))
@@ -1364,10 +1364,11 @@ class Main(QtGui.QMainWindow):
         # If interpreter_response data store parameter is not None then we'll send the status back after we attempt
         # to process the data otherwise we call statusMessage now.
 
-
         if self.data_store.RawDataBlocksAvailable:  # Do we have data to translate?  True or False
 
             # Create the data store arrays
+
+            # TODO move data store create arrays to data translator.
 
             if self.data_store.create_arrays():
 
@@ -1398,7 +1399,9 @@ class Main(QtGui.QMainWindow):
     def open_csv_file(self):
 
         if not utilities.data_state_check(self.data_store):
+
             self.status_message('openCsv', 'ABORT', self.data_store.data_state()[1], None)
+
         else:
 
             # Reset the data store.
@@ -1417,7 +1420,7 @@ class Main(QtGui.QMainWindow):
 
                 # TODO remove self.data_store.print_state()
 
-                # self.data_store.print_state()
+                self.data_store.print_state()
 
                 # if response[0] starts with success we see if we can run the metadata deconstructor.
 
@@ -1432,6 +1435,8 @@ class Main(QtGui.QMainWindow):
                         self.metadata_deconstructor.meta_parser(self.data_store)
 
                     # Create the data store arrays
+
+                    # TODO move data store create arrays to csv_parser
 
                     if self.data_store.create_arrays():
 
@@ -1453,39 +1458,17 @@ class Main(QtGui.QMainWindow):
 
     def save_data(self, type):
 
-        if type == 'raw':
+        save_data_identifity = 'save' + type.title() + 'Data'
 
-            if len(self.data_store.RawData) == 0:
+        response = core.exporter(type, self.metadata_creator, self.data_store,
+                                 self.application_configuration.user_home,
+                                 self.application_configuration.get('Application', 'instrument_data_path'))
 
-                self.status_message('saveRawData', 'PREMATURE_TERMINATION', 'No data found!', None)
-
-            else:
-
-                response = core.exporter(self.metadata_creator, self.data_store,
-                                         self.application_configuration.user_home,
-                                         self.application_configuration.get('Application', 'instrument_data_path'))
-
-                if response[0].startswith('SUCCESS'):
-                    self.data_store.RawDataSaved = True
-
-                self.status_message('saveRawData', response[0], response[1], None)
-
-        elif type == 'processed':
-
-            # TODO need to write ProcessedData export routine will also require small rewrite of core.exporter
-
-            if len(self.data_store.ProcessedData) == 0:
-
-                self.status_message('saveProcessedData', 'PREMATURE_TERMINATION', 'No data found!', None)
-
-            else:
-
-                self.status_message('saveProcessedData', 'PREMATURE_TERMINATION', 'Command not yet implemented.')
-
+        self.status_message(save_data_identifity, response[0], response[1], None)
 
     def segment_data(self, period, type):
 
-        segment_data_identifity = 'segmentData.' + str(period)
+        segment_data_identifity = 'segment' + type.title() + 'Data(' + str(period) + ')'
 
         response = self.segmenter.segment_timeseries(type, period)
 
@@ -1567,7 +1550,7 @@ class Main(QtGui.QMainWindow):
 
         logger.info('Calling configuration tool.')
 
-        self.configuration_tool_dialog.exec()
+        self.configuration_tool_dialog.exec_()
 
         self.status_message('configuration', self.configuration_tool_dialog.response_message[0],
                             self.configuration_tool_dialog.response_message[1], None)
@@ -1605,7 +1588,7 @@ class Main(QtGui.QMainWindow):
                                               self.application_configuration.get('Application', 'instrument_identifier'))],
                                               self.application_configuration.user_home)
 
-        self.instrument_attributes_dialog.exec()
+        self.instrument_attributes_dialog.exec_()
 
         self.status_message('instrumentAttributes', self.instrument_attributes_dialog.response_message[0],
                             self.instrument_attributes_dialog.response_message[1], None)
@@ -1617,6 +1600,8 @@ class Main(QtGui.QMainWindow):
             self.find_instrument_names_filenames_xml()
 
     def closeEvent(self, event):
+
+        # TODO change this to new saved_data_state method from data_store and use utilities.data_state_dialog.
 
         if self.saved_data_state is False:
 
