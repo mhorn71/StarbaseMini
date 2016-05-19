@@ -497,12 +497,10 @@ class Main(QtGui.QMainWindow):
 
         # TODO Add logger calls
 
-        # TODO change data_store checks to data_store.data_state and use utilities.data_state_dialog.
-
         print("Datastore length : %s" % str(len(self.data_store.RawData)))
         print("Datastore RawDataSaved : %s" % str(self.data_store.RawDataSaved))
 
-        if len(self.data_store.RawData) > 0 and self.data_store.RawDataSaved is False:
+        if self.data_store.data_state()[0] is False:
 
             message = 'WARNING:  You have unsaved data.\n\nIf you change the instrument, ' + \
                       'you will be able to save the unsaved data!\n\nDo you want to change instruments?'
@@ -1398,7 +1396,7 @@ class Main(QtGui.QMainWindow):
 
     def open_csv_file(self):
 
-        if not utilities.data_state_check(self.data_store):
+        if not utilities.data_state_check(self.data_store, 'standard'):
 
             self.status_message('openCsv', 'ABORT', self.data_store.data_state()[1], None)
 
@@ -1593,31 +1591,17 @@ class Main(QtGui.QMainWindow):
         self.status_message('instrumentAttributes', self.instrument_attributes_dialog.response_message[0],
                             self.instrument_attributes_dialog.response_message[1], None)
 
-        #  Attempt at allowing configuration changes without requiring restart.
-
         if self.instrument_attributes_dialog.response_message[0] == 'SUCCESS':
 
             self.find_instrument_names_filenames_xml()
 
     def closeEvent(self, event):
 
-        # TODO change this to new saved_data_state method from data_store and use utilities.data_state_dialog.
+        if not utilities.data_state_check(self.data_store, 'exit'):
 
-        if self.saved_data_state is False:
-
-            message = "<br><p align='center'>Are you sure you want to exit?</p>"
+            event.ignore()
 
         else:
-
-            message = "<br><p align='center'>WARNING:  You have unsaved data.\nAre you sure you want to exit?</p>"
-
-        result = QtGui.QMessageBox.question(None,
-                                            "Confirm Exit...",
-                                            message,
-                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        event.ignore()
-
-        if result == QtGui.QMessageBox.Yes:
 
             event.accept()
 

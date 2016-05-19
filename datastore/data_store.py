@@ -218,6 +218,8 @@ class DataStore(object):
 
                 self.RawData = np.array(self.block_parser.parsed_data_list)
 
+                print(self.RawData)
+
                 return True
 
             else:

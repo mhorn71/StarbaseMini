@@ -791,7 +791,7 @@ class CommandInterpreter():
 
         # Double check the any previous RawData has been saved as this will destroy it otherwise.
 
-        if not utilities.data_state_check(self.data_store):
+        if not utilities.data_state_check(self.data_store, 'standard'):
 
             return ident, 'ABORT', None, None
 
