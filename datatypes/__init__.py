@@ -1,3 +1,3 @@
 from datatypes.DataTypeConverter import DataTypeConverter
 from datatypes.DataTypeToInteger import DataTypeToInteger
-from datatypes.DataTypeFromInt import DataTypeFromInteger
+from datatypes.DataTypeFromInteger import DataTypeFromInteger
