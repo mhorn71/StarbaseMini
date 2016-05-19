@@ -1,0 +1,46 @@
+Useful links:
+
+http://stackoverflow.com/questions/19661198/matplotlib-plot-numpy-arrays-with-none-as-values
+
+http://stackoverflow.com/questions/2461484/idiomatic-way-to-take-groups-of-n-items-from-a-list-in-python
+
+
+Running average
+
+You can use any number of points from 2 up, you drop one each time and add the newest as you increment.
+
+X(i)= (X(i-3)+X(i-2)+X(i-1)+X(i))/4
+
+---------------------------------------------
+
+Weighted running average
+
+Gives more weight to newest samples
+
+X(i)= (0.3*X(i-3)+0.5*X(i-2)+0.7*X(i-1)+X(i))/4
+
+---------------------------------------------
+
+Non-linear static remover
+
+Takes 4 samples and only uses the lowest value...assumes others contaminated by static crashes on VLF .....avoids the
+error of averaging the crashes which are not required signal, using averaging or "time constant"
+
+
+X(4*i) = MIN(X(i)..X(i+4))
+
+---------------------------------------------
+
+Peak extractor
+
+Bit dubious needs playing with picks out sudden changes from the filtered average,may need a lot of samples in the
+running average to work well. "predicts" next value from average of old data and shows difference to predicted value.
+Might run better with a reverse weighted average i.e giving less weight to most recent sample (cos it might be start of
+a flare)
+
+
+X(i) = X(i)-running average
+
+
+Some of these need careful programming.....if you have N samples, you have to be careful where you start filtering or
+you get out of bounds array errors. i.e for i = 3 to N for running average above.
