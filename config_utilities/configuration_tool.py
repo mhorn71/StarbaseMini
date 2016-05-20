@@ -135,6 +135,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Setup log level
 
+        self.loglevelComboBox.clear()
         self.loglevelComboBox.addItems(self.log_levels)
         self.loglevelComboBox.setCurrentIndex(self.log_levels.index(self.application_conf.get('logger_root', 'level')))
 
@@ -174,12 +175,14 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
         # Setup chart legend, font and column combo boxes
 
+        self.legendLocationComboBox.clear()
         self.legendLocationComboBox.addItems(self.legend_loc)
         self.legendLocationComboBox.setCurrentIndex(self.legend_loc.index(
             self.application_conf.get('Legend', 'location')))
 
         self.LegendColSpinBox.setValue(int(self.application_conf.get('Legend', 'columns')))
 
+        self.LegendFontComboBox.clear()
         self.LegendFontComboBox.addItems(self.legend_font)
         self.LegendFontComboBox.setCurrentIndex(self.legend_font.index(self.application_conf.get('Legend', 'font')))
 
