@@ -67,9 +67,14 @@ QPushButton#executeButton:disabled {
             background-color: #b6c3d1 ;
             }
 
-QPushButton#executeButton:pressed {
-            background-color: #000000 ;
+QPushButton#executeButton:hover {
+            background-color: #b9d988 ;
             }
+
+QPushButton#executeButton:pressed {
+            background-color: #a2cc61 ;
+            }
+
 
 QPushButton#executeButton {
         margin-left: 6px;
