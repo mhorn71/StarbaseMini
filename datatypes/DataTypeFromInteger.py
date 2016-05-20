@@ -18,7 +18,7 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 import re
 
-# TODO DataTypeDictionary  requires a lot more decent logic testing.
+# TODO DataTypeDictionary requires a lot more decent logic testing.
 
 def DataTypeFromInteger(datatype, data):
 
