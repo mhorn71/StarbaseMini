@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed May 18 14:16:09 2016
+# Created: Fri May 20 11:37:42 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -130,20 +130,14 @@ class Ui_MainWindow(object):
         self.choicesComboBox.setObjectName("choicesComboBox")
         self.gridLayout.addWidget(self.choicesComboBox, 6, 0, 1, 1)
         self.executeButton = QtGui.QPushButton(self.layoutWidget1)
-        self.executeButton.setStyleSheet("QPushButton[enabled=\"true\"] {\n"
-"                                                            background-color : #c4df9b\n"
-"                                                            }\n"
-"\n"
-"QPushButton[enabled=\"false\"]{\n"
-"                                                            background-color : #f6989d\n"
-"                                                            }")
+        self.executeButton.setStyleSheet("")
         self.executeButton.setObjectName("executeButton")
         self.gridLayout.addWidget(self.executeButton, 7, 0, 1, 1)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, "")
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.UserInst.setObjectName("UserInst")
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 2, 124, 443))
@@ -373,6 +367,8 @@ class Ui_MainWindow(object):
         self.menuRawData.setObjectName("menuRawData")
         self.menuProcessedData = QtGui.QMenu(self.menuSegment_Data)
         self.menuProcessedData.setObjectName("menuProcessedData")
+        self.menuData_Filters = QtGui.QMenu(self.menuTools)
+        self.menuData_Filters.setObjectName("menuData_Filters")
         MainWindow.setMenuBar(self.menubar)
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
@@ -416,6 +412,14 @@ class Ui_MainWindow(object):
         self.SegmentProcessDataDay.setObjectName("SegmentProcessDataDay")
         self.SegmentProcessDataWeek = QtGui.QAction(MainWindow)
         self.SegmentProcessDataWeek.setObjectName("SegmentProcessDataWeek")
+        self.actionNon_Linear_Static_Remover = QtGui.QAction(MainWindow)
+        self.actionNon_Linear_Static_Remover.setObjectName("actionNon_Linear_Static_Remover")
+        self.actionPeak_Extractor = QtGui.QAction(MainWindow)
+        self.actionPeak_Extractor.setObjectName("actionPeak_Extractor")
+        self.actionRunning_Average = QtGui.QAction(MainWindow)
+        self.actionRunning_Average.setObjectName("actionRunning_Average")
+        self.actionWeighted_Running_Average = QtGui.QAction(MainWindow)
+        self.actionWeighted_Running_Average.setObjectName("actionWeighted_Running_Average")
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave_RawData)
         self.menuFile.addAction(self.actionSave_Processed_Data)
@@ -430,8 +434,13 @@ class Ui_MainWindow(object):
         self.menuProcessedData.addAction(self.SegmentProcessDataWeek)
         self.menuSegment_Data.addAction(self.menuRawData.menuAction())
         self.menuSegment_Data.addAction(self.menuProcessedData.menuAction())
-        self.menuTools.addAction(self.menuSegment_Data.menuAction())
+        self.menuData_Filters.addAction(self.actionNon_Linear_Static_Remover)
+        self.menuData_Filters.addAction(self.actionPeak_Extractor)
+        self.menuData_Filters.addAction(self.actionRunning_Average)
+        self.menuData_Filters.addAction(self.actionWeighted_Running_Average)
+        self.menuTools.addAction(self.menuData_Filters.menuAction())
         self.menuTools.addAction(self.actionMetadata)
+        self.menuTools.addAction(self.menuSegment_Data.menuAction())
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuInstrument.menuAction())
@@ -474,8 +483,9 @@ class Ui_MainWindow(object):
         self.menuSegment_Data.setTitle(QtGui.QApplication.translate("MainWindow", "Segment Data", None, QtGui.QApplication.UnicodeUTF8))
         self.menuRawData.setTitle(QtGui.QApplication.translate("MainWindow", "RawData", None, QtGui.QApplication.UnicodeUTF8))
         self.menuProcessedData.setTitle(QtGui.QApplication.translate("MainWindow", "ProcessedData", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuData_Filters.setTitle(QtGui.QApplication.translate("MainWindow", "Data Filters", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "Configuration", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "General Configuration", None, QtGui.QApplication.UnicodeUTF8))
         self.actionControllerEditor.setText(QtGui.QApplication.translate("MainWindow", "Futurlec Controller", None, QtGui.QApplication.UnicodeUTF8))
         self.actionObserveratory.setText(QtGui.QApplication.translate("MainWindow", "Observeratory", None, QtGui.QApplication.UnicodeUTF8))
         self.actionManual.setText(QtGui.QApplication.translate("MainWindow", "Manual", None, QtGui.QApplication.UnicodeUTF8))
@@ -485,9 +495,9 @@ class Ui_MainWindow(object):
         self.actionInstrument_Attrib.setText(QtGui.QApplication.translate("MainWindow", "Instrument Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReleaseNotes.setText(QtGui.QApplication.translate("MainWindow", "ReleaseNotes", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Open", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSave_RawData.setText(QtGui.QApplication.translate("MainWindow", "Save Raw Data", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSave_Processed_Data.setText(QtGui.QApplication.translate("MainWindow", "Save Processed Data", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Import", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSave_RawData.setText(QtGui.QApplication.translate("MainWindow", "Export Raw Data", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSave_Processed_Data.setText(QtGui.QApplication.translate("MainWindow", "Export Processed Data", None, QtGui.QApplication.UnicodeUTF8))
         self.actionDay.setText(QtGui.QApplication.translate("MainWindow", "Day", None, QtGui.QApplication.UnicodeUTF8))
         self.actionWeek.setText(QtGui.QApplication.translate("MainWindow", "Week", None, QtGui.QApplication.UnicodeUTF8))
         self.actionMetadata.setText(QtGui.QApplication.translate("MainWindow", "Metadata", None, QtGui.QApplication.UnicodeUTF8))
@@ -495,4 +505,8 @@ class Ui_MainWindow(object):
         self.SegmentRawDataWeek.setText(QtGui.QApplication.translate("MainWindow", "Week", None, QtGui.QApplication.UnicodeUTF8))
         self.SegmentProcessDataDay.setText(QtGui.QApplication.translate("MainWindow", "Day", None, QtGui.QApplication.UnicodeUTF8))
         self.SegmentProcessDataWeek.setText(QtGui.QApplication.translate("MainWindow", "Week", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNon_Linear_Static_Remover.setText(QtGui.QApplication.translate("MainWindow", "Non Linear Static Remover", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionPeak_Extractor.setText(QtGui.QApplication.translate("MainWindow", "Peak Extractor", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionRunning_Average.setText(QtGui.QApplication.translate("MainWindow", "Running Average", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionWeighted_Running_Average.setText(QtGui.QApplication.translate("MainWindow", "Weighted Running Average", None, QtGui.QApplication.UnicodeUTF8))
 

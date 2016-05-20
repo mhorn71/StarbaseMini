@@ -245,13 +245,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
              <item row="7" column="0">
               <widget class="QPushButton" name="executeButton">
                <property name="styleSheet">
-                <string notr="true">QPushButton[enabled=&quot;true&quot;] {
-															background-color : #c4df9b
-															}
-
-QPushButton[enabled=&quot;false&quot;]{
-															background-color : #f6989d
-															}</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Execute</string>
@@ -279,8 +273,8 @@ QPushButton[enabled=&quot;false&quot;]{
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>129</width>
-             <height>521</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <attribute name="label">
@@ -763,8 +757,18 @@ QPushButton[enabled=&quot;false&quot;]{
      <addaction name="menuRawData"/>
      <addaction name="menuProcessedData"/>
     </widget>
-    <addaction name="menuSegment_Data"/>
+    <widget class="QMenu" name="menuData_Filters">
+     <property name="title">
+      <string>Data Filters</string>
+     </property>
+     <addaction name="actionNon_Linear_Static_Remover"/>
+     <addaction name="actionPeak_Extractor"/>
+     <addaction name="actionRunning_Average"/>
+     <addaction name="actionWeighted_Running_Average"/>
+    </widget>
+    <addaction name="menuData_Filters"/>
     <addaction name="actionMetadata"/>
+    <addaction name="menuSegment_Data"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -779,7 +783,7 @@ QPushButton[enabled=&quot;false&quot;]{
   </action>
   <action name="actionConfiguration">
    <property name="text">
-    <string>Configuration</string>
+    <string>General Configuration</string>
    </property>
   </action>
   <action name="actionControllerEditor">
@@ -829,17 +833,17 @@ QPushButton[enabled=&quot;false&quot;]{
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Import</string>
    </property>
   </action>
   <action name="actionSave_RawData">
    <property name="text">
-    <string>Save Raw Data</string>
+    <string>Export Raw Data</string>
    </property>
   </action>
   <action name="actionSave_Processed_Data">
    <property name="text">
-    <string>Save Processed Data</string>
+    <string>Export Processed Data</string>
    </property>
   </action>
   <action name="actionDay">
@@ -875,6 +879,26 @@ QPushButton[enabled=&quot;false&quot;]{
   <action name="SegmentProcessDataWeek">
    <property name="text">
     <string>Week</string>
+   </property>
+  </action>
+  <action name="actionNon_Linear_Static_Remover">
+   <property name="text">
+    <string>Non Linear Static Remover</string>
+   </property>
+  </action>
+  <action name="actionPeak_Extractor">
+   <property name="text">
+    <string>Peak Extractor</string>
+   </property>
+  </action>
+  <action name="actionRunning_Average">
+   <property name="text">
+    <string>Running Average</string>
+   </property>
+  </action>
+  <action name="actionWeighted_Running_Average">
+   <property name="text">
+    <string>Weighted Running Average</string>
    </property>
   </action>
  </widget>
