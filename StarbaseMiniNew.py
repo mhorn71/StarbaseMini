@@ -1590,7 +1590,9 @@ class Main(QtGui.QMainWindow):
         self.status_message('configuration', self.configuration_tool_dialog.response_message[0],
                             self.configuration_tool_dialog.response_message[1], None)
 
-        self.find_instrument_names_filenames_xml()
+        if self.configuration_tool_dialog.response_message[0] == 'SUCCESS':
+
+            self.find_instrument_names_filenames_xml()
 
     #  Upgrade checker
 
