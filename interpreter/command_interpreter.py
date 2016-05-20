@@ -121,9 +121,12 @@ class CommandInterpreter():
 
         if self.instrument.instrument_staribus_address != '000':
 
-            logger.debug('Instrument appears to be Staribus')
+            logger.debug('Instrument appears to be Staribus, address : %s' %
+                         self.instrument.instrument_staribus_address)
 
-            if self.instrument.instrument_staribus2Starinet == 'False':
+            print(self.instrument.instrument_staribus2starinet)
+
+            if self.instrument.instrument_staribus2starinet == 'False':
 
                 logger.info('Setting stream to Staribus')
 

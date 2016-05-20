@@ -128,7 +128,7 @@ class Instrument:
         self.instrument_staribus_autodetect = 'None'
         self.instrument_number_of_channels = 'None'
         self.instrument_datatranslator = 'None'
-        self.instrument_staribus2Starinet = 'None'
+        self.instrument_staribus2starinet = 'None'
 
     def clear_instrument(self):
 
@@ -161,7 +161,7 @@ class Instrument:
         self.instrument_staribus_autodetect = 'None'
         self.instrument_number_of_channels = 'None'
         self.instrument_datatranslator = 'None'
-        self.instrument_staribus2Starinet = 'None'
+        self.instrument_staribus2starinet = 'None'
 
     def load_xml(self, xml_file):
 

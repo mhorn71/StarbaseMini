@@ -111,12 +111,6 @@ class ConfigLoader:
                 self.config.set('StarinetRelay', 'address', '0.0.0.0')
                 self.config.set('StarinetRelay', 'starinet_port', '1205')
 
-                # Add Staribus2Starinet section.
-                self.config.add_section('Staribus2Starinet')
-                self.config.set('Staribus2Starinet', 'active', 'False')
-                self.config.set('Staribus2Starinet', 'address', '192.168.1.100')
-                self.config.set('Staribus2Starinet', 'starinet_port', '1205')
-
                 # Add Chart legend attributes section
                 self.config.add_section('Legend')
                 self.config.set('Legend', 'location', 'best')
