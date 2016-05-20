@@ -20,10 +20,14 @@ __author__ = 'mark'
 import logging
 import sys
 
+
 from PyQt4 import QtGui, QtCore
 
 from ui import Ui_MetadataDialog
 
+import constants
+
+# TODO add constraints for Observation Note constants.observer_notes, max length 100 characters.
 
 class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
     def __init__(self, data_store):
@@ -59,6 +63,10 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
         self.buttonBox.button(QtGui.QDialogButtonBox.Save).clicked.connect(self.save_called)
         self.buttonBox.button(QtGui.QDialogButtonBox.Close).clicked.connect(lambda: self.close())
 
+        self.metadataNotesEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_notes)))
+        self.metadataNotesEdit.textChanged.connect(self.parameter_check_state)
+        self.metadataNotesEdit.textChanged.emit(self.metadataNotesEdit.text())
+
         # Observer.Notes,The Observer Notes,String,Dimensionless,The Observer Notes
 
     def clear(self):
@@ -70,6 +78,44 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
         self.observation_note = None
 
         self.response_message = 'ABORT', None
+
+        # Parameter check state changes the colour of the line edit boxes depending on contents.
+
+    def parameter_check_state(self, *args, **kwargs):
+
+        # This bit is a bit of bodge as parameter check state will trigger when loading and raise
+        # AttributeError so we just ignore it, not ideal!
+
+        try:
+            sender = self.sender()
+            validator = sender.validator()
+            state = validator.validate(sender.text(), 0)[0]
+        except AttributeError:
+            pass
+
+        if state == QtGui.QValidator.Acceptable and len(sender.text()) == 0:
+
+            # white
+            sender.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+
+        elif state == QtGui.QValidator.Acceptable:
+
+            # green
+            sender.setStyleSheet('QLineEdit { background-color: #c4df9b }')
+
+        elif state == QtGui.QValidator.Intermediate and len(sender.text()) == 0:
+
+            # red
+            sender.setStyleSheet('QLineEdit { background-color: #f6989d }')
+
+        elif state == QtGui.QValidator.Intermediate:
+
+            # yellow
+            sender.setStyleSheet('QLineEdit { background-color: #fff79a }')
+
+        else:
+            sender.setStyleSheet('QLineEdit { background-color: #f6989d')
+
 
     def update_ui(self):
 
@@ -84,6 +130,8 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
         else:
 
+            # TODO this only partially works as some metadata can have comma's in it so splitting on comma doesn't work.
+
             for line in self.data_store.MetadataCsv:
 
                 metadata = line.split(',')
@@ -92,7 +140,7 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
                 if metadata[0] == 'Observation.Notes':
 
-                    self.metadataNotesEdit.append(metadata[1])
+                    self.metadataNotesEdit.setText(metadata[1])
 
                     self.observation_note = metadata[1]
 
@@ -106,7 +154,7 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
         if self.data_store.DataSource == 'Controller':
 
-            if len(self.metadataNotesEdit.toPlainText()) != 0:
+            if len(self.metadataNotesEdit.text()) != 0:
 
                 self.data_store.ObserverationNoteMetadata = ('Observation.Notes,' + self.metadataNotesEdit.toPlainText() +
                                                              ',String,Dimensionless,The Observation Notes')
@@ -138,7 +186,7 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
                 logger.debug('Observation note present true')
 
-                if len(self.metadataNotesEdit.toPlainText()) == 0:
+                if len(self.metadataNotesEdit.text()) == 0:
 
                     logger.debug('Metadata notes is zero length')
 
@@ -158,7 +206,7 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
                     logger.debug('Metadata notes is not zero length')
 
-                    data = ('Observation.Notes,' + self.metadataNotesEdit.toPlainText() +
+                    data = ('Observation.Notes,' + self.metadataNotesEdit.text() +
                             ',String,Dimensionless,The Observation Notes')
 
                     logger.debug('Inserting metddata data at index : %s' % str(observation_note_index))
@@ -179,11 +227,11 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
                 logger.debug("trip is True")
 
-                if len(self.metadataNotesEdit.toPlainText()) != 0:
+                if len(self.metadataNotesEdit.text()) != 0:
 
                     logger.debug('Metadata notes is not zero length')
 
-                    data = ('Observation.Notes,' + self.metadataNotesEdit.toPlainText() +
+                    data = ('Observation.Notes,' + self.metadataNotesEdit.text() +
                             ',String,Dimensionless,The Observation Notes')
 
                     logger.debug('Appending data to MetadataCsv : %s' % str(data))
@@ -208,7 +256,7 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
         if self.observation_note is not None:
 
-            if self.observation_note != self.metadataNotesEdit.toPlainText():
+            if self.observation_note != self.metadataNotesEdit.text():
 
                 result = QtGui.QMessageBox.warning(None,
                                                    None,
