@@ -47,6 +47,7 @@ QProgressBar::chunk {
     border: 0px;
 }
 
+/* The below QLineEdit border is a bodge to fix bug https://bugreports.qt.io/browse/QTBUG-42575 */
 QLineEdit {
     border: 1px;
 }
