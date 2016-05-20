@@ -47,6 +47,10 @@ QProgressBar::chunk {
     border: 0px;
 }
 
+QLineEdit {
+    border: 1px;
+}
+
 QLineEdit::enabled {
     background-color: #FFFFFF;
 }
