@@ -20,11 +20,12 @@ __author__ = 'mark'
 import os
 import logging
 
-upgradelog = os.path.expanduser('~') + os.path.sep + '.starbasemini' + os.path.sep + 'upgrade.log'
 
-logging.basicConfig(filename=upgradelog, level=logging.INFO)
+def update(config_object, version, config_home):
 
-def update(config_object, version):
+    upgradelog = config_home + 'upgrade.log'
+
+    logging.basicConfig(filename=upgradelog, level=logging.INFO)
 
     if version == 2:
 

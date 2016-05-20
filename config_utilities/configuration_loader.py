@@ -206,7 +206,7 @@ class ConfigLoader:
             else:
                 self.config.read(self.conf_file)
                 for i in range((self.current_version + 1), (self.version + 1)):
-                    rlu.update(self.config, i)
+                    rlu.update(self.config, i, self.config_home)
                     self.config.set('Release', 'version', str(i))
 
                 try:

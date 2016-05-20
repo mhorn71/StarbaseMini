@@ -47,7 +47,7 @@ class SegmentTimeSeries:
 
         self.metadata_creator = metadata_creator
 
-        if os.path.isdir(data_home):
+        if data_home is not None:
 
             self.data_home = data_home
 
