@@ -49,11 +49,11 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QTextBrowser" name="metadataNotesEdit">
-     <property name="maximumSize">
+    <widget class="QLineEdit" name="metadataNotesEdit">
+     <property name="minimumSize">
       <size>
-       <width>16777215</width>
-       <height>81</height>
+       <width>0</width>
+       <height>100</height>
       </size>
      </property>
      <property name="font">
@@ -62,8 +62,14 @@
        <pointsize>14</pointsize>
       </font>
      </property>
-     <property name="readOnly">
-      <bool>false</bool>
+     <property name="maxLength">
+      <number>100</number>
+     </property>
+     <property name="cursorPosition">
+      <number>0</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
     </widget>
    </item>
