@@ -451,23 +451,25 @@ class Main(QtGui.QMainWindow):
 
                 # Next check to see if the default file has been modified and update the path if it has.
 
-                if os.path.isfile(self.application_configuration.user_home + 'instruments/' + file):
+                if os.path.isfile(self.application_configuration.user_home + 'instruments' + os.path.sep + file):
 
                     self.instrument_names.append(name)
 
-                    self.instrument_filenames.append(self.application_configuration.user_home + 'instruments/' + file)
+                    self.instrument_filenames.append(self.application_configuration.user_home + 'instruments' +
+                                                     os.path.sep + file)
 
                 else:
 
                     self.instrument_names.append(name)
 
-                    self.instrument_filenames.append('instruments/' + file)
+                    self.instrument_filenames.append('instruments' + os.path.sep + file)
 
             elif local == 'local':
 
                 self.instrument_names.append(name)
 
-                self.instrument_filenames.append(self.application_configuration.user_home + 'instruments/' + file)
+                self.instrument_filenames.append(self.application_configuration.user_home + 'instruments' + os.path.sep
+                                                 + file)
 
         # Populate the instrument menu items.
 

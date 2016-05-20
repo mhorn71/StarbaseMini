@@ -466,11 +466,15 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         # Set user home location
         self.home_path = user_home + 'instruments' + os.path.sep
 
+        logger.debug('Set self.home_path : %s' % self.home_path)
+
         # Either Staribus or Starinet.
         self.instrument_type = 'staribus'
 
         self.instrument = instrument
         self.instrument_file = instrument_file
+
+        logger.debug('Set self.instrument_file : %s' % self.instrument_file)
 
         # Create both channel label and colour list, one to change and one to check against.
 
@@ -736,26 +740,26 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         result = [i for i, j in zip(self.channel_colours, self.original_channel_colours) if i == j]
 
         if len(result) != int(self.instrument.instrument_number_of_channels):
-            print('Channel Colours have changed.')
+            logger.debug('Channel Colours have changed.')
             return False
 
         # Check to see if the channel labels have changed.
         result = [i for i, j in zip(self.channel_labels, self.original_channel_labels) if i == j]
 
         if len(result) != int(self.instrument.instrument_number_of_channels):
-            print('Channel labels have changed.')
+            logger.debug('Channel labels have changed.')
             return False
 
         # Check to see if the staribus address has changed.
         if self.instrument.instrument_staribus_address != 'None':
             if self.comboBox.currentText().zfill(3) != self.instrument.instrument_staribus_address:
-                print('Staribus address has changed.')
+                logger.debug('Staribus address has changed.')
                 return False
 
         # Check to see if the staribus port has changed.
         if self.instrument.instrument_staribus_port != 'None':
             if self.StaribusPortLineEdit.text() != self.instrument.instrument_staribus_port:
-                print('Staribus port line edit has changed.')
+                logger.debug('Staribus port line edit has changed.')
                 return False
 
         # Check to see if the staribus autodetect has changed.
@@ -766,7 +770,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
                 autodetect = 'False'
 
             if autodetect != self.instrument.instrument_staribus_autodetect:
-                print('Instrument auto detect has changed.')
+                logger.debug('Instrument auto detect has changed.')
                 return False
 
         # Check to see if staribus to Starinet has changed.
@@ -776,11 +780,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             else:
                 staribus2starinet = 'False'
 
-            print(staribus2starinet)
-            print(self.instrument.instrument_staribus2starinet)
+            logger.debug(staribus2starinet)
+            logger.debug(self.instrument.instrument_staribus2starinet)
 
             if staribus2starinet != self.instrument.instrument_staribus2starinet:
-                print('Staribus2Starinet has changed.')
+                logger.debug('Staribus2Starinet has changed.')
                 return False
 
         # if self.instrument.instrument_staribus_type != 'None':
@@ -789,25 +793,25 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         # Check to see if the staribus baudrate has changed.
         if self.instrument.instrument_staribus_baudrate != 'None':
             if self.BaudrateCombobox.currentText() != self.instrument.instrument_staribus_baudrate:
-                print('Baudrate has changed.')
+                logger.debug('Baudrate has changed.')
                 return False
 
         # Check to see if the staribus timeout has changed.
         if self.instrument.instrument_staribus_timeout != 'None':
             if self.TimeoutCombobox.currentText() != self.instrument.instrument_staribus_timeout:
-                print('Timeout has changed.')
+                logger.debug('Timeout has changed.')
                 return False
 
         # Check to see if the starinet address has changed.
         if self.instrument.instrument_starinet_address != 'None':
             if self.StarinetAddressLineEdit.text() != self.instrument.instrument_starinet_address:
-                print('Starinet address has changed.')
+                logger.debug('Starinet address has changed.')
                 return False
 
         # Check to see if the starinet port has changed.
         if self.instrument.instrument_starinet_port != 'None':
             if self.StarinetPortLineEdit.text() != self.instrument.instrument_starinet_port:
-                print('Starinet port has changed.')
+                logger.debug('Starinet port has changed.')
                 return False
 
         return True
@@ -1445,12 +1449,20 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         if os.path.isdir(self.home_path) is not True:
             os.makedirs(self.home_path)
 
+        logger.debug('Old path and file : %s ' % self.instrument_file)
+
         # get the instrument xml file minus the original path
         file = self.instrument_file.split(os.path.sep)
         file = file[-1]
 
+        logger.debug('File minus old path : %s' % file)
+
         # set the new xml to use the users home path location.
         new_file = self.home_path + file
+
+        logger.debug('Home path set to : %s' % self.home_path)
+
+        logger.debug('New file and path set to : %s' % new_file)
 
         # import xml file
         tree = ET.parse(self.instrument_file)
