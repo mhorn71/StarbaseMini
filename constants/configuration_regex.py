@@ -43,7 +43,7 @@ observer_email = '^.*$'
 observer_telephone = '^.*$'
 observer_url = '^.*$'
 observer_country = '^[A-Z][A-Z]$'
-observer_notes = '^([a-zA-Z0-9\'.,/ \\-])*$'
+observer_notes = '^([a-zA-Z0-9\'.,/ \\-]){0,100}$'
 
 staribus_port = '^.*$'
 staribus_baudrate = '^9600$|^19200$|^38400$|^57600$|^115200$'
