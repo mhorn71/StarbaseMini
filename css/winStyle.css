@@ -54,3 +54,25 @@ QLineEdit::enabled {
 QLineEdit::disabled {
     background-color: #EDEDED;
 }
+
+QPushButton#executeButton:enabled {
+            background-color: #c4df9b ;
+            }
+
+QPushButton#executeButton:disabled {
+            background-color: #b6c3d1 ;
+            }
+
+QPushButton#executeButton:hover {
+            background-color: #b9d988 ;
+            }
+
+QPushButton#executeButton:pressed {
+            background-color: #a2cc61 ;
+            }
+
+
+QPushButton#executeButton {
+        border-radius: 5px;
+        padding: 0.2em 0.2em 0.3em 0.2em;
+}
