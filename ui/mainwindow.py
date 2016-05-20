@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Fri May 20 11:37:42 2016
+# Created: Fri May 20 22:00:11 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -137,7 +137,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
         self.toolBox.addItem(self.UserCtrl, "")
         self.UserInst = QtGui.QWidget()
-        self.UserInst.setGeometry(QtCore.QRect(0, 0, 98, 28))
+        self.UserInst.setGeometry(QtCore.QRect(0, 0, 129, 521))
         self.UserInst.setObjectName("UserInst")
         self.layoutWidget2 = QtGui.QWidget(self.UserInst)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 2, 124, 443))
@@ -485,7 +485,7 @@ class Ui_MainWindow(object):
         self.menuProcessedData.setTitle(QtGui.QApplication.translate("MainWindow", "ProcessedData", None, QtGui.QApplication.UnicodeUTF8))
         self.menuData_Filters.setTitle(QtGui.QApplication.translate("MainWindow", "Data Filters", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "General Configuration", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "Configuration", None, QtGui.QApplication.UnicodeUTF8))
         self.actionControllerEditor.setText(QtGui.QApplication.translate("MainWindow", "Futurlec Controller", None, QtGui.QApplication.UnicodeUTF8))
         self.actionObserveratory.setText(QtGui.QApplication.translate("MainWindow", "Observeratory", None, QtGui.QApplication.UnicodeUTF8))
         self.actionManual.setText(QtGui.QApplication.translate("MainWindow", "Manual", None, QtGui.QApplication.UnicodeUTF8))

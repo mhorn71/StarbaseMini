@@ -273,8 +273,8 @@ QToolBox::tab:selected { /* italicize selected tabs */
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>129</width>
+             <height>521</height>
             </rect>
            </property>
            <attribute name="label">
@@ -783,7 +783,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
   </action>
   <action name="actionConfiguration">
    <property name="text">
-    <string>General Configuration</string>
+    <string>Configuration</string>
    </property>
   </action>
   <action name="actionControllerEditor">
