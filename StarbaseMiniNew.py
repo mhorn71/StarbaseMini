@@ -747,7 +747,8 @@ class Main(QtGui.QMainWindow):
 
                             starinet_relay.StarinetConnectorStart(self.application_configuration.get('StarinetRelay',
                                                                   'address'),
-                                                                  self.application_configuration.get('StarinetRelay', 'port'),
+                                                                  self.application_configuration.get('StarinetRelay',
+                                                                                                     'starinet_port'),
                                                                   self.instrument.instrument_staribus_port,
                                                                   self.instrument.instrument_staribus_baudrate,
                                                                   self.instrument.instrument_staribus_timeout)
