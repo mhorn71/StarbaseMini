@@ -44,6 +44,7 @@ import charting
 import instrument_attrib
 import datastore
 import core
+import filters
 
 version = '3.0.0'
 
@@ -208,6 +209,11 @@ class Main(QtGui.QMainWindow):
         self.ui.SegmentProcessDataWeek.triggered.connect(lambda: self.segment_data('week', 'processed'))
 
         self.ui.actionMetadata.triggered.connect(self.metadata_viewer_editor)
+
+        self.ui.actionNon_Linear_Static_Remover.triggered.connect(lambda: self.filter_data('NonLinearStaticRemover'))
+        self.ui.actionPeak_Extractor.triggered.connect(lambda: self.filter_data('PeakExtractor'))
+        self.ui.actionRunning_Average.triggered.connect(lambda: self.filter_data('RunningAverage'))
+        self.ui.actionWeighted_Running_Average.triggered.connect(lambda: self.filter_data('WeightedRunningAverage'))
 
         # Run once trip
 
@@ -1466,11 +1472,39 @@ class Main(QtGui.QMainWindow):
 
     def segment_data(self, period, type):
 
-        segment_data_identifity = 'segment' + type.title() + 'Data(' + str(period) + ')'
+        segment_data_identifer = 'segment' + type.title() + 'Data(' + str(period) + ')'
 
         response = self.segmenter.segment_timeseries(type, period)
 
-        self.status_message(segment_data_identifity, response[0], response[1], None)
+        self.status_message(segment_data_identifer, response[0], response[1], None)
+
+    def filter_data(self, filter_):
+
+        filter_indentifer = 'filter' + filter_
+
+        if filter_ == 'NonLinearStaticRemover':
+
+            response = filters.NonLinearStaticRemover.non_linear_static_remover(self.data_store)
+
+        elif filter_ == 'PeakExtractor':
+
+            response = filters.PeakExtractor.peak_extractor(self.data_store)
+
+        elif filter_ == 'RunningAverage':
+
+            response = filters.RunningAverage.running_average(self.data_store)
+
+        elif filter_ == 'WeightedRunningAverage':
+
+            response = filters.WeightedRunningAverage.weighted_running_average(self.data_store)
+
+        else:
+
+            response = 'PREMATURE_TERMINATION', 'Unknown filter type'
+
+        # TODO if response is success then run chart routine.
+
+        self.status_message(filter_indentifer, response[0], response[1], None)
 
 
     ############################  BELOW MIGHT GET CHANGED IT'S FROM STARBASEMINI II ##############################
