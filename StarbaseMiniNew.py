@@ -536,10 +536,14 @@ class Main(QtGui.QMainWindow):
 
             if self.starinet_relay_state:
 
+                print('instrument_selection Starinet Relay State : True')
+
                 self.status_message('system', 'PREMATURE_TERMINATION',
                                     'Starinet Relay is running please restart the application.')
 
             else:
+
+                print('instrument_selection Starinet Relay State : False')
 
                 self.previous_instrument_menu_item = item
 
@@ -700,6 +704,8 @@ class Main(QtGui.QMainWindow):
 
         if self.application_configuration.get('StarinetRelay', 'active') == 'True':
 
+            print('Starinet Relay Active : True')
+
             logger.info('########## Initialising Starinet Relay - Disabling UI control panel ##########')
 
             self.disable_control_panel()
@@ -708,23 +714,35 @@ class Main(QtGui.QMainWindow):
 
             if self.instrument.instrument_staribus_address == '000':  # Looks like we have Starinet then relay is False
 
+                print('Staribus address : %s' % self.instrument.instrument_staribus_address)
+
                 logger.warning('Starinet relay enabled but Starinet instrument selected.')
 
-                self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet relay enabled but Starinet instrument selected.', None)
+                self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet relay enabled but Starinet instrument '
+                                                                       'selected.', None)
 
                 self.disable_control_panel()
 
             else:  # Looks like we have a Staribus instrument now auto detect instrument or try to open port.
 
+                print('Staribus address : %s' % self.instrument.instrument_staribus_address)
+
                 # First check the configuration looks sane.
 
                 if not utilities.check_ip(self.application_configuration.get('StarinetRelay', 'address')):
+
+                    print('Starinet address not valid : %s' % str(self.application_configuration.get('StarinetRelay',
+                                                                                                     'address')))
 
                     self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet Relay IP address invalid')
 
                     self.disable_control_panel()
 
-                elif not utilities.check_starinet_port(self.application_configuration.get('StarinetRelay', 'starinet_port')):
+                elif not utilities.check_starinet_port(self.application_configuration.get('StarinetRelay',
+                                                                                          'starinet_port')):
+
+                    print('Starinet port not valid : %s' % str(self.application_configuration.get('StarinetRelay',
+                                                                                                  'starinet_port')))
 
                     self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet Relay IP address invalid')
 
@@ -732,18 +750,26 @@ class Main(QtGui.QMainWindow):
 
                 else:
 
+                    print('Starinet address and port valid')
+
                     if self.instrument.instrument_staribus_autodetect == 'True':
+
+                        print('Attempt instrument autodetect is True')
 
                         if self.instrument_autodetector():
 
+                            print('Instrument autodetect returned True')
+
                             self.starinet_relay_state = True
 
-                            logger.debug('starinet_relay_state = True')
+                            print('Starinet Relay Active : True')
 
                             logger.info('########## Valid Starinet relay configuration found. ##########')
                             logger.info('Starting startinet relay')
 
-                            self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, 'Starinet Relay'))
+                            self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (
+                                version, self.application_configuration.get('Application', 'instrument_identifier') +
+                                ' Starinet Relay'))
 
                             starinet_relay.StarinetConnectorStart(self.application_configuration.get('StarinetRelay',
                                                                   'address'),
@@ -755,45 +781,58 @@ class Main(QtGui.QMainWindow):
 
                         else:
 
+                            print('Instrument autodetect returned False')
+
                             logger.warning('Instrument autodetect true - No instrument or port found.')
 
                             self.status_message('system', 'PREMATURE_TERMINATION',
                                                 'Starinet Relay instrument autodetect true - No instrument or port found.', None)
 
                             self.disable_control_panel()
+                    #
+                    # else:
 
-                    else:
+                            # Auto detect instrument on serial port wasn't true so lets see if
+                            # we can open the configured serial port.
 
-                        # Auto detect instrument on serial port wasn't true so lets see if
-                        # we can open the configured serial port.
+                            print('Checking to see if we can open configured serial port')
 
-                        if utilities.check_serial_port(self.instrument.instrument_staribus_port):
+                            if utilities.check_serial_port(self.instrument.instrument_staribus_port):
 
-                            self.starinet_relay_state = True
+                                print('We appear to be able to open serial port : %s' %
+                                      str(self.instrument.instrument_staribus_port))
 
-                            logger.debug('starinet_relay_state = True')
+                                self.starinet_relay_state = True
 
-                            logger.info('########## Valid Starinet relay configuration found. ##########')
-                            logger.info('Starting startinet relay')
+                                print('Starinet Relay Active : True')
 
-                            self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (version, 'Starinet Relay'))
+                                logger.info('########## Valid Starinet relay configuration found. ##########')
+                                logger.info('Starting startinet relay')
 
-                            starinet_relay.StarinetConnectorStart(self.application_configuration.get('StarinetRelay',
-                                                                                                     'address'),
-                                                                  self.application_configuration.get('StarinetRelay',
-                                                                                                     'port'),
-                                                                  self.instrument.instrument_staribus_port,
-                                                                  self.instrument.instrument_staribus_baudrate,
-                                                                  self.instrument.instrument_staribus_timeout)
-                        else:
+                                self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (
+                                    version, self.application_configuration.get('Application', 'instrument_identifier') +
+                                    ' Starinet Relay'))
 
-                            logger.warning('No serial port found unable to start Starinet Relay.')
+                                starinet_relay.StarinetConnectorStart(self.application_configuration.get('StarinetRelay',
+                                                                                                         'address'),
+                                                                      self.application_configuration.get('StarinetRelay',
+                                                                                                         'starinet_port'),
+                                                                      self.instrument.instrument_staribus_port,
+                                                                      self.instrument.instrument_staribus_baudrate,
+                                                                      self.instrument.instrument_staribus_timeout)
+                            else:
 
-                            self.status_message('system', 'PREMATURE_TERMINATION',
-                                                'Starinet Relay - Unable to start no serial port found.', None)
+                                print('Unable to open configured serial port.')
 
-                            self.disable_control_panel()
+                                logger.warning('No serial port found unable to start Starinet Relay.')
+
+                                self.status_message('system', 'PREMATURE_TERMINATION',
+                                                    'Starinet Relay - Unable to start no serial port found.', None)
+
+                                self.disable_control_panel()
         else:
+
+            print('Starinet Relay Active : False')
 
             # Now we check to see if the configuration we have makes sense.
 
@@ -1064,7 +1103,11 @@ class Main(QtGui.QMainWindow):
 
         ports = utilities.serial_port_scanner()
 
+        print('Serial ports found : %s' % str(ports))
+
         if ports is None:
+
+            print('Serial ports is none')
 
             logger.warning('No serial ports found to scan for instrument.')
 

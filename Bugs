@@ -4,8 +4,6 @@ getData attempts to create chart even if no data is present to create it from
 
 xml_utils instrument importer needs to check the XML is valid more.
 
-DataTypes = setGain requires parameter to formated as 1, 2, 3, or 4 whereas getA2D requires the parameter to sent as 001, 002 etc ....
-
 
 #  Major issue ....   instruments loader requires the XML to be specified, I need to return both local and base instrument
   names ... yikkies ... here be dragons.
@@ -35,3 +33,8 @@ Once we run the the RawDataBlocks through the data translator successfully we se
 
 		RawDataBlocksAvailable = False
 		RawDataSaved = False
+
+Instrument Attributes and Application Configuration detect change on Windows 10 even when change hasn't occurred.
+
+Staribus2Starinet doesn't autodetect instrument when configuration is changed only when app is restarted.
+
