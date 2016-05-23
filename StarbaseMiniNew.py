@@ -698,6 +698,10 @@ class Main(QtGui.QMainWindow):
 
         self.status_message('system', 'INFO', 'Application started.', None)
 
+        # Try to close any open streams.
+
+        self.command_interpreter.close()
+
         # We check for two states Relay or Standard Instrument.  Staribus to Starinet Converter is run from Interpreter.
 
         # See if we're acting as relay
@@ -789,47 +793,51 @@ class Main(QtGui.QMainWindow):
                                                 'Starinet Relay instrument autodetect true - No instrument or port found.', None)
 
                             self.disable_control_panel()
-                    #
-                    # else:
 
-                            # Auto detect instrument on serial port wasn't true so lets see if
-                            # we can open the configured serial port.
+                    else:
 
-                            print('Checking to see if we can open configured serial port')
+                        # Auto detect instrument on serial port wasn't true so lets see if
+                        # we can open the configured serial port.
 
-                            if utilities.check_serial_port(self.instrument.instrument_staribus_port):
+                        print('Checking to see if we can open configured serial port')
 
-                                print('We appear to be able to open serial port : %s' %
-                                      str(self.instrument.instrument_staribus_port))
+                        if utilities.check_serial_port(self.instrument.instrument_staribus_port):
 
-                                self.starinet_relay_state = True
+                            print('We appear to be able to open serial port : %s' %
+                                  str(self.instrument.instrument_staribus_port))
 
-                                print('Starinet Relay Active : True')
+                            self.starinet_relay_state = True
 
-                                logger.info('########## Valid Starinet relay configuration found. ##########')
-                                logger.info('Starting startinet relay')
+                            print('Starinet Relay Active : True')
 
-                                self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (
-                                    version, self.application_configuration.get('Application', 'instrument_identifier') +
-                                    ' Starinet Relay'))
+                            logger.info('########## Valid Starinet relay configuration found. ##########')
+                            logger.info('Starting startinet relay')
 
-                                starinet_relay.StarinetConnectorStart(self.application_configuration.get('StarinetRelay',
-                                                                                                         'address'),
-                                                                      self.application_configuration.get('StarinetRelay',
-                                                                                                         'starinet_port'),
-                                                                      self.instrument.instrument_staribus_port,
-                                                                      self.instrument.instrument_staribus_baudrate,
-                                                                      self.instrument.instrument_staribus_timeout)
-                            else:
+                            self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (
+                                version, self.application_configuration.get('Application', 'instrument_identifier') +
+                                ' Starinet Relay'))
 
-                                print('Unable to open configured serial port.')
+                            starinet_relay.StarinetConnectorStart(self.application_configuration.get('StarinetRelay',
+                                                                                                     'address'),
+                                                                  self.application_configuration.get('StarinetRelay',
+                                                                                                     'starinet_port'),
+                                                                  self.instrument.instrument_staribus_port,
+                                                                  self.instrument.instrument_staribus_baudrate,
+                                                                  self.instrument.instrument_staribus_timeout)
+                        else:
 
-                                logger.warning('No serial port found unable to start Starinet Relay.')
+                            print('Unable to open configured serial port.')
 
-                                self.status_message('system', 'PREMATURE_TERMINATION',
-                                                    'Starinet Relay - Unable to start no serial port found.', None)
+                            logger.warning('No serial port found unable to start Starinet Relay.')
 
-                                self.disable_control_panel()
+                            self.status_message('system', 'PREMATURE_TERMINATION',
+                                                'Unable to initialise Starinet Relay no serial port(s) found.', None)
+
+                            self.setWindowTitle('StarbaseMini -- Version %s -- %s' % (
+                                version, self.application_configuration.get('Application', 'instrument_identifier') +
+                                ' Starinet Relay'))
+
+                            self.disable_control_panel()
         else:
 
             print('Starinet Relay Active : False')
@@ -979,7 +987,7 @@ class Main(QtGui.QMainWindow):
 
     def instrument_datatranslator_class_loader(self):
 
-        logger = logging.getLogger('StarbaseMini.datatranslator_class_loader')
+        logger = logging.getLogger('StarbaseMini.instrument_datatranslator_class_loader')
 
         # Initialise datatranslator, added new datatranslators here.
 
@@ -1057,7 +1065,7 @@ class Main(QtGui.QMainWindow):
 
         # TODO Initialise chart loader.
 
-        logger = logging.getLogger('StarbaseMini.datatranslator_class_loader')
+        logger = logging.getLogger('StarbaseMini.chart_class_loader')
 
         if self.data_source == 'instrument':
 

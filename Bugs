@@ -38,3 +38,19 @@ Instrument Attributes and Application Configuration detect change on Windows 10 
 
 Staribus2Starinet doesn't autodetect instrument when configuration is changed only when app is restarted.
 
+
+Current Start Up Order.
+
+1 StarbaseMini.find_instrument_names_filenames_xml
+
+2 StarbaseMini.instrument_xml_loader
+
+3 StarbaseMini.datatranslator_class_loader
+
+6 StarbaseMini.application_state_control (This needs to close any configured streams.)
+
+7 StarbaseMini.populate_ui_module
+
+4 StarbaseMini.interpreter_class_loader  (This closes and opens any configured streams.)
+
+5 StarbaseMini.chart_class_loader
