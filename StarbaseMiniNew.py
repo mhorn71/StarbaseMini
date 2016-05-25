@@ -321,165 +321,178 @@ class Main(QtGui.QMainWindow):
 
         logger = logging.getLogger('StarbaseMini.find_instrument_names_filenames_xml')
 
-        # First make sure the Instrument Name and File lists are blank
+        # Check to see if relay is running and if it is report Restart required and do nothing.
 
-        self.instrument_names.clear()
+        if self.starinet_relay_state:
 
-        self.instrument_filenames.clear()
+            logger.debug('Starinet relay is running, applications requires restart.')
 
-        # local = xml held in the user home folder under .starbasemini/instruments
-        # base = xml held in the application root folder under instrumetns.
+            self.status_message('system', 'PREMATURE_TERMINATION',
+                                    'Starinet Relay is running please restart the application.', None)
 
-        # Load base instruments/instruments.xml first
+        else:
 
-        instrument_name_file_list = []
+            # First make sure the Instrument Name and File lists are blank
 
-        if os.path.isfile('instruments/instruments.xml'):
+            self.instrument_names.clear()
 
-            try:
+            self.instrument_filenames.clear()
 
-                self.instruments.load_xml('instruments/instruments.xml')
+            # local = xml held in the user home folder under .starbasemini/instruments
+            # base = xml held in the application root folder under instrumetns.
 
-            except FileNotFoundError:
+            # Load base instruments/instruments.xml first
 
-                logger.warning('No instruments.xml found in instruments!!')
+            instrument_name_file_list = []
 
-            else:
-
-                logger.info('Found xml file : instruments/instruments.xml')
-
-                # Get names of instruments from instruments.xml
+            if os.path.isfile('instruments' + os.path.sep + 'instruments.xml'):
 
                 try:
 
-                    instrument_names = self.instruments.get_names()
+                    self.instruments.load_xml('instruments' + os.path.sep + 'instruments.xml')
 
-                except (AttributeError, IndexError):
+                except FileNotFoundError:
 
-                    pass
+                    logger.warning('No instruments.xml found in instruments!!')
 
                 else:
 
-                    # Get the filename of the instrument
+                    logger.info('Found xml file : instruments' + os.path.sep + 'instruments.xml')
 
-                    for name in instrument_names:
+                    # Get names of instruments from instruments.xml
 
-                        try:
+                    try:
 
-                            instrument_filename = self.instruments.get_filename(name)
+                        instrument_names = self.instruments.get_names()
 
-                        except AttributeError:
+                    except (AttributeError, IndexError):
 
-                            pass
+                        pass
 
-                        else:
+                    else:
 
-                            # Append the instrument name, filname, and location
+                        # Get the filename of the instrument
 
-                            instrument_name_file_list.append((name, instrument_filename, 'base'))
+                        for name in instrument_names:
 
-        # Now we check to see if there is an instruments.xml in the .starbase/instruments folder
+                            try:
 
-        if os.path.isfile(self.application_configuration.user_home + 'instruments/instruments.xml'):
+                                instrument_filename = self.instruments.get_filename(name)
 
-            try:
+                            except AttributeError:
 
-                self.instruments.load_xml(self.application_configuration.user_home + 'instruments/instruments.xml')
+                                pass
 
-            except FileNotFoundError:
+                            else:
 
-                logger.warning('No instruments.xml found in .starbasemini/instruments folder!!')
+                                # Append the instrument name, filname, and location
 
-            else:
+                                instrument_name_file_list.append((name, instrument_filename, 'base'))
 
-                logger.info('Found xml file : %s' % str(self.application_configuration.user_home +
-                                                        'instruments/instruments.xml'))
+            # Now we check to see if there is an instruments.xml in the .starbase/instruments folder
 
-                # Get names of instruments from instruments.xml
+            if os.path.isfile(self.application_configuration.user_home + 'instruments' + os.path.sep +
+                                      'instruments.xml'):
 
                 try:
-                    instrument_names = self.instruments.get_names()
 
-                except (AttributeError, IndexError):
+                    self.instruments.load_xml(self.application_configuration.user_home + 'instruments' +
+                                              os.path.sep + 'instruments.xml')
 
-                    pass
+                except FileNotFoundError:
 
-                else:
-
-                    for name, file, local in instrument_name_file_list:
-
-                        # If the name is unique then remove it from the instrument_names list.
-
-                        if name in instrument_names:
-
-                            instrument_names.remove(name)
-
-                    # for each name in the list get the file name and then append details and location to
-                    # instrument_name_file_list
-
-                    for name in instrument_names:
-
-                        try:
-
-                            instrument_filename = self.instruments.get_filename(name)
-
-                        except AttributeError:
-
-                            pass
-
-                        else:
-
-                            # Append the instrument name, filname, and location
-
-                            instrument_name_file_list.append((name, instrument_filename, 'local'))
-
-        # Make sure the instrument_name_file_list is zero length.
-
-        if len(instrument_name_file_list) == 0:
-
-            logger.critical('No instruments in either base/instruments or .'
-                            'starbasemini/instruments so we have to exit.')
-
-            sys.exit(1)
-
-        # Next we need to check to see if any of the base installed instruments have been updated and the xml stored
-        # in .starbasemini/instruments.
-
-        for name, file, local in instrument_name_file_list:
-
-            if local == 'base':
-
-                # Next check to see if the default file has been modified and update the path if it has.
-
-                if os.path.isfile(self.application_configuration.user_home + 'instruments' + os.path.sep + file):
-
-                    self.instrument_names.append(name)
-
-                    self.instrument_filenames.append(self.application_configuration.user_home + 'instruments' +
-                                                     os.path.sep + file)
+                    logger.warning('No instruments.xml found in .starbasemini' + os.path.sep + 'instruments folder!!')
 
                 else:
 
+                    logger.info('Found xml file : %s' % str(self.application_configuration.user_home +
+                                                            'instruments' + os.path.sep + 'instruments.xml'))
+
+                    # Get names of instruments from instruments.xml
+
+                    try:
+                        instrument_names = self.instruments.get_names()
+
+                    except (AttributeError, IndexError):
+
+                        pass
+
+                    else:
+
+                        for name, file, local in instrument_name_file_list:
+
+                            # If the name is unique then remove it from the instrument_names list.
+
+                            if name in instrument_names:
+
+                                instrument_names.remove(name)
+
+                        # for each name in the list get the file name and then append details and location to
+                        # instrument_name_file_list
+
+                        for name in instrument_names:
+
+                            try:
+
+                                instrument_filename = self.instruments.get_filename(name)
+
+                            except AttributeError:
+
+                                pass
+
+                            else:
+
+                                # Append the instrument name, filname, and location
+
+                                instrument_name_file_list.append((name, instrument_filename, 'local'))
+
+            # Make sure the instrument_name_file_list is zero length.
+
+            if len(instrument_name_file_list) == 0:
+
+                logger.critical('No instruments in either base' + os.path.sep + 'instruments or .'
+                                'starbasemini' + os.path.sep + 'instruments so we have to exit.')
+
+                sys.exit(1)
+
+            # Next we need to check to see if any of the base installed instruments have been updated and the xml stored
+            # in .starbasemini/instruments.
+
+            for name, file, local in instrument_name_file_list:
+
+                if local == 'base':
+
+                    # Next check to see if the default file has been modified and update the path if it has.
+
+                    if os.path.isfile(self.application_configuration.user_home + 'instruments' + os.path.sep + file):
+
+                        self.instrument_names.append(name)
+
+                        self.instrument_filenames.append(self.application_configuration.user_home + 'instruments' +
+                                                         os.path.sep + file)
+
+                    else:
+
+                        self.instrument_names.append(name)
+
+                        self.instrument_filenames.append('instruments' + os.path.sep + file)
+
+                elif local == 'local':
+
                     self.instrument_names.append(name)
 
-                    self.instrument_filenames.append('instruments' + os.path.sep + file)
+                    self.instrument_filenames.append(self.application_configuration.user_home + 'instruments' + os.path.sep
+                                                     + file)
 
-            elif local == 'local':
+            # Populate the instrument menu items.
 
-                self.instrument_names.append(name)
+            if self.run_once:  # This get set to false once we've initialised the first instrument xml.
 
-                self.instrument_filenames.append(self.application_configuration.user_home + 'instruments' + os.path.sep
-                                                 + file)
+                self.instrument_menu_setup()
 
-        # Populate the instrument menu items.
+            # Now we need to call the instrument loader for the instrument that is set.
 
-        if self.run_once:  # This get set to false once we've initialised the first instrument xml.
-
-            self.instrument_menu_setup()
-
-        # Now we need to call the instrument loader for the instrument that is set.
-
-        self.instrument_xml_loader()
+            self.instrument_xml_loader()
 
     def instrument_menu_setup(self):
 
@@ -503,7 +516,7 @@ class Main(QtGui.QMainWindow):
 
     def instrument_selection(self, item):
 
-        # TODO Add logger calls
+        logger = logging.getLogger('StarbaseMini.instrument_selection')
 
         print("Datastore length : %s" % str(len(self.data_store.RawData)))
         print("Datastore RawDataSaved : %s" % str(self.data_store.RawDataSaved))
@@ -536,14 +549,16 @@ class Main(QtGui.QMainWindow):
 
             if self.starinet_relay_state:
 
-                print('instrument_selection Starinet Relay State : True')
+                logger.debug('instrument_selection Starinet Relay State : True')
+
+                logger.debug('Starinet relay is running, applications requires restart.')
 
                 self.status_message('system', 'PREMATURE_TERMINATION',
-                                    'Starinet Relay is running please restart the application.')
+                                    'Starinet Relay is running please restart the application.', None)
 
             else:
 
-                print('instrument_selection Starinet Relay State : False')
+                logger.debug('instrument_selection Starinet Relay State : False')
 
                 self.previous_instrument_menu_item = item
 
@@ -552,6 +567,8 @@ class Main(QtGui.QMainWindow):
                     self.application_configuration.set('Application', 'instrument_identifier', item)
 
                 except (IOError, ValueError) as msg:
+
+                    logger.debug('Unable to set instrument identifier :%s' % str(msg))
 
                     # Reset the menu check tick back at the original menu item.
 
