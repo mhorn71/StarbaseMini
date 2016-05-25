@@ -758,9 +758,12 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         # Check to see if the staribus port has changed.
         if self.instrument.instrument_staribus_port != 'None':
-            if self.StaribusPortLineEdit.text() != self.instrument.instrument_staribus_port:
-                logger.debug('Staribus port line edit has changed.')
-                return False
+
+            if self.instrument.instrument_staribus_autodetect != 'True':
+                
+                if self.StaribusPortLineEdit.text() != self.instrument.instrument_staribus_port:
+                    logger.debug('Staribus port line edit has changed.')
+                    return False
 
         # Check to see if the staribus autodetect has changed.
         if self.instrument.instrument_staribus_autodetect != 'None':
