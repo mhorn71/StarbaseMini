@@ -94,8 +94,14 @@ class StaribusBlockParser:
         # We also need to search of ETX
 
         datum_list = []
+
+        # counter = 0
+
+        # print('block_parser RawDataBlocks Length : %s' % len(data_store.RawDataBlocks))
         
         for lista in reversed(data_store.RawDataBlocks):
+
+            # print('block_parser : ' + str(counter) + ' : ' + str(lista))
 
             data = lista.split(' ')
     
@@ -158,6 +164,4 @@ class StaribusBlockParser:
 
                 logger.warning('Failed Staribus Block : %s' % repr(data))
 
-            else:
-
-                return True
+        return True
