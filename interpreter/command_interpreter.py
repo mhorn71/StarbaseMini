@@ -774,6 +774,8 @@ class CommandInterpreter():
 
         counter = datatypes.DataTypeToInteger(primary_command_list[12], response[2])
 
+        print('Counter : %s' % str(counter))
+
         if counter is None:
 
             logger.critical("BlockedDataCommand Unable to convert primary response value to integer!!")
@@ -786,7 +788,7 @@ class CommandInterpreter():
 
         # Now check the counter is greater than 0
 
-        if counter < 1:
+        if counter < 0:
 
             logger.critical("BlockedDataCommand Block count less than one.!!")
 
@@ -833,7 +835,7 @@ class CommandInterpreter():
 
         # Now we'll iterate over the block count.
 
-        for i in range(counter):
+        for i in range(-1, counter):
 
             progressDialog.setValue(i)
 
@@ -890,6 +892,8 @@ class CommandInterpreter():
             # of the last run command and set the the last tuple to 'data'
 
             if len(self.data_store.RawDataBlocks) > 0:
+
+                print('RawDataBlocks Length : %s' % str(len(self.data_store.RawDataBlocks)))
 
                 # set RawDataBlocksAvailable to True
 
