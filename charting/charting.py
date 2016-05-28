@@ -57,6 +57,8 @@ class Chart:
     vertical then delete the temporary widget. Set the vertical layout name to mplvl
     '''
 
+    # TODO almost a complete rewrite we need to take into account Raw and Processed Data plus Controller or CSV Source.
+
     def __init__(self, ui):
         '''
 

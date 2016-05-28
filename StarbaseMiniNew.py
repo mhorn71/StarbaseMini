@@ -496,8 +496,6 @@ class Main(QtGui.QMainWindow):
 
     def instrument_menu_setup(self):
 
-        # TODO Add logger calls
-
         action = QtGui.QActionGroup(self.ui.menuInstrument, exclusive=True)
 
         for item in self.instrument_names:
@@ -1052,8 +1050,6 @@ class Main(QtGui.QMainWindow):
 
         self.populate_ui_command()
 
-        # TODO Check interpreter class does what we expect, remember we're moving to DataTypeDictionary.
-
         logger = logging.getLogger('StarbaseMini.interpreter_class_loader')
 
         logger.info('Closing any open streams.')
@@ -1080,45 +1076,23 @@ class Main(QtGui.QMainWindow):
 
     def chart_class_loader(self):
 
-        # TODO Initialise chart loader.
-
         logger = logging.getLogger('StarbaseMini.chart_class_loader')
 
-        if self.data_source == 'instrument':
+        try:
 
-            try:
+            self.chart.chart_instrument_setup(self.data_store, self.instrument,
+                                              self.metadata_deconstructor, self.application_configuration, self.data_source)
+        except Exception as msg:
 
-                self.chart.chart_instrument_setup(self.instrument_datatranslator, self.instrument,
-                                                  self.metadata_deconstructor, self.application_configuration)
-            except Exception as msg:
+            logger.critical('Unable to setup chart attributes : %s' % str(msg))
 
-                logger.critical('Unable to setup chart attributes : %s' % str(msg))
+            self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
 
-                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
+            self.disable_control_panel()
 
-                self.disable_control_panel()
+        else:
 
-            else:
-
-                logger.info('Chart attributes setup for data source instrument')
-
-        elif self.data_source == 'csv':
-
-            try:
-                self.chart.chart_instrument_setup(self.csv_datatranslator, self.instrument, self.metadata_deconstructor,
-                                                  self.application_configuration)
-
-            except Exception as msg:
-
-                logger.critical('Unable to setup chart attributes : %s' % str(msg))
-
-                self.status_message('system', 'CRITICAL_ERROR', str(msg), None)
-
-                self.disable_control_panel()
-
-            else:
-
-                logger.info('Chart attributes setup for data source csv')
+            logger.info('Chart attributes setup for data source instrument')
 
     def instrument_autodetector(self):
 
@@ -1443,22 +1417,23 @@ class Main(QtGui.QMainWindow):
 
             # Create the data store arrays
 
-            # TODO move data store create arrays to data translator.
-
             if self.data_store.create_arrays():
 
                 self.status_message(interpreter_response[0], interpreter_response[1], interpreter_response[2],
                                     interpreter_response[3])
 
-                # TODO call chart routines.
-
                 # TODO remove data_store.print_state
 
-                # self.data_store.print_state()
+                self.data_store.print_state()
 
                 # Set RawDataBlocksAvailable back to False
 
                 self.data_store.RawDataBlocksAvailable = False
+
+                response = self.chart.add_data('raw')
+
+                if response[0] != 'SUCCESS':
+                    self.status_message(interpreter_response[0], response[1], 'Plotting error!!', None)
 
             else:
 
@@ -1511,13 +1486,16 @@ class Main(QtGui.QMainWindow):
 
                     # Create the data store arrays
 
-                    # TODO move data store create arrays to csv_parser
-
                     if self.data_store.create_arrays():
 
                         self.status_message('openCSV', response[0], response[1], None)
 
-                        # TODO call chart routines.
+                        print('openCSV calling add_data')
+
+                        response = self.chart.add_data('rawCsv')
+
+                        if response[0] != 'SUCCESS':
+                            self.status_message('openCSV', response[1], 'Plotting error!!', None)
 
                     else:
 

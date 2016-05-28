@@ -1,2 +1,2 @@
 __author__ = 'mark'
-from charting.charting import Chart
+from charting.charting2 import Chart
