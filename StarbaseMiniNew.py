@@ -232,7 +232,7 @@ class Main(QtGui.QMainWindow):
         self.data_source = 'instrument'
 
         ####### BODGE #####
-        self.saved_data_state = False
+        # self.saved_data_state = False
 
         # Setup status message window, QTableWidget
 
@@ -263,19 +263,40 @@ class Main(QtGui.QMainWindow):
         # self.command_parameter_trip = 0
         # self.parameter_check_state_trip = 0
 
-        # # Button connectors
+        # Button connectors
 
         self.ui.executeButton.clicked.connect(self.execute_triggered)
 
-        # self.ui.channel0Button.clicked.connect(self.channel0_triggered)
-        # self.ui.channel1Button.clicked.connect(self.channel1_triggered)
-        # self.ui.channel2Button.clicked.connect(self.channel2_triggered)
-        # self.ui.channel3Button.clicked.connect(self.channel3_triggered)
-        # self.ui.channel4Button.clicked.connect(self.channel4_triggered)
-        # self.ui.channel5Button.clicked.connect(self.channel5_triggered)
-        # self.ui.channel6Button.clicked.connect(self.channel6_triggered)
-        # self.ui.channel7Button.clicked.connect(self.channel7_triggered)
-        # self.ui.channel8Button.clicked.connect(self.channel8_triggered)
+        self.ui.channel0Button.clicked.connect(lambda: self.channel_triggered(0, self.ui.channel0Button.isChecked()))
+        self.ui.channel1Button.clicked.connect(lambda: self.channel_triggered(1, self.ui.channel1Button.isChecked()))
+        self.ui.channel2Button.clicked.connect(lambda: self.channel_triggered(2, self.ui.channel2Button.isChecked()))
+        self.ui.channel3Button.clicked.connect(lambda: self.channel_triggered(3, self.ui.channel3Button.isChecked()))
+        self.ui.channel4Button.clicked.connect(lambda: self.channel_triggered(4, self.ui.channel4Button.isChecked()))
+        self.ui.channel5Button.clicked.connect(lambda: self.channel_triggered(5, self.ui.channel5Button.isChecked()))
+        self.ui.channel6Button.clicked.connect(lambda: self.channel_triggered(6, self.ui.channel6Button.isChecked()))
+        self.ui.channel7Button.clicked.connect(lambda: self.channel_triggered(7, self.ui.channel7Button.isChecked()))
+        self.ui.channel8Button.clicked.connect(lambda: self.channel_triggered(8, self.ui.channel8Button.isChecked()))
+
+        # Hide the channel selection buttons.
+
+        self.ui.channel0Button.setVisible(False)
+        self.ui.channel0colour.setVisible(False)
+        self.ui.channel1Button.setVisible(False)
+        self.ui.channel1colour.setVisible(False)
+        self.ui.channel2Button.setVisible(False)
+        self.ui.channel2colour.setVisible(False)
+        self.ui.channel3Button.setVisible(False)
+        self.ui.channel3colour.setVisible(False)
+        self.ui.channel4Button.setVisible(False)
+        self.ui.channel4colour.setVisible(False)
+        self.ui.channel5Button.setVisible(False)
+        self.ui.channel5colour.setVisible(False)
+        self.ui.channel6Button.setVisible(False)
+        self.ui.channel6colour.setVisible(False)
+        self.ui.channel7Button.setVisible(False)
+        self.ui.channel7colour.setVisible(False)
+        self.ui.channel8Button.setVisible(False)
+        self.ui.channel8colour.setVisible(False)
 
         # Module, Command and Choices ComboBox Triggers.
 
@@ -295,11 +316,9 @@ class Main(QtGui.QMainWindow):
 
         self.ui.commandParameter.textChanged.emit(self.ui.commandParameter.text())
 
-        #
-        # # Chart Decimate and AutoRange signals.
-        # self.ui.chartAutoRangeCheckBox.stateChanged.connect(self.chart_auto_range_triggered)
-        # self.ui.chartDecimateCheckBox.stateChanged.connect(self.chart_decimate_triggered)
-        # self.ui.showLegend.stateChanged.connect(self.chart_show_legend_triggered)
+        # Chart show legend state change.
+
+        self.ui.showLegend.stateChanged.connect(self.chart_show_legend_triggered)
 
         # Instrument Name and File lists
         self.instrument_names = []
@@ -516,8 +535,8 @@ class Main(QtGui.QMainWindow):
 
         logger = logging.getLogger('StarbaseMini.instrument_selection')
 
-        print("Datastore length : %s" % str(len(self.data_store.RawData)))
-        print("Datastore RawDataSaved : %s" % str(self.data_store.RawDataSaved))
+        logger.debug("Datastore length : %s" % str(len(self.data_store.RawData)))
+        logger.debug("Datastore RawDataSaved : %s" % str(self.data_store.RawDataSaved))
 
         if self.data_store.data_state()[0] is False:
 
@@ -723,7 +742,7 @@ class Main(QtGui.QMainWindow):
 
         if self.application_configuration.get('StarinetRelay', 'active') == 'True':
 
-            print('Starinet Relay Active : True')
+            logger.debug('Starinet Relay Active : True')
 
             logger.info('########## Initialising Starinet Relay - Disabling UI control panel ##########')
 
@@ -733,7 +752,7 @@ class Main(QtGui.QMainWindow):
 
             if self.instrument.instrument_staribus_address == '000':  # Looks like we have Starinet then relay is False
 
-                print('Staribus address : %s' % self.instrument.instrument_staribus_address)
+                logger.debug('Staribus address : %s' % self.instrument.instrument_staribus_address)
 
                 logger.warning('Starinet relay enabled but Starinet instrument selected.')
 
@@ -744,13 +763,13 @@ class Main(QtGui.QMainWindow):
 
             else:  # Looks like we have a Staribus instrument now auto detect instrument or try to open port.
 
-                print('Staribus address : %s' % self.instrument.instrument_staribus_address)
+                logger.debug('Staribus address : %s' % self.instrument.instrument_staribus_address)
 
                 # First check the configuration looks sane.
 
                 if not utilities.check_ip(self.application_configuration.get('StarinetRelay', 'address')):
 
-                    print('Starinet address not valid : %s' % str(self.application_configuration.get('StarinetRelay',
+                    logger.debug('Starinet address not valid : %s' % str(self.application_configuration.get('StarinetRelay',
                                                                                                      'address')))
 
                     self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet Relay IP address invalid')
@@ -760,7 +779,7 @@ class Main(QtGui.QMainWindow):
                 elif not utilities.check_starinet_port(self.application_configuration.get('StarinetRelay',
                                                                                           'starinet_port')):
 
-                    print('Starinet port not valid : %s' % str(self.application_configuration.get('StarinetRelay',
+                    logger.debug('Starinet port not valid : %s' % str(self.application_configuration.get('StarinetRelay',
                                                                                                   'starinet_port')))
 
                     self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet Relay IP address invalid')
@@ -769,19 +788,19 @@ class Main(QtGui.QMainWindow):
 
                 else:
 
-                    print('Starinet address and port valid')
+                    logger.debug('Starinet address and port valid')
 
                     if self.instrument.instrument_staribus_autodetect == 'True':
 
-                        print('Attempt instrument autodetect is True')
+                        logger.debug('Attempt instrument autodetect is True')
 
                         if self.instrument_autodetector():
 
-                            print('Instrument autodetect returned True')
+                            logger.debug('Instrument autodetect returned True')
 
                             self.starinet_relay_state = True
 
-                            print('Starinet Relay Active : True')
+                            logger.debug('Starinet Relay Active : True')
 
                             logger.info('########## Valid Starinet relay configuration found. ##########')
                             logger.info('Starting startinet relay')
@@ -800,7 +819,7 @@ class Main(QtGui.QMainWindow):
 
                         else:
 
-                            print('Instrument autodetect returned False')
+                            logger.debug('Instrument autodetect returned False')
 
                             logger.warning('Instrument autodetect true - No instrument or port found.')
 
@@ -814,16 +833,16 @@ class Main(QtGui.QMainWindow):
                         # Auto detect instrument on serial port wasn't true so lets see if
                         # we can open the configured serial port.
 
-                        print('Checking to see if we can open configured serial port')
+                        logger.debug('Checking to see if we can open configured serial port')
 
                         if utilities.check_serial_port(self.instrument.instrument_staribus_port):
 
-                            print('We appear to be able to open serial port : %s' %
+                            logger.debug('We appear to be able to open serial port : %s' %
                                   str(self.instrument.instrument_staribus_port))
 
                             self.starinet_relay_state = True
 
-                            print('Starinet Relay Active : True')
+                            logger.debug('Starinet Relay Active : True')
 
                             logger.info('########## Valid Starinet relay configuration found. ##########')
                             logger.info('Starting startinet relay')
@@ -841,7 +860,7 @@ class Main(QtGui.QMainWindow):
                                                                   self.instrument.instrument_staribus_timeout)
                         else:
 
-                            print('Unable to open configured serial port.')
+                            logger.debug('Unable to open configured serial port.')
 
                             logger.warning('No serial port found unable to start Starinet Relay.')
 
@@ -855,7 +874,7 @@ class Main(QtGui.QMainWindow):
                             self.disable_control_panel()
         else:
 
-            print('Starinet Relay Active : False')
+            logger.debug('Starinet Relay Active : False')
 
             # Now we check to see if the configuration we have makes sense.
 
@@ -1102,11 +1121,11 @@ class Main(QtGui.QMainWindow):
 
         ports = utilities.serial_port_scanner()
 
-        print('Serial ports found : %s' % str(ports))
+        logger.debug('Serial ports found : %s' % str(ports))
 
         if ports is None:
 
-            print('Serial ports is none')
+            logger.debug('Serial ports is none')
 
             logger.warning('No serial ports found to scan for instrument.')
 
@@ -1434,6 +1453,8 @@ class Main(QtGui.QMainWindow):
 
                 if response[0] != 'SUCCESS':
                     self.status_message(interpreter_response[0], response[1], 'Plotting error!!', None)
+                else:
+                    self.chart_control_panel(self.instrument)
 
             else:
 
@@ -1447,6 +1468,8 @@ class Main(QtGui.QMainWindow):
         self.ui.executeButton.blockSignals(False)
 
     def open_csv_file(self):
+
+        logger = logging.getLogger('StarbaseMini.open_csv_file')
 
         if not utilities.data_state_check(self.data_store, 'standard'):
 
@@ -1490,12 +1513,14 @@ class Main(QtGui.QMainWindow):
 
                         self.status_message('openCSV', response[0], response[1], None)
 
-                        print('openCSV calling add_data')
+                        logger.debug('openCSV calling add_data')
 
                         response = self.chart.add_data('rawCsv')
 
                         if response[0] != 'SUCCESS':
                             self.status_message('openCSV', response[1], 'Plotting error!!', None)
+                        else:
+                            self.chart_control_panel(self.metadata_deconstructor)
 
                     else:
 
@@ -1557,6 +1582,439 @@ class Main(QtGui.QMainWindow):
 
 
     ############################  BELOW MIGHT GET CHANGED IT'S FROM STARBASEMINI II ##############################
+
+
+    def channel_triggered(self, channel, state):
+
+        if state:
+            self.chart.channel_control(channel, True)
+        else:
+            self.chart.channel_control(channel, False)
+
+    def chart_control_panel(self, translated):
+
+        self.ui.showLegend.setEnabled(True)
+
+        self.ui.channel0Button.setVisible(False)
+        self.ui.channel0colour.setVisible(False)
+        self.ui.channel1Button.setVisible(False)
+        self.ui.channel1colour.setVisible(False)
+        self.ui.channel2Button.setVisible(False)
+        self.ui.channel2colour.setVisible(False)
+        self.ui.channel3Button.setVisible(False)
+        self.ui.channel3colour.setVisible(False)
+        self.ui.channel4Button.setVisible(False)
+        self.ui.channel4colour.setVisible(False)
+        self.ui.channel5Button.setVisible(False)
+        self.ui.channel5colour.setVisible(False)
+        self.ui.channel6Button.setVisible(False)
+        self.ui.channel6colour.setVisible(False)
+        self.ui.channel7Button.setVisible(False)
+        self.ui.channel7colour.setVisible(False)
+        self.ui.channel8Button.setVisible(False)
+        self.ui.channel8colour.setVisible(False)
+
+        if self.data_store.channel_count == 1:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(False)
+            self.ui.channel1colour.setVisible(False)
+            self.ui.channel2Button.setVisible(False)
+            self.ui.channel2colour.setVisible(False)
+            self.ui.channel3Button.setVisible(False)
+            self.ui.channel3colour.setVisible(False)
+            self.ui.channel4Button.setVisible(False)
+            self.ui.channel4colour.setVisible(False)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif self.data_store.channel_count == 2:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[1] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(False)
+            self.ui.channel2colour.setVisible(False)
+            self.ui.channel3Button.setVisible(False)
+            self.ui.channel3colour.setVisible(False)
+            self.ui.channel4Button.setVisible(False)
+            self.ui.channel4colour.setVisible(False)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif self.data_store.channel_count == 3:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[1] + '; }')
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[2] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel2Button.setText(translated.channel_names[2])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(False)
+            self.ui.channel3colour.setVisible(False)
+            self.ui.channel4Button.setVisible(False)
+            self.ui.channel4colour.setVisible(False)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif self.data_store.channel_count == 4:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[1] + '; }')
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[2] + '; }')
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[3] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel2Button.setText(translated.channel_names[2])
+            self.ui.channel3Button.setText(translated.channel_names[3])
+            self.ui.channel4Button.setVisible(False)
+            self.ui.channel4colour.setVisible(False)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif self.data_store.channel_count == 5:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[1] + '; }')
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[2] + '; }')
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[3] + '; }')
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[4] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel2Button.setText(translated.channel_names[2])
+            self.ui.channel3Button.setText(translated.channel_names[3])
+            self.ui.channel4Button.setText(translated.channel_names[4])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(False)
+            self.ui.channel5colour.setVisible(False)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif self.data_store.channel_count == 6:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[1] + '; }')
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[2] + '; }')
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[3] + '; }')
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[4] + '; }')
+            self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5Button.setChecked(True)
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[5] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel2Button.setText(translated.channel_names[2])
+            self.ui.channel3Button.setText(translated.channel_names[3])
+            self.ui.channel4Button.setText(translated.channel_names[4])
+            self.ui.channel5Button.setText(translated.channel_names[5])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(True)
+            self.ui.channel5colour.setVisible(True)
+            self.ui.channel6Button.setVisible(False)
+            self.ui.channel6colour.setVisible(False)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif self.data_store.channel_count == 7:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[1] + '; }')
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[2] + '; }')
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[3] + '; }')
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[4] + '; }')
+            self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5Button.setChecked(True)
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[5] + '; }')
+            self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6Button.setChecked(True)
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[6] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel2Button.setText(translated.channel_names[2])
+            self.ui.channel3Button.setText(translated.channel_names[3])
+            self.ui.channel4Button.setText(translated.channel_names[4])
+            self.ui.channel5Button.setText(translated.channel_names[5])
+            self.ui.channel6Button.setText(translated.channel_names[6])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(True)
+            self.ui.channel5colour.setVisible(True)
+            self.ui.channel6Button.setVisible(True)
+            self.ui.channel6colour.setVisible(True)
+            self.ui.channel7Button.setVisible(False)
+            self.ui.channel7colour.setVisible(False)
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif self.data_store.channel_count == 8:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[1] + '; }')
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[2] + '; }')
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[3] + '; }')
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[4] + '; }')
+            self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5Button.setChecked(True)
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[5] + '; }')
+            self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6Button.setChecked(True)
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[6] + '; }')
+            self.ui.channel7Button.setEnabled(True)
+            self.ui.channel7Button.setChecked(True)
+            self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[7] + '; }')
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(True)
+            self.ui.channel5colour.setVisible(True)
+            self.ui.channel6Button.setVisible(True)
+            self.ui.channel6colour.setVisible(True)
+            self.ui.channel7Button.setVisible(True)
+            self.ui.channel7colour.setVisible(True)
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel2Button.setText(translated.channel_names[2])
+            self.ui.channel3Button.setText(translated.channel_names[3])
+            self.ui.channel4Button.setText(translated.channel_names[4])
+            self.ui.channel5Button.setText(translated.channel_names[5])
+            self.ui.channel6Button.setText(translated.channel_names[6])
+            self.ui.channel7Button.setText(translated.channel_names[7])
+            self.ui.channel8Button.setVisible(False)
+            self.ui.channel8colour.setVisible(False)
+        elif self.data_store.channel_count == 9:
+            self.ui.channel0Button.setEnabled(True)
+            self.ui.channel0Button.setChecked(True)
+            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[0] + '; }')
+            self.ui.channel1Button.setEnabled(True)
+            self.ui.channel1Button.setChecked(True)
+            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[1] + '; }')
+            self.ui.channel2Button.setEnabled(True)
+            self.ui.channel2Button.setChecked(True)
+            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[2] + '; }')
+            self.ui.channel3Button.setEnabled(True)
+            self.ui.channel3Button.setChecked(True)
+            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[3] + '; }')
+            self.ui.channel4Button.setEnabled(True)
+            self.ui.channel4Button.setChecked(True)
+            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[4] + '; }')
+            self.ui.channel5Button.setEnabled(True)
+            self.ui.channel5Button.setChecked(True)
+            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[5] + '; }')
+            self.ui.channel6Button.setEnabled(True)
+            self.ui.channel6Button.setChecked(True)
+            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[6] + '; }')
+            self.ui.channel7Button.setEnabled(True)
+            self.ui.channel7Button.setChecked(True)
+            self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[7] + '; }')
+            self.ui.channel8Button.setEnabled(True)
+            self.ui.channel8Button.setChecked(True)
+            self.ui.channel8colour.setStyleSheet('QCheckBox::indicator {background-color: '
+                                                 + translated.channel_colours[8] + '; }')
+            self.ui.channel0Button.setText(translated.channel_names[0])
+            self.ui.channel1Button.setText(translated.channel_names[1])
+            self.ui.channel2Button.setText(translated.channel_names[2])
+            self.ui.channel3Button.setText(translated.channel_names[3])
+            self.ui.channel4Button.setText(translated.channel_names[4])
+            self.ui.channel5Button.setText(translated.channel_names[5])
+            self.ui.channel6Button.setText(translated.channel_names[6])
+            self.ui.channel7Button.setText(translated.channel_names[7])
+            self.ui.channel8Button.setText(translated.channel_names[8])
+            self.ui.channel0Button.setVisible(True)
+            self.ui.channel0colour.setVisible(True)
+            self.ui.channel1Button.setVisible(True)
+            self.ui.channel1colour.setVisible(True)
+            self.ui.channel2Button.setVisible(True)
+            self.ui.channel2colour.setVisible(True)
+            self.ui.channel3Button.setVisible(True)
+            self.ui.channel3colour.setVisible(True)
+            self.ui.channel4Button.setVisible(True)
+            self.ui.channel4colour.setVisible(True)
+            self.ui.channel5Button.setVisible(True)
+            self.ui.channel5colour.setVisible(True)
+            self.ui.channel6Button.setVisible(True)
+            self.ui.channel6colour.setVisible(True)
+            self.ui.channel7Button.setVisible(True)
+            self.ui.channel7colour.setVisible(True)
+            self.ui.channel8Button.setVisible(True)
+            self.ui.channel8colour.setVisible(True)
+        else:
+            self.status_message('system', 'ERROR', 'Number of channels out of bounds.', None)
+            # self.logger.warning('Index Error, Number of channels out of bounds. %s' % number_of_channels)
+
+    # ----------------------------------------
+    # Chart show legend method.
+    # ----------------------------------------
+
+    def chart_show_legend_triggered(self):
+        if self.ui.showLegend.isChecked():
+            self.chart.chart_legend(True)
+        else:
+            self.chart.chart_legend(False)
 
     def disable_control_panel(self):
 

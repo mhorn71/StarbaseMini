@@ -19,6 +19,9 @@ __author__ = 'mark'
 
 import logging
 import sys
+import time
+
+from PyQt4 import QtGui, QtCore
 
 from itertools import zip_longest
 
@@ -70,20 +73,15 @@ class Chart:
         :return:
         '''
         ##initialise logger
-        self.logger = logging.getLogger('graphics.chart')
-        self.ui = ui
-        self.datatranslator = None
-        self.metadata = None
-        self.instrument = None
-        self.config = None
-        self.attributes = None
-        self.run_once = False
-        self.count = 0  # Just a generic counter for testing purposes.
-        self.channel_count = 0
 
-        # Decimate attributes etc...
-        self.timestamp = []
-        self.decimate_array = []
+        logger = logging.getLogger('graphics.Chart.init')
+        self.ui = ui
+        self.data_store = None
+        self.data_source = None
+        self.instrument = None
+        self.metadata = None
+        self.application_configuration = None
+        self.run_once = False
 
         mpl.rcParams['font.monospace'] = 'Courier New'
         mpl.rcParams['savefig.bbox'] = 'tight'
@@ -106,194 +104,148 @@ class Chart:
         else:
             self.fig.tight_layout()
 
-        self.logger.info('Initialised charting.')
+        logger.info('Initialised charting.')
 
-    def chart_instrument_setup(self, datatranslator, instrument, metadata, application_configuration):
-        self.datatranslator = datatranslator
+    def chart_instrument_setup(self, datastore, instrument, metadata, application_configuration, datasource):
+        self.data_store = datastore
+        self.data_source = datasource
         self.instrument = instrument
         self.metadata = metadata
         self.application_configuration = application_configuration
 
         mpl.rcParams['savefig.directory'] = self.application_configuration.get('Application', 'instrument_data_path')
 
+    def add_data(self, type):
 
-    def clear(self):
-        self.ax1f1.clear()
-        del self.timestamp[:]
-        del self.decimate_array[:]
+        logger = logging.getLogger('graphics.Chart.add_data')
 
-    def add_metadata(self, data_type):
-        '''
-        adds the title, axis labels, channel names etc .....
-        :param type: data or csv
-        :return: True or False.
-        '''
-        data_type = data_type.lower()
-        if data_type == 'data':
-            self.attributes = self.instrument
-            self.logger.debug('add_metdata data_type set to : ' + 'data')
-            self.logger.debug('add_metadata self.attributes type : ' + str(type(self.instrument)))
-        elif data_type == 'csv':
-            self.attributes = self.metadata
-            self.logger.debug('add_metadata data_type set to : ' + 'csv')
-            self.logger.debug('add_metadata self.attributes type : ' +  str(type(self.metadata)))
+        # Clear the current chart if present.
+
+        if self.ax1f1 is not None:
+
+            self.ax1f1.clear()
+
+        # print('Data source : %s' % str(self.data_store.DataSource))
+
+        # Set labels and ranges from metadata depending on data source.
+
+        if self.data_store.DataSource == 'Controller':
+
+            title = self.instrument.instrument_identifier
+            channel_names = self.instrument.channel_names
+            channel_colours = self.instrument.channel_colours
+            channel_units = self.instrument.channel_units
+            y_axis_label = self.instrument.YaxisLabel
+            x_axis_label = self.instrument.XaxisLabel
+            y_axis_range = self.instrument.YaxisRange
+
+        elif self.data_store.DataSource == 'CSV':
+
+            title = self.metadata.instrument_identifier
+            channel_names = self.metadata.channel_names
+            channel_colours = self.metadata.channel_colours
+            channel_units = self.metadata.channel_units
+            y_axis_label = self.metadata.YaxisLabel
+            x_axis_label = self.metadata.XaxisLabel
+            y_axis_range = None
+
         else:
-            self.logger.critical('add_metdata Unknown data type : %s' % data_type)
-            return False
 
-        self.set_scale()
+            return 'PREMATURE_TERINATION', 'Unknown data source : %s' % str(self.data_source)
+
+        # set labels and title.
+
+        self.ax1f1.set_title(title)
+        self.ax1f1.set_xlabel(x_axis_label)
+        self.ax1f1.set_ylabel(y_axis_label)
+        self.ax1f1.grid(True)
+
+        # set y axis range if set.
+
+        if y_axis_range is not None:
+
+            axis_range = y_axis_range.split(',')
+
+            yrange_start = int(axis_range[0])
+
+            yrange_stop = int(axis_range[1])
+
+            self.ax1f1.set_ylim(yrange_start, yrange_stop)
 
         try:
-            if self.attributes.XaxisLabel is not None:
-                self.ax1f1.set_xlabel(self.attributes.XaxisLabel)
-            else:
-                self.ax1f1.set_xlabel('NODATA')
 
-            if self.attributes.YaxisLabel is not None:
-                self.ax1f1.set_ylabel(self.attributes.YaxisLabel)
-            else:
-                self.ax1f1.set_ylabel('NODATA')
+            number_of_channels = int(self.data_store.channel_count)
+            logger.debug('add_data to chart channel count : ' + str(number_of_channels))
 
-            if self.attributes.instrument_identifier is not None:
-                self.ax1f1.set_title(self.attributes.instrument_identifier)
-            else:
-                self.ax1f1.set_title('NODATA')
-
-            self.ax1f1.grid(True)
         except AttributeError as msg:
-            self.logger.critical(str(msg))
-            return False
-        else:
-            return True
 
-    def set_scale(self):
-        try:
-            if self.attributes.YaxisRange is not None:
-                axis_range = self.attributes.YaxisRange.split(',')
-                yrange_start = int(axis_range[0])
-                yrange_stop = int(axis_range[1])
-                self.ax1f1.set_ylim(yrange_start, yrange_stop)
-        except AttributeError:
-            self.logger.warning('No axes scale found defaulting to autoscale.')
+            logger.critical('Channel count not found : %s' % str(msg))
 
-    def add_mpl(self):
+            return 'PREMATURE_TERMINATION', 'Channel count : %s' % str(msg)
 
-        # Something to beware of I'm not sure what will happen if and Index X axis is used.
-        hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
-        self.ax1f1.xaxis.set_major_formatter(hfmt)
-        self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%Y-%m-%d %H:%M:%S')
+        #  Set what type the data is raw, rawcsv, processed.
 
-        if self.run_once is False:
-            # set the mplwindow widget background to a gray otherwise splash page disfigures the toolbar look.
-            self.ui.mplwindow.setStyleSheet('QWidget{ background-color: #EDEDED; }')
+        if type == 'raw':
 
-            self.ui.mplvl.addWidget(self.canvas)
+            print('Length of data : %s' % str(len(self.data_store.RawData)))
 
-            toolbar = NavigationToolbar(self.canvas,
-                                        self.ui.mplwindow, coordinates=True)
-            self.ui.mplvl.addWidget(toolbar)
-            self.run_once = True
-        else:
-            self.canvas.draw()
+            data = self.data_store.RawData
 
-    def add_data(self, number_of_channels):
+        elif type == 'rawCsv':
 
-        try:
-            number_of_channels = int(number_of_channels)
-            self.logger.debug('add_data to chart channel count : ' + str(number_of_channels))
-        except AttributeError as msg:
-            self.logger.critical('Channel count not found : %s' % str(msg))
-            return 'PREMATURE_TERMINATION', str(msg)
+            print('Length of data : %s' % str(len(self.data_store.RawDataCsv)))
 
-        self.channel_count = number_of_channels
+            data = self.data_store.RawDataCsv
 
-        self.logger.debug('add_data data_array length : ' + str(len(self.datatranslator.data_array)))
-        self.logger.debug('add_data channel colour length : ' +  str(len(self.attributes.channel_colours)))
-        self.logger.debug('add_data channel names length : ' + str(len(self.attributes.channel_names)))
+        elif type == 'processed':
 
-        try:
-            for i in range(number_of_channels):
-                self.ax1f1.plot(self.datatranslator.datetime, self.datatranslator.data_array[i],
-                                self.attributes.channel_colours[i], label=self.attributes.channel_names[i])
-        except IndexError as msg:
-            self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
-            return 'PREMATURE_TERMINATION', str(msg)
+            print('Length of data : %s' % str(len(self.data_store.ProcessedData)))
+
+            data = self.data_store.ProcessedData
+
+        epoch = [n[0] for n in data]
+
+        channels = []
+
+        for i in range(number_of_channels):
+
+            channels.append([n[i + 1] for n in data])
+
+        for i in range(0, number_of_channels):
+
+            self.ax1f1.plot(epoch, channels[i], channel_colours[i], label=channel_names[i])
 
         self.add_mpl()
 
         return 'SUCCESS', None
 
-    def decimate_data(self, number_of_channels):
+    def add_mpl(self):
 
-        try:
-            number_of_channels = int(number_of_channels)
-        except AttributeError as msg:
-            self.logger.critical('Channel count not found : %s' % str(msg))
-            return 'PREMATURE_TERMINATION', str(msg)
-
-        self.channel_count = number_of_channels
-
-        self.logger.debug('Datetime Original Length : %s' % str(len(self.datatranslator.datetime)))
-
-        args = [iter(self.datatranslator.datetime)] * 4
-        x = zip_longest(fillvalue=None, *args)
-
-        for i in x:
-            self.timestamp.append(i[0])
-
-        self.logger.debug('Datetime Decimate Length : %s' % str(len(self.timestamp)))
-
-        try:
-            for i in range(number_of_channels):
-                tmp_list = []
-
-                args = [iter(self.datatranslator.data_array[i])] * 4
-                x = zip_longest(fillvalue=None, *args)
-
-                for n in x:
-                    tmp_list.append(n[0])
-
-                self.decimate_array.append(tmp_list)
-
-                self.logger.debug('Decimate Array Length : ' + str(len(self.decimate_array)))
-                self.logger.debug('Channel : ' + str(i) + ' - ' + 'Original Length : ' + str(len(self.datatranslator.data_array[i])))
-                self.logger.debug('Channel : ' + str(i) + ' - ' + 'Decimate Length : ' + str(len(tmp_list)))
-
-        except IndexError as msg:
-            self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
-            return 'PREMATURE_TERMINATION', str(msg)
-
-        try:
-            for i in range(number_of_channels):
-                self.ax1f1.plot(self.timestamp, self.decimate_array[i],
-                                self.attributes.channel_colours[i], label=self.attributes.channel_names[i])
-        except IndexError as msg:
-            self.logger.critical('Channel count doesn\'t match data : %s' % str(msg))
-            return 'PREMATURE_TERMINATION', str(msg)
+        # Something to beware of I'm not sure what will happen if and Index X axis is used.
 
         hfmt = mpl.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d')
+
         self.ax1f1.xaxis.set_major_formatter(hfmt)
+
         self.ax1f1.fmt_xdata = mpl.dates.DateFormatter('%Y-%m-%d %H:%M:%S')
 
-        self.canvas.draw()
+        if self.run_once is False:
 
-    def channel_control(self, channel, state):
+            # set the mplwindow widget background to a gray otherwise splash page disfigures the toolbar look.
 
-        if state is False:
-            self.ax1f1.lines[channel].set_visible(False)
+            self.ui.mplwindow.setStyleSheet('QWidget{ background-color: #EDEDED; }')
+
+            self.ui.mplvl.addWidget(self.canvas)
+
+            toolbar = NavigationToolbar(self.canvas, self.ui.mplwindow, coordinates=True)
+
+            self.ui.mplvl.addWidget(toolbar)
+
+            self.run_once = True
+
         else:
-            self.ax1f1.lines[channel].set_visible(True)
 
-        self.canvas.draw()
-
-    def channel_autoscale(self, state):
-        if state is False:
-            self.ax1f1.autoscale(False)
-            self.set_scale()
-        else:
-            self.ax1f1.autoscale(True)
-
-        self.canvas.draw()
+            self.canvas.draw()
 
     def chart_legend(self, state):
 
@@ -305,8 +257,10 @@ class Chart:
                               ncol=int(self.application_configuration.get('Legend', 'columns'))).set_visible(True)
 
             # # # set the linewidth of each legend object
-            for legend_handle in self.ax1f1.legend(prop=fontP, loc=self.application_configuration.get('Legend', 'location'),
-                                                   ncol=int(self.application_configuration.get('Legend', 'columns'))).legendHandles:
+            for legend_handle in self.ax1f1.legend(prop=fontP,
+                                                   loc=self.application_configuration.get('Legend', 'location'),
+                                                   ncol=int(self.application_configuration.get('Legend',
+                                                                                               'columns'))).legendHandles:
                 legend_handle.set_linewidth(10.0)
 
         elif state is False:
@@ -314,3 +268,11 @@ class Chart:
 
         self.canvas.draw()
 
+    def channel_control(self, channel, state):
+
+        if state is False:
+            self.ax1f1.lines[channel].set_visible(False)
+        else:
+            self.ax1f1.lines[channel].set_visible(True)
+
+        self.canvas.draw()
