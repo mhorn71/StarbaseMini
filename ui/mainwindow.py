@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Fri May 20 22:00:11 2016
+# Created: Sat May 28 11:57:57 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -147,12 +147,6 @@ class Ui_MainWindow(object):
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.chartDecimateCheckBox = QtGui.QCheckBox(self.layoutWidget2)
-        self.chartDecimateCheckBox.setObjectName("chartDecimateCheckBox")
-        self.verticalLayout_2.addWidget(self.chartDecimateCheckBox)
-        self.chartAutoRangeCheckBox = QtGui.QCheckBox(self.layoutWidget2)
-        self.chartAutoRangeCheckBox.setObjectName("chartAutoRangeCheckBox")
-        self.verticalLayout_2.addWidget(self.chartAutoRangeCheckBox)
         self.showLegend = QtGui.QCheckBox(self.layoutWidget2)
         self.showLegend.setObjectName("showLegend")
         self.verticalLayout_2.addWidget(self.showLegend)
@@ -369,6 +363,8 @@ class Ui_MainWindow(object):
         self.menuProcessedData.setObjectName("menuProcessedData")
         self.menuData_Filters = QtGui.QMenu(self.menuTools)
         self.menuData_Filters.setObjectName("menuData_Filters")
+        self.menuData_Viewers = QtGui.QMenu(self.menuTools)
+        self.menuData_Viewers.setObjectName("menuData_Viewers")
         MainWindow.setMenuBar(self.menubar)
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
@@ -420,6 +416,10 @@ class Ui_MainWindow(object):
         self.actionRunning_Average.setObjectName("actionRunning_Average")
         self.actionWeighted_Running_Average = QtGui.QAction(MainWindow)
         self.actionWeighted_Running_Average.setObjectName("actionWeighted_Running_Average")
+        self.actionRaw_Data = QtGui.QAction(MainWindow)
+        self.actionRaw_Data.setObjectName("actionRaw_Data")
+        self.actionProcessed_Data = QtGui.QAction(MainWindow)
+        self.actionProcessed_Data.setObjectName("actionProcessed_Data")
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave_RawData)
         self.menuFile.addAction(self.actionSave_Processed_Data)
@@ -438,7 +438,10 @@ class Ui_MainWindow(object):
         self.menuData_Filters.addAction(self.actionPeak_Extractor)
         self.menuData_Filters.addAction(self.actionRunning_Average)
         self.menuData_Filters.addAction(self.actionWeighted_Running_Average)
+        self.menuData_Viewers.addAction(self.actionRaw_Data)
+        self.menuData_Viewers.addAction(self.actionProcessed_Data)
         self.menuTools.addAction(self.menuData_Filters.menuAction())
+        self.menuTools.addAction(self.menuData_Viewers.menuAction())
         self.menuTools.addAction(self.actionMetadata)
         self.menuTools.addAction(self.menuSegment_Data.menuAction())
         self.menubar.addAction(self.menuFile.menuAction())
@@ -461,8 +464,6 @@ class Ui_MainWindow(object):
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Parameter", None, QtGui.QApplication.UnicodeUTF8))
         self.executeButton.setText(QtGui.QApplication.translate("MainWindow", "Execute", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBox.setItemText(self.toolBox.indexOf(self.UserCtrl), QtGui.QApplication.translate("MainWindow", "Instrument", None, QtGui.QApplication.UnicodeUTF8))
-        self.chartDecimateCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Decimate", None, QtGui.QApplication.UnicodeUTF8))
-        self.chartAutoRangeCheckBox.setText(QtGui.QApplication.translate("MainWindow", "AutoRange", None, QtGui.QApplication.UnicodeUTF8))
         self.showLegend.setText(QtGui.QApplication.translate("MainWindow", "Show Legend", None, QtGui.QApplication.UnicodeUTF8))
         self.channel0Button.setText(QtGui.QApplication.translate("MainWindow", "PushButton", None, QtGui.QApplication.UnicodeUTF8))
         self.channel1Button.setText(QtGui.QApplication.translate("MainWindow", "PushButton", None, QtGui.QApplication.UnicodeUTF8))
@@ -484,6 +485,7 @@ class Ui_MainWindow(object):
         self.menuRawData.setTitle(QtGui.QApplication.translate("MainWindow", "RawData", None, QtGui.QApplication.UnicodeUTF8))
         self.menuProcessedData.setTitle(QtGui.QApplication.translate("MainWindow", "ProcessedData", None, QtGui.QApplication.UnicodeUTF8))
         self.menuData_Filters.setTitle(QtGui.QApplication.translate("MainWindow", "Data Filters", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuData_Viewers.setTitle(QtGui.QApplication.translate("MainWindow", "Data Viewers", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "Configuration", None, QtGui.QApplication.UnicodeUTF8))
         self.actionControllerEditor.setText(QtGui.QApplication.translate("MainWindow", "Futurlec Controller", None, QtGui.QApplication.UnicodeUTF8))
@@ -495,7 +497,7 @@ class Ui_MainWindow(object):
         self.actionInstrument_Attrib.setText(QtGui.QApplication.translate("MainWindow", "Instrument Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReleaseNotes.setText(QtGui.QApplication.translate("MainWindow", "ReleaseNotes", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Import", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Import Data", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSave_RawData.setText(QtGui.QApplication.translate("MainWindow", "Export Raw Data", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSave_Processed_Data.setText(QtGui.QApplication.translate("MainWindow", "Export Processed Data", None, QtGui.QApplication.UnicodeUTF8))
         self.actionDay.setText(QtGui.QApplication.translate("MainWindow", "Day", None, QtGui.QApplication.UnicodeUTF8))
@@ -509,4 +511,6 @@ class Ui_MainWindow(object):
         self.actionPeak_Extractor.setText(QtGui.QApplication.translate("MainWindow", "Peak Extractor", None, QtGui.QApplication.UnicodeUTF8))
         self.actionRunning_Average.setText(QtGui.QApplication.translate("MainWindow", "Running Average", None, QtGui.QApplication.UnicodeUTF8))
         self.actionWeighted_Running_Average.setText(QtGui.QApplication.translate("MainWindow", "Weighted Running Average", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionRaw_Data.setText(QtGui.QApplication.translate("MainWindow", "RawData", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionProcessed_Data.setText(QtGui.QApplication.translate("MainWindow", "ProcessedData", None, QtGui.QApplication.UnicodeUTF8))
 

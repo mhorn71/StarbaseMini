@@ -293,20 +293,6 @@ QToolBox::tab:selected { /* italicize selected tabs */
              <item row="0" column="0">
               <layout class="QVBoxLayout" name="verticalLayout_2">
                <item>
-                <widget class="QCheckBox" name="chartDecimateCheckBox">
-                 <property name="text">
-                  <string>Decimate</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="chartAutoRangeCheckBox">
-                 <property name="text">
-                  <string>AutoRange</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QCheckBox" name="showLegend">
                  <property name="text">
                   <string>Show Legend</string>
@@ -766,7 +752,15 @@ QToolBox::tab:selected { /* italicize selected tabs */
      <addaction name="actionRunning_Average"/>
      <addaction name="actionWeighted_Running_Average"/>
     </widget>
+    <widget class="QMenu" name="menuData_Viewers">
+     <property name="title">
+      <string>Data Viewers</string>
+     </property>
+     <addaction name="actionRaw_Data"/>
+     <addaction name="actionProcessed_Data"/>
+    </widget>
     <addaction name="menuData_Filters"/>
+    <addaction name="menuData_Viewers"/>
     <addaction name="actionMetadata"/>
     <addaction name="menuSegment_Data"/>
    </widget>
@@ -833,7 +827,7 @@ QToolBox::tab:selected { /* italicize selected tabs */
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>Import</string>
+    <string>Import Data</string>
    </property>
   </action>
   <action name="actionSave_RawData">
@@ -899,6 +893,16 @@ QToolBox::tab:selected { /* italicize selected tabs */
   <action name="actionWeighted_Running_Average">
    <property name="text">
     <string>Weighted Running Average</string>
+   </property>
+  </action>
+  <action name="actionRaw_Data">
+   <property name="text">
+    <string>RawData</string>
+   </property>
+  </action>
+  <action name="actionProcessed_Data">
+   <property name="text">
+    <string>ProcessedData</string>
    </property>
   </action>
  </widget>
