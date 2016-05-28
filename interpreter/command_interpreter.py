@@ -814,8 +814,7 @@ class CommandInterpreter():
 
         # Tell the data store the number of channels.
 
-        self.data_store.channel_count = self.instrument.instrument_number_of_channels
-
+        self.data_store.channel_count = int(self.instrument.instrument_number_of_channels)
         # Setup progress dialog.
 
         progressDialog = QtGui.QProgressDialog('Downloading data ...', str("Abort"), 0, counter)

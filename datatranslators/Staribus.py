@@ -46,41 +46,41 @@ class StaribusBlockParser:
 
         logger = logging.getLogger('datatranslator.StaribusBlockParser.block_parser')
 
-        if data_store.channel_count == '1':
+        if data_store.channel_count == 1:
 
             logger.critical('Number of channels out of range : %s' % data_store.channel_count)
 
             return False
 
-        elif data_store.channel_count == '2':
+        elif data_store.channel_count == 2:
 
             sample_length = '\d{4}'
 
-        elif data_store.channel_count == '3':
+        elif data_store.channel_count == 3:
 
             sample_length = '([+|\-]\d{3}[+\-]\d{3})|\d{8}'
 
-        elif data_store.channel_count == '4':
+        elif data_store.channel_count == 4:
 
             sample_length = '\d{12}'
 
-        elif data_store.channel_count == '5':
+        elif data_store.channel_count == 5:
 
             sample_length = '\d{16}'
 
-        elif data_store.channel_count == '6':
+        elif data_store.channel_count == 6:
 
             sample_length = '\d{20}'
 
-        elif data_store.channel_count == '7':
+        elif data_store.channel_count == 7:
 
             sample_length = '\d{24}'
 
-        elif data_store.channel_count == '8':
+        elif data_store.channel_count == 8:
 
             sample_length = '\d{28}'
 
-        elif data_store.channel_count == '9':
+        elif data_store.channel_count == 9:
 
             sample_length = '\d{32}'
 
@@ -122,36 +122,36 @@ class StaribusBlockParser:
 
                     logger.debug('Sample dat list : %s' % repr(dat))
 
-                    if data_store.channel_count == '2':
+                    if data_store.channel_count == 2:
 
                         self.parsed_data_list.append([epoch, data[2], dat[0]])
 
-                    elif data_store.channel_count == '3':
+                    elif data_store.channel_count == 3:
 
                         self.parsed_data_list.append([epoch, data[2], dat[0], dat[1]])
 
-                    elif data_store.channel_count == '4':
+                    elif data_store.channel_count == 4:
 
                         self.parsed_data_list.append([epoch, data[2], dat[0], dat[1], dat[2]])
 
-                    elif data_store.channel_count == '5':
+                    elif data_store.channel_count == 5:
 
                         self.parsed_data_list.append([epoch, data[2], dat[0], dat[1], dat[2], dat[3]])
 
-                    elif data_store.channel_count == '6':
+                    elif data_store.channel_count == 6:
 
                         self.parsed_data_list.append([epoch, data[2], dat[0], dat[1], dat[2], dat[3], dat[4]])
 
-                    elif data_store.channel_count == '7':
+                    elif data_store.channel_count == 7:
 
                         self.parsed_data_list.append([epoch, data[2], dat[0], dat[1], dat[2], dat[3], dat[4], dat[5]])
 
-                    elif data_store.channel_count == '8':
+                    elif data_store.channel_count == 8:
 
                         self.parsed_data_list.append([epoch, data[2], dat[0], dat[1], dat[2], dat[3], dat[4], dat[5],
                                                       dat[6]])
 
-                    elif data_store.channel_count == '9':
+                    elif data_store.channel_count == 9:
 
                         self.parsed_data_list.append([epoch, data[2], dat[0], dat[1], dat[2], dat[3], dat[4], dat[5],
                                                       dat[6], dat[7]])
