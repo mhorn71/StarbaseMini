@@ -43,7 +43,10 @@ class CsvParser:
         try:
             with open(file_name) as csvfile:
                 content = csvfile.readlines()
-        except IOError:
+        except IOError as msg:
+
+            logger.warning('Unable to open file : %s %s' % (file_name, str(msg)))
+
             return 'PREMATURE_TERMINATION', 'Unable to open : %s' % file_name
         else:
             csvfile.close()
@@ -83,6 +86,8 @@ class CsvParser:
 
                     self.data_store.clear()
 
+                    logger.warning('Data split into N fields : %s' % str(len(split_data)))
+
                     return 'PREMATURE_TERMINATION', 'Not enough fields to parse!!'
 
                 # Now attempt to extract and split date field.
@@ -118,7 +123,8 @@ class CsvParser:
 
                     try:
                         regex = datatranslator.data_regex
-                    except AttributeError:
+                    except AttributeError as msg:
+                        logger.warning('datatranslator.data_regex : %s' % str(msg))
                         regex = "*"
 
                     # Append each item of what should be channel data to the data_list.
@@ -130,6 +136,8 @@ class CsvParser:
                             data_line.append(split_data[i])
 
                         else:
+
+                            logger.warning("Data %s doesn't pass regex check :%s" % (str(split_data[i]), str(regex)))
 
                             self.data_store.clear()
 
@@ -148,5 +156,7 @@ class CsvParser:
         else:
 
             self.data_store.clear()
+
+            logger.warning('No data found!!')
 
             return 'PREMATURE_TERMINATION', 'No data found!!'
