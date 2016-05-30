@@ -16,15 +16,15 @@ __author__ = 'mark'
 #
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
-
 import os
 import datetime
 import logging
+import csv
 
 from PyQt4 import QtGui
 
 
-def exporter(type, metadata_creator, data_store, user_home, data_home):
+def exporter(type, metadata, data_store, user_home, data_home):
 
     logger = logging.getLogger('core.exporter')
 
@@ -70,92 +70,37 @@ def exporter(type, metadata_creator, data_store, user_home, data_home):
 
     else:
 
-        csv = ''
+        with open(file_name, 'w', newline='') as csv_file:
 
-        # for each list in data_store.RawData
+            data_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        for lista in data_source:
+            for i in metadata.metadata_creator(data_store.DataSource):
 
-            # Convert from numpy array to normal list
+                data_writer.writerow(i)
 
-            lista.tolist()
+            for data in data_source.tolist():
 
-            # Convert datatime object in to formatted string.
+                date, time = data[0].strftime('%Y-%m-%d,%H:%M:%S').split(',')
 
-            date = lista[0].strftime('%Y-%m-%d,%H:%M:%S')
+                data[0] = date
+                data.insert(1, time)
 
-            # For all data exluding the datatime object join it together with a comma
+                data_writer.writerow(data)
 
-            data = ','.join(lista[1:])
+        csv_file.close()
 
-            # Add carriage return and line feed to data
+        logger.info('File Exported : %s' % file_name)
 
-            data += '\r\n'
+        if type == 'processed':
 
-            # Append date and data to csv
+            data_store.ProcessedDataSaved = True
 
-            csv += date + ',' + data
-
-        if len(csv) == 0:
-
-            return 'PREMATURE_TERMINATION', 'Unable to create csv from data.'
+            logger.info('ProcessDataSaved set to True')
 
         else:
 
-            try:
+            data_store.RawDataSaved = True
 
-                file = open(file_name, 'w')
+            logger.info('RawDataSaved set to True')
 
-            except IOError as msg:
-
-                logger.critical(str(msg))
-
-                return 'PREMATURE_TERMINATION', ('Unable to create file : %s' % file_name)
-
-            else:
-
-                if data_store.DataSource == 'CSV':
-
-                    if len(data_store.MetadataCsv) != 0:
-
-                        for listb in data_store.MetadataCsv:
-
-                            file.write(listb + '\r\n')
-
-                elif data_store.DataSource == 'Controller':
-
-                    if metadata_creator.observatory_metadata() is not None:
-
-                        file.write(metadata_creator.observatory_metadata())
-
-                    if metadata_creator.observer_metadata() is not None:
-
-                        file.write(metadata_creator.observer_metadata())
-
-                    if metadata_creator.observation_metadata() is not None:
-
-                        file.write(metadata_creator.observation_metadata())
-
-                    if data_store.ObserverationNoteMetadata is not None:
-
-                        file.write(data_store.ObserverationNoteMetadata)
-
-            file.write(csv)
-
-            file.close()
-
-            logger.info('File Exported : %s' % file_name)
-
-            if type == 'processed':
-
-                data_store.ProcessedDataSaved = True
-
-                logger.info('ProcessDataSaved set to True')
-
-            else:
-
-                data_store.RawDataSaved = True
-
-                logger.info('RawDataSaved set to True')
-
-            return 'SUCCESS', file_name
+        return 'SUCCESS', file_name

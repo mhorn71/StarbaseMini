@@ -30,7 +30,7 @@ import constants
 # TODO add constraints for Observation Note constants.observer_notes, max length 100 characters.
 
 class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
-    def __init__(self, data_store):
+    def __init__(self, metadata, data_store):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
 
@@ -52,6 +52,8 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
                 self.setStyleSheet(style.read())
 
         self.data_store = data_store
+
+        self.metadata = metadata
 
         self.observation_note = None
 
@@ -122,129 +124,35 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
         self.metadataEdit.clear()
         self.metadataNotesEdit.clear()
 
-        # Check to see if we've imported metadata and if so display it.
+        data = ''
 
-        if len(self.data_store.MetadataCsv) == 0:
+        for i in self.metadata.metadata_creator(self.data_store.DataSource):
 
-            self.metadataEdit.setText("No data available, this box is only populated when source data is from csv file.")
+            if i[0].startswith('Observation.Notes'):
 
-        else:
+                self.metadataNotesEdit.setText(str(i[1]))
 
-            # TODO this only partially works as some metadata can have comma's in it so splitting on comma doesn't work.
+            else:
 
-            for line in self.data_store.MetadataCsv:
+                data += i[0] + ' :: ' + i[1] + '\n'
 
-                metadata = line.split(',')
-
-                data = metadata[0] + ' -- ' + metadata[1] + '\n'
-
-                if metadata[0] == 'Observation.Notes':
-
-                    self.metadataNotesEdit.setText(metadata[1])
-
-                    self.observation_note = metadata[1]
-
-                else:
-
-                    self.metadataEdit.append(data)
+        self.metadataEdit.setText(data)
 
     def save_called(self):
 
         logger = logging.getLogger('metadata.MetadataViewerEditor.save_called.')
 
-        if self.data_store.DataSource == 'Controller':
+        if len(self.metadataNotesEdit.text()) != 0:
 
-            if len(self.metadataNotesEdit.text()) != 0:
+            if self.metadata.ObservationNotes != self.metadataNotesEdit.text():
 
-                self.data_store.ObserverationNoteMetadata = ('Observation.Notes,' + self.metadataNotesEdit.toPlainText() +
-                                                             ',String,Dimensionless,The Observation Notes')
+                self.data_store.ObservationNotesChanged = True
 
-                self.response_message = 'SUCCESS', None
+            self.metadata.ObservationNotes = self.metadataNotesEdit.text()
 
-            else:
+            logger.debug('Setting observation notes set to : %s' % self.metadataNotesEdit.text())
 
-                self.data_store.ObserverationNoteMetadata = None
-
-                self.response_message = 'SUCCESS', None
-
-        elif self.data_store.DataSource == 'CSV':
-
-            trip = True
-            observation_note_present = False
-            observation_note_index = 0
-
-            for line in self.data_store.MetadataCsv:
-
-                if line.startswith('Observation.Notes'):
-
-                    logger.debug("Line starts with Obs Note")
-
-                    observation_note_present = True
-                    observation_note_index = self.data_store.MetadataCsv.index(line)
-
-            if observation_note_present:
-
-                logger.debug('Observation note present true')
-
-                if len(self.metadataNotesEdit.text()) == 0:
-
-                    logger.debug('Metadata notes is zero length')
-
-                    logger.debug('Deleting data at index %s' % str(observation_note_index))
-
-                    logger.debug('Deleting data : %s' % str(self.data_store.MetadataCsv[observation_note_index]))
-
-                    self.data_store.MetadataCsv.pop(observation_note_index)
-
-                    logger.debug('Setting trip to False')
-
-                    trip = False
-
-                    self.response_message = 'SUCCESS', None
-
-                else:
-
-                    logger.debug('Metadata notes is not zero length')
-
-                    data = ('Observation.Notes,' + self.metadataNotesEdit.text() +
-                            ',String,Dimensionless,The Observation Notes')
-
-                    logger.debug('Inserting metddata data at index : %s' % str(observation_note_index))
-
-                    logger.debug('Inserting metadata data : %s' % str(data))
-
-                    self.data_store.MetadataCsv[observation_note_index] = data
-
-                    logger.debug('Setting trip to False')
-
-                    trip = False
-
-                    self.response_message = 'SUCCESS', None
-
-            if trip:
-
-                logger.debug('No observation note found in MetadataCsv')
-
-                logger.debug("trip is True")
-
-                if len(self.metadataNotesEdit.text()) != 0:
-
-                    logger.debug('Metadata notes is not zero length')
-
-                    data = ('Observation.Notes,' + self.metadataNotesEdit.text() +
-                            ',String,Dimensionless,The Observation Notes')
-
-                    logger.debug('Appending data to MetadataCsv : %s' % str(data))
-
-                    self.data_store.MetadataCsv.append(data)
-
-                    self.response_message = 'SUCCESS', None
-
-                else:
-
-                    logger.debug('Nothing to do.')
-
-                    self.response_message = 'SUCCESS', None
+            self.response_message = 'SUCCESS', 'Metadata saved.'
 
         else:
 
@@ -254,20 +162,26 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
     def closeEvent(self, event):
 
-        if self.observation_note is not None:
+        if self.metadata.ObservationNotes is None:
 
-            if self.observation_note != self.metadataNotesEdit.text():
+            obs_notes = ''
 
-                result = QtGui.QMessageBox.warning(None,
-                                                   None,
-                                                   "<br>Metadata has changed!<br>Save changes?",
-                                                   QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        else:
 
-                if result == QtGui.QMessageBox.Yes:
-                    self.save_called()
-                else:
-                    self.response_message = 'ABORT', None
-                    self.hide()
+            obs_notes = self.metadata.ObservationNotes
+
+        if obs_notes != self.metadataNotesEdit.text():
+
+            result = QtGui.QMessageBox.warning(None,
+                                               None,
+                                               "<br>Metadata has changed!<br>Save changes?",
+                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+
+            if result == QtGui.QMessageBox.Yes:
+                self.save_called()
+            else:
+                self.response_message = 'ABORT', None
+                self.hide()
 
         else:
             self.hide()

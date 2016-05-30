@@ -20,15 +20,16 @@ __author__ = 'mark'
 import os
 import re
 import logging
+import csv
 
 
 class SegmentTimeSeries:
-    def __init__(self):
+    def __init__(self, metadata, datastore):
         logger = logging.getLogger('core.segmentTimeSeries')
 
-        self.metadata_creator = None
+        self.metadata = metadata
 
-        self.data_store = None
+        self.data_store = datastore
 
         self.data_home = None
 
@@ -36,16 +37,13 @@ class SegmentTimeSeries:
 
         self.write_file_name = None
 
-        self.csv = ''
+        self.csv = []
 
         logger.debug('Initialised SegmentTimeSeries')
 
-    # def data_setup(self, datatranslator, source, metadata, data_type):
-    def data_setup(self, metadata_creator, data_store, user_home, data_home):
+    def data_setup(self, user_home, data_home):
 
         logger = logging.getLogger('core.segmentTimeSeries.data_setup')
-
-        self.metadata_creator = metadata_creator
 
         if data_home is not None:
 
@@ -57,15 +55,13 @@ class SegmentTimeSeries:
 
         logger.debug('Data home set to : %s' % str(self.data_home))
 
-        self.data_store = data_store
-
     def segment_timeseries(self, type, period):
 
         logger = logging.getLogger('core.segmentTimeSeries.segment_timeseries')
 
         # Make sure self.csv hasn't any data held in it.
 
-        self.csv = ''
+        self.csv.clear()
 
         # type is 'raw' or 'processed'
 
@@ -179,7 +175,7 @@ class SegmentTimeSeries:
 
                 epoch_trip = False
 
-            # Set the file name based on period
+            # Set the file name based on segment period
 
             if period == 'day':
 
@@ -258,21 +254,18 @@ class SegmentTimeSeries:
 
     def add_to_csv(self, line):
 
-        # Convert datatime object in to formatted string.
+        # Convert datatime object in to formatted date time strings.
 
-        date = line[0].strftime('%Y-%m-%d,%H:%M:%S')
+        date, time = line[0].strftime('%Y-%m-%d,%H:%M:%S').split(',')
 
-        # For all data exluding the datatime object join it together with a comma
+        # Change element 0 from datetime object to date and insert a field afterwards in positon 1 for the time.
 
-        data = ','.join(line[1:])
+        line[0] = date
+        line.insert(1, time)
 
-        # Add carriage return and line feed to data
+        # Append data to csv list
 
-        data += '\r\n'
-
-        # Append date and data to csv
-
-        self.csv += date + ',' + data
+        self.csv.append(line)
 
     def segment_write(self):
 
@@ -280,9 +273,21 @@ class SegmentTimeSeries:
 
         try:
 
-            file = open(self.write_file_name, 'w')
+            with open(self.write_file_name, 'w', newline='') as csv_file:
 
-            logger.debug('Writing to file :%s' % self.write_file_name)
+                logger.debug('Writing to file :%s' % self.write_file_name)
+
+                data_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+                for i in self.metadata.metadata_creator(self.data_store.DataSource):
+
+                    data_writer.writerow(i)
+
+                for n in self.csv:
+
+                    data_writer.writerow(n)
+
+            csv_file.close()
 
         except IOError as msg:
 
@@ -292,63 +297,7 @@ class SegmentTimeSeries:
 
         else:
 
-            try:
+            logger.info('Data saved.')
 
-                if self.data_store.DataSource == 'Controller':
-
-                    if self.metadata_creator.observatory_metadata() is not None:
-
-                        logger.debug('Writing Observatory Metadata to csv file.')
-
-                        file.write(self.metadata_creator.observatory_metadata())
-
-                    if self.metadata_creator.observer_metadata() is not None:
-
-                        logger.debug('Writing Observer Metadata to csv file.')
-
-                        file.write(self.metadata_creator.observer_metadata())
-
-                    if self.metadata_creator.observation_metadata() is not None:
-
-                        logger.debug('Writing Observation Metadata to csv file.')
-
-                        file.write(self.metadata_creator.observation_metadata())
-
-                    if self.data_store.ObserverationNoteMetadata is not None:
-
-                        file.write(self.data_store.ObserverationNoteMetadata)
-
-                elif self.data_store.DataSource == 'CSV':
-
-                    if len(self.data_store.MetadataCsv) != 0:
-
-                        for listb in self.data_store.MetadataCsv:
-
-                            file.write(listb + '\r\n')
-
-                else:
-
-                    logger.critical('Unable to determine data source : %s' % str(self.data_store.DataSource))
-
-                    return False
-
-                file.write(self.csv)
-
-                logger.debug('Closing csv file.')
-
-                file.close()
-
-            except IOError as msg:
-
-                logger.critical(str(msg))
-
-                return False
-
-            else:
-
-                self.csv = ''
-
-                logger.info('Data saved.')
-
-                return True
+            return True
 

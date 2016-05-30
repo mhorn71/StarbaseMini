@@ -60,8 +60,6 @@ class Chart:
     vertical then delete the temporary widget. Set the vertical layout name to mplvl
     '''
 
-    # TODO almost a complete rewrite we need to take into account Raw and Processed Data plus Controller or CSV Source.
-
     def __init__(self, ui):
         '''
 
@@ -253,14 +251,18 @@ class Chart:
         fontP.set_size(self.application_configuration.get('Legend', 'font'))
 
         if state is True:
+
             self.ax1f1.legend(prop=fontP, loc=self.application_configuration.get('Legend', 'location'),
                               ncol=int(self.application_configuration.get('Legend', 'columns'))).set_visible(True)
 
-            # # # set the linewidth of each legend object
+            # set the line width of each legend object
+
             for legend_handle in self.ax1f1.legend(prop=fontP,
                                                    loc=self.application_configuration.get('Legend', 'location'),
                                                    ncol=int(self.application_configuration.get('Legend',
-                                                                                               'columns'))).legendHandles:
+                                                                                               'columns'))
+                                                   ).legendHandles:
+
                 legend_handle.set_linewidth(10.0)
 
         elif state is False:

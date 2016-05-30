@@ -120,7 +120,7 @@ class StaribusBlockParser:
     
                     dat = re.findall('....', str(datum))   # split each sample_length into groups of 4
 
-                    logger.debug('Sample dat list : %s' % repr(dat))
+                    # logger.debug('Sample dat list : %s' % repr(dat))
 
                     if data_store.channel_count == 2:
 

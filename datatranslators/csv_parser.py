@@ -20,6 +20,7 @@ __author__ = 'mark'
 import logging
 import datetime
 import re
+import csv
 
 
 class CsvParser:
@@ -27,136 +28,89 @@ class CsvParser:
 
         self.data_store = data_store
 
-    def parse(self, file_name, datatranslator):
+    def parse(self, file_name, metadata_deconstructor):
         # First 32 chars are date, time, temp, and sample rate plus spaces.
         # We also need to search of ETX
 
         logger = logging.getLogger('datatranslator.CsvParser.parse')
 
         # Metadata list holder.
-        metadata_list = []
+        main_list = []
 
-        # Observation data list holder
-        data_list = []
+        # Clear the data store.
+        self.data_store.clear()
+
+        # Clear the current metadata
+        metadata_deconstructor.clear()
 
         # Try to open the file supplied and read the contents.
         try:
             with open(file_name) as csvfile:
-                content = csvfile.readlines()
+
+                content = csv.reader(csvfile)
+
+                for line in content:
+
+                    if line[0].startswith('Obser'):
+
+                        metadata_deconstructor.meta_parser(line)
+
+                    elif re.match('^\d\d\d\d-\d\d-\d\d', line[0]):
+
+                        main_list.append(line)
+
+                csvfile.close()
+
         except IOError as msg:
 
             logger.warning('Unable to open file : %s %s' % (file_name, str(msg)))
 
             return 'PREMATURE_TERMINATION', 'Unable to open : %s' % file_name
+
         else:
-            csvfile.close()
 
-        # Now check each line it should start with either metadata or it must be data, we also strip any newlines.
+            new_main_list = []
 
-        for line in content:
-            if len(line) != 0:
-                if line.startswith('Obser'):
-                    metadata_list.append(line.strip('\n'))
-                elif re.match('^\d\d\d\d-\d\d-\d\d', line):
-                    data_list.append(line.strip('\r\n'))
+            if len(main_list) != 0:
 
-        # If the metadata list appears to have data append it to data_store.MetadataCsv
+                self.data_store.channel_count = (len(main_list[0]) - 2)
 
-        if len(metadata_list) != 0:
-            for metadata in metadata_list:
-                self.data_store.MetadataCsv.append(metadata)
+                for data in main_list:
 
-        # Check we actually have data and if we do split the data by comma and then
-        # convert date and time to datetime object
+                    data_line = []
+                    data_line.clear()
 
-        if len(data_list) != 0:
+                    if re.match('^\d\d\d\d-\d\d-\d\d', data[0]) and re.match('^\d\d:\d\d:\d\d', data[1]):
 
-            for data in data_list:
+                        date_ = data[0].split('-')
 
-                # create a list for use to store each line of data
+                        time_ = data[1].split(':')
 
-                data_line = []
-                data_line.clear()
+                        data_line.append(datetime.datetime(int(date_[0]), int(date_[1]), int(date_[2]),
+                                                          int(time_[0]), int(time_[1]), int(time_[2])))
 
-                split_data = data.split(',')
+                        for i in data[2:]:
 
-                # Check the split_data has a minimum length of 4 otherwise we can't parse.
+                            data_line.append(i)
 
-                if len(split_data) < 4:
+                        new_main_list.append(data_line)
+
+                if len(new_main_list) > 0:
+
+                    self.data_store.RawDataCsv = new_main_list
+
+                    self.data_store.DataSource = 'CSV'
+
+                    self.data_store.RawDataCsvAvailable = True
+
+                    print(self.data_store.RawDataCsv)
+
+                    return 'SUCCESS', 'Imported file : %s' % file_name
+
+                else:
 
                     self.data_store.clear()
 
-                    logger.warning('Data split into N fields : %s' % str(len(split_data)))
+                    logger.warning('No data found!!')
 
-                    return 'PREMATURE_TERMINATION', 'Not enough fields to parse!!'
-
-                # Now attempt to extract and split date field.
-
-                if re.match('^\d\d\d\d-\d\d-\d\d$', split_data[0]):
-
-                    date = str(split_data[0]).split('-')  # split date field up
-
-                    # Now attempt to extract and split time field.
-
-                    if re.match('^\d\d:\d\d:\d\d', split_data[1]):
-
-                        time = str(split_data[1]).split(':')  # split time field up
-
-                    else:
-
-                        time = None
-
-                # Next check we have a date and time, and if we do create a datetime object
-
-                if time is not None:
-
-                    datetime_obj = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]),
-                                                     int(time[1]), int(time[2]))
-
-                    data_line.append(datetime_obj)
-
-                    # set the channel count in the data store.
-
-                    self.data_store.channel_count = (len(split_data) - 2)
-
-                    # Attempt to get datatranslator regex.
-
-                    try:
-                        regex = datatranslator.data_regex
-                    except AttributeError as msg:
-                        logger.warning('datatranslator.data_regex : %s' % str(msg))
-                        regex = "*"
-
-                    # Append each item of what should be channel data to the data_list.
-
-                    for i in range(2, len(split_data)):
-
-                        if re.match(regex, split_data[i]):
-
-                            data_line.append(split_data[i])
-
-                        else:
-
-                            logger.warning("Data %s doesn't pass regex check :%s" % (str(split_data[i]), str(regex)))
-
-                            self.data_store.clear()
-
-                            return 'PREMATURE_TERMINATION', 'Unable to parse data.'
-
-                    self.data_store.RawDataCsv.append(data_line)
-
-        if len(self.data_store.RawDataCsv) != 0:
-
-            self.data_store.DataSource = 'CSV'
-
-            self.data_store.RawDataCsvAvailable = True
-
-            return 'SUCCESS', 'Imported file : %s' % file_name
-
-        else:
-
-            self.data_store.clear()
-
-            logger.warning('No data found!!')
-
-            return 'PREMATURE_TERMINATION', 'No data found!!'
+                    return 'PREMATURE_TERMINATION', 'NO DATA'

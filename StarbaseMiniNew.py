@@ -139,17 +139,9 @@ class Main(QtGui.QMainWindow):
 
         self.instrument = xml_utilities.Instrument()
 
-        # Initialise command interpreter class
-
-        self.command_interpreter = interpreter.CommandInterpreter(self.data_store)
-
         # Initialise release notes dialog class
 
         self.release_note_dialog = utilities.ReleaseNote()
-
-        # Initialise metadata dialog class
-
-        self.metadata_viewer_editor_dialog = metadata.MetadataViewerEditor(self.data_store)
 
         # Initialise the configuration tool class
 
@@ -167,15 +159,21 @@ class Main(QtGui.QMainWindow):
 
         # Initialise meta data classes
 
-        self.metadata_deconstructor = metadata.StaribusMetaDataDeconstructor()
+        self.metadata = metadata.StaribusMetaData(self)
 
-        self.metadata_creator = metadata.StaribusMetaDataCreator(self)
+        # Initialise metadata dialog class
+
+        self.metadata_viewer_editor_dialog = metadata.MetadataViewerEditor(self.metadata, self.data_store)
+
+        # Initialise command interpreter class
+
+        self.command_interpreter = interpreter.CommandInterpreter(self.data_store, self.metadata)
 
         # Initialise segment time series class and run the setup.
 
-        self.segmenter = core.SegmentTimeSeries()
+        self.segmenter = core.SegmentTimeSeries(self.metadata, self.data_store)
 
-        self.segmenter.data_setup(self.metadata_creator, self.data_store, self.application_configuration.user_home,
+        self.segmenter.data_setup(self.application_configuration.user_home,
                                   self.application_configuration.get('Application', 'instrument_data_path'))
 
         # Initialise mpl chart class
@@ -1100,7 +1098,7 @@ class Main(QtGui.QMainWindow):
         try:
 
             self.chart.chart_instrument_setup(self.data_store, self.instrument,
-                                              self.metadata_deconstructor, self.application_configuration, self.data_source)
+                                              self.metadata, self.application_configuration, self.data_source)
         except Exception as msg:
 
             logger.critical('Unable to setup chart attributes : %s' % str(msg))
@@ -1489,11 +1487,11 @@ class Main(QtGui.QMainWindow):
 
             if response[0].startswith('SUCCESS'):
 
-                response = self.csv_datatranslator.parse(response[1], self.instrument_datatranslator)
+                response = self.csv_datatranslator.parse(response[1], self.metadata)
 
                 # TODO remove self.data_store.print_state()
 
-                self.data_store.print_state()
+                # self.data_store.print_state()
 
                 # if response[0] starts with success we see if we can run the metadata deconstructor.
 
@@ -1501,11 +1499,15 @@ class Main(QtGui.QMainWindow):
 
                     # Make certain the metadata deconstructor is reset and run the meta_parser if we appear to have data
 
-                    if len(self.data_store.MetadataCsv) != 0:
+                    # if len(self.data_store.MetadataCsv) != 0:
+                    #
+                    # self.metadata_deconstructor.clear()
+                    #
+                    #     self.metadata_deconstructor.meta_parser(self.data_store)
 
-                        self.metadata_deconstructor.clear()
+                    # print(self.metadata_deconstructor.base_channel_colours)
 
-                        self.metadata_deconstructor.meta_parser(self.data_store)
+                    # print(self.metadata_deconstructor.channel_colours)
 
                     # Create the data store arrays
 
@@ -1520,7 +1522,7 @@ class Main(QtGui.QMainWindow):
                         if response[0] != 'SUCCESS':
                             self.status_message('openCSV', response[1], 'Plotting error!!', None)
                         else:
-                            self.chart_control_panel(self.metadata_deconstructor)
+                            self.chart_control_panel(self.metadata)
 
                     else:
 
@@ -1538,7 +1540,7 @@ class Main(QtGui.QMainWindow):
 
         save_data_identifity = 'save' + type.title() + 'Data'
 
-        response = core.exporter(type, self.metadata_creator, self.data_store,
+        response = core.exporter(type, self.metadata, self.data_store,
                                  self.application_configuration.user_home,
                                  self.application_configuration.get('Application', 'instrument_data_path'))
 

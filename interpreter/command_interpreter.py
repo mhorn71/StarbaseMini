@@ -22,13 +22,13 @@ import sys
 
 from PyQt4 import QtGui
 
-import core
 import dao
 import datatypes
 import utilities
 
+
 class CommandInterpreter():
-    def __init__(self, data_store):
+    def __init__(self, data_store, metadata):
 
         # Style sheets
 
@@ -62,11 +62,11 @@ class CommandInterpreter():
 
         self.check_response_message = 'INVALID_RESPONSE_MESSAGE', None
 
-        self.segmenter = core.SegmentTimeSeries()
-
         self.dao_processor = dao.DaoProcessor()
 
         self.application_configuration = None
+
+        self.metadata = metadata
 
         self.instrument = None
 
@@ -803,6 +803,7 @@ class CommandInterpreter():
         #  Set the data store back to consistent state.
 
         self.data_store.clear()
+        self.metadata.clear()
 
         # Check the data store is in a good state to start with.
 

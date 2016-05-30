@@ -66,17 +66,9 @@ class DataStore(object):
 
         self.ProcessedDataSaved = False # False if ProcessedData hasn't been saved, or True if it has
 
-        # Imported CSV Metadata.
+        # Observation Note Changed.
 
-        self.MetadataCsv = []
-
-        # Original length of metadata we'll use this as trip when we've import csv and altered metadata.
-
-        self.MetadataCsvLength = 0
-
-        # Observation Note Metadata.
-
-        self.ObserverationNoteMetadata = None
+        self.ObservationNotesChanged = False
 
         # Channel count of current data.
 
@@ -112,20 +104,10 @@ class DataStore(object):
         print("Raw data saved : %s" % str(self.RawDataSaved))
         print("\nProcessed data length : %s" % str(len(self.ProcessedData)))
         print("Processed data saved : %s" % str(self.ProcessedDataSaved))
-        print("\nMeta data csv : %s" % str(self.MetadataCsv))
+        # print("\nMeta data csv : %s" % str(self.MetadataCsv))
         print("\nChannel count : %s" % self.channel_count)
 
     def data_state(self):
-
-        newmetadatalength = 0
-
-        for list in self.MetadataCsv:
-            newmetadatalength += len(list)
-
-        if newmetadatalength != self.MetadataCsvLength:
-            metadata_change = True
-        else:
-            metadata_change = False
 
         if len(self.ProcessedData) != 0 and self.ProcessedDataSaved is False:
 
@@ -139,12 +121,17 @@ class DataStore(object):
 
             return False, "You have unsaved raw data."
 
-        elif len(self.RawData) != 0 and self.RawDataSaved is False and metadata_change:
+        elif len(self.RawData) != 0 and self.RawDataSaved is False and self.ObservationNotesChanged is True:
 
             print("Unsaved Metadata.")
 
             return False, "You have unsaved metadata."
 
+        elif self.ObservationNotesChanged is True:
+
+            print("Unsaved Metadata.")
+
+            return False, "You have unsaved metadata."
 
         else:
 
@@ -158,8 +145,8 @@ class DataStore(object):
 
         if len(self.RawData) != 0 or len(self.ProcessedData) != 0 or self.DataSource is not None or \
            len(self.RawDataBlocks) != 0 or self.RawDataSaved is not False or self.ProcessedDataSaved is not False \
-            or self.RawDataBlocksAvailable is not False or len(self.MetadataCsv) != 0 or self.RawDataCsvAvailable \
-                is not False or len(self.RawDataCsv) != 0 or self.MetadataCsvLength != 0:
+            or self.RawDataBlocksAvailable is not False or self.RawDataCsvAvailable \
+                is not False or self.ObservationNotesChanged is not False:
 
             return False
 
@@ -193,11 +180,7 @@ class DataStore(object):
 
         self.ProcessedDataSaved = False
 
-        self.MetadataCsv.clear()
-
-        self.MetadataCsvLength = 0
-
-        self.ObserverationNoteMetadata = None
+        self.ObservationNotesChanged = False
 
         self.channel_count = 0
 
@@ -212,9 +195,6 @@ class DataStore(object):
             self.RawData = np.array(self.RawDataCsv)
 
             self.RawDataCsvAvailable = True
-
-            for list in self.MetadataCsv:
-                self.MetadataCsvLength += len(list)
 
             return True
 
