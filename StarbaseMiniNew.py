@@ -45,6 +45,7 @@ import instrument_attrib
 import datastore
 import core
 import filters
+import data_viewer
 
 version = '3.0.0'
 
@@ -165,6 +166,10 @@ class Main(QtGui.QMainWindow):
 
         self.metadata_viewer_editor_dialog = metadata.MetadataViewerEditor(self.metadata, self.data_store)
 
+        # Initialise data viewer dialog class
+
+        self.data_viewer = data_viewer.DataViewer(self.data_store)
+
         # Initialise command interpreter class
 
         self.command_interpreter = interpreter.CommandInterpreter(self.data_store, self.metadata)
@@ -207,6 +212,9 @@ class Main(QtGui.QMainWindow):
         self.ui.SegmentProcessDataWeek.triggered.connect(lambda: self.segment_data('week', 'processed'))
 
         self.ui.actionMetadata.triggered.connect(self.metadata_viewer_editor)
+
+        self.ui.actionProcessed_Data.triggered.connect(lambda: self.dataview('processed'))
+        self.ui.actionRaw_Data.triggered.connect(lambda: self.dataview('raw'))
 
         self.ui.actionNon_Linear_Static_Remover.triggered.connect(lambda: self.filter_data('NonLinearStaticRemover'))
         self.ui.actionPeak_Extractor.triggered.connect(lambda: self.filter_data('PeakExtractor'))
@@ -2158,6 +2166,23 @@ class Main(QtGui.QMainWindow):
 
         self.status_message('metadata', self.metadata_viewer_editor_dialog.response_message[0],
                             self.metadata_viewer_editor_dialog.response_message[1], None)
+
+    def dataview(self, datatype):
+
+        # TODO add check to make sure we have either processed or raw data before loading dialog.
+
+        # if len(self.data_store.RawData) == 0 or self.data_store.RawData is None and type == 'raw':
+        #
+        #     self.status_message('RawDataViewer', 'PREMATURE_TERMINATION', 'No Data!', None)
+        #
+        # elif len(self.data_store.ProcessedData) == 0 and type == 'processed':
+        #
+        #     self.status_message('ProcessedDataViewer', 'PREMATURE_TERMINATION', 'No Data!', None)
+        # 
+        # else:
+
+        self.data_viewer.load(datatype)
+        self.data_viewer.exec_()
 
 
 if __name__ == '__main__':
