@@ -27,8 +27,6 @@ from ui import Ui_MetadataDialog
 
 import constants
 
-# TODO add constraints for Observation Note constants.observer_notes, max length 100 characters.
-
 class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
     def __init__(self, metadata, data_store):
         QtGui.QDialog.__init__(self)
