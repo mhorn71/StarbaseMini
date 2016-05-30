@@ -93,19 +93,9 @@ class StaribusBlockParser:
         # First 32 chars are date, time, temp, and sample rate plus spaces.
         # We also need to search of ETX
 
-        datum_list = []
-
-        # counter = 0
-
-        # print('block_parser RawDataBlocks Length : %s' % len(data_store.RawDataBlocks))
-        
         for lista in reversed(data_store.RawDataBlocks):
 
-            # print('block_parser : ' + str(counter) + ' : ' + str(lista))
-
             data = lista.split(' ')
-    
-            # self.loggera.debug('Channel count : %s' % data_store.channel_count)
     
             try:
                 # create datetime object

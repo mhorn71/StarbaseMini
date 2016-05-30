@@ -124,8 +124,6 @@ class CommandInterpreter():
             logger.debug('Instrument appears to be Staribus, address : %s' %
                          self.instrument.instrument_staribus_address)
 
-            print(self.instrument.instrument_staribus2starinet)
-
             if self.instrument.instrument_staribus2starinet == 'False':
 
                 logger.info('Setting stream to Staribus')
@@ -774,8 +772,6 @@ class CommandInterpreter():
 
         counter = datatypes.DataTypeToInteger(primary_command_list[12], response[2])
 
-        print('Counter : %s' % str(counter))
-
         if counter is None:
 
             logger.critical("BlockedDataCommand Unable to convert primary response value to integer!!")
@@ -892,8 +888,6 @@ class CommandInterpreter():
             # of the last run command and set the the last tuple to 'data'
 
             if len(self.data_store.RawDataBlocks) > 0:
-
-                print('RawDataBlocks Length : %s' % str(len(self.data_store.RawDataBlocks)))
 
                 # set RawDataBlocksAvailable to True
 

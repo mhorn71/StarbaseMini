@@ -82,29 +82,14 @@ class DataStore(object):
 
         print("Data source : %s" % str(self.DataSource))
         print("\nRaw data blocks length : %s" % str(len(self.RawDataBlocks)))
-
-        # count = len(self.RawDataBlocks)
-        #
-        # for i in self.RawDataBlocks:
-        #     print(str(count) + ' ' + str(i))
-        #     count -= 1
-
         print("Raw data blocks : %s" % str(self.RawDataBlocks))
         print("Raw data blocks available : %s" % str(self.RawDataBlocksAvailable))
         print("\nRaw data csv blocks : %s" % str(self.RawDataCsv))
         print("Raw data csv available : %s" % str(self.RawDataCsvAvailable))
         print("Raw data : %s" % str(self.RawData))
-
-        # count = len(self.RawData)
-        #
-        # for i in self.RawData:
-        #     print(str(count) + ' : ' + str(i))
-        #     count -= 1
-
         print("Raw data saved : %s" % str(self.RawDataSaved))
         print("\nProcessed data length : %s" % str(len(self.ProcessedData)))
         print("Processed data saved : %s" % str(self.ProcessedDataSaved))
-        # print("\nMeta data csv : %s" % str(self.MetadataCsv))
         print("\nChannel count : %s" % self.channel_count)
 
     def data_state(self):

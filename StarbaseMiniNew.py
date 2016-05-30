@@ -1497,18 +1497,6 @@ class Main(QtGui.QMainWindow):
 
                 if response[0].startswith('SUCCESS'):
 
-                    # Make certain the metadata deconstructor is reset and run the meta_parser if we appear to have data
-
-                    # if len(self.data_store.MetadataCsv) != 0:
-                    #
-                    # self.metadata_deconstructor.clear()
-                    #
-                    #     self.metadata_deconstructor.meta_parser(self.data_store)
-
-                    # print(self.metadata_deconstructor.base_channel_colours)
-
-                    # print(self.metadata_deconstructor.channel_colours)
-
                     # Create the data store arrays
 
                     if self.data_store.create_arrays():

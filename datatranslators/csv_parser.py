@@ -103,8 +103,6 @@ class CsvParser:
 
                     self.data_store.RawDataCsvAvailable = True
 
-                    print(self.data_store.RawDataCsv)
-
                     return 'SUCCESS', 'Imported file : %s' % file_name
 
                 else:
