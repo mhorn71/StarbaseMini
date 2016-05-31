@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Tue May 31 22:25:19 2016
+# Created: Tue May 31 22:32:00 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -188,6 +188,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.label_10.setObjectName("label_10")
         self.gridLayout.addWidget(self.label_10, 9, 0, 1, 1)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtGui.QLabel(self.groupBox)
         self.label.setMinimumSize(QtCore.QSize(102, 0))
@@ -206,13 +207,12 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_2.addWidget(self.BaudrateCombobox)
         self.label_17 = QtGui.QLabel(self.groupBox)
         self.label_17.setMinimumSize(QtCore.QSize(53, 0))
+        self.label_17.setMaximumSize(QtCore.QSize(53, 16777215))
         self.label_17.setObjectName("label_17")
         self.horizontalLayout_2.addWidget(self.label_17)
         self.TimeoutCombobox = QtGui.QComboBox(self.groupBox)
         self.TimeoutCombobox.setObjectName("TimeoutCombobox")
         self.horizontalLayout_2.addWidget(self.TimeoutCombobox)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem)
         self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 5)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -314,8 +314,8 @@ class Ui_InstrumentAttributesDialog(object):
         self.PickerButton8.setMaximumSize(QtCore.QSize(100, 16777215))
         self.PickerButton8.setObjectName("PickerButton8")
         self.gridLayout.addWidget(self.PickerButton8, 11, 4, 1, 1)
-        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem1, 12, 2, 1, 1)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem, 12, 2, 1, 1)
         self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 1)
         self.buttonBox = QtGui.QDialogButtonBox(InstrumentAttributesDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)

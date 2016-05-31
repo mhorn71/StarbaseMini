@@ -569,6 +569,9 @@
       </item>
       <item row="1" column="0" colspan="5">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <item>
          <widget class="QLabel" name="label">
           <property name="minimumSize">
@@ -613,6 +616,12 @@
             <height>0</height>
            </size>
           </property>
+          <property name="maximumSize">
+           <size>
+            <width>53</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>Timeout</string>
           </property>
@@ -620,19 +629,6 @@
         </item>
         <item>
          <widget class="QComboBox" name="TimeoutCombobox"/>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>
