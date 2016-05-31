@@ -37,6 +37,8 @@ Update -  Moved data state dialog to utilities module.
 
 Update -  Added metadata viewer with the ability to add observation notes.
 
+Update -  Added raw and processed data viewer.
+
 ===============
 Version : 2.0.4
 ===============
