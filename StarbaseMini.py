@@ -237,8 +237,8 @@ class Main(QtGui.QMainWindow):
 
         self.data_source = 'instrument'
 
-        ####### BODGE #####
-        # self.saved_data_state = False
+        # Staribus serial port state.
+        self.serial_port_state = True
 
         # Setup status message window, QTableWidget
 
@@ -259,15 +259,6 @@ class Main(QtGui.QMainWindow):
         self.ui.statusMessage.verticalHeader().setDefaultSectionSize(20)  # Sets the height of the rows.
 
         self.ui.statusMessage.horizontalHeader().setStretchLastSection(True)  # Expands section to widget width.
-
-        #
-        # # Trip counters, these are so we ignore dict KeyError's when first populating which seems to differ
-        # # from one platform to another and I have no idea why.  Answers on a postcard please. ;-))
-        # self.ui_module_trip = 0
-        # self.ui_command_trip = 0
-        # self.chart_warning = 0
-        # self.command_parameter_trip = 0
-        # self.parameter_check_state_trip = 0
 
         # Button connectors
 
@@ -734,6 +725,10 @@ class Main(QtGui.QMainWindow):
 
     def application_state_control(self):
 
+        # Reset serial port state to True
+
+        self.serial_port_state = True
+
         logger = logging.getLogger('StarbaseMini.application_state_control')
 
         self.status_message('system', 'INFO', 'Application started.', None)
@@ -741,6 +736,8 @@ class Main(QtGui.QMainWindow):
         # Try to close any open streams.
 
         self.command_interpreter.close()
+
+        logger.debug('Command interpreter closed.')
 
         # We check for two states Relay or Standard Instrument.  Staribus to Starinet Converter is run from Interpreter.
 
@@ -754,6 +751,8 @@ class Main(QtGui.QMainWindow):
 
             self.disable_control_panel()
 
+            logger.debug('Control panel disabled.')
+
             # Check instrument type
 
             if self.instrument.instrument_staribus_address == '000':  # Looks like we have Starinet then relay is False
@@ -766,6 +765,8 @@ class Main(QtGui.QMainWindow):
                                                                        'selected.', None)
 
                 self.disable_control_panel()
+
+                logger.debug('Control panel disabled.')
 
             else:  # Looks like we have a Staribus instrument now auto detect instrument or try to open port.
 
@@ -782,6 +783,8 @@ class Main(QtGui.QMainWindow):
 
                     self.disable_control_panel()
 
+                    logger.debug('Control panel disabled.')
+
                 elif not utilities.check_starinet_port(self.application_configuration.get('StarinetRelay',
                                                                                           'starinet_port')):
 
@@ -791,6 +794,8 @@ class Main(QtGui.QMainWindow):
                     self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet Relay IP address invalid')
 
                     self.disable_control_panel()
+
+                    logger.debug('Control panel disabled.')
 
                 else:
 
@@ -833,6 +838,8 @@ class Main(QtGui.QMainWindow):
                                                 'Starinet Relay instrument autodetect true - No instrument or port found.', None)
 
                             self.disable_control_panel()
+
+                            logger.debug('Control panel disabled.')
 
                     else:
 
@@ -878,6 +885,8 @@ class Main(QtGui.QMainWindow):
                                 ' Starinet Relay'))
 
                             self.disable_control_panel()
+
+                            logger.debug('Control panel disabled.')
         else:
 
             logger.debug('Starinet Relay Active : False')
@@ -897,6 +906,8 @@ class Main(QtGui.QMainWindow):
 
                 self.disable_control_panel()
 
+                logger.debug('Control panel disabled.')
+
             # If we have Staribus to Starinet converter enabled is the configuration sane.
 
             elif self.instrument.instrument_staribus2starinet == 'True':
@@ -912,6 +923,8 @@ class Main(QtGui.QMainWindow):
 
                     self.disable_control_panel()
 
+                    logger.debug('Control panel disabled.')
+
                 elif not utilities.check_starinet_port(self.instrument.instrument_starinet_port):
 
                     logger.warning('Starinet converter port invalid')
@@ -920,6 +933,8 @@ class Main(QtGui.QMainWindow):
                                         None)
 
                     self.disable_control_panel()
+
+                    logger.debug('Control panel disabled.')
 
                 else:
 
@@ -930,6 +945,8 @@ class Main(QtGui.QMainWindow):
                     # load interpreter_class_loader
 
                     self.interpreter_class_loader()
+
+                    logger.debug('Interpreter class loader called.')
 
             # If we have a Starinet instrument is the configuration sane
 
@@ -945,6 +962,8 @@ class Main(QtGui.QMainWindow):
 
                     self.disable_control_panel()
 
+                    logger.debug('Control panel disabled.')
+
                 elif not utilities.check_starinet_port(self.instrument.instrument_starinet_port):
 
                     logger.warning('Starinet port invalid')
@@ -952,6 +971,8 @@ class Main(QtGui.QMainWindow):
                     self.status_message('system', 'PREMATURE_TERMINATION', 'Starinet port invalid.', None)
 
                     self.disable_control_panel()
+
+                    logger.debug('Control panel disabled.')
 
                 else:
 
@@ -962,6 +983,8 @@ class Main(QtGui.QMainWindow):
                     # load interpreter_class_loader
 
                     self.interpreter_class_loader()
+
+                    logger.debug('Interpreter class loader called.')
 
             # Instrument appears to be Staribus check configuration is sane.
 
@@ -982,6 +1005,8 @@ class Main(QtGui.QMainWindow):
 
                         self.disable_control_panel()
 
+                        logger.debug('Control panel disabled.')
+
                     else:
 
                         logger.info('########## Valid Staribus configuration found. ##########')
@@ -991,6 +1016,8 @@ class Main(QtGui.QMainWindow):
                         # load interpreter_class_loader
 
                         self.interpreter_class_loader()
+
+                        logger.debug('Interpreter class loader called.')
 
                 else:
 
@@ -1003,7 +1030,17 @@ class Main(QtGui.QMainWindow):
                         self.status_message('system', 'PREMATURE_TERMINATION', 'Unable to open port %s' %
                                             self.instrument.instrument_staribus_port, None)
 
+                        self.serial_port_state = False
+
+                        # load interpreter_class_loader
+
+                        self.interpreter_class_loader()
+
+                        logger.debug('Interpreter class loader called.')
+
                         self.disable_control_panel()
+
+                        logger.debug('Control panel disabled.')
 
                     else:
 
@@ -1015,6 +1052,8 @@ class Main(QtGui.QMainWindow):
 
                         self.interpreter_class_loader()
 
+                        logger.debug('Interpreter class loader called.')
+
             else:
 
                 logger.critical('Unable to determine instrument configuration')
@@ -1022,6 +1061,8 @@ class Main(QtGui.QMainWindow):
                 self.status_message('system', 'Unable to determine instrument configuration.', None)
 
                 self.disable_control_panel()
+
+                logger.debug('Control panel disabled.')
 
             # Chart loader
 
@@ -1085,7 +1126,9 @@ class Main(QtGui.QMainWindow):
 
         try:
 
-            self.command_interpreter.start(self)
+            # TODO send serial port state.
+
+            self.command_interpreter.start(self, self.serial_port_state)
 
         except IOError:
 

@@ -84,33 +84,39 @@ class CommandInterpreter():
 
             logger.debug('No dao_processor to close')
 
-    def start(self, parent):
+    def start(self, parent, port_state):
 
         logger = logging.getLogger('interpreter.CommandInterpreter.start')
 
         self.application_configuration = parent.application_configuration
         self.instrument = parent.instrument
 
-        try:
+        if port_state is True:
 
-            if self.dao_processor is None:
+            try:
 
-                logger.debug('Initialising dao_processor')
+                if self.dao_processor is None:
 
-                self.initialise_dao()
+                    logger.debug('Initialising dao_processor')
 
-            else:
-                logger.debug('Closing dao_processor')
+                    self.initialise_dao()
 
-                self.dao_processor.close()
+                else:
+                    logger.debug('Closing dao_processor')
 
-                logger.debug('Initialising dao_processor')
+                    self.dao_processor.close()
 
-                self.initialise_dao()
+                    logger.debug('Initialising dao_processor')
 
-        except IOError:
+                    self.initialise_dao()
 
-            raise IOError
+            except IOError:
+
+                raise IOError
+
+        else:
+
+            pass
 
     def initialise_dao(self):
 
