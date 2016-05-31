@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Tue May 31 22:43:27 2016
+# Created: Tue May 31 22:49:36 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -220,7 +220,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_3.addWidget(self.label_2)
         self.StarinetAddressLineEdit = QtGui.QLineEdit(self.groupBox)
-        self.StarinetAddressLineEdit.setMinimumSize(QtCore.QSize(129, 27))
+        self.StarinetAddressLineEdit.setMinimumSize(QtCore.QSize(129, 0))
         self.StarinetAddressLineEdit.setMaxLength(15)
         self.StarinetAddressLineEdit.setObjectName("StarinetAddressLineEdit")
         self.horizontalLayout_3.addWidget(self.StarinetAddressLineEdit)
@@ -228,7 +228,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_3.addWidget(self.label_3)
         self.StarinetPortLineEdit = QtGui.QLineEdit(self.groupBox)
-        self.StarinetPortLineEdit.setMinimumSize(QtCore.QSize(50, 27))
+        self.StarinetPortLineEdit.setMinimumSize(QtCore.QSize(50, 0))
         self.StarinetPortLineEdit.setMaxLength(5)
         self.StarinetPortLineEdit.setObjectName("StarinetPortLineEdit")
         self.horizontalLayout_3.addWidget(self.StarinetPortLineEdit)
