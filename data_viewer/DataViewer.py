@@ -25,10 +25,32 @@ from PyQt4 import QtGui, QtCore
 from ui import Ui_DataViewerDialog
 
 class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
-    def __init__(self, data_store):
+    def __init__(self, data_store, metadata, instrument):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
         self.data_store = data_store
+        self.metadata = metadata
+        self.instrument = instrument
+
+        # Style sheets
+
+        if sys.platform.startswith('darwin'):
+
+            with open('css/macStyle.css', 'r') as style:
+
+                self.setStyleSheet(style.read())
+
+        elif sys.platform.startswith('win32'):
+
+            with open('css/winStyle.css', 'r') as style:
+
+                self.setStyleSheet(style.read())
+
+        elif sys.platform.startswith('linux'):
+
+            with open('css/nixStyle.css', 'r') as style:
+
+                self.setStyleSheet(style.read())
 
     def load(self, type):
 
@@ -36,6 +58,83 @@ class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
 
             self.setWindowTitle('Processed Data Viewer')
 
+            data = self.data_store.ProcessedData
+
         else:
 
             self.setWindowTitle('Raw Data Viewer')
+
+            data = self.data_store.RawData
+
+
+        # QTableWidget Header list
+
+        headers = ['Date','Time']
+
+        # First get the current channel labels and channel count from metadata based on source.
+
+        if self.data_store.DataSource == 'Controller':
+            channel_labels = self.instrument.channel_names
+            channel_count = int(self.instrument.instrument_number_of_channels)
+        else:
+            channel_labels = self.metadata.channel_names
+            channel_count = int(self.metadata.instrument_number_of_channels)
+
+        # Clear the current contents.
+        self.DataViewTableWidget.clear()
+
+        # Set the row count based on data.
+        self.DataViewTableWidget.setRowCount(len(data))
+
+        # Set the column count based on channel count + 1
+        self.DataViewTableWidget.setColumnCount(int(channel_count + 2))
+
+        # Insert into the headers list the channel labels.
+        for i in range(channel_count):
+
+            headers.insert((channel_count + 2), channel_labels[i])
+
+        # Set the header labels.
+
+        self.DataViewTableWidget.setHorizontalHeaderLabels(headers)
+
+        insert_data = []
+
+        counter = 0
+
+        for x in data.tolist():
+
+            insert_data.clear()
+
+            date, time = x[0].strftime('%Y-%m-%d,%H:%M:%S').split(',')
+
+            insert_data.insert(0, date)
+            insert_data.insert(1, time)
+
+            for y in x[1:]:
+
+                insert_data.insert((x.index(y) + 2), y)
+
+            for n in range(len(insert_data)):
+
+                self.DataViewTableWidget.setItem(counter, n, QtGui.QTableWidgetItem(str(insert_data[n])))
+
+            counter += 1
+
+        self.resize(self.sizeHint())
+
+
+    # This piece of code is courtesy of Stephen Terry
+    # http://stackoverflow.com/questions/7189305/set-optimal-size-of-a-dialog-window-containing-a-tablewidget
+
+    def sizeHint(self):
+        width = 0
+        for i in range(self.DataViewTableWidget.columnCount()):
+            width += self.DataViewTableWidget.columnWidth(i)
+
+        width += self.DataViewTableWidget.verticalHeader().sizeHint().width()
+
+        width += self.DataViewTableWidget.verticalScrollBar().sizeHint().width()
+        width += self.DataViewTableWidget.frameWidth() * 42  # this was originally 2 had to make 42 to work on mac?
+
+        return QtCore.QSize(width, self.height())

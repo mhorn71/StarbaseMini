@@ -168,7 +168,7 @@ class Main(QtGui.QMainWindow):
 
         # Initialise data viewer dialog class
 
-        self.data_viewer = data_viewer.DataViewer(self.data_store)
+        self.data_viewer = data_viewer.DataViewer(self.data_store, self.metadata, self.instrument)
 
         # Initialise command interpreter class
 
@@ -1503,50 +1503,55 @@ class Main(QtGui.QMainWindow):
 
                 # if response[0] starts with success we see if we can run the metadata deconstructor.
 
-                if response[0].startswith('SUCCESS'):
+                try:
+                    if response[0].startswith('SUCCESS'):
 
-                    # Create the data store arrays
+                        # Create the data store arrays
 
-                    if self.data_store.create_arrays():
+                        if self.data_store.create_arrays():
 
-                        self.status_message('openCSV', response[0], response[1], None)
+                            self.status_message('openCSV', response[0], response[1], None)
 
-                        logger.debug('openCSV calling add_data')
+                            logger.debug('openCSV calling add_data')
 
-                        response = self.chart.add_data('rawCsv')
+                            response = self.chart.add_data('rawCsv')
 
-                        if response[0] != 'SUCCESS':
-                            self.status_message('openCSV', response[1], 'Plotting error!!', None)
+                            if response[0] != 'SUCCESS':
+                                self.status_message('openCSV', response[1], 'Plotting error!!', None)
+                            else:
+                                self.chart_control_panel(self.metadata)
+
                         else:
-                            self.chart_control_panel(self.metadata)
+
+                            self.status_message('openCSV', 'PREMATURE_TERMINATON', 'Unable to parse data!', None)
 
                     else:
 
-                        self.status_message('openCSV', 'PREMATURE_TERMINATON', 'Unable to parse data!', None)
+                        self.status_message('openCSV', response[0], response[1], None)
 
-                else:
+                except TypeError:
 
-                    self.status_message('openCSV', response[0], response[1], None)
+                    self.status_message('openCSV', 'PREMATURE_TERMINATON', 'No data!', None)
 
             else:
 
                 self.status_message('openCSV', 'ABORT', None, None)
 
-    def save_data(self, type):
+    def save_data(self, data_style_type):
 
-        save_data_identifity = 'save' + type.title() + 'Data'
+        save_data_identifity = 'save' + data_style_type.title() + 'Data'
 
-        response = core.exporter(type, self.metadata, self.data_store,
+        response = core.exporter(data_style_type, self.metadata, self.data_store,
                                  self.application_configuration.user_home,
                                  self.application_configuration.get('Application', 'instrument_data_path'))
 
         self.status_message(save_data_identifity, response[0], response[1], None)
 
-    def segment_data(self, period, type):
+    def segment_data(self, period, data_style_type):
 
-        segment_data_identifer = 'segment' + type.title() + 'Data(' + str(period) + ')'
+        segment_data_identifer = 'segment' + data_style_type.title() + 'Data(' + str(period) + ')'
 
-        response = self.segmenter.segment_timeseries(type, period)
+        response = self.segmenter.segment_timeseries(data_style_type, period)
 
         self.status_message(segment_data_identifer, response[0], response[1], None)
 
@@ -2167,22 +2172,20 @@ class Main(QtGui.QMainWindow):
         self.status_message('metadata', self.metadata_viewer_editor_dialog.response_message[0],
                             self.metadata_viewer_editor_dialog.response_message[1], None)
 
-    def dataview(self, datatype):
+    def dataview(self, data_style_type):
 
-        # TODO add check to make sure we have either processed or raw data before loading dialog.
-
-        # if len(self.data_store.RawData) == 0 or self.data_store.RawData is None and type == 'raw':
-        #
-        #     self.status_message('RawDataViewer', 'PREMATURE_TERMINATION', 'No Data!', None)
-        #
-        # elif len(self.data_store.ProcessedData) == 0 and type == 'processed':
-        #
-        #     self.status_message('ProcessedDataViewer', 'PREMATURE_TERMINATION', 'No Data!', None)
-        # 
-        # else:
-
-        self.data_viewer.load(datatype)
-        self.data_viewer.exec_()
+        if len(self.data_store.RawData) == 0 and data_style_type == 'raw':
+        
+            self.status_message('RawDataViewer', 'PREMATURE_TERMINATION', 'No data!', None)
+        
+        elif len(self.data_store.ProcessedData) == 0 and data_style_type == 'processed':
+        
+            self.status_message('ProcessedDataViewer', 'PREMATURE_TERMINATION', 'No data!', None)
+        
+        else:
+            
+            self.data_viewer.load(data_style_type)
+            self.data_viewer.exec_()
 
 
 if __name__ == '__main__':
