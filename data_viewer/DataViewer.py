@@ -36,17 +36,23 @@ class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
 
         if sys.platform.startswith('darwin'):
 
+            self.autowidthfixer = 42
+
             with open('css/macStyle.css', 'r') as style:
 
                 self.setStyleSheet(style.read())
 
         elif sys.platform.startswith('win32'):
 
+            self.autowidthfixer = 25
+
             with open('css/winStyle.css', 'r') as style:
 
                 self.setStyleSheet(style.read())
 
         elif sys.platform.startswith('linux'):
+
+            self.autowidthfixer = 42
 
             with open('css/nixStyle.css', 'r') as style:
 
@@ -135,6 +141,6 @@ class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
         width += self.DataViewTableWidget.verticalHeader().sizeHint().width()
 
         width += self.DataViewTableWidget.verticalScrollBar().sizeHint().width()
-        width += self.DataViewTableWidget.frameWidth() * 42  # this was originally 2 had to make 42 to work on mac?
+        width += self.DataViewTableWidget.frameWidth() * self.autowidthfixer  # this was originally 2 had to make 42 to work on mac?
 
         return QtCore.QSize(width, self.height())
