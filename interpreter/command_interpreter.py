@@ -759,11 +759,11 @@ class CommandInterpreter():
 
             return ident, 'INVALID_XML', "Unable to parse primary command", None
 
-        # Next we check the response status is SUCCESS otherwise we'll return PREMATURE_TERMINATION.
+        # Next we check the response status is SUCCESS otherwise we'll return the response value.
 
         if not response[1].startswith('SUCCESS'):
 
-            return ident, 'PREMATURE_TERMINATION', None, None
+            return ident, response[1], None, None
 
         # If Primary command is SUCCESS then we're going to try run the secondary command.  Again we make the assumption
         # that the primary command response with be a number which we're going to iterate over.
@@ -788,7 +788,7 @@ class CommandInterpreter():
 
             logger.critical("BlockedDataCommand Block count less than one.!!")
 
-            return ident, 'PREMATURE_TEMINATION', "NODATA", None
+            return ident, 'PREMATURE_TEMINATION', "No data!", None
 
         # Double check the any previous RawData has been saved as this will destroy it otherwise.
 
