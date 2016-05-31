@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Tue May 31 22:09:43 2016
+# Created: Tue May 31 22:12:54 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -96,7 +96,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.label_4 = QtGui.QLabel(self.groupBox)
-        self.label_4.setMinimumSize(QtCore.QSize(30, 0))
+        self.label_4.setMinimumSize(QtCore.QSize(30, 20))
         self.label_4.setMaximumSize(QtCore.QSize(80, 16777215))
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_4.addWidget(self.label_4)
