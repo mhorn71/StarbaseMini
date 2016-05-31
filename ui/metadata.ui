@@ -43,7 +43,7 @@
      <property name="font">
       <font>
        <family>Courier</family>
-       <pointsize>14</pointsize>
+       <pointsize>10</pointsize>
       </font>
      </property>
     </widget>
@@ -59,7 +59,7 @@
      <property name="font">
       <font>
        <family>Courier</family>
-       <pointsize>14</pointsize>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="maxLength">

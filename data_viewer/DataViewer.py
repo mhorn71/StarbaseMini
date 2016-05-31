@@ -52,7 +52,7 @@ class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
 
         elif sys.platform.startswith('linux'):
 
-            self.autowidthfixer = 42
+            self.autowidthfixer = 25
 
             with open('css/nixStyle.css', 'r') as style:
 
