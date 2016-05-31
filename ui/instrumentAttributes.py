@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Tue May 31 22:32:00 2016
+# Created: Tue May 31 22:43:27 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -39,7 +39,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.Chan0ColourLineEdit.setObjectName("Chan0ColourLineEdit")
         self.gridLayout.addWidget(self.Chan0ColourLineEdit, 3, 3, 1, 1)
         self.PickerButton0 = QtGui.QPushButton(self.groupBox)
-        self.PickerButton0.setMinimumSize(QtCore.QSize(107, 20))
+        self.PickerButton0.setMinimumSize(QtCore.QSize(107, 0))
         self.PickerButton0.setMaximumSize(QtCore.QSize(100, 16777215))
         self.PickerButton0.setObjectName("PickerButton0")
         self.gridLayout.addWidget(self.PickerButton0, 3, 4, 1, 1)
