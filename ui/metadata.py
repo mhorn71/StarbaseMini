@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'metadata.ui'
 #
-# Created: Tue May 31 21:10:18 2016
+# Created: Tue May 31 21:25:34 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,7 +28,7 @@ class Ui_MetadataDialog(object):
         self.gridLayout.addWidget(self.buttonBox, 4, 0, 1, 1)
         self.metadataEdit = QtGui.QTextBrowser(MetadataDialog)
         font = QtGui.QFont()
-        font.setFamily("Courier")
+        font.setFamily("Droid Sans")
         font.setPointSize(10)
         self.metadataEdit.setFont(font)
         self.metadataEdit.setObjectName("metadataEdit")
@@ -36,7 +36,7 @@ class Ui_MetadataDialog(object):
         self.metadataNotesEdit = QtGui.QLineEdit(MetadataDialog)
         self.metadataNotesEdit.setMinimumSize(QtCore.QSize(0, 100))
         font = QtGui.QFont()
-        font.setFamily("Courier")
+        font.setFamily("Droid Sans")
         font.setPointSize(10)
         self.metadataNotesEdit.setFont(font)
         self.metadataNotesEdit.setMaxLength(100)

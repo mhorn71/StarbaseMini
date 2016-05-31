@@ -42,7 +42,7 @@
     <widget class="QTextBrowser" name="metadataEdit">
      <property name="font">
       <font>
-       <family>Courier</family>
+       <family>Droid Sans</family>
        <pointsize>10</pointsize>
       </font>
      </property>
@@ -58,7 +58,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Courier</family>
+       <family>Droid Sans</family>
        <pointsize>10</pointsize>
       </font>
      </property>
