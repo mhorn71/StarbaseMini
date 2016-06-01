@@ -1381,7 +1381,9 @@ class Main(QtGui.QMainWindow):
 
                                 self.ui.commandParameter.setEnabled(False)
 
-                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #EBEBEB }')
+                                # TODO set #CECECE to back ground colour of main application.
+
+                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #CECECE }')
 
                             else:
 
