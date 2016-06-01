@@ -7,7 +7,7 @@
     <StaribusPortType>RS232</StaribusPortType>
     <StaribusPort>COM1</StaribusPort>
     <StaribusPortBaudrate>57600</StaribusPortBaudrate>
-    <StaribusPortTimeout>20</StaribusPortTimeout>
+    <StaribusPortTimeout>5</StaribusPortTimeout>
     <StaribusPortAutodetect>False</StaribusPortAutodetect>
     <NumberOfChannels>9</NumberOfChannels>
     <DataTranslator>StaribusBlock</DataTranslator>

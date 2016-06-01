@@ -6,7 +6,7 @@
     <StaribusAddress>000</StaribusAddress>
     <StarinetAddress>192.168.1.19</StarinetAddress>
     <StarinetPort>1205</StarinetPort>
-    <StaribusPortTimeout>20</StaribusPortTimeout>
+    <StaribusPortTimeout>5</StaribusPortTimeout>
     <NumberOfChannels>7</NumberOfChannels>
     <DataTranslator>StaribusBlock</DataTranslator>
 
