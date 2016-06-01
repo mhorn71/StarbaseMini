@@ -46,7 +46,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -65,7 +65,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -97,7 +97,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -167,7 +167,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -186,7 +186,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -243,7 +243,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>20</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -339,7 +339,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -363,7 +363,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="StaribusPortLineEdit"/>
+         <widget class="QLineEdit" name="StaribusPortLineEdit">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QCheckBox" name="RS485checkBox">
@@ -431,7 +438,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -457,7 +464,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -521,7 +528,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -652,7 +659,7 @@
           <property name="minimumSize">
            <size>
             <width>129</width>
-            <height>0</height>
+            <height>22</height>
            </size>
           </property>
           <property name="maxLength">
@@ -672,7 +679,7 @@
           <property name="minimumSize">
            <size>
             <width>50</width>
-            <height>0</height>
+            <height>22</height>
            </size>
           </property>
           <property name="maxLength">
@@ -687,7 +694,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -725,7 +732,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -751,7 +758,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -808,7 +815,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -834,7 +841,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -891,7 +898,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -917,7 +924,7 @@
         <property name="minimumSize">
          <size>
           <width>120</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
