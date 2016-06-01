@@ -42,12 +42,20 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         if sys.platform.startswith('darwin'):
             stylesheet = 'css/macStyle.css'
             stylebool = True
+
+            self.margin_bottom = 'margin-bottom: 5px;'
+
         elif sys.platform.startswith('win32'):
             stylesheet = 'css/winStyle.css'
             stylebool = True
+
+            self.margin_bottom = ''
+
         elif sys.platform.startswith('linux'):
             stylesheet = 'css/nixStyle.css'
             stylebool = True
+
+            self.margin_bottom = ''
 
         if stylebool:
             with open(stylesheet, 'r') as style:
@@ -878,8 +886,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton0.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan0ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     def Picker1(self):
@@ -888,8 +896,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton1.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan1ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     def Picker2(self):
@@ -898,8 +906,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton2.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan2ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     def Picker3(self):
@@ -908,8 +916,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton3.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan3ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     def Picker4(self):
@@ -918,8 +926,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton4.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan4ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     def Picker5(self):
@@ -928,8 +936,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton5.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan5ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     def Picker6(self):
@@ -938,8 +946,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton6.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan6ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     def Picker7(self):
@@ -948,8 +956,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton7.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan7ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     def Picker8(self):
@@ -958,8 +966,8 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.PickerButton8.setStyleSheet(
                 'QPushButton { background-color: ' + self.Chan8ColourLineEdit.text() + ';' +
                 'border-width: 1px; border-radius: 3px;' +
-                'border-color: beige; padding: 5px;' +
-                'margin-top: 0px; }')
+                'border-color: beige; padding: 4px;' +
+                'margin-top: 0px;' + self.margin_bottom + ' }')
             self.save_button_state()
 
     # channel pickers.
