@@ -124,17 +124,31 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
         data = ''
 
-        for i in self.metadata.metadata_creator(self.data_store.DataSource):
+        self.buttonBox.button(QtGui.QDialogButtonBox.Save).setEnabled(False)
+        self.metadataNotesEdit.setEnabled(False)
 
-            if i[0].startswith('Observation.Notes'):
+        metadata = self.metadata.metadata_creator(self.data_store.DataSource)
 
-                self.metadataNotesEdit.setText(str(i[1]))
+        if metadata is None:
 
-            else:
+            self.metadataEdit.setText('No metadata to display.')
 
-                data += i[0] + ' :: ' + i[1] + '\n'
+        else:
 
-        self.metadataEdit.setText(data)
+            self.buttonBox.button(QtGui.QDialogButtonBox.Save).setEnabled(True)
+            self.metadataNotesEdit.setEnabled(True)
+
+            for i in metadata:
+
+                if i[0].startswith('Observation.Notes'):
+
+                    self.metadataNotesEdit.setText(str(i[1]))
+
+                else:
+
+                    data += i[0] + ' :: ' + i[1] + '\n'
+
+            self.metadataEdit.setText(data)
 
     def save_called(self):
 

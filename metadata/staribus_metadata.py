@@ -306,7 +306,7 @@ class StaribusMetaData:
 
         else:
 
-            return 'PREMATURE_TERMINATION', 'No metadata available for source :%s' % str(source)
+            return None
 
         source = self.instrument
 
