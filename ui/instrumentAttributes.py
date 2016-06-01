@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'instrumentAttributes.ui'
 #
-# Created: Tue May 31 22:49:36 2016
+# Created: Wed Jun  1 17:28:36 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,8 +12,13 @@ from PyQt4 import QtCore, QtGui
 class Ui_InstrumentAttributesDialog(object):
     def setupUi(self, InstrumentAttributesDialog):
         InstrumentAttributesDialog.setObjectName("InstrumentAttributesDialog")
-        InstrumentAttributesDialog.resize(500, 503)
-        InstrumentAttributesDialog.setMinimumSize(QtCore.QSize(500, 503))
+        InstrumentAttributesDialog.resize(526, 416)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(InstrumentAttributesDialog.sizePolicy().hasHeightForWidth())
+        InstrumentAttributesDialog.setSizePolicy(sizePolicy)
+        InstrumentAttributesDialog.setMinimumSize(QtCore.QSize(526, 400))
         InstrumentAttributesDialog.setMaximumSize(QtCore.QSize(1000, 600))
         self.gridLayout_3 = QtGui.QGridLayout(InstrumentAttributesDialog)
         self.gridLayout_3.setObjectName("gridLayout_3")
@@ -22,6 +27,12 @@ class Ui_InstrumentAttributesDialog(object):
         self.groupBox.setObjectName("groupBox")
         self.gridLayout = QtGui.QGridLayout(self.groupBox)
         self.gridLayout.setObjectName("gridLayout")
+        self.Chan3LabelEdit = QtGui.QLineEdit(self.groupBox)
+        self.Chan3LabelEdit.setMinimumSize(QtCore.QSize(120, 0))
+        self.Chan3LabelEdit.setMaximumSize(QtCore.QSize(160, 16777215))
+        self.Chan3LabelEdit.setMaxLength(12)
+        self.Chan3LabelEdit.setObjectName("Chan3LabelEdit")
+        self.gridLayout.addWidget(self.Chan3LabelEdit, 6, 1, 1, 1)
         self.Chan0LabelEdit = QtGui.QLineEdit(self.groupBox)
         self.Chan0LabelEdit.setMinimumSize(QtCore.QSize(120, 0))
         self.Chan0LabelEdit.setMaximumSize(QtCore.QSize(160, 16777215))
@@ -100,12 +111,6 @@ class Ui_InstrumentAttributesDialog(object):
         self.label_7.setMaximumSize(QtCore.QSize(80, 16777215))
         self.label_7.setObjectName("label_7")
         self.gridLayout.addWidget(self.label_7, 6, 0, 1, 1)
-        self.Chan3LabelEdit = QtGui.QLineEdit(self.groupBox)
-        self.Chan3LabelEdit.setMinimumSize(QtCore.QSize(120, 0))
-        self.Chan3LabelEdit.setMaximumSize(QtCore.QSize(160, 16777215))
-        self.Chan3LabelEdit.setMaxLength(12)
-        self.Chan3LabelEdit.setObjectName("Chan3LabelEdit")
-        self.gridLayout.addWidget(self.Chan3LabelEdit, 6, 1, 1, 1)
         self.label_20 = QtGui.QLabel(self.groupBox)
         self.label_20.setObjectName("label_20")
         self.gridLayout.addWidget(self.label_20, 6, 2, 1, 1)
@@ -314,8 +319,6 @@ class Ui_InstrumentAttributesDialog(object):
         self.PickerButton8.setMaximumSize(QtCore.QSize(100, 16777215))
         self.PickerButton8.setObjectName("PickerButton8")
         self.gridLayout.addWidget(self.PickerButton8, 11, 4, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 12, 2, 1, 1)
         self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 1)
         self.buttonBox = QtGui.QDialogButtonBox(InstrumentAttributesDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
