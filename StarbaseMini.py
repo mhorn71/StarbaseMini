@@ -1494,7 +1494,7 @@ class Main(QtGui.QMainWindow):
 
                 # TODO remove data_store.print_state
 
-                self.data_store.print_state()
+                # self.data_store.print_state()
 
                 # Set RawDataBlocksAvailable back to False
 
@@ -1541,8 +1541,6 @@ class Main(QtGui.QMainWindow):
             if response[0].startswith('SUCCESS'):
 
                 response = self.csv_datatranslator.parse(response[1], self.metadata)
-
-                # TODO remove self.data_store.print_state()
 
                 # self.data_store.print_state()
 
@@ -1602,7 +1600,7 @@ class Main(QtGui.QMainWindow):
 
     def filter_data(self, filter_):
 
-        filter_indentifer = 'filter' + filter_
+        filter_indentifer = 'filter(' + filter_ + ')'
 
         if filter_ == 'NonLinearStaticRemover':
 
