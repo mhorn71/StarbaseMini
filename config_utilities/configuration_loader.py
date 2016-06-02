@@ -19,7 +19,7 @@ __author__ = 'mark'
 
 import configparser
 from os import path, makedirs
-import config_utilities.release_update as rlu
+import config_utilities
 
 
 class ConfigLoader:
@@ -42,7 +42,8 @@ class ConfigLoader:
         self.user_instruments = 'instruments' + path.sep + 'instruments.xml'
         self.logger = None
         self.config = configparser.RawConfigParser()
-        self.version = 5
+
+        self.version = 6
         self.current_version = 0
 
         if path.isfile('user_home.txt'):
@@ -79,6 +80,8 @@ class ConfigLoader:
 
         self.check_conf_exists()
 
+        self.updater = config_utilities.Updater(self.config_home)
+
     def check_conf_exists(self):
         '''
         :raises: IOError in the event it can't find or write to configuration file.
@@ -96,7 +99,7 @@ class ConfigLoader:
 
                 # Add Application Release Number
                 self.config.add_section('Release')
-                self.config.set('Release', 'version', '5')
+                self.config.set('Release', 'version', '6')
 
                 # Add Application Data Save Path
                 self.config.add_section('Application')
@@ -200,7 +203,7 @@ class ConfigLoader:
             else:
                 self.config.read(self.conf_file)
                 for i in range((self.current_version + 1), (self.version + 1)):
-                    rlu.update(self.config, i, self.config_home)
+                    self.updater.update(self.config, i, self.config_home)
                     self.config.set('Release', 'version', str(i))
 
                 try:
