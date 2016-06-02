@@ -20,7 +20,7 @@ __author__ = 'mark'
 import sys
 import glob
 import serial
-
+import logging
 
 def serial_port_scanner():
     """Lists serial ports
@@ -29,6 +29,8 @@ def serial_port_scanner():
 
     Note:  Some Linux distributions require the user to be a member of the dialout group.
     """
+
+    logger = logging.getLogger('utilities.serial_port_tool.serial_port_scanner')
 
     if sys.platform.startswith('win'):
         ports = ['COM' + str(i + 1) for i in range(256)]
@@ -40,6 +42,9 @@ def serial_port_scanner():
     elif sys.platform.startswith('darwin'):
         ports = glob.glob('/dev/tty.usb*')
     else:
+
+        logger.critical('Unknown platform : %s' % str(sys.platform))
+
         return None
         # raise EnvironmentError('Unsupported platform', str(sys.platform))
 
@@ -49,7 +54,10 @@ def serial_port_scanner():
             s = serial.Serial(port)
             s.close()
             result.append(port)
-        except (OSError, serial.SerialException):
+        except (OSError, serial.SerialException) as msg:
+
+            logger.warn("Unable to open serial port : %s, error : %s" % (str(port), str(msg)))
+
             pass
 
     if len(result) is 0:
@@ -64,9 +72,15 @@ def check_serial_port(port):
     :param port:
     :return: True or False
     '''
+
+    logger = logging.getLogger('utilities.serial_port_tool.check_serial_port')
+
     try:
         s = serial.Serial(port)
         s.close()
         return True
-    except (OSError, serial.SerialException):
+    except (OSError, serial.SerialException) as msg:
+
+        logger.warn("Unable to open serial port : %s, error : %s" % (str(port), str(msg)))
+
         return False

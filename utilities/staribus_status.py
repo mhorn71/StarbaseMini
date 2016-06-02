@@ -17,6 +17,8 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
 response_message_status = [('SUCCESS', b'0000'),
                            ('TIMEOUT', b'0001'),
                            ('ABORT', b'0002'),
@@ -42,6 +44,7 @@ def staribus_status_str2b(error_name):
     :param error_name: [SUCCESS, ABORT, CRC_ERROR] etc ...
     :return: byte string error code. e.g. b'8000'
     '''
+
     for name, error_code in iter(response_message_status):
         if name == error_name:
             return error_code
@@ -54,12 +57,17 @@ def staribus_status_b2str(message):
     :return: string consisting of status names or None
     '''
 
+    logger = logging.getLogger('utilities.staribus_status.staribus_status_b2str')
+
     response_message = []
 
     loop_logic = True
     try:
         message_int = int(message, 16)
     except TypeError:
+
+        logger.critical('Unable staribus message HexInteger to convert : %s to int' % str(message))
+
         return None
 
     while True:

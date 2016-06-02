@@ -42,7 +42,9 @@ def importer(user_home, data_home):
 
             logger.debug('Data path set to : ' + user_home)
 
-    except TypeError:
+    except TypeError as msg:
+
+        logger.warning(str(msg))
 
         file_name = QtGui.QFileDialog.getOpenFileName(None, 'Import File', user_home, "CSV files (*.csv)")
 

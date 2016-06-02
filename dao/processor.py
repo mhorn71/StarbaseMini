@@ -46,6 +46,8 @@ class DaoProcessor:
 
             except IOError as msg:
 
+                logger.warning(str(msg))
+
                 raise IOError(msg)
 
             else:
@@ -63,6 +65,8 @@ class DaoProcessor:
                     self.message_stream = dao.StaribusStream(serial_port, serial_baudrate, serial_timeout)
 
                 except IOError as msg:
+
+                    logger.warning(str(msg))
 
                     raise IOError(msg)
 
@@ -83,7 +87,7 @@ class DaoProcessor:
     def close(self):
         try:
             self.message_stream.close()
-        except AttributeError:
+        except AttributeError as msg:
             pass
 
     def star_message(self, addr, base, code, variant, param):
@@ -117,6 +121,8 @@ class DaoProcessor:
                 stream_reply = self.message_stream.stream(constructed_message)
 
             except IOError as msg:
+
+                logger.critical(str(msg))
 
                 return 'ERROR', str(msg)
 

@@ -122,6 +122,7 @@ def check_serial_port_staribus_instrument(address, ports, baudrate):
                             break
 
         except serial.SerialException:
+
             logger.critical('%s %s', 'Unable to open port ', str(port))
 
     if len(staribus_ports) == 0:

@@ -1132,7 +1132,7 @@ class Main(QtGui.QMainWindow):
 
         except IOError:
 
-            logger.info('Unable to initiate command interpreter')
+            logger.critical('Unable to initiate command interpreter')
 
             self.status_message('system', 'ABORT', 'Unable to initiate command interpreter', None)
 

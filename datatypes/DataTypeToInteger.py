@@ -16,9 +16,11 @@ __author__ = 'mark'
 #
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
-import re
+import logging
 
 # TODO DataTypeDictionary  requires a lot more decent logic testing.
+
+logger = logging.getLogger('datatypes.DataTypeToInteger')
 
 def DataTypeToInteger(datatype, data):
 
@@ -49,7 +51,9 @@ def DataTypeToInteger(datatype, data):
 
             return int(data, 16)
 
-        except ValueError:
+        except ValueError as msg:
+
+            logger.critical("Unable to convert %s : %s to HexInteger, error : %s" % (datatype, str(data), str(msg)))
 
             return None
 
@@ -59,7 +63,9 @@ def DataTypeToInteger(datatype, data):
 
             return int(data)
 
-        except ValueError:
+        except ValueError as msg:
+
+            logger.critical("Unable to convert %s : %s to DecimalInteger, error : %s" % (datatype, str(data), str(msg)))
 
             return None
 
@@ -69,7 +75,9 @@ def DataTypeToInteger(datatype, data):
 
             return int(data)
 
-        except ValueError:
+        except ValueError as msg:
+
+            logger.critical("Unable to convert %s : %s to DecimalDigit, error : %s" % (datatype, str(data), str(msg)))
 
             return None
 
@@ -79,7 +87,9 @@ def DataTypeToInteger(datatype, data):
 
             return int(data)
 
-        except ValueError:
+        except ValueError as msg:
+
+            logger.critical("Unable to convert %s : %s to UnsignedDecimalByte, error : %s" % (datatype, str(data), str(msg)))
 
             return None
 

@@ -110,7 +110,9 @@ class CommandInterpreter():
 
                     self.initialise_dao()
 
-            except IOError:
+            except IOError as msg:
+
+                logger.critical(str(msg))
 
                 raise IOError
 

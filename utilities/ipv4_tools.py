@@ -19,6 +19,7 @@ __author__ = 'mark'
 
 import socket
 import re
+import logging
 
 
 def check_ip(ip):
@@ -33,10 +34,15 @@ def check_ip(ip):
     # If the IPv4 address string passed to this function is invalid, OSError will be raised.
     # Note, exactly what is valid depends on the underlying C implementation of inet_aton().
 
+    logger = logging.getLogger('utilities.ipv4_tools.check_ip')
+
     try:
         socket.inet_aton(ip)
         return True
-    except OSError:
+    except OSError as msg:
+
+        logger.critical("Unable to check : %s, error : %s" % (str(ip), str(msg)) )
+
         return False
 
 

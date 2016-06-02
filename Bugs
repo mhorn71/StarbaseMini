@@ -1,27 +1,11 @@
 
 
-getData attempts to create chart even if no data is present to create it from
+Execute still stores signal if pressed while Application is processing command.
 
 xml_utils instrument importer needs to check the XML is valid more.
 
 
-#  Major issue ....   instruments loader requires the XML to be specified, I need to return both local and base instrument
-  names ... yikkies ... here be dragons.
-
-QTableWidget won't allow you to select line to copy.
-
-Instrument attributes only initiates correctly on start, unless I reinit the class after UI load.
-
-
 List to do ...
-
-DataTranslator
-
-MetaDataContructor
-
-MetaDataDeconstructor.
-
-Importer
 
 
 When get run getData we copy the data blocks sent from the controller to  :  RawDataBlocks and set
@@ -33,24 +17,3 @@ Once we run the the RawDataBlocks through the data translator successfully we se
 
 		RawDataBlocksAvailable = False
 		RawDataSaved = False
-
-Instrument Attributes and Application Configuration detect change on Windows 10 even when change hasn't occurred.
-
-Staribus2Starinet doesn't autodetect instrument when configuration is changed only when app is restarted.
-
-
-Current Start Up Order.
-
-1 StarbaseMini.find_instrument_names_filenames_xml
-
-2 StarbaseMini.instrument_xml_loader
-
-3 StarbaseMini.datatranslator_class_loader
-
-6 StarbaseMini.application_state_control (This needs to close any configured streams.)
-
-7 StarbaseMini.populate_ui_module
-
-4 StarbaseMini.interpreter_class_loader  (This closes and opens any configured streams.)
-
-5 StarbaseMini.chart_class_loader

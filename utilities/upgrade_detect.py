@@ -120,7 +120,10 @@ class Upgrader:
 
         try:
             urllib.request.urlretrieve(in_file, out_file)
-        except urllib.error.URLError:
+        except urllib.error.URLError as msg:
+
+            self.logger.warning('Unable to download upgrade : %s' % (str(in_file), str(msg)))
+
             return 'ABORT', 'Unable to retrieve upgrade.'
         else:
             if self.md5sum(out_file) == md5hash:

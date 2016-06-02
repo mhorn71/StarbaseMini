@@ -1398,6 +1398,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             if os.path.isfile(new_file):
                 os.unlink(new_file)
         except OSError:
+
+            logger.warning("Unable to unlink file :%s" % new_file)
+
             self.response_message = 'ABORT', 'No Instrument attributes need resetting'
         else:
             self.response_message = 'SUCCESS', 'Instrument attributes reset defaults'
