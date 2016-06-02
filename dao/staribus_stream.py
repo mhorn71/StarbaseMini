@@ -149,7 +149,7 @@ class StaribusStream:
                             datastring = ''.join(data)
 
                             if datastring.startswith('\x02') and datastring.endswith('\n'):
-                                self.logger.debug('%s %s', 'Found data to return ', repr(datastring))
+                                self.logger.info('%s %s', 'Found data to return ', repr(datastring))
                                 return datastring
 
         except serial.SerialException as msg:
