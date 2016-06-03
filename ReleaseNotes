@@ -7,6 +7,8 @@ Fixed - Issue where instrument identifier and not description was being used for
 
 Fixed - Font size issue with ReleaseNotes and Metadata for Windows and Linux reduced font to 10pt.
 
+Fixed - Standardised channel line colours and default lines colours.
+
 ===============
 Version : 3.0.0
 ===============

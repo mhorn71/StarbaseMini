@@ -379,21 +379,21 @@
 
     <ChannelMetadata>
         <ChannelLabel>Temperature</ChannelLabel>
-        <ChannelColour>#F15854</ChannelColour>
+        <ChannelColour>#E31A1C</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>Celsius</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Axis A</ChannelLabel>
-        <ChannelColour>#5DA5DA</ChannelColour>
+        <ChannelColour>#33A02C</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>nT</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Axis B</ChannelLabel>
-        <ChannelColour>#B2912F</ChannelColour>
+        <ChannelColour>#1F78B4</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>nT</ChannelUnit>
     </ChannelMetadata>

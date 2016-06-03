@@ -111,8 +111,8 @@ class StaribusMetaData:
         # We'll use the below list to save the channel names and colours and then populate the real lists from this.
         self.channel_names = ['NO_DATA'] * 9
 
-        self.channel_colours = ['#E31A1C', '#A6CEE3', '#1F78B4', '#B2DF8A', '#33A02C', '#F69A99', '#FDBF6F', '#FF7F00',
-                                '#CAB2D6']
+        self.channel_colours = ['#E31A1C', '#33A02C', '#1F78B4', '#FF7F00', '#CAB2D6', '#F69A99', '#B2DF8A', '#A6CEE3',
+                                '#FDBF6F']
 
         self.channel_datatypenames = ['NO_DATA'] * 9
 

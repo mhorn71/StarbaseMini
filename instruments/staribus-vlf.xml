@@ -327,14 +327,14 @@
 
     <ChannelMetadata>
         <ChannelLabel>Temperature</ChannelLabel>
-        <ChannelColour>#F15854</ChannelColour>
+        <ChannelColour>#E31A1C</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>Celsius</ChannelUnit>
     </ChannelMetadata>
 
     <ChannelMetadata>
         <ChannelLabel>Channel 0</ChannelLabel>
-        <ChannelColour>#5DA5DA</ChannelColour>
+        <ChannelColour>#33A02C</ChannelColour>
         <ChannelDataTypeName>DecimalInteger</ChannelDataTypeName>
         <ChannelUnit>mV</ChannelUnit>
     </ChannelMetadata>
