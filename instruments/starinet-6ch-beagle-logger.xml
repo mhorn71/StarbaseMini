@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="yes"?>
 
 <Instrument>
-    <Identifier>Starinet 4 Channel Beagle Logger</Identifier>
-    <Description>A Starinet 4 Channel Beagle Data Logger</Description>
+    <Identifier>Starinet 6 Channel Beagle Logger</Identifier>
+    <Description>A Starinet 6 Channel Beagle Data Logger</Description>
     <StaribusAddress>000</StaribusAddress>
     <StarinetAddress>192.168.1.19</StarinetAddress>
     <StarinetPort>1205</StarinetPort>
