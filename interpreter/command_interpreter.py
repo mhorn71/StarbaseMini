@@ -28,7 +28,7 @@ import utilities
 
 
 class CommandInterpreter():
-    def __init__(self, data_store, metadata):
+    def __init__(self, data_store):
 
         # Style sheets
 
@@ -66,7 +66,7 @@ class CommandInterpreter():
 
         self.application_configuration = None
 
-        self.metadata = metadata
+        self.metadata = None
 
         self.instrument = None
 
@@ -84,12 +84,14 @@ class CommandInterpreter():
 
             logger.debug('No dao_processor to close')
 
-    def start(self, parent, port_state):
+    def start(self, parent, port_state, metadata):
 
         logger = logging.getLogger('interpreter.CommandInterpreter.start')
 
         self.application_configuration = parent.application_configuration
         self.instrument = parent.instrument
+
+        self.metadata = metadata
 
         if port_state is True:
 
@@ -807,7 +809,9 @@ class CommandInterpreter():
         #  Set the data store back to consistent state.
 
         self.data_store.clear()
-        self.metadata.clear()
+
+        if self.metadata is not None:
+            self.metadata.clear()
 
         # Check the data store is in a good state to start with.
 

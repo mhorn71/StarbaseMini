@@ -1,2 +1,4 @@
 The data translator decipher the payload into channel data.  If you write a new translator you'll also need to create
 a new metadata creator.  Also add the translator name to configuration_regex.
+
+To add a new Translator

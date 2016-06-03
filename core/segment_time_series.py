@@ -24,10 +24,10 @@ import csv
 
 
 class SegmentTimeSeries:
-    def __init__(self, metadata, datastore):
+    def __init__(self, datastore):
         logger = logging.getLogger('core.segmentTimeSeries')
 
-        self.metadata = metadata
+        self.metadata = None
 
         self.data_store = datastore
 
@@ -41,7 +41,9 @@ class SegmentTimeSeries:
 
         logger.debug('Initialised SegmentTimeSeries')
 
-    def data_setup(self, user_home, data_home):
+    def data_setup(self, user_home, data_home, metadata):
+
+        self.metadata = metadata
 
         logger = logging.getLogger('core.segmentTimeSeries.data_setup')
 

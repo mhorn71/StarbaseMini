@@ -17,3 +17,8 @@ Once we run the the RawDataBlocks through the data translator successfully we se
 
 		RawDataBlocksAvailable = False
 		RawDataSaved = False
+
+
+Version 3.0.0 Bugs
+
+Metadata says not saved when in fact it is.

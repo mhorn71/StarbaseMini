@@ -32,7 +32,7 @@ class CsvParser:
         # First 32 chars are date, time, temp, and sample rate plus spaces.
         # We also need to search of ETX
 
-        logger = logging.getLogger('datatranslator.CsvParser.parse')
+        logger = logging.getLogger('datatranslator.StaribusBlocks.CsvParser.parse')
 
         # Metadata list holder.
         main_list = []

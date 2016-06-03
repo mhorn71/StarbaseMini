@@ -191,7 +191,7 @@ class Chart:
 
         elif type == 'rawCsv':
 
-            logger.debugt('Length of data : %s' % str(len(self.data_store.RawDataCsv)))
+            logger.debug('Length of data : %s' % str(len(self.data_store.RawDataCsv)))
 
             data = self.data_store.RawDataCsv
 

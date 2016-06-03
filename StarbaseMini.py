@@ -128,6 +128,12 @@ class Main(QtGui.QMainWindow):
 
             logger.warning('Unable to update application configuration : %s' % str(msg))
 
+        # Get the current application background colour and set self.background_colour
+
+        colour = self.palette().color(QtGui.QPalette.Background)
+
+        self.background_colour = utilities.rgb2hex((colour.red(), colour.green(), colour.blue()))
+
         # Initialise datastore class.
 
         self.data_store = datastore.DataStore()
@@ -156,30 +162,25 @@ class Main(QtGui.QMainWindow):
 
         self.instrument_datatranslator = None  # We set this class later once we know what instrument is enabled.
 
-        self.csv_datatranslator = datatranslators.CsvParser(self.data_store)
+        self.csv_datatranslator = None
 
-        # Initialise meta data classes
-
-        self.metadata = metadata.StaribusMetaData(self)
+        self.metadata = None
 
         # Initialise metadata dialog class
 
-        self.metadata_viewer_editor_dialog = metadata.MetadataViewerEditor(self.metadata, self.data_store)
+        self.metadata_viewer_editor_dialog = metadata.MetadataViewerEditor(self.data_store)
 
         # Initialise data viewer dialog class
 
-        self.data_viewer = data_viewer.DataViewer(self.data_store, self.metadata, self.instrument)
+        self.data_viewer = data_viewer.DataViewer(self.data_store, self.instrument)
 
         # Initialise command interpreter class
 
-        self.command_interpreter = interpreter.CommandInterpreter(self.data_store, self.metadata)
+        self.command_interpreter = interpreter.CommandInterpreter(self.data_store)
 
         # Initialise segment time series class and run the setup.
 
-        self.segmenter = core.SegmentTimeSeries(self.metadata, self.data_store)
-
-        self.segmenter.data_setup(self.application_configuration.user_home,
-                                  self.application_configuration.get('Application', 'instrument_data_path'))
+        self.segmenter = core.SegmentTimeSeries(self.data_store)
 
         # Initialise mpl chart class
 
@@ -1086,7 +1087,21 @@ class Main(QtGui.QMainWindow):
 
                 logger.info('Initialising StaribusBlock datatranslator')
 
-                self.instrument_datatranslator = datatranslators.StaribusBlockParser()
+                self.instrument_datatranslator = datatranslators.StaribusBlocks.StaribusBlockParser()
+
+                logger.info('Initialising StaribusBlock csv_datatranslator')
+
+                self.csv_datatranslator = datatranslators.StaribusBlocks.CsvParser(self.data_store)
+
+                logger.info('Initialising StaribusBlock metadata')
+
+                self.metadata =  datatranslators.StaribusBlocks.StaribusMetaData(self)
+
+                logger.info('Initialising StaribusBlock data segmenter')
+
+                self.segmenter.data_setup(self.application_configuration.user_home,
+                                          self.application_configuration.get('Application', 'instrument_data_path'),
+                                          self.metadata)
 
                 # Make sure the datatranslator is reset to default values,
 
@@ -1126,9 +1141,7 @@ class Main(QtGui.QMainWindow):
 
         try:
 
-            # TODO send serial port state.
-
-            self.command_interpreter.start(self, self.serial_port_state)
+            self.command_interpreter.start(self, self.serial_port_state, self.metadata)
 
         except IOError:
 
@@ -1381,9 +1394,8 @@ class Main(QtGui.QMainWindow):
 
                                 self.ui.commandParameter.setEnabled(False)
 
-                                # TODO set #CECECE to back ground colour of main application.
-
-                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #CECECE }')
+                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: %s }' %
+                                                                       self.background_colour)
 
                             else:
 
@@ -1491,10 +1503,6 @@ class Main(QtGui.QMainWindow):
 
                 self.status_message(interpreter_response[0], interpreter_response[1], interpreter_response[2],
                                     interpreter_response[3])
-
-                # TODO remove data_store.print_state
-
-                # self.data_store.print_state()
 
                 # Set RawDataBlocksAvailable back to False
 
@@ -2208,7 +2216,7 @@ class Main(QtGui.QMainWindow):
 
         self.metadata_viewer_editor_dialog.clear()
 
-        self.metadata_viewer_editor_dialog.update_ui()
+        self.metadata_viewer_editor_dialog.update_ui(self.metadata)
 
         self.metadata_viewer_editor_dialog.exec_()
 
@@ -2227,7 +2235,7 @@ class Main(QtGui.QMainWindow):
         
         else:
             
-            self.data_viewer.load(data_style_type)
+            self.data_viewer.load(data_style_type, self.metadata)
             self.data_viewer.exec_()
 
 

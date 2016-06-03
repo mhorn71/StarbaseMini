@@ -26,7 +26,7 @@ import numpy as np
 class StaribusBlockParser:
     def __init__(self):
 
-        logger = logging.getLogger('datatranslator.StaribusBlockParser.init')
+        logger = logging.getLogger('datatranslators.StaribusBlocks.Staribus.StaribusBlockParser.init')
 
         logger.debug('Initialised StaribusBlockParser.')
 
@@ -36,7 +36,7 @@ class StaribusBlockParser:
 
     def clear(self):
 
-        logger = logging.getLogger('datatranslator.StaribusBlockParser')
+        logger = logging.getLogger('datatranslators.StaribusBlocks.Staribus.StaribusBlockParser')
 
         logger.info('Clearing data.')
 
@@ -44,7 +44,7 @@ class StaribusBlockParser:
 
     def block_parser(self, data_store):
 
-        logger = logging.getLogger('datatranslator.StaribusBlockParser.block_parser')
+        logger = logging.getLogger('datatranslators.StaribusBlocks.Staribus.block_parser')
 
         if data_store.channel_count == 1:
 

@@ -25,11 +25,11 @@ from PyQt4 import QtGui, QtCore
 from ui import Ui_DataViewerDialog
 
 class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
-    def __init__(self, data_store, metadata, instrument):
+    def __init__(self, data_store, instrument):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
         self.data_store = data_store
-        self.metadata = metadata
+        self.metadata = None
         self.instrument = instrument
 
         # Style sheets
@@ -58,7 +58,9 @@ class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
 
                 self.setStyleSheet(style.read())
 
-    def load(self, type):
+    def load(self, type, metadata):
+
+        self.metadata = metadata
 
         if type == 'processed':
 

@@ -28,7 +28,7 @@ from ui import Ui_MetadataDialog
 import constants
 
 class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
-    def __init__(self, metadata, data_store):
+    def __init__(self, data_store):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
 
@@ -51,7 +51,7 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
         self.data_store = data_store
 
-        self.metadata = metadata
+        self.metadata = None
 
         self.observation_note = None
 
@@ -116,8 +116,9 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
         else:
             sender.setStyleSheet('QLineEdit { background-color: #f6989d')
 
+    def update_ui(self, metadata_class):
 
-    def update_ui(self):
+        self.metadata = metadata_class
 
         self.metadataEdit.clear()
         self.metadataNotesEdit.clear()
