@@ -10,6 +10,9 @@ Linux : /home/<username>/.starbasemini/starbaseMini.conf
 
 Windows :  C:\users\<username>\StarbaseMini\starbaseMini.conf
 
+You can set the user home by creating a file called user_home.txt in the application install directory with one line
+with the full path.  e.g /Users/user/ or C:\users\user\StarbaseMini\
+
 logfile rotation is enabled and will rotate a log once is 1.5MB in size, and keep a maximum of 6 log files not
 including the current log being written too.
 
