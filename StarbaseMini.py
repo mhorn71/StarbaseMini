@@ -47,7 +47,7 @@ import core
 import filters
 import data_viewer
 
-version = '3.0.0'
+version = '3.0.1'
 
 
 class Main(QtGui.QMainWindow):
