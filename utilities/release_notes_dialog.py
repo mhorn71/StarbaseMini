@@ -18,15 +18,37 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import sys
 
 from PyQt4 import QtGui
 
 from ui import Ui_Dialog
 
 class ReleaseNote(QtGui.QDialog, Ui_Dialog):
+
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
+
+        # Style sheets
+
+        if sys.platform.startswith('darwin'):
+
+            with open('css/macStyle.css', 'r') as style:
+
+                self.setStyleSheet(style.read())
+
+        elif sys.platform.startswith('win32'):
+
+            with open('css/winStyle.css', 'r') as style:
+
+                self.setStyleSheet(style.read())
+
+        elif sys.platform.startswith('linux'):
+
+            with open('css/nixStyle.css', 'r') as style:
+
+                self.setStyleSheet(style.read())
 
         if os.path.isfile("ReleaseNotes"):
             file = open('ReleaseNotes', 'r')

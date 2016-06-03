@@ -93,3 +93,7 @@ QTextBrowser#metadataEdit {
 QLineEdit#metadataNotesEdit {
         font-size: 14pt;
 }
+
+QTextEdit#releasenotesText {
+        font-size: 14pt;
+}
