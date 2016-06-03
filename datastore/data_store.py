@@ -20,10 +20,6 @@ __author__ = 'mark'
 import numpy as np
 import logging
 
-# TODO Flowchart logic for data store.
-
-# TODO remove print statements or move them to logger.
-
 
 class DataStore(object):
     def __init__(self):
