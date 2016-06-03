@@ -24,10 +24,13 @@ import logging
 class DaoProcessor:
     def __init__(self):
 
-        self.logger = logging.getLogger('dao.DaoProcessor')
+        logger = logging.getLogger('dao.DaoProcessor')
 
         self.command_message = dao.StaribusCommandMessage()
+
         self.response_message = dao.StaribusResponseMessage()
+
+        logger.debug('Initialised.')
 
     def start(self, serial_port, serial_baudrate, serial_timeout, starinet_address,
               starinet_port, stream, staribus_port_type):
@@ -80,15 +83,27 @@ class DaoProcessor:
 
                 pass
 
-
             else:
-                raise IOError('Unknown port type : %s' % staribus_port_type)
+
+                logger.debug('Unknown port standard type : %s' % staribus_port_type)
+
+                raise IOError('Unknown port standard type : %s' % staribus_port_type)
 
     def close(self):
+
+        logger = logging.getLogger('dao.DaoProcessor.close')
+
         try:
+
             self.message_stream.close()
+
         except AttributeError as msg:
-            pass
+
+            logger.warning('Unable to close message stream : %s' % str(msg))
+
+        else:
+
+            logger.info('Message stream closed.')
 
     def star_message(self, addr, base, code, variant, param):
         '''
@@ -112,6 +127,8 @@ class DaoProcessor:
 
         if constructed_message == 'MALFORMED_MESSAGE':
 
+            logger.critical('Constructed message is malformed : %s' % repr(constructed_message))
+
             return 'MALFORMED_MESSAGE', None
 
         else:
@@ -122,17 +139,22 @@ class DaoProcessor:
 
             except IOError as msg:
 
-                logger.critical(str(msg))
+                logger.critical('stream reply IOError : %s' % str(msg))
 
                 return 'ERROR', str(msg)
 
             if stream_reply == 'TIMEOUT':
 
+                logger.warning('stream reply TIMEOUT')
+
                 return 'TIMEOUT', None
 
             elif stream_reply == 'ERROR':
 
+                logger.warning('Error unable to send to socket')
+
                 response = 'ERROR', 'Unable to send to socket.'
+
             else:
 
                 response = self.response_message.decipher(stream_reply)
