@@ -91,7 +91,7 @@ class StaribusStream:
 
             self.staribus_port.close()
 
-            logger.debug('Staribus port close run')
+            logger.debug('Staribus port closed')
 
         else:
 
