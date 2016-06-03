@@ -9,6 +9,12 @@ Fixed - Font size issue with ReleaseNotes and Metadata for Windows and Linux red
 
 Fixed - Standardised channel line colours and default lines colours.
 
+Fixed - Issue where parameter entry box when disabled wasn't the same colour as the main application background.
+
+Fixed - Issue where instrument attributes line edit weren't set the default background colour.
+
+Fixed - Moved all StaribusBlock specific routines to it's own module under datatranslator.
+
 ===============
 Version : 3.0.0
 ===============

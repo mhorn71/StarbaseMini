@@ -341,7 +341,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan0ColourLineEdit.setEnabled(False)
         self.Chan0ColourLineEdit.clear()
-        self.Chan0ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s' % self.background_colour)
+        self.Chan0ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s }' % self.background_colour)
 
         self.PickerButton0.setEnabled(False)
         self.PickerButton0.setStyleSheet('QPushButton { background-color: }')
@@ -472,7 +472,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.Chan8ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton8.setEnabled(False)
-        self.PickerButton8.setStyleSheet('QPushButton { background-color: %}')
+        self.PickerButton8.setStyleSheet('QPushButton { background-color: }')
 
     # This gets run first so we can populate the UI and set the original configuration state.
 
@@ -578,7 +578,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
                 self.StaribusPortLineEdit.clear()
 
-                self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: }')
+                self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
                 self.StaribusPortLineEdit.setEnabled(False)  # Disable port entry box if auto detect is true.
 
@@ -607,7 +607,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
                 self.StaribusPortLineEdit.blockSignals(True)
                 self.StaribusPortLineEdit.setEnabled(False)
-                self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: }')
+                self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
                 # Autodetect
 
@@ -677,7 +677,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         if self.StaribusAutodetectCheckBox.isChecked():
 
-            self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: }')
+            self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
             self.StaribusPortLineEdit.setEnabled(False)
 
@@ -700,7 +700,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
             self.StaribusPortLineEdit.blockSignals(True)
             self.StaribusPortLineEdit.setEnabled(False)
-            self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: }')
+            self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
             self.BaudrateCombobox.setEnabled(False)
 
@@ -742,12 +742,12 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.StarinetAddressLineEdit.blockSignals(True)
             self.StarinetAddressLineEdit.setEnabled(False)
             self.StarinetAddressLineEdit.clear()
-            self.StarinetAddressLineEdit.setStyleSheet('QLineEdit { background-color: }')
+            self.StarinetAddressLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
             self.StarinetPortLineEdit.blockSignals(True)
             self.StarinetPortLineEdit.setEnabled(False)
             self.StarinetPortLineEdit.clear()
-            self.StarinetPortLineEdit.setStyleSheet('QLineEdit { background-color: }')
+            self.StarinetPortLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
     def configuration_changed(self):
 
