@@ -732,7 +732,15 @@ class Main(QtGui.QMainWindow):
 
         logger = logging.getLogger('StarbaseMini.application_state_control')
 
-        self.status_message('system', 'INFO', 'Application started.', None)
+        if self.run_once:
+
+            self.status_message('system', 'INFO', 'Application started.', None)
+            self.status_message('system', 'INFO', self.instrument.instrument_identifier + ' started.', None)
+
+        else:
+
+            self.status_message('system', 'INFO', 'Instrument changed to : ' + self.instrument.instrument_identifier,
+                                None)
 
         # Try to close any open streams.
 

@@ -15,6 +15,8 @@ Fixed - Issue where instrument attributes line edit weren't set the default back
 
 Fixed - Moved all StaribusBlock specific routines to it's own module under datatranslator.
 
+Fixed - Issue where selected instrument wasn't indicated as initialised or changed in status window.
+
 ===============
 Version : 3.0.0
 ===============
