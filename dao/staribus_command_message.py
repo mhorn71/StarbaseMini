@@ -53,7 +53,9 @@ import constants
 
 class StaribusCommandMessage:
     def __init__(self):
-        self.logger = logging.getLogger('dao.StaribusCommandMessage')
+        logger = logging.getLogger('dao.StaribusCommandMessage.init')
+
+        logger.debug('StaribusCommandMessage initialised')
 
     def construct(self, addr, base, code, variant, param):
         '''
@@ -66,64 +68,84 @@ class StaribusCommandMessage:
         :return: Return a single constructed staribus message string including control characters.
         '''
 
+        logger = logging.getLogger('dao.StaribusCommandMessage.construct')
+
         # Convert staribus address to hexbyte.
-        self.logger.debug('Message instrument address passed range check.')
+        logger.debug('Message instrument address passed range check.')
+
         # covert string to hex base 16 and make sure length is two chars long padd with leading zero if not.
         addr = hex(int(addr)).split('x')[1].upper().zfill(2)
 
-        self.logger.debug('Message instrument address converted to hexbyte : %s' % addr)
+        logger.debug('Message instrument address converted to hexbyte : %s' % addr)
 
         # The base and code are a hex byte and must be in the range 0x00 - 0xFF
         # so we'll use the check_staribus address to confirm they're in range.
 
         if utilities.check_hexbyte_string(base) is not True:
+
+            logger.warning('HexByte string check failed for base : %s' % base)
+
             return 'MALFORMED_MESSAGE'
 
         if utilities.check_hexbyte_string(code) is not True:
+
+            logger.warning('HexByte string check failed for code : %s' % code)
+
             return 'MALFORMED_MESSAGE'
 
         # Check the command variant is within in range for hex word 0x0000 - 0xFFFF
         if utilities.check_hexword_string(variant) is not True:
+
+            logger.warning('HexByte string check failed for variant : %s' % variant)
+
             return 'MALFORMED_MESSAGE'
 
         command = addr + base + code + variant
-        self.logger.debug('Message command string : %s' % command)
+
+        logger.debug('Message command string : %s' % command)
 
         if param is None:
-            self.logger.debug('Message has no parameter')
+
+            logger.debug('Message has no parameter')
 
             CRC = utilities.create_crc(command)
-            self.logger.debug('Message crc is : %s' % CRC)
+
+            logger.debug('Message crc is : %s' % CRC)
 
             command = command + CRC
-            self.logger.debug('Message command including crc : %s' % command)
+
+            logger.debug('Message command including crc : %s' % command)
 
             command = constants.STX + command + constants.EOT + constants.CR_LF
-            self.logger.debug('Message string including ctrl chars : %s' % repr(command))
+
+            logger.debug('Message string including ctrl chars : %s' % repr(command))
 
             response = command
 
         elif param is not None:
-            self.logger.debug('Message has parameter')
+
+            logger.debug('Message has parameter')
 
             parameters = param.split(',')
-            self.logger.debug('Message parameter is : %s' % repr(parameters))
+
+            logger.debug('Message parameter is : %s' % repr(parameters))
 
             for i in range(len(parameters)):
-                self.logger.debug('Message has single parameter')
+
+                logger.debug('Message has single parameter')
 
                 command = command + constants.US + parameters[i] + constants.US
-                self.logger.debug('Message command string including parameter : %s' % repr(command))
+
+                logger.debug('Message command string including parameter : %s' % repr(command))
 
                 CRC = utilities.create_crc(command)
-                self.logger.debug('Message crc is : %s' % CRC)
+
+                logger.debug('Message crc is : %s' % CRC)
 
                 command = constants.STX + command + CRC + constants.EOT + constants.CR_LF
-                self.logger.debug('Message including crc and ctrl chars : %s' % repr(command))
+
+                logger.debug('Message including crc and ctrl chars : %s' % repr(command))
 
                 response = command
-
-        else:
-            response = 'MALFORMED_MESSAGE'
 
         return response
