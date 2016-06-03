@@ -541,7 +541,7 @@ class Main(QtGui.QMainWindow):
             message = 'WARNING:  You have unsaved data.\n\nIf you change the instrument, ' + \
                       'you will be able to save the unsaved data!\n\nDo you want to change instruments?'
 
-            header = 'HELLO'
+            header = ''
 
             result = QtGui.QMessageBox.warning(None,
                                                header,
