@@ -133,7 +133,7 @@ class Upgrader:
 
                 return 'SUCCESS', 'Upgrade file downloaded to - ' + out_file
             else:
-                print(self.md5sum(out_file))
+                self.logger.debug("Checksum : %s for file : %s" % str(self.md5sum(out_file)), out_file)
                 if os.path.isfile(out_file):
                     os.unlink(out_file)
                 return 'ABORT', 'Upgrade file checksum failed check.'
