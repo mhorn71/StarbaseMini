@@ -129,7 +129,7 @@ class Chart:
 
         if self.data_store.DataSource == 'Controller':
 
-            title = self.instrument.instrument_identifier
+            title = self.instrument.instrument_description
             channel_names = self.instrument.channel_names
             channel_colours = self.instrument.channel_colours
             channel_units = self.instrument.channel_units
@@ -139,7 +139,7 @@ class Chart:
 
         elif self.data_store.DataSource == 'CSV':
 
-            title = self.metadata.instrument_identifier
+            title = self.metadata.ObservationTitle
             channel_names = self.metadata.channel_names
             channel_colours = self.metadata.channel_colours
             channel_units = self.metadata.channel_units

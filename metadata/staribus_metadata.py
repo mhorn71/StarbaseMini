@@ -123,6 +123,7 @@ class StaribusMetaData:
         self.XaxisLabel = 'NO_DATA'
 
         self.ObservationNotes = None
+        self.ObservationTitle = None
 
         self.ObservatoryName = None
         self.ObservatorDescription = None
@@ -184,7 +185,7 @@ class StaribusMetaData:
         logger_clear.debug('Channel data type names set to default n * 9 matrix')
 
         self.channel_units = ['NO_DATA'] * 9
-        logger_clear.debug('BChannel units set to default n * 9 matrix')
+        logger_clear.debug('Channel units set to default n * 9 matrix')
 
         self.YaxisLabel = 'NO_DATA'
         logger_clear.debug('YaxisLabel set to NO_DATA')
@@ -194,6 +195,9 @@ class StaribusMetaData:
 
         self.ObservationNotes = None
         logger_clear.debug('Observation notes set to None')
+
+        self.ObservationTitle = 'NO_DATA'
+        logger_clear.debug('Observation title set to NO_DATA')
 
         self.ObservatoryName = None
         self.ObservatorDescription = None
@@ -293,7 +297,7 @@ class StaribusMetaData:
             ObserverCountry = self.ObserverCountry
             ObserverNotes = self.ObserverNotes
 
-            ObservationTitle = self.instrument_identifier
+            ObservationTitle = self.ObservationTitle
             ObservationCount = self.instrument_number_of_channels
             ObservationXlabel = self.XaxisLabel
             ObservationYlabel = self.YaxisLabel
@@ -634,6 +638,7 @@ class StaribusMetaData:
         if re.match('^Observation\.Title$', data[0]):
             logger_meta_parser.debug('Observation title set to : %s' % str(data[1]))
             self.instrument_identifier = data[1]
+            self.ObservationTitle = data[1]
 
         if re.match('^Observation\.Axis\.Label\.X$', data[0]):
             logger_meta_parser.debug('X Axis label set to : %s' % str(data[1]))

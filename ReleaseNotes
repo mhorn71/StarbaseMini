@@ -1,6 +1,14 @@
 Version : 3.0.0
 ===============
 
+Fixed - Starinet 6 Beagle Logger, incorrect instrument identifier and description corrected.
+
+Fixed - Issue where instrument identifier and not description was being used for chart title.
+
+===============
+Version : 3.0.0
+===============
+
 Fixed -  Issue where popups didn't look consistent across platforms moved to html markup.
 
 Fixed -  Magnetometer setGain sent parameter in the wrong format.
