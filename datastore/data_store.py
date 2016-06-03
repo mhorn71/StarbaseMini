@@ -18,6 +18,7 @@ __author__ = 'mark'
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
+import logging
 
 # TODO Flowchart logic for data store.
 
@@ -94,33 +95,35 @@ class DataStore(object):
 
     def data_state(self):
 
+        logger = logging.getLogger('datastore.DataStore.data_state')
+
         if len(self.ProcessedData) != 0 and self.ProcessedDataSaved is False:
 
-            print("We have Processed Data but it isn't saved yet.")
+            logger.debug("We have Processed Data but it isn't saved yet.")
 
             return False, "You have unsaved processed data."
 
         elif len(self.RawData) != 0 and self.RawDataSaved is False and self.DataSource == 'Controller':
 
-            print("We have RawData but it isn't saved yet.")
+            logger.debug("We have RawData but it isn't saved yet.")
 
             return False, "You have unsaved raw data."
 
         elif len(self.RawData) != 0 and self.RawDataSaved is False and self.ObservationNotesChanged is True:
 
-            print("Unsaved Metadata.")
+            logger.debug("Unsaved Metadata.")
 
             return False, "You have unsaved metadata."
 
         elif self.ObservationNotesChanged is True:
 
-            print("Unsaved Metadata.")
+            logger.debug("Unsaved Metadata.")
 
             return False, "You have unsaved metadata."
 
         else:
 
-            print("We appear to have a clean data store.")
+            logger.debug("We appear to have a clean data store.")
 
             return True, "Data store ready to accept data."
 
