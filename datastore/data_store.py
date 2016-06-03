@@ -174,6 +174,8 @@ class DataStore(object):
 
     def create_arrays(self):
 
+        logger = logging.getLogger('datastore.DataStore.create_arrays')
+
         # Here we create the numpy arrays based on the shape of the data presented.
 
         # CSV Data ..
@@ -196,11 +198,9 @@ class DataStore(object):
 
             if self.block_parser.block_parser(self):
 
-                print('We appeared to parse block')
+                logger.debug('We appeared to parse block')
 
                 self.RawData = np.array(self.block_parser.parsed_data_list)
-
-                print(self.RawData)
 
                 return True
 
