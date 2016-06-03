@@ -2,4 +2,4 @@ When you add a new datatranslator i.e not Staribus Block you will need to add a 
 
 Channel 1 is the temperature while the data channels start from channel 2 but are referenced in metadata as Channels 0 - 8
 
-Currently the only metadata that is used is the Observation, Observer and Observatory is ignored.
+Currently the only metadata that is used is the Observation, Observer and Observatory.
