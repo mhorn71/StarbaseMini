@@ -185,19 +185,19 @@ class Chart:
 
         if type == 'raw':
 
-            print('Length of data : %s' % str(len(self.data_store.RawData)))
+            logger.debug('Length of data : %s' % str(len(self.data_store.RawData)))
 
             data = self.data_store.RawData
 
         elif type == 'rawCsv':
 
-            print('Length of data : %s' % str(len(self.data_store.RawDataCsv)))
+            logger.debugt('Length of data : %s' % str(len(self.data_store.RawDataCsv)))
 
             data = self.data_store.RawDataCsv
 
         elif type == 'processed':
 
-            print('Length of data : %s' % str(len(self.data_store.ProcessedData)))
+            logger.debug('Length of data : %s' % str(len(self.data_store.ProcessedData)))
 
             data = self.data_store.ProcessedData
 
