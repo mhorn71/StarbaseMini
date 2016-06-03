@@ -5,6 +5,8 @@ Fixed - Starinet 6 Beagle Logger, incorrect instrument identifier and descriptio
 
 Fixed - Issue where instrument identifier and not description was being used for chart title.
 
+Fixed - Font size issue with ReleaseNotes and Metadata for Windows and Linux reduced font to 10pt.
+
 ===============
 Version : 3.0.0
 ===============

@@ -79,13 +79,13 @@ QPushButton#executeButton {
 }
 
 QTextBrowser#metadataEdit {
-        font-size: 14pt;
+        font-size: 10pt;
 }
 
 QLineEdit#metadataNotesEdit {
-        font-size: 14pt;
+        font-size: 10pt;
 }
 
 QTextEdit#releasenotesText {
-        font-size: 14pt;
+        font-size: 10pt;
 }
