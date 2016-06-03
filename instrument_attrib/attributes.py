@@ -22,6 +22,7 @@ import logging
 import os
 import xml.etree.ElementTree as ET
 import re
+import utilities
 
 from PyQt4 import QtGui, QtCore
 
@@ -60,6 +61,12 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         if stylebool:
             with open(stylesheet, 'r') as style:
                 self.setStyleSheet(style.read())
+
+        # Get the current application background colour and set self.background_colour
+
+        colour = self.palette().color(QtGui.QPalette.Background)
+
+        self.background_colour = utilities.rgb2hex((colour.red(), colour.green(), colour.blue()))
 
         # Timeout combobox setup
         self.timeouts = ['5','10','20', '30', '40', '50', '60']
@@ -275,7 +282,7 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.StaribusPortLineEdit.blockSignals(True)
         self.StaribusPortLineEdit.clear()
         self.StaribusPortLineEdit.setEnabled(False)
-        self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.StaribusPortLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         # RS485 Checkbox
 
@@ -312,14 +319,14 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
         self.StarinetAddressLineEdit.blockSignals(True)
         self.StarinetAddressLineEdit.clear()
         self.StarinetAddressLineEdit.setEnabled(False)
-        self.StarinetAddressLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.StarinetAddressLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         # Starinet Port Line Edit
 
         self.StarinetPortLineEdit.blockSignals(True)
         self.StarinetPortLineEdit.clear()
         self.StarinetPortLineEdit.setEnabled(False)
-        self.StarinetPortLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.StarinetPortLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         # Disable all the channel labels and buttons as we enable them when we load the instrument XML
 
@@ -330,11 +337,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan0LabelEdit.setEnabled(False)
         self.Chan0LabelEdit.clear()
-        self.Chan0LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan0LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan0ColourLineEdit.setEnabled(False)
         self.Chan0ColourLineEdit.clear()
-        self.Chan0ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan0ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s' % self.background_colour)
 
         self.PickerButton0.setEnabled(False)
         self.PickerButton0.setStyleSheet('QPushButton { background-color: }')
@@ -346,11 +353,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan1LabelEdit.setEnabled(False)
         self.Chan1LabelEdit.clear()
-        self.Chan1LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan1LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan1ColourLineEdit.setEnabled(False)
         self.Chan1ColourLineEdit.clear()
-        self.Chan1ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan1ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton1.setEnabled(False)
         self.PickerButton1.setStyleSheet('QPushButton { background-color: }')
@@ -362,11 +369,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan2LabelEdit.setEnabled(False)
         self.Chan2LabelEdit.clear()
-        self.Chan2LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan2LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan2ColourLineEdit.setEnabled(False)
         self.Chan2ColourLineEdit.clear()
-        self.Chan2ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan2ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton2.setEnabled(False)
         self.PickerButton2.setStyleSheet('QPushButton { background-color: }')
@@ -378,11 +385,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan3LabelEdit.setEnabled(False)
         self.Chan3LabelEdit.clear()
-        self.Chan3LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan3LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan3ColourLineEdit.setEnabled(False)
         self.Chan3ColourLineEdit.clear()
-        self.Chan3ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan3ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton3.setEnabled(False)
         self.PickerButton3.setStyleSheet('QPushButton { background-color: }')
@@ -394,11 +401,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan4LabelEdit.setEnabled(False)
         self.Chan4LabelEdit.clear()
-        self.Chan4LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan4LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan4ColourLineEdit.setEnabled(False)
         self.Chan4ColourLineEdit.clear()
-        self.Chan4ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan4ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton4.setEnabled(False)
         self.PickerButton4.setStyleSheet('QPushButton { background-color: }')
@@ -410,11 +417,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan5LabelEdit.setEnabled(False)
         self.Chan5LabelEdit.clear()
-        self.Chan5LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan5LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan5ColourLineEdit.setEnabled(False)
         self.Chan5ColourLineEdit.clear()
-        self.Chan5ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan5ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton5.setEnabled(False)
         self.PickerButton5.setStyleSheet('QPushButton { background-color: }')
@@ -426,11 +433,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan6LabelEdit.setEnabled(False)
         self.Chan6LabelEdit.clear()
-        self.Chan6LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan6LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan6ColourLineEdit.setEnabled(False)
         self.Chan6ColourLineEdit.clear()
-        self.Chan6ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan6ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton6.setEnabled(False)
         self.PickerButton6.setStyleSheet('QPushButton { background-color: }')
@@ -442,11 +449,11 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan7LabelEdit.setEnabled(False)
         self.Chan7LabelEdit.clear()
-        self.Chan7LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan7LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan7ColourLineEdit.setEnabled(False)
         self.Chan7ColourLineEdit.clear()
-        self.Chan7ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan7ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton7.setEnabled(False)
         self.PickerButton7.setStyleSheet('QPushButton { background-color: }')
@@ -458,14 +465,14 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
 
         self.Chan8LabelEdit.setEnabled(False)
         self.Chan8LabelEdit.clear()
-        self.Chan8LabelEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan8LabelEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.Chan8ColourLineEdit.setEnabled(False)
         self.Chan8ColourLineEdit.clear()
-        self.Chan8ColourLineEdit.setStyleSheet('QLineEdit { background-color: }')
+        self.Chan8ColourLineEdit.setStyleSheet('QLineEdit { background-color: %s}' % self.background_colour)
 
         self.PickerButton8.setEnabled(False)
-        self.PickerButton8.setStyleSheet('QPushButton { background-color: }')
+        self.PickerButton8.setStyleSheet('QPushButton { background-color: %}')
 
     # This gets run first so we can populate the UI and set the original configuration state.
 
