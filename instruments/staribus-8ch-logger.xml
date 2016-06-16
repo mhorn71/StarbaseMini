@@ -8,7 +8,7 @@
     <StaribusPort>COM1</StaribusPort>
     <StaribusPortBaudrate>57600</StaribusPortBaudrate>
     <StaribusPortTimeout>5</StaribusPortTimeout>
-    <StaribusPortAutodetect>False</StaribusPortAutodetect>
+    <StaribusPortAutodetect>True</StaribusPortAutodetect>
     <NumberOfChannels>9</NumberOfChannels>
     <DataTranslator>StaribusBlock</DataTranslator>
 
