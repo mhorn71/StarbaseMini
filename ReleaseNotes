@@ -19,6 +19,8 @@ Fixed - Issue where selected instrument wasn't indicated as initialised or chang
 
 Update - Set all Staribus instruments to auto detect serial port as default.
 
+Update - Set coloured heading text on QToolBox tab to indicate selection.
+
 ===============
 Version : 3.0.0
 ===============

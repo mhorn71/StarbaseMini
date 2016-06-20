@@ -191,20 +191,29 @@ class Main(QtGui.QMainWindow):
         # Menu items
 
         self.ui.actionExit.triggered.connect(self.close)
+        self.ui.actionExit.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/application-exit-2.png')))
 
         self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
+        self.ui.actionConfiguration.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/configure-2.png')))
 
         self.ui.actionInstrument_Attrib.triggered.connect(self.instrument_attrib_triggered)
+        self.ui.actionInstrument_Attrib.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/configure.png')))
 
         self.ui.actionAbout.triggered.connect(self.help_about_triggered)
+        self.ui.actionAbout.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/help-about.png')))
 
         self.ui.actionReleaseNotes.triggered.connect(self.release_notes_triggered)
+        self.ui.actionReleaseNotes.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-properties.png')))
 
         self.ui.actionOpen.triggered.connect(self.open_csv_file)
+        self.ui.actionOpen.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-import.png')))
 
         self.ui.actionSave_RawData.triggered.connect(lambda: self.save_data('raw'))
+        self.ui.actionSave_RawData.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-export.png')))
 
         self.ui.actionSave_Processed_Data.triggered.connect(lambda: self.save_data('processed'))
+
+        self.ui.actionSave_Processed_Data.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-export.png')))
 
         self.ui.SegmentRawDataDay.triggered.connect(lambda: self.segment_data('day', 'raw'))
 
@@ -214,15 +223,22 @@ class Main(QtGui.QMainWindow):
 
         self.ui.SegmentProcessDataWeek.triggered.connect(lambda: self.segment_data('week', 'processed'))
 
+        self.ui.menuSegment_Data.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/edit-cut-5.png')))
+
         self.ui.actionMetadata.triggered.connect(self.metadata_viewer_editor)
+        self.ui.actionMetadata.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/report-edit.png')))
 
         self.ui.actionProcessed_Data.triggered.connect(lambda: self.dataview('processed'))
         self.ui.actionRaw_Data.triggered.connect(lambda: self.dataview('raw'))
+
+        self.ui.menuData_Filters.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/table-relationship.png')))
 
         self.ui.actionNon_Linear_Static_Remover.triggered.connect(lambda: self.filter_data('NonLinearStaticRemover'))
         self.ui.actionPeak_Extractor.triggered.connect(lambda: self.filter_data('PeakExtractor'))
         self.ui.actionRunning_Average.triggered.connect(lambda: self.filter_data('RunningAverage'))
         self.ui.actionWeighted_Running_Average.triggered.connect(lambda: self.filter_data('WeightedRunningAverage'))
+
+        self.ui.menuData_Viewers.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/table-go.png')))
 
         # Run once trip
 
