@@ -17,6 +17,8 @@ Fixed - Moved all StaribusBlock specific routines to it's own module under datat
 
 Fixed - Issue where selected instrument wasn't indicated as initialised or changed in status window.
 
+Update - Set all Staribus instruments to auto detect serial port as default.
+
 ===============
 Version : 3.0.0
 ===============
