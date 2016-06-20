@@ -1,11 +1,14 @@
+OSX Dock application doesn't maximise when icon is clicked.
 
+Load RawData and ProcessedData viewer data once only each run, maybe run data parse in separate thread?
 
-Execute still stores signal if pressed while Application is processing command.
+Add zoom out to chart if we can.
 
-xml_utils instrument importer needs to check the XML is valid more.
 
 
 List to do ...
+
+xml_utils instrument importer needs to check the XML is valid more.
 
 
 When get run getData we copy the data blocks sent from the controller to  :  RawDataBlocks and set

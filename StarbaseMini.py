@@ -59,6 +59,8 @@ class Main(QtGui.QMainWindow):
 
         self.ui = Ui_MainWindow()
 
+        self.setWindowModality(QtCore.Qt.WindowModal)
+
         self.ui.setupUi(self)
 
         # Set application icon
@@ -221,6 +223,9 @@ class Main(QtGui.QMainWindow):
         self.ui.actionPeak_Extractor.triggered.connect(lambda: self.filter_data('PeakExtractor'))
         self.ui.actionRunning_Average.triggered.connect(lambda: self.filter_data('RunningAverage'))
         self.ui.actionWeighted_Running_Average.triggered.connect(lambda: self.filter_data('WeightedRunningAverage'))
+
+        self.ui.toolBox.currentChanged.connect(lambda: self.toolbox_icon_control(self.ui.toolBox.currentIndex()))
+        self.toolbox_icon_control(self.ui.toolBox.currentIndex())
 
         # Run once trip
 
@@ -2209,6 +2214,24 @@ class Main(QtGui.QMainWindow):
         else:
 
             event.accept()
+
+    def toolbox_icon_control(self, current_index):
+
+        pass
+
+        # # Index 0 is instrument panel and index 1 is chart control panel
+        #
+        # if current_index == 0:
+        #     self.ui.toolBox.setItemIcon(0, QtGui.QIcon(QtGui.QPixmap('icons/on.png')))
+        #     self.ui.toolBox.setItemIcon(1, QtGui.QIcon(QtGui.QPixmap('icons/off.png')))
+        # elif current_index == 1:
+        #     self.ui.toolBox.setItemIcon(0, QtGui.QIcon(QtGui.QPixmap('icons/off.png')))
+        #     self.ui.toolBox.setItemIcon(1, QtGui.QIcon(QtGui.QPixmap('icons/on.png')))
+
+        # self.ui.toolBox.setStyleSheet("QToolBox::tab { border-radius: 5px; border: 1px;} \n QToolBox::tab:selected
+        # { border-radius: 5px ;} \n QToolBox::tab:!selected { border-radius: 5px ;}")
+
+
 
     def help_about_triggered(self):
 

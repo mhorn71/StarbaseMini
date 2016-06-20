@@ -97,3 +97,19 @@ QLineEdit#metadataNotesEdit {
 QTextEdit#releasenotesText {
         font-size: 14pt;
 }
+
+/*
+QToolBox::tab {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #E1E1E1, stop: 0.4 #DDDDDD, stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);
+    border-radius: 5px;
+}
+
+QToolBox::tab:selected {
+    font: italic;
+    height: 10px;
+}
+
+QToolBox::tab:!selected {
+    font: italic;
+    height: 10px;
+} */
