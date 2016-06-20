@@ -2220,17 +2220,13 @@ class Main(QtGui.QMainWindow):
         pass
 
         # # Index 0 is instrument panel and index 1 is chart control panel
-        #
-        # if current_index == 0:
-        #     self.ui.toolBox.setItemIcon(0, QtGui.QIcon(QtGui.QPixmap('icons/on.png')))
-        #     self.ui.toolBox.setItemIcon(1, QtGui.QIcon(QtGui.QPixmap('icons/off.png')))
-        # elif current_index == 1:
-        #     self.ui.toolBox.setItemIcon(0, QtGui.QIcon(QtGui.QPixmap('icons/off.png')))
-        #     self.ui.toolBox.setItemIcon(1, QtGui.QIcon(QtGui.QPixmap('icons/on.png')))
 
-        # self.ui.toolBox.setStyleSheet("QToolBox::tab { border-radius: 5px; border: 1px;} \n QToolBox::tab:selected
-        # { border-radius: 5px ;} \n QToolBox::tab:!selected { border-radius: 5px ;}")
-
+        if current_index == 0:
+            self.ui.toolBox.setItemIcon(0, QtGui.QIcon(QtGui.QPixmap('icons/on.png')))
+            self.ui.toolBox.setItemIcon(1, QtGui.QIcon(QtGui.QPixmap('icons/off.png')))
+        elif current_index == 1:
+            self.ui.toolBox.setItemIcon(0, QtGui.QIcon(QtGui.QPixmap('icons/off.png')))
+            self.ui.toolBox.setItemIcon(1, QtGui.QIcon(QtGui.QPixmap('icons/on.png')))
 
 
     def help_about_triggered(self):
