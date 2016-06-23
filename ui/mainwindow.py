@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Mon Jun 20 17:03:00 2016
+# Created: Sat May 28 11:57:57 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -89,11 +89,8 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QToolBox::tab:selected { /* italicize selected tabs */\n"
-"    color: green;\n"
-"}\n"
-"\n"
-"QToolBox::tab:!selected { /* italicize selected tabs */\n"
-"    color: red;\n"
+"    font: italic;\n"
+"    color: black;\n"
 "}")
         self.toolBox.setObjectName("toolBox")
         self.UserCtrl = QtGui.QWidget()
