@@ -1113,7 +1113,8 @@ class Main(QtGui.QMainWindow):
 
                 logger.info('Initialising StaribusBlock datatranslator')
 
-                self.instrument_datatranslator = datatranslators.StaribusBlocks.StaribusBlockParser()
+                # self.instrument_datatranslator = datatranslators.StaribusBlocks.StaribusBlockParser()
+                self.data_store.block_parser = datatranslators.StaribusBlocks.StaribusBlockParser()
 
                 logger.info('Initialising StaribusBlock csv_datatranslator')
 
@@ -1131,11 +1132,7 @@ class Main(QtGui.QMainWindow):
 
                 # Make sure the datatranslator is reset to default values,
 
-                self.instrument_datatranslator.clear()
-
-                # Tell the data store about the data translator so we can parse data blocks.
-
-                self.data_store.block_parser = self.instrument_datatranslator
+                self.data_store.block_parser.clear()
 
                 return True
 
@@ -1579,6 +1576,8 @@ class Main(QtGui.QMainWindow):
                 # self.data_store.print_state()
 
                 # if response[0] starts with success we see if we can run the metadata deconstructor.
+
+
 
                 try:
                     if response[0].startswith('SUCCESS'):
