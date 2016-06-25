@@ -1565,7 +1565,8 @@ class Main(QtGui.QMainWindow):
 
             # Now get the path and filename of the CSV file we want to open.
 
-            response = core.importer(self.application_configuration.user_home, self.application_configuration.get('Application', 'instrument_data_path'))
+            response = core.importer(self.application_configuration.user_home,
+                                     self.application_configuration.get('Application', 'instrument_data_path'))
 
             # If response[0] starts with Success we run the csv_parse
 
@@ -1573,13 +1574,8 @@ class Main(QtGui.QMainWindow):
 
                 response = self.csv_datatranslator.parse(response[1], self.metadata)
 
-                # self.data_store.print_state()
-
-                # if response[0] starts with success we see if we can run the metadata deconstructor.
-
-
-
                 try:
+
                     if response[0].startswith('SUCCESS'):
 
                         # Create the data store arrays
@@ -1612,6 +1608,12 @@ class Main(QtGui.QMainWindow):
             else:
 
                 self.status_message('openCSV', 'ABORT', None, None)
+
+
+            # Below is needed for some reason on OSX so that after you've imported the mainwindow is set active again
+            # without it the menu appears disabled until you click in the mainwindow again.
+
+            self.activateWindow()
 
     def save_data(self, data_style_type):
 
