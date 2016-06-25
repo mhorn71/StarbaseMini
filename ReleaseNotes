@@ -17,6 +17,14 @@ Fixed - Moved all StaribusBlock specific routines to there own module under data
 
 Fixed - Issue where selected instrument wasn't indicated as initialised or changed in status window.
 
+Fixed - Issue where you could select show chart legend before any chart had been generated.
+
+Fixed - Issue where out index range caused error in csv parser.
+
+Fixed - Issue where you couldn't use arror keys to scroll DataViewer.
+
+Updated - Chart figure border colour to be the same as the status window.
+
 Update - Set all Staribus instruments to auto detect serial port as default.
 
 Update - Set coloured heading text on QToolBox tab to indicate selection.
