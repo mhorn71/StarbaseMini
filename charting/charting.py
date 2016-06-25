@@ -86,6 +86,7 @@ class Chart:
         mpl.rcParams['axes.linewidth'] = 0.5
         mpl.rcParams['axes.facecolor'] = "#FDFDF0"
         mpl.rcParams['figure.max_open_warning'] = 2
+        mpl.rcParams['figure.facecolor'] = '#FFFFE0'
         mpl.rcParams['legend.framealpha'] = 0.5
         mpl.rcParams['legend.fancybox'] = True
         mpl.rcParams['lines.markersize'] = 5
