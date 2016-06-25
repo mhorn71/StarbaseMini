@@ -166,9 +166,13 @@ QTableWidget QHeaderView::section {
     color: darkgray;
 }
 
-QToolBox::tab:selected { /* italicize selected tabs */
+QToolBox::tab:selected { 
     font: italic;
-    color: black;
+    color: green;
+}
+
+QToolBox::tab:!selected {
+	color: black;
 }</string>
           </property>
           <property name="currentIndex">

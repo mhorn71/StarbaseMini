@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Sat May 28 11:57:57 2016
+# Created: Sat Jun 25 16:05:08 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -88,8 +88,12 @@ class Ui_MainWindow(object):
 "    color: darkgray;\n"
 "}\n"
 "\n"
-"QToolBox::tab:selected { /* italicize selected tabs */\n"
+"QToolBox::tab:selected { \n"
 "    font: italic;\n"
+"    color: green;\n"
+"}\n"
+"\n"
+"QToolBox::tab:!selected {\n"
 "    color: black;\n"
 "}")
         self.toolBox.setObjectName("toolBox")
