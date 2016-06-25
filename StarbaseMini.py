@@ -314,6 +314,9 @@ class Main(QtGui.QMainWindow):
         self.ui.channel8Button.setVisible(False)
         self.ui.channel8colour.setVisible(False)
 
+        # Set show chart legend to enabled false.
+        self.ui.showLegend.setEnabled(False)
+
         # Module, Command and Choices ComboBox Triggers.
 
         self.ui.moduleCombobox.blockSignals(True)
