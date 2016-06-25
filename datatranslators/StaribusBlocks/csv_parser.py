@@ -49,17 +49,27 @@ class CsvParser:
 
                 content = csv.reader(csvfile)
 
-                for line in content:
+                try:
 
-                    if line[0].startswith('Obser'):
+                    for line in content:
 
-                        metadata_deconstructor.meta_parser(line)
+                        if line[0].startswith('Obser'):
 
-                    elif re.match('^\d\d\d\d-\d\d-\d\d', line[0]):
+                            metadata_deconstructor.meta_parser(line)
 
-                        main_list.append(line)
+                        elif re.match('^\d\d\d\d-\d\d-\d\d', line[0]):
 
-                csvfile.close()
+                            main_list.append(line)
+
+                    csvfile.close()
+
+                except IndexError as msg:
+
+                    csvfile.close()
+
+                    logger.warning(str(msg))
+
+                    return 'PREMATURE_TERMINATION', 'list index out of range'
 
         except IOError as msg:
 
