@@ -58,6 +58,9 @@ class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
 
                 self.setStyleSheet(style.read())
 
+    # Take a look at this stackoverflow post at sometime regards copying a row and headers.
+    # http://stackoverflow.com/questions/24971305/copy-pyqt-table-selection-including-column-and-row-headers
+
     def load(self, type, metadata):
 
         self.metadata = metadata

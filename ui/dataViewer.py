@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dataViewer.ui'
 #
-# Created: Tue May 31 14:43:57 2016
+# Created: Sat Jun 25 17:09:58 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,8 +29,8 @@ class Ui_DataViewerDialog(object):
 "    height: 18px;\n"
 "}")
         self.DataViewTableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.DataViewTableWidget.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
-        self.DataViewTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectItems)
+        self.DataViewTableWidget.setSelectionMode(QtGui.QAbstractItemView.ContiguousSelection)
+        self.DataViewTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.DataViewTableWidget.setObjectName("DataViewTableWidget")
         self.DataViewTableWidget.setColumnCount(0)
         self.DataViewTableWidget.setRowCount(0)
