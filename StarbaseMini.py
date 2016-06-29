@@ -174,7 +174,7 @@ class Main(QtGui.QMainWindow):
 
         # Initialise data viewer dialog class
 
-        self.data_viewer = data_viewer.DataViewer(self.data_store, self.instrument)
+        self.raw_data_viewer = data_viewer.RawDataViewer(self.data_store, self.instrument)
 
         # Initialise command interpreter class
 
@@ -1537,8 +1537,13 @@ class Main(QtGui.QMainWindow):
                 response = self.chart.add_data('raw')
 
                 if response[0] != 'SUCCESS':
+
                     self.status_message(interpreter_response[0], response[1], 'Plotting error!!', None)
+
                 else:
+
+                    self.raw_data_viewer.load('raw', self.metadata)
+
                     self.chart_control_panel(self.instrument)
 
             else:
@@ -1594,6 +1599,7 @@ class Main(QtGui.QMainWindow):
                             if response[0] != 'SUCCESS':
                                 self.status_message('openCSV', response[1], 'Plotting error!!', None)
                             else:
+                                self.raw_data_viewer.load('raw', self.metadata)
                                 self.chart_control_panel(self.metadata)
 
                         else:
@@ -2236,7 +2242,7 @@ class Main(QtGui.QMainWindow):
 
         QtGui.QMessageBox.information(None, None,
                                       "<p align='center'>StarbaseMini " + version + "<br><br>(c) 2016 Mark Horn<br>"
-                                                                                    "<br>mhorn71@gmail.com</p>")
+                                      "<br>mhorn71@gmail.com</p>")
 
     def release_notes_triggered(self):
 
@@ -2263,10 +2269,13 @@ class Main(QtGui.QMainWindow):
         
             self.status_message('ProcessedDataViewer', 'PREMATURE_TERMINATION', 'No data!', None)
         
-        else:
-            
-            self.data_viewer.load(data_style_type, self.metadata)
-            self.data_viewer.exec_()
+        elif data_style_type == 'raw':
+
+            self.raw_data_viewer.exec_()
+
+        elif data_style_type == 'processed':
+
+            self.status_message('ProcessedDataViewer', 'PREMATURE_TERMINATION', 'Not yet implemented!', None)
 
 
 if __name__ == '__main__':
