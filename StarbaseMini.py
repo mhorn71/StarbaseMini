@@ -59,7 +59,7 @@ class Main(QtGui.QMainWindow):
 
         self.ui = Ui_MainWindow()
 
-        self.setWindowModality(QtCore.Qt.WindowModal)
+        # self.setWindowModality(QtCore.Qt.WindowModal)
 
         self.ui.setupUi(self)
 

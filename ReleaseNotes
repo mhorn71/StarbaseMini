@@ -23,6 +23,8 @@ Fixed - Issue where out index range caused error in csv parser.
 
 Fixed - Issue where you couldn't use arror keys to scroll DataViewer.
 
+Fixed - Issue on Mac OSX where when you clicked on application icon the application failed to show / appear on top.
+
 Updated - Chart figure border colour to be the same as the status window.
 
 Update - Set all Staribus instruments to auto detect serial port as default.

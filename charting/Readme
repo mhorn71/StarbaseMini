@@ -7,4 +7,13 @@ While fmt_xdata is formatted as below,
 
 x=22:30:13 y=159.000
 
-I'm not sure what'll happen if a user implements a data translator that uses and Indexed X Axis instead of Datetime.
+I'm not sure what'll happen if a user implements a data translator that uses and Indexed X Axis instead of Datetime.4
+
+
+-------------------
+
+Note may more to using PyQtGraph instead of matplotlib
+
+X Axis dates PyQtGraph
+http://stackoverflow.com/questions/28296049/pyqtgraph-plotting-time-series
+

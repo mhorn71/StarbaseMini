@@ -1,8 +1,4 @@
-OSX Dock application doesn't maximise when icon is clicked.
-
-Load RawData and ProcessedData viewer data once only each run, maybe run data parse in separate thread?
-
-Add zoom out to chart if we can.
+https://nikolak.com/pyqt-qt-designer-getting-started/
 
 
 

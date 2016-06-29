@@ -17,14 +17,16 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 import sys
+#import datetime
 
+#import numpy as np
 from PyQt4 import QtGui, QtCore
 
 from ui import Ui_DataViewerDialog
 
-class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
+
+class RawDataViewer(QtGui.QDialog, Ui_DataViewerDialog):
     def __init__(self, data_store, instrument):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
@@ -113,6 +115,24 @@ class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
 
         counter = 0
 
+        # I've left the below commented section for reference, it was an attempt to speed up the loading of the data
+        # viewer however it came out as being ~ 20s slower. :-(
+
+        # for (x, y), value in np.ndenumerate(data):
+        #     if isinstance(value, datetime.datetime):
+        #         date, time = value.strftime('%Y-%m-%d,%H:%M:%S').split(',')
+        #
+        #         self.DataViewTableWidget.setItem(x, y, QtGui.QTableWidgetItem(date))
+        #
+        #         y += 1
+        #
+        #         self.DataViewTableWidget.setItem(x, y, QtGui.QTableWidgetItem(time))
+        #
+        #     y += 1
+        #
+        #     self.DataViewTableWidget.setItem(x, y, QtGui.QTableWidgetItem(str(value)))
+
+
         for x in data.tolist():
 
             insert_data.clear()
@@ -133,7 +153,6 @@ class DataViewer(QtGui.QDialog, Ui_DataViewerDialog):
             counter += 1
 
         self.resize(self.sizeHint())
-
 
     # This piece of code is courtesy of Stephen Terry
     # http://stackoverflow.com/questions/7189305/set-optimal-size-of-a-dialog-window-containing-a-tablewidget
