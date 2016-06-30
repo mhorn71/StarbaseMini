@@ -21,14 +21,14 @@ import sys
 #import datetime
 
 #import numpy as np
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 
 from ui import Ui_DataViewerDialog
 
 
-class RawDataViewer(QtGui.QDialog, Ui_DataViewerDialog):
+class RawDataViewer(QtWidgets.QDialog, Ui_DataViewerDialog):
     def __init__(self, data_store, instrument):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
         self.setupUi(self)
         self.data_store = data_store
         self.metadata = None
@@ -122,15 +122,15 @@ class RawDataViewer(QtGui.QDialog, Ui_DataViewerDialog):
         #     if isinstance(value, datetime.datetime):
         #         date, time = value.strftime('%Y-%m-%d,%H:%M:%S').split(',')
         #
-        #         self.DataViewTableWidget.setItem(x, y, QtGui.QTableWidgetItem(date))
+        #         self.DataViewTableWidget.setItem(x, y, QtWidgets.QTableWidgetItem(date))
         #
         #         y += 1
         #
-        #         self.DataViewTableWidget.setItem(x, y, QtGui.QTableWidgetItem(time))
+        #         self.DataViewTableWidget.setItem(x, y, QtWidgets.QTableWidgetItem(time))
         #
         #     y += 1
         #
-        #     self.DataViewTableWidget.setItem(x, y, QtGui.QTableWidgetItem(str(value)))
+        #     self.DataViewTableWidget.setItem(x, y, QtWidgets.QTableWidgetItem(str(value)))
 
 
         for x in data.tolist():
@@ -148,7 +148,7 @@ class RawDataViewer(QtGui.QDialog, Ui_DataViewerDialog):
 
             for n in range(len(insert_data)):
 
-                self.DataViewTableWidget.setItem(counter, n, QtGui.QTableWidgetItem(str(insert_data[n])))
+                self.DataViewTableWidget.setItem(counter, n, QtWidgets.QTableWidgetItem(str(insert_data[n])))
 
             counter += 1
 

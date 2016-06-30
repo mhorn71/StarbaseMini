@@ -2,31 +2,30 @@
 
 # Form implementation generated from reading ui file 'metadata.ui'
 #
-# Created: Wed Jun  1 21:55:59 2016
-#      by: pyside-uic 0.2.15 running on PySide 1.2.2
+# Created by: PyQt5 UI code generator 5.4.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MetadataDialog(object):
     def setupUi(self, MetadataDialog):
         MetadataDialog.setObjectName("MetadataDialog")
         MetadataDialog.resize(640, 480)
-        self.gridLayout = QtGui.QGridLayout(MetadataDialog)
+        self.gridLayout = QtWidgets.QGridLayout(MetadataDialog)
         self.gridLayout.setObjectName("gridLayout")
-        self.label = QtGui.QLabel(MetadataDialog)
+        self.label = QtWidgets.QLabel(MetadataDialog)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.label_2 = QtGui.QLabel(MetadataDialog)
+        self.label_2 = QtWidgets.QLabel(MetadataDialog)
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
-        self.buttonBox = QtGui.QDialogButtonBox(MetadataDialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(MetadataDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Close|QtGui.QDialogButtonBox.Save)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Close|QtWidgets.QDialogButtonBox.Save)
         self.buttonBox.setObjectName("buttonBox")
         self.gridLayout.addWidget(self.buttonBox, 4, 0, 1, 1)
-        self.metadataEdit = QtGui.QTextBrowser(MetadataDialog)
+        self.metadataEdit = QtWidgets.QTextBrowser(MetadataDialog)
         font = QtGui.QFont()
         font.setFamily("Droid Sans")
         font.setPointSize(10)
@@ -36,7 +35,7 @@ class Ui_MetadataDialog(object):
 "}")
         self.metadataEdit.setObjectName("metadataEdit")
         self.gridLayout.addWidget(self.metadataEdit, 1, 0, 1, 1)
-        self.metadataNotesEdit = QtGui.QLineEdit(MetadataDialog)
+        self.metadataNotesEdit = QtWidgets.QLineEdit(MetadataDialog)
         self.metadataNotesEdit.setMinimumSize(QtCore.QSize(0, 100))
         font = QtGui.QFont()
         font.setFamily("Droid Sans")
@@ -49,12 +48,13 @@ class Ui_MetadataDialog(object):
         self.gridLayout.addWidget(self.metadataNotesEdit, 3, 0, 1, 1)
 
         self.retranslateUi(MetadataDialog)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), MetadataDialog.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), MetadataDialog.reject)
+        self.buttonBox.accepted.connect(MetadataDialog.accept)
+        self.buttonBox.rejected.connect(MetadataDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(MetadataDialog)
 
     def retranslateUi(self, MetadataDialog):
-        MetadataDialog.setWindowTitle(QtGui.QApplication.translate("MetadataDialog", "Metadata", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MetadataDialog", "Metadata", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("MetadataDialog", "Observation Notes", None, QtGui.QApplication.UnicodeUTF8))
+        _translate = QtCore.QCoreApplication.translate
+        MetadataDialog.setWindowTitle(_translate("MetadataDialog", "Metadata"))
+        self.label.setText(_translate("MetadataDialog", "Metadata"))
+        self.label_2.setText(_translate("MetadataDialog", "Observation Notes"))
 

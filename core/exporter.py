@@ -21,7 +21,7 @@ import datetime
 import logging
 import csv
 
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 
 
 def exporter(type, metadata, data_store, user_home, data_home):
@@ -60,7 +60,7 @@ def exporter(type, metadata, data_store, user_home, data_home):
 
         data_file = user_home + os.path.sep + filename
 
-    file_name = QtGui.QFileDialog.getSaveFileName(None, 'Export File', data_file, "CSV files (*.csv)")
+    file_name = QtWidgets.QFileDialog.getSaveFileName(None, 'Export File', data_file, "CSV files (*.csv)")
 
     # Return ABORT if no File selected.
 

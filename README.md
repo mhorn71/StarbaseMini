@@ -5,7 +5,7 @@ Software was developed using Python 3.4
 
 You'll need the following addtional modules.
  
-pyqt4
+PyQt5
 numpy
 matplotlib
 crcmod

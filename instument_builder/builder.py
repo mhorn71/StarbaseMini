@@ -20,16 +20,16 @@ __author__ = 'mark'
 import sys
 import logging
 
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 
 from ui import Ui_InstrumentBuilderDialog
 
 logger = logging.getLogger('instrument.builder')
 
 
-class InstrumentBuilder(QtGui.QDialog, Ui_InstrumentBuilderDialog):
+class InstrumentBuilder(QtWidgets.QDialog, Ui_InstrumentBuilderDialog):
     def __init__(self):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
         self.setupUi(self)
 
         # Style sheets

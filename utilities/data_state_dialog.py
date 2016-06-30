@@ -17,7 +17,7 @@ __author__ = 'mark'
 # You should have received a copy of the GNU General Public License
 # along with StarbaseMini.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 
 
 def data_state_check(data_store, type):
@@ -44,12 +44,12 @@ def data_state_check(data_store, type):
         message = ('WARNING:  ' + data_store.data_state()[1] + submessage)
         header = ''
 
-        result = QtGui.QMessageBox.question(None,
+        result = QtWidgets.QMessageBox.question(None,
                                             header,
                                             message,
-                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-        if result == QtGui.QMessageBox.Yes:
+        if result == QtWidgets.QMessageBox.Yes:
 
             return True
 

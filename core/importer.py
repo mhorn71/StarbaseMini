@@ -19,7 +19,7 @@ __author__ = 'mark'
 import os
 import logging
 
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 
 
 def importer(user_home, data_home):
@@ -32,13 +32,13 @@ def importer(user_home, data_home):
 
         if os.path.isdir(data_home):
 
-            file_name = QtGui.QFileDialog.getOpenFileName(None, 'Import File', data_home, "CSV files (*.csv)")
+            file_name = QtWidgets.QFileDialog.getOpenFileName(None, 'Import File', data_home, "CSV files (*.csv)")
 
             logger.debug('Data path set to : ' + data_home)
 
         else:
 
-            file_name = QtGui.QFileDialog.getOpenFileName(None, 'Import File', user_home, "CSV files (*.csv)")
+            file_name = QtWidgets.QFileDialog.getOpenFileName(None, 'Import File', user_home, "CSV files (*.csv)")
 
             logger.debug('Data path set to : ' + user_home)
 
@@ -46,7 +46,7 @@ def importer(user_home, data_home):
 
         logger.warning(str(msg))
 
-        file_name = QtGui.QFileDialog.getOpenFileName(None, 'Import File', user_home, "CSV files (*.csv)")
+        file_name = QtWidgets.QFileDialog.getOpenFileName(None, 'Import File', user_home, "CSV files (*.csv)")
 
         logger.debug('Data path set to : ' + user_home)
 
@@ -60,6 +60,6 @@ def importer(user_home, data_home):
 
     else:
 
-        logger.debug('User has selected file : %s' % file_name)
+        logger.debug('User has selected file : %s' % str(file_name[0]))
 
-        return 'SUCCESS', file_name
+        return 'SUCCESS', file_name[0]

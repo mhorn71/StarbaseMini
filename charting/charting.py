@@ -21,18 +21,18 @@ import logging
 import sys
 import time
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 
 from itertools import zip_longest
 
 import matplotlib as mpl
 
 if sys.platform.startswith('linux'):
-    mpl.use("Qt4Agg")
+    mpl.use("Qt5Agg")
 
 from matplotlib.figure import Figure
 
-from matplotlib.backends.backend_qt4agg import (
+from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT)
 
 from matplotlib.font_manager import FontProperties

@@ -20,14 +20,14 @@ __author__ = 'mark'
 import os
 import sys
 
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 
 from ui import Ui_Dialog
 
-class ReleaseNote(QtGui.QDialog, Ui_Dialog):
+class ReleaseNote(QtWidgets.QDialog, Ui_Dialog):
 
     def __init__(self):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
         self.setupUi(self)
 
         # Style sheets

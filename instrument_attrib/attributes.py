@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 import re
 import utilities
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 import constants
 from ui import Ui_InstrumentAttributesDialog
@@ -32,9 +32,9 @@ from ui import Ui_InstrumentAttributesDialog
 logger = logging.getLogger('instrument.attributes_updater')
 
 
-class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
+class InstrumentAttrib(QtWidgets.QDialog, Ui_InstrumentAttributesDialog):
     def __init__(self, parent=None):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
         self.setupUi(self)
 
         # Style sheets
@@ -82,14 +82,14 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
                                  'You will need to use Starbase to set the actual instrument address')
 
         # ColorDialog setup used for picking the channel colours.
-        self.colorDialog = QtGui.QColorDialog()
-        self.colorDialog.setOption(QtGui.QColorDialog.ShowAlphaChannel, False)
-        self.colorDialog.setOption(QtGui.QColorDialog.DontUseNativeDialog, False)
+        self.colorDialog = QtWidgets.QColorDialog()
+        self.colorDialog.setOption(QtWidgets.QColorDialog.ShowAlphaChannel, False)
+        self.colorDialog.setOption(QtWidgets.QColorDialog.DontUseNativeDialog, False)
 
         # self.buttonBox.accepted.connect(self.accept_called)
         self.buttonBox.rejected.connect(self.reject_called)
-        self.buttonBox.button(QtGui.QDialogButtonBox.Ok).clicked.connect(self.accept_called)
-        self.buttonBox.button(QtGui.QDialogButtonBox.RestoreDefaults).clicked.connect(self.defaults_called)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).clicked.connect(self.accept_called)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.RestoreDefaults).clicked.connect(self.defaults_called)
 
         # Setup picker triggers
         self.PickerButton0.clicked.connect(self.chan0_picker)
@@ -882,9 +882,9 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
     def save_button_state(self):
 
         if self.configuration_check():
-            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
         else:
-            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
 
     # Set the colour picker chooser buttons so they're the colour the channel line is set to.
     def Picker0(self):
@@ -1427,12 +1427,12 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
                 self.reload = False
                 self.hide()
             elif self.configuration_changed() is False:
-                result = QtGui.QMessageBox.warning(None,
+                result = QtWidgets.QMessageBox.warning(None,
                                                    None,
                                                    "<br><br>Save changes?",
-                                                   QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-                if result == QtGui.QMessageBox.Yes:
+                if result == QtWidgets.QMessageBox.Yes:
                     self.accept_called()
                 else:
                     self.response_message = 'ABORT', None
@@ -1450,12 +1450,12 @@ class InstrumentAttrib(QtGui.QDialog, Ui_InstrumentAttributesDialog):
             self.reload = False
             self.hide()
         elif self.configuration_changed() is False:
-            result = QtGui.QMessageBox.warning(None,
+            result = QtWidgets.QMessageBox.warning(None,
                                                None,
                                                "<br><br>Save changes?",
-                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-            if result == QtGui.QMessageBox.Yes:
+            if result == QtWidgets.QMessageBox.Yes:
                 self.accept_called()
             else:
                 self.response_message = 'ABORT', None

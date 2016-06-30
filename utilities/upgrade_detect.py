@@ -26,7 +26,7 @@ from functools import partial
 import logging
 import xml.etree.ElementTree as eTree
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 
 
 ##  Base url is now starbasemini_version_2.xml
@@ -66,12 +66,12 @@ class Upgrader:
 
                 message = 'There is a new version of StarbaseMini available do you wish to download : \n\nVersion ' + revision + \
                           '\n\nPlease wait for download to complete.'
-                result = QtGui.QMessageBox.question(None,
+                result = QtWidgets.QMessageBox.question(None,
                                                     "StarbaseMini Upgrade",
                                                     message,
-                                                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-                if result == QtGui.QMessageBox.Yes:
+                if result == QtWidgets.QMessageBox.Yes:
                     if sys.platform.startswith('darwin'):
                         minifile = xmldom.findtext('mac')
                         md5hash = xmldom.findtext('machash')
@@ -107,8 +107,8 @@ class Upgrader:
 
         in_file = self.baseurl + minifile
 
-        fname = QtGui.QFileDialog.getExistingDirectory(None, 'Save Download To', os.path.expanduser("~"),
-                                                       QtGui.QFileDialog.ShowDirsOnly)
+        fname = QtWidgets.QFileDialog.getExistingDirectory(None, 'Save Download To', os.path.expanduser("~"),
+                                                       QtWidgets.QFileDialog.ShowDirsOnly)
 
         if len(fname) == 0:
             return 'ABORT', 'Upgrade downloaded cancelled.'
@@ -127,7 +127,7 @@ class Upgrader:
             return 'ABORT', 'Unable to retrieve upgrade.'
         else:
             if self.md5sum(out_file) == md5hash:
-                QtGui.QMessageBox.information(None, 'Upgrade Instructions', 'To upgrade close application and uninstall, '
+                QtWidgets.QMessageBox.information(None, 'Upgrade Instructions', 'To upgrade close application and uninstall, '
                                                                             'then reinstall with the downloaded upgrade '
                                                                             'file.  Your settings will be preserved.')
 

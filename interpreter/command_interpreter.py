@@ -20,7 +20,7 @@ import re
 import logging
 import sys
 
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets, QtGui
 
 import dao
 import datatypes
@@ -826,7 +826,7 @@ class CommandInterpreter():
         self.data_store.channel_count = int(self.instrument.instrument_number_of_channels)
         # Setup progress dialog.
 
-        progressDialog = QtGui.QProgressDialog('Downloading data ...', str("Abort"), 0, counter)
+        progressDialog = QtWidgets.QProgressDialog('Downloading data ...', str("Abort"), 0, counter)
 
         progressDialog.setWindowTitle(ident)
 

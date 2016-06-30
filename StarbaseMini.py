@@ -24,12 +24,12 @@ import logging
 import datetime
 import re
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
-try:
-    from PyQt4.QtCore import QString
-except ImportError:
-    QString = str
+# try:
+#     from PyQt5.QtCore import QString
+# except ImportError:
+#     QString = str
 
 from ui import Ui_MainWindow
 import utilities
@@ -50,12 +50,13 @@ import data_viewer
 version = '3.0.1'
 
 
-class Main(QtGui.QMainWindow):
-    def __init__(self, parent=None):
+class StarbaseMini(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(StarbaseMini, self).__init__()
 
         # Initialise UI
 
-        QtGui.QMainWindow.__init__(self, parent)
+        # QtWidgets.QMainWindow.__init__(self)
 
         self.ui = Ui_MainWindow()
 
@@ -534,21 +535,21 @@ class Main(QtGui.QMainWindow):
 
     def instrument_menu_setup(self):
 
-        action = QtGui.QActionGroup(self.ui.menuInstrument, exclusive=True)
+        action = QtWidgets.QActionGroup(self.ui.menuInstrument, exclusive=True)
 
-        for item in self.instrument_names:
+        for instrument in self.instrument_names:
 
-            ag = QtGui.QAction(item, action, checkable=True)
+            menu_item = QtWidgets.QAction(instrument, action, checkable=True)
 
-            if self.application_configuration.get('Application', 'instrument_identifier') == item:
+            if self.application_configuration.get('Application', 'instrument_identifier') == instrument:
 
-                ag.setChecked(True)
+                menu_item.setChecked(True)
 
-                self.previous_instrument_menu_item = item
+                self.previous_instrument_menu_item = instrument
 
-            self.ui.menuInstrument.addAction(ag)
-
-            self.connect(ag, QtCore.SIGNAL('triggered()'), lambda item=item: self.instrument_selection(item))
+            self.ui.menuInstrument.addAction(menu_item)
+            menu_item.triggered.connect(lambda dummy, menuItem=instrument: self.instrument_selection(menuItem))
+            menu_item.setText(instrument)
 
     def instrument_selection(self, item):
 
@@ -564,12 +565,12 @@ class Main(QtGui.QMainWindow):
 
             header = ''
 
-            result = QtGui.QMessageBox.warning(None,
+            result = QtWidgets.QMessageBox.warning(None,
                                                header,
                                                message,
-                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-            if result == QtGui.QMessageBox.Yes:
+            if result == QtWidgets.QMessageBox.Yes:
 
                 self.data_store.clear()
 
@@ -2146,25 +2147,25 @@ class Main(QtGui.QMainWindow):
 
         self.ui.statusMessage.insertRow(self.statusMessageIndex)
 
-        self.ui.statusMessage.setItem(self.statusMessageIndex, 0, QtGui.QTableWidgetItem(dateTime))
+        self.ui.statusMessage.setItem(self.statusMessageIndex, 0, QtWidgets.QTableWidgetItem(dateTime))
 
         if ident is not None:
 
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 1, QtGui.QTableWidgetItem(ident))
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 1, QtWidgets.QTableWidgetItem(ident))
 
         if status is not None:
 
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 2, QtGui.QTableWidgetItem(status))
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 2, QtWidgets.QTableWidgetItem(status))
 
         if units is not None:
 
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 3, QtGui.QTableWidgetItem(units))
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 3, QtWidgets.QTableWidgetItem(units))
 
         if response_value is not None:
 
             response_value = response_value.replace(constants.RS, '  ')
 
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtGui.QTableWidgetItem(response_value))
+            self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtWidgets.QTableWidgetItem(response_value))
 
         # Make sure the last item set is visible.
         self.ui.statusMessage.scrollToBottom()
@@ -2240,7 +2241,7 @@ class Main(QtGui.QMainWindow):
 
     def help_about_triggered(self):
 
-        QtGui.QMessageBox.information(None, None,
+        QtWidgets.QMessageBox.information(None, None,
                                       "<p align='center'>StarbaseMini " + version + "<br><br>(c) 2016 Mark Horn<br>"
                                       "<br>mhorn71@gmail.com</p>")
 
@@ -2278,10 +2279,12 @@ class Main(QtGui.QMainWindow):
             self.status_message('ProcessedDataViewer', 'PREMATURE_TERMINATION', 'Not yet implemented!', None)
 
 
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    myapp = Main()
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    myapp = StarbaseMini()
     myapp.showMaximized()
     myapp.show()
-    x = app.exec_()
-    sys.exit(x)
+    app.exec_()
+
+if __name__ == '__main__':
+    main()

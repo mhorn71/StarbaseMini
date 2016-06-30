@@ -21,7 +21,7 @@ import logging
 import sys
 import re
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 from ui import Ui_ConfigurationDialog
 import config_utilities
@@ -30,9 +30,9 @@ import constants
 logger = logging.getLogger('core.configTool')
 
 
-class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
+class ConfigManager(QtWidgets.QDialog, Ui_ConfigurationDialog):
     def __init__(self):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
         self.setupUi(self)
 
         # Style sheets
@@ -87,15 +87,15 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     def update_path(self):
 
-        result = QtGui.QMessageBox.warning(None,
+        result = QtWidgets.QMessageBox.warning(None,
                                            "Configuration mismatch",
                                            "<p align='center'>WARNING!!<br><br>You have no data save path set."
                                            "<br>Press Cancel to set later or Ok to open configuration.</p>",
-                                           QtGui.QMessageBox.Cancel, QtGui.QMessageBox.Ok)
+                                           QtWidgets.QMessageBox.Cancel, QtWidgets.QMessageBox.Ok)
 
-        if result == QtGui.QMessageBox.Ok:
+        if result == QtWidgets.QMessageBox.Ok:
             self.show()
-        elif result == QtGui.QMessageBox.Cancel:
+        elif result == QtWidgets.QMessageBox.Cancel:
             pass
 
     def load_ui(self):
@@ -371,7 +371,7 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
 
     def chooser_triggered(self):
 
-        file = str(QtGui.QFileDialog.getExistingDirectory(QtGui.QFileDialog(), "Select Directory"))
+        file = str(QtWidgets.QFileDialog.getExistingDirectory(QtWidgets.QFileDialog(), "Select Directory"))
 
         if len(file) == 0:
 
@@ -653,12 +653,12 @@ class ConfigManager(QtGui.QDialog, Ui_ConfigurationDialog):
                 self.hide()
                 self.load_ui()
             elif self.configuration_changed() and self.configuration_check():
-                result = QtGui.QMessageBox.warning(None,
+                result = QtWidgets.QMessageBox.warning(None,
                                                    None,
                                                    '<br><br>Save changes?',
-                                                   QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-                if result == QtGui.QMessageBox.Yes:
+                if result == QtWidgets.QMessageBox.Yes:
                     self.save_triggered()
                 else:
                     self.response_message = 'ABORT', None

@@ -21,15 +21,15 @@ import logging
 import sys
 
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 from ui import Ui_MetadataDialog
 
 import constants
 
-class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
+class MetadataViewerEditor(QtWidgets.QDialog, Ui_MetadataDialog):
     def __init__(self, data_store):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
         self.setupUi(self)
 
         # Style sheets
@@ -60,8 +60,8 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
         self.metadataEdit.setReadOnly(True)
         self.metadataNotesEdit.setFocus()
 
-        self.buttonBox.button(QtGui.QDialogButtonBox.Save).clicked.connect(self.save_called)
-        self.buttonBox.button(QtGui.QDialogButtonBox.Close).clicked.connect(lambda: self.close())
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).clicked.connect(self.save_called)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Close).clicked.connect(lambda: self.close())
 
         self.metadataNotesEdit.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(constants.observer_notes)))
         self.metadataNotesEdit.textChanged.connect(self.parameter_check_state)
@@ -125,7 +125,7 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
         data = ''
 
-        self.buttonBox.button(QtGui.QDialogButtonBox.Save).setEnabled(False)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
         self.metadataNotesEdit.setEnabled(False)
 
         metadata = self.metadata.metadata_creator(self.data_store.DataSource)
@@ -136,7 +136,7 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
         else:
 
-            self.buttonBox.button(QtGui.QDialogButtonBox.Save).setEnabled(True)
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(True)
             self.metadataNotesEdit.setEnabled(True)
 
             for i in metadata:
@@ -185,12 +185,12 @@ class MetadataViewerEditor(QtGui.QDialog, Ui_MetadataDialog):
 
         if obs_notes != self.metadataNotesEdit.text():
 
-            result = QtGui.QMessageBox.warning(None,
+            result = QtWidgets.QMessageBox.warning(None,
                                                None,
                                                "<br>Metadata has changed!<br>Save changes?",
-                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-            if result == QtGui.QMessageBox.Yes:
+            if result == QtWidgets.QMessageBox.Yes:
                 self.save_called()
             else:
                 self.response_message = 'ABORT', None
