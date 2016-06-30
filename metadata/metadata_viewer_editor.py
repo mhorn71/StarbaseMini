@@ -49,6 +49,8 @@ class MetadataViewerEditor(QtWidgets.QDialog, Ui_MetadataDialog):
             with open(stylesheet, 'r') as style:
                 self.setStyleSheet(style.read())
 
+        self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
+
         self.data_store = data_store
 
         self.metadata = None

@@ -59,7 +59,7 @@ QLineEdit::disabled {
 
 #InstrumentAttributesDialog {
     min-width: 568px;
-    min-height: 500px;
+    min-height: 560px;
 }
 
 QPushButton#executeButton:enabled {
@@ -80,8 +80,8 @@ QPushButton#executeButton:pressed {
 
 
 QPushButton#executeButton {
-        margin-left: 6px;
-        margin-right: 6px;
+        /* margin-left: 6px; */
+        /* margin-right: 6px; */
         border-radius: 5px;
         padding: 0.2em 0.2em 0.3em 0.2em;
 }
