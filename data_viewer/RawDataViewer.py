@@ -21,7 +21,7 @@ import sys
 #import datetime
 
 #import numpy as np
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 from ui import Ui_DataViewerDialog
 
@@ -59,6 +59,8 @@ class RawDataViewer(QtWidgets.QDialog, Ui_DataViewerDialog):
             with open('css/nixStyle.css', 'r') as style:
 
                 self.setStyleSheet(style.read())
+
+        self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
 
     # Take a look at this stackoverflow post at sometime regards copying a row and headers.
     # http://stackoverflow.com/questions/24971305/copy-pyqt-table-selection-including-column-and-row-headers
