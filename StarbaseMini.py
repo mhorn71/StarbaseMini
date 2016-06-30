@@ -26,12 +26,7 @@ import re
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 
-# try:
-#     from PyQt5.QtCore import QString
-# except ImportError:
-#     QString = str
-
-from ui import Ui_MainWindow
+import ui
 import utilities
 import xml_utilities
 import config_utilities
@@ -50,19 +45,13 @@ import data_viewer
 version = '3.0.1'
 
 
-class StarbaseMini(QtWidgets.QMainWindow):
+class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
     def __init__(self):
         super(StarbaseMini, self).__init__()
 
         # Initialise UI
 
-        # QtWidgets.QMainWindow.__init__(self)
-
-        self.ui = Ui_MainWindow()
-
-        # self.setWindowModality(QtCore.Qt.WindowModal)
-
-        self.ui.setupUi(self)
+        self.setupUi(self)
 
         # Set application icon
 
@@ -187,59 +176,59 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         # Initialise mpl chart class
 
-        self.chart = charting.Chart(self.ui)
+        self.chart = charting.Chart(self)
 
         # Menu items
 
-        self.ui.actionExit.triggered.connect(self.close)
-        self.ui.actionExit.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/application-exit-2.png')))
+        self.actionExit.triggered.connect(self.close)
+        self.actionExit.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/application-exit-2.png')))
 
-        self.ui.actionConfiguration.triggered.connect(self.configuration_triggered)
-        self.ui.actionConfiguration.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/configure-2.png')))
+        self.actionConfiguration.triggered.connect(self.configuration_triggered)
+        self.actionConfiguration.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/configure-2.png')))
 
-        self.ui.actionInstrument_Attrib.triggered.connect(self.instrument_attrib_triggered)
-        self.ui.actionInstrument_Attrib.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/configure.png')))
+        self.actionInstrument_Attrib.triggered.connect(self.instrument_attrib_triggered)
+        self.actionInstrument_Attrib.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/configure.png')))
 
-        self.ui.actionAbout.triggered.connect(self.help_about_triggered)
-        self.ui.actionAbout.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/help-about.png')))
+        self.actionAbout.triggered.connect(self.help_about_triggered)
+        self.actionAbout.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/help-about.png')))
 
-        self.ui.actionReleaseNotes.triggered.connect(self.release_notes_triggered)
-        self.ui.actionReleaseNotes.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-properties.png')))
+        self.actionReleaseNotes.triggered.connect(self.release_notes_triggered)
+        self.actionReleaseNotes.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-properties.png')))
 
-        self.ui.actionOpen.triggered.connect(self.open_csv_file)
-        self.ui.actionOpen.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-import.png')))
+        self.actionOpen.triggered.connect(self.open_csv_file)
+        self.actionOpen.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-import.png')))
 
-        self.ui.actionSave_RawData.triggered.connect(lambda: self.save_data('raw'))
-        self.ui.actionSave_RawData.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-export.png')))
+        self.actionSave_RawData.triggered.connect(lambda: self.save_data('raw'))
+        self.actionSave_RawData.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-export.png')))
 
-        self.ui.actionSave_Processed_Data.triggered.connect(lambda: self.save_data('processed'))
+        self.actionSave_Processed_Data.triggered.connect(lambda: self.save_data('processed'))
 
-        self.ui.actionSave_Processed_Data.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-export.png')))
+        self.actionSave_Processed_Data.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-export.png')))
 
-        self.ui.SegmentRawDataDay.triggered.connect(lambda: self.segment_data('day', 'raw'))
+        self.SegmentRawDataDay.triggered.connect(lambda: self.segment_data('day', 'raw'))
 
-        self.ui.SegmentRawDataWeek.triggered.connect(lambda: self.segment_data('week', 'raw'))
+        self.SegmentRawDataWeek.triggered.connect(lambda: self.segment_data('week', 'raw'))
 
-        self.ui.SegmentProcessDataDay.triggered.connect(lambda: self.segment_data('day', 'processed'))
+        self.SegmentProcessDataDay.triggered.connect(lambda: self.segment_data('day', 'processed'))
 
-        self.ui.SegmentProcessDataWeek.triggered.connect(lambda: self.segment_data('week', 'processed'))
+        self.SegmentProcessDataWeek.triggered.connect(lambda: self.segment_data('week', 'processed'))
 
-        self.ui.menuSegment_Data.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/edit-cut-5.png')))
+        self.menuSegment_Data.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/edit-cut-5.png')))
 
-        self.ui.actionMetadata.triggered.connect(self.metadata_viewer_editor)
-        self.ui.actionMetadata.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/report-edit.png')))
+        self.actionMetadata.triggered.connect(self.metadata_viewer_editor)
+        self.actionMetadata.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/report-edit.png')))
 
-        self.ui.actionProcessed_Data.triggered.connect(lambda: self.dataview('processed'))
-        self.ui.actionRaw_Data.triggered.connect(lambda: self.dataview('raw'))
+        self.actionProcessed_Data.triggered.connect(lambda: self.dataview('processed'))
+        self.actionRaw_Data.triggered.connect(lambda: self.dataview('raw'))
 
-        self.ui.menuData_Filters.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/table-relationship.png')))
+        self.menuData_Filters.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/table-relationship.png')))
 
-        self.ui.actionNon_Linear_Static_Remover.triggered.connect(lambda: self.filter_data('NonLinearStaticRemover'))
-        self.ui.actionPeak_Extractor.triggered.connect(lambda: self.filter_data('PeakExtractor'))
-        self.ui.actionRunning_Average.triggered.connect(lambda: self.filter_data('RunningAverage'))
-        self.ui.actionWeighted_Running_Average.triggered.connect(lambda: self.filter_data('WeightedRunningAverage'))
+        self.actionNon_Linear_Static_Remover.triggered.connect(lambda: self.filter_data('NonLinearStaticRemover'))
+        self.actionPeak_Extractor.triggered.connect(lambda: self.filter_data('PeakExtractor'))
+        self.actionRunning_Average.triggered.connect(lambda: self.filter_data('RunningAverage'))
+        self.actionWeighted_Running_Average.triggered.connect(lambda: self.filter_data('WeightedRunningAverage'))
 
-        self.ui.menuData_Viewers.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/table-go.png')))
+        self.menuData_Viewers.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/table-go.png')))
 
         # Run once trip
 
@@ -266,79 +255,79 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         headers = ['DateTime', 'Identifier', 'Status', 'Units', 'ResponseValue']
 
-        self.ui.statusMessage.setHorizontalHeaderLabels(headers)
+        self.statusMessage.setHorizontalHeaderLabels(headers)
 
-        self.ui.statusMessage.setColumnWidth(0, 115)  # Datetime Column
+        self.statusMessage.setColumnWidth(0, 115)  # Datetime Column
 
-        self.ui.statusMessage.setColumnWidth(1, 175)  # Ident Column
+        self.statusMessage.setColumnWidth(1, 175)  # Ident Column
 
-        self.ui.statusMessage.setColumnWidth(2, 182)  # Status Column
+        self.statusMessage.setColumnWidth(2, 182)  # Status Column
 
-        self.ui.statusMessage.setColumnWidth(3, 56)  # Units Column
+        self.statusMessage.setColumnWidth(3, 56)  # Units Column
 
-        self.ui.statusMessage.verticalHeader().setDefaultSectionSize(20)  # Sets the height of the rows.
+        self.statusMessage.verticalHeader().setDefaultSectionSize(20)  # Sets the height of the rows.
 
-        self.ui.statusMessage.horizontalHeader().setStretchLastSection(True)  # Expands section to widget width.
+        self.statusMessage.horizontalHeader().setStretchLastSection(True)  # Expands section to widget width.
 
         # Button connectors
 
-        self.ui.executeButton.clicked.connect(self.execute_triggered)
+        self.executeButton.clicked.connect(self.execute_triggered)
 
-        self.ui.channel0Button.clicked.connect(lambda: self.channel_triggered(0, self.ui.channel0Button.isChecked()))
-        self.ui.channel1Button.clicked.connect(lambda: self.channel_triggered(1, self.ui.channel1Button.isChecked()))
-        self.ui.channel2Button.clicked.connect(lambda: self.channel_triggered(2, self.ui.channel2Button.isChecked()))
-        self.ui.channel3Button.clicked.connect(lambda: self.channel_triggered(3, self.ui.channel3Button.isChecked()))
-        self.ui.channel4Button.clicked.connect(lambda: self.channel_triggered(4, self.ui.channel4Button.isChecked()))
-        self.ui.channel5Button.clicked.connect(lambda: self.channel_triggered(5, self.ui.channel5Button.isChecked()))
-        self.ui.channel6Button.clicked.connect(lambda: self.channel_triggered(6, self.ui.channel6Button.isChecked()))
-        self.ui.channel7Button.clicked.connect(lambda: self.channel_triggered(7, self.ui.channel7Button.isChecked()))
-        self.ui.channel8Button.clicked.connect(lambda: self.channel_triggered(8, self.ui.channel8Button.isChecked()))
+        self.channel0Button.clicked.connect(lambda: self.channel_triggered(0, self.channel0Button.isChecked()))
+        self.channel1Button.clicked.connect(lambda: self.channel_triggered(1, self.channel1Button.isChecked()))
+        self.channel2Button.clicked.connect(lambda: self.channel_triggered(2, self.channel2Button.isChecked()))
+        self.channel3Button.clicked.connect(lambda: self.channel_triggered(3, self.channel3Button.isChecked()))
+        self.channel4Button.clicked.connect(lambda: self.channel_triggered(4, self.channel4Button.isChecked()))
+        self.channel5Button.clicked.connect(lambda: self.channel_triggered(5, self.channel5Button.isChecked()))
+        self.channel6Button.clicked.connect(lambda: self.channel_triggered(6, self.channel6Button.isChecked()))
+        self.channel7Button.clicked.connect(lambda: self.channel_triggered(7, self.channel7Button.isChecked()))
+        self.channel8Button.clicked.connect(lambda: self.channel_triggered(8, self.channel8Button.isChecked()))
 
         # Hide the channel selection buttons.
 
-        self.ui.channel0Button.setVisible(False)
-        self.ui.channel0colour.setVisible(False)
-        self.ui.channel1Button.setVisible(False)
-        self.ui.channel1colour.setVisible(False)
-        self.ui.channel2Button.setVisible(False)
-        self.ui.channel2colour.setVisible(False)
-        self.ui.channel3Button.setVisible(False)
-        self.ui.channel3colour.setVisible(False)
-        self.ui.channel4Button.setVisible(False)
-        self.ui.channel4colour.setVisible(False)
-        self.ui.channel5Button.setVisible(False)
-        self.ui.channel5colour.setVisible(False)
-        self.ui.channel6Button.setVisible(False)
-        self.ui.channel6colour.setVisible(False)
-        self.ui.channel7Button.setVisible(False)
-        self.ui.channel7colour.setVisible(False)
-        self.ui.channel8Button.setVisible(False)
-        self.ui.channel8colour.setVisible(False)
+        self.channel0Button.setVisible(False)
+        self.channel0colour.setVisible(False)
+        self.channel1Button.setVisible(False)
+        self.channel1colour.setVisible(False)
+        self.channel2Button.setVisible(False)
+        self.channel2colour.setVisible(False)
+        self.channel3Button.setVisible(False)
+        self.channel3colour.setVisible(False)
+        self.channel4Button.setVisible(False)
+        self.channel4colour.setVisible(False)
+        self.channel5Button.setVisible(False)
+        self.channel5colour.setVisible(False)
+        self.channel6Button.setVisible(False)
+        self.channel6colour.setVisible(False)
+        self.channel7Button.setVisible(False)
+        self.channel7colour.setVisible(False)
+        self.channel8Button.setVisible(False)
+        self.channel8colour.setVisible(False)
 
         # Set show chart legend to enabled false.
-        self.ui.showLegend.setEnabled(False)
+        self.showLegend.setEnabled(False)
 
         # Module, Command and Choices ComboBox Triggers.
 
-        self.ui.moduleCombobox.blockSignals(True)
+        self.moduleCombobox.blockSignals(True)
 
-        self.ui.commandCombobox.blockSignals(True)
+        self.commandCombobox.blockSignals(True)
 
-        self.ui.commandParameter.blockSignals(True)
+        self.commandParameter.blockSignals(True)
 
-        self.ui.moduleCombobox.currentIndexChanged.connect(self.populate_ui_command)
+        self.moduleCombobox.currentIndexChanged.connect(self.populate_ui_command)
 
-        self.ui.commandCombobox.currentIndexChanged.connect(self.command_parameter_populate)
+        self.commandCombobox.currentIndexChanged.connect(self.command_parameter_populate)
 
         # Parameter entry emit and connect signals
 
-        self.ui.commandParameter.textChanged.connect(self.parameter_check_state)
+        self.commandParameter.textChanged.connect(self.parameter_check_state)
 
-        self.ui.commandParameter.textChanged.emit(self.ui.commandParameter.text())
+        self.commandParameter.textChanged.emit(self.commandParameter.text())
 
         # Chart show legend state change.
 
-        self.ui.showLegend.stateChanged.connect(self.chart_show_legend_triggered)
+        self.showLegend.stateChanged.connect(self.chart_show_legend_triggered)
 
         # Instrument Name and File lists
         self.instrument_names = []
@@ -535,7 +524,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
     def instrument_menu_setup(self):
 
-        action = QtWidgets.QActionGroup(self.ui.menuInstrument, exclusive=True)
+        action = QtWidgets.QActionGroup(self.menuInstrument, exclusive=True)
 
         for instrument in self.instrument_names:
 
@@ -547,7 +536,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
                 self.previous_instrument_menu_item = instrument
 
-            self.ui.menuInstrument.addAction(menu_item)
+            self.menuInstrument.addAction(menu_item)
             menu_item.triggered.connect(lambda dummy, menuItem=instrument: self.instrument_selection(menuItem))
             menu_item.setText(instrument)
 
@@ -578,7 +567,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
 
             else:
-                for action in self.ui.menuInstrument.actions():
+                for action in self.menuInstrument.actions():
                     if action.text() == self.previous_instrument_menu_item:
                         action.setChecked(True)
 
@@ -609,7 +598,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
                     # Reset the menu check tick back at the original menu item.
 
-                    for action in self.ui.menuInstrument.actions():
+                    for action in self.menuInstrument.actions():
 
                         if action.text() == self.previous_instrument_menu_item:
 
@@ -623,7 +612,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
                         # Reset the menu check tick back to the original menu item.
 
-                        for action in self.ui.menuInstrument.actions():
+                        for action in self.menuInstrument.actions():
 
                             if action.text() == self.previous_instrument_menu_item:
 
@@ -716,27 +705,27 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
                     self.application_state_control()
 
-                    self.ui.actionOpen.setEnabled(True)
+                    self.actionOpen.setEnabled(True)
 
-                    self.ui.actionSave_RawData.setEnabled(True)
+                    self.actionSave_RawData.setEnabled(True)
 
-                    self.ui.actionSave_Processed_Data.setEnabled(True)
+                    self.actionSave_Processed_Data.setEnabled(True)
 
-                    self.ui.actionDay.setEnabled(True)
+                    self.actionDay.setEnabled(True)
 
-                    self.ui.actionWeek.setEnabled(True)
+                    self.actionWeek.setEnabled(True)
 
                 else:
 
-                    self.ui.actionOpen.setEnabled(False)
+                    self.actionOpen.setEnabled(False)
 
-                    self.ui.actionSave_RawData.setEnabled(False)
+                    self.actionSave_RawData.setEnabled(False)
 
-                    self.ui.actionSave_Processed_Data.setEnabled(False)
+                    self.actionSave_Processed_Data.setEnabled(False)
 
-                    self.ui.actionDay.setEnabled(False)
+                    self.actionDay.setEnabled(False)
 
-                    self.ui.actionWeek.setEnabled(False)
+                    self.actionWeek.setEnabled(False)
 
                     self.disable_control_panel()
 
@@ -1144,13 +1133,13 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         # First we clear the module and command combo boxes
 
-        self.ui.commandCombobox.clear()
-        self.ui.moduleCombobox.clear()
+        self.commandCombobox.clear()
+        self.moduleCombobox.clear()
 
         # Now we enable both the command and module combo boxes.
 
-        self.ui.commandCombobox.setEnabled(True)
-        self.ui.moduleCombobox.setEnabled(True)
+        self.commandCombobox.setEnabled(True)
+        self.moduleCombobox.setEnabled(True)
 
         # If we've got this far we might as well load the instrument control panel components.
 
@@ -1262,7 +1251,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         logger.debug('Blocking module combobox signals.')
 
-        self.ui.moduleCombobox.blockSignals(True)
+        self.moduleCombobox.blockSignals(True)
 
         # Populate module combo box
 
@@ -1278,9 +1267,9 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
                 logger.debug(str(plugin))
 
-                self.ui.moduleCombobox.addItem(plugin[0], plugin[2])
+                self.moduleCombobox.addItem(plugin[0], plugin[2])
 
-                self.ui.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
+                self.moduleCombobox.setItemData(index, plugin[1], QtCore.Qt.ToolTipRole)
 
                 index += 1
 
@@ -1296,9 +1285,9 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
             logger.debug('Module combobox populated')
 
-            self.ui.moduleCombobox.blockSignals(False)
+            self.moduleCombobox.blockSignals(False)
 
-            self.ui.commandCombobox.setFocus()
+            self.commandCombobox.setFocus()
 
             logger.debug('Unblocked module combobox signals.')
 
@@ -1308,19 +1297,19 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         logger.debug('Blocking command combobox signals.')
 
-        self.ui.commandCombobox.blockSignals(True)
+        self.commandCombobox.blockSignals(True)
 
         # Populate command combo box
 
         try:
 
-            plugin_index = self.ui.moduleCombobox.currentIndex()
+            plugin_index = self.moduleCombobox.currentIndex()
 
-            logger.debug('Populating command combobox for module : %s' % self.ui.moduleCombobox.currentText())
+            logger.debug('Populating command combobox for module : %s' % self.moduleCombobox.currentText())
 
             logger.debug('Command Base : %s' % str(plugin_index))
 
-            self.ui.commandCombobox.clear()
+            self.commandCombobox.clear()
 
             index = 0
 
@@ -1328,9 +1317,9 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
                 logger.debug('Populate command combobox with : %s' % str(cmd))
 
-                self.ui.commandCombobox.addItem(cmd[0], cmd[2])
+                self.commandCombobox.addItem(cmd[0], cmd[2])
 
-                self.ui.commandCombobox.setItemData(index, cmd[1], QtCore.Qt.ToolTipRole)
+                self.commandCombobox.setItemData(index, cmd[1], QtCore.Qt.ToolTipRole)
 
                 index += 1
 
@@ -1344,7 +1333,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         else:
 
-            self.ui.commandCombobox.blockSignals(False)
+            self.commandCombobox.blockSignals(False)
 
             self.command_parameter_populate()
 
@@ -1358,18 +1347,18 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         logger.debug('Blocking command parameter line edit signals.')
 
-        self.ui.commandParameter.blockSignals(True)
+        self.commandParameter.blockSignals(True)
 
-        self.ui.commandParameter.clear()
+        self.commandParameter.clear()
 
         try:
 
-            for command in self.instrument.command_dict[self.ui.moduleCombobox.itemData(
-                    self.ui.moduleCombobox.currentIndex())]:
+            for command in self.instrument.command_dict[self.moduleCombobox.itemData(
+                    self.moduleCombobox.currentIndex())]:
 
                 for key in command.keys():
 
-                    if key == self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()):
+                    if key == self.commandCombobox.itemData(self.commandCombobox.currentIndex()):
 
                         try:
 
@@ -1377,83 +1366,83 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
                             if command[key]['Parameters']['Choices'] == 'None':
 
-                                logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices : None')
+                                logger.debug('%s %s', self.commandCombobox.currentText(), 'Parameters Choices : None')
 
-                                self.ui.choicesComboBox.clear()
+                                self.choicesComboBox.clear()
 
-                                self.ui.choicesComboBox.setEnabled(False)
+                                self.choicesComboBox.setEnabled(False)
 
-                                self.ui.executeButton.setEnabled(True)
+                                self.executeButton.setEnabled(True)
 
                             else:
 
-                                self.ui.choicesComboBox.clear()
+                                self.choicesComboBox.clear()
 
-                                self.ui.choicesComboBox.setEnabled(True)
+                                self.choicesComboBox.setEnabled(True)
 
-                                self.ui.choicesComboBox.setFocus()
+                                self.choicesComboBox.setFocus()
 
-                                self.ui.executeButton.setEnabled(True)
+                                self.executeButton.setEnabled(True)
 
                                 # Split the choices up into list.
 
                                 choices = command[key]['Parameters']['Choices'].split(',')
 
-                                logger.debug('%s %s %s', self.ui.commandCombobox.currentText(), 'Parameters Choices :',
+                                logger.debug('%s %s %s', self.commandCombobox.currentText(), 'Parameters Choices :',
                                              str(choices))
 
                                 # Add choices to combobox.
-                                self.ui.choicesComboBox.addItems(choices)
+                                self.choicesComboBox.addItems(choices)
 
                                 # Add choices tool tips to combo box.
                                 for i in range(len(choices)):
 
-                                    self.ui.choicesComboBox.setItemData(i, (command[key]['Parameters']['Tooltip']),
+                                    self.choicesComboBox.setItemData(i, (command[key]['Parameters']['Tooltip']),
                                                                         QtCore.Qt.ToolTipRole)
 
                             # Check if command has parameters.
 
                             if command[key]['Parameters']['Regex'] == 'None':
 
-                                logger.debug('%s %s', self.ui.commandCombobox.currentText(), 'Parameters Regex : None')
+                                logger.debug('%s %s', self.commandCombobox.currentText(), 'Parameters Regex : None')
 
-                                self.ui.commandParameter.clear()
+                                self.commandParameter.clear()
 
-                                self.ui.commandParameter.setEnabled(False)
+                                self.commandParameter.setEnabled(False)
 
-                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: %s }' %
+                                self.commandParameter.setStyleSheet('QLineEdit { background-color: %s }' %
                                                                        self.background_colour)
 
                             else:
 
-                                self.ui.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
+                                self.commandParameter.setStyleSheet('QLineEdit { background-color: #FFFFFF }')
 
-                                self.ui.commandParameter.setEnabled(True)
+                                self.commandParameter.setEnabled(True)
 
-                                self.ui.commandParameter.setFocus()
+                                self.commandParameter.setFocus()
 
                                 logger.debug('Unblocking command parameter line edit signals.')
 
-                                self.ui.commandParameter.blockSignals(False)
+                                self.commandParameter.blockSignals(False)
 
-                                self.ui.executeButton.setEnabled(False)
+                                self.executeButton.setEnabled(False)
 
-                                self.ui.commandParameter.setToolTip(command[key]['Parameters']['Tooltip'])
+                                self.commandParameter.setToolTip(command[key]['Parameters']['Tooltip'])
 
                                 self.parameter_regex = command[key]['Parameters']['Regex']
 
-                                logger.debug('%s %s %s', self.ui.commandCombobox.currentText(),
+                                logger.debug('%s %s %s', self.commandCombobox.currentText(),
                                              'Parameters Regex :', self.parameter_regex)
 
-                                self.ui.commandParameter.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(
+                                self.commandParameter.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(
                                                                       self.parameter_regex)))
 
                                 # We set and then clear text to the commandParameter QLineEdit so we emit a signal
                                 # and call the parameter state check.
 
-                                self.ui.commandParameter.setText(' ')
+                                self.commandParameter.setText(' ')
 
-                                self.ui.commandParameter.clear()
+                                self.commandParameter.clear()
 
                         except KeyError as msg:
 
@@ -1477,46 +1466,46 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
             sender.setStyleSheet('QLineEdit { background-color: #f6989d }')  # red
 
-            self.ui.executeButton.setEnabled(False)
+            self.executeButton.setEnabled(False)
 
         elif state == QtGui.QValidator.Acceptable:
 
             sender.setStyleSheet('QLineEdit { background-color: #c4df9b }')  # green
 
-            self.ui.executeButton.setEnabled(True)
+            self.executeButton.setEnabled(True)
 
         elif state == QtGui.QValidator.Intermediate and len(sender.text()) == 0:
 
             sender.setStyleSheet('QLineEdit { background-color: #f6989d }')  # red
 
-            self.ui.executeButton.setEnabled(False)
+            self.executeButton.setEnabled(False)
 
         elif state == QtGui.QValidator.Intermediate:
 
             sender.setStyleSheet('QLineEdit { background-color: #fff79a }')  # yellow
 
-            self.ui.executeButton.setEnabled(False)
+            self.executeButton.setEnabled(False)
 
 
     def execute_triggered(self):
 
         logger = logging.getLogger('StarbaseMini.execute_triggered')
 
-        logger.debug('Module : %s' % self.ui.moduleCombobox.itemData(self.ui.moduleCombobox.currentIndex()))
-        logger.debug('Command : %s' % self.ui.commandCombobox.itemData(self.ui.commandCombobox.currentIndex()))
-        logger.debug('Choice : %s' % self.ui.choicesComboBox.currentText())
-        logger.debug('Parameter : %s' % self.ui.commandParameter.text())
+        logger.debug('Module : %s' % self.moduleCombobox.itemData(self.moduleCombobox.currentIndex()))
+        logger.debug('Command : %s' % self.commandCombobox.itemData(self.commandCombobox.currentIndex()))
+        logger.debug('Choice : %s' % self.choicesComboBox.currentText())
+        logger.debug('Parameter : %s' % self.commandParameter.text())
 
-        self.ui.executeButton.blockSignals(True)
+        self.executeButton.blockSignals(True)
 
         # Interpreter_reponse will always return a tuple consisting of command identification, status, data, units
 
-        interpreter_response = self.command_interpreter.process_command(self.ui.moduleCombobox.itemData(
-                                                                        self.ui.moduleCombobox.currentIndex()),
-                                                                        self.ui.commandCombobox.itemData(
-                                                                        self.ui.commandCombobox.currentIndex()),
-                                                                        self.ui.choicesComboBox.currentText(),
-                                                                        self.ui.commandParameter.text())
+        interpreter_response = self.command_interpreter.process_command(self.moduleCombobox.itemData(
+                                                                        self.moduleCombobox.currentIndex()),
+                                                                        self.commandCombobox.itemData(
+                                                                        self.commandCombobox.currentIndex()),
+                                                                        self.choicesComboBox.currentText(),
+                                                                        self.commandParameter.text())
 
 
         # If interpreter_response data store parameter is not None then we'll send the status back after we attempt
@@ -1556,7 +1545,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
             self.status_message(interpreter_response[0], interpreter_response[1], interpreter_response[2], interpreter_response[3])
 
-        self.ui.executeButton.blockSignals(False)
+        self.executeButton.blockSignals(False)
 
     def open_csv_file(self):
 
@@ -1684,415 +1673,415 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
     def chart_control_panel(self, translated):
 
-        self.ui.showLegend.setEnabled(True)
+        self.showLegend.setEnabled(True)
 
-        self.ui.channel0Button.setVisible(False)
-        self.ui.channel0colour.setVisible(False)
-        self.ui.channel1Button.setVisible(False)
-        self.ui.channel1colour.setVisible(False)
-        self.ui.channel2Button.setVisible(False)
-        self.ui.channel2colour.setVisible(False)
-        self.ui.channel3Button.setVisible(False)
-        self.ui.channel3colour.setVisible(False)
-        self.ui.channel4Button.setVisible(False)
-        self.ui.channel4colour.setVisible(False)
-        self.ui.channel5Button.setVisible(False)
-        self.ui.channel5colour.setVisible(False)
-        self.ui.channel6Button.setVisible(False)
-        self.ui.channel6colour.setVisible(False)
-        self.ui.channel7Button.setVisible(False)
-        self.ui.channel7colour.setVisible(False)
-        self.ui.channel8Button.setVisible(False)
-        self.ui.channel8colour.setVisible(False)
+        self.channel0Button.setVisible(False)
+        self.channel0colour.setVisible(False)
+        self.channel1Button.setVisible(False)
+        self.channel1colour.setVisible(False)
+        self.channel2Button.setVisible(False)
+        self.channel2colour.setVisible(False)
+        self.channel3Button.setVisible(False)
+        self.channel3colour.setVisible(False)
+        self.channel4Button.setVisible(False)
+        self.channel4colour.setVisible(False)
+        self.channel5Button.setVisible(False)
+        self.channel5colour.setVisible(False)
+        self.channel6Button.setVisible(False)
+        self.channel6colour.setVisible(False)
+        self.channel7Button.setVisible(False)
+        self.channel7colour.setVisible(False)
+        self.channel8Button.setVisible(False)
+        self.channel8colour.setVisible(False)
 
         if self.data_store.channel_count == 1:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel0Button.setVisible(True)
-            self.ui.channel0colour.setVisible(True)
-            self.ui.channel1Button.setVisible(False)
-            self.ui.channel1colour.setVisible(False)
-            self.ui.channel2Button.setVisible(False)
-            self.ui.channel2colour.setVisible(False)
-            self.ui.channel3Button.setVisible(False)
-            self.ui.channel3colour.setVisible(False)
-            self.ui.channel4Button.setVisible(False)
-            self.ui.channel4colour.setVisible(False)
-            self.ui.channel5Button.setVisible(False)
-            self.ui.channel5colour.setVisible(False)
-            self.ui.channel6Button.setVisible(False)
-            self.ui.channel6colour.setVisible(False)
-            self.ui.channel7Button.setVisible(False)
-            self.ui.channel7colour.setVisible(False)
-            self.ui.channel8Button.setVisible(False)
-            self.ui.channel8colour.setVisible(False)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel0Button.setVisible(True)
+            self.channel0colour.setVisible(True)
+            self.channel1Button.setVisible(False)
+            self.channel1colour.setVisible(False)
+            self.channel2Button.setVisible(False)
+            self.channel2colour.setVisible(False)
+            self.channel3Button.setVisible(False)
+            self.channel3colour.setVisible(False)
+            self.channel4Button.setVisible(False)
+            self.channel4colour.setVisible(False)
+            self.channel5Button.setVisible(False)
+            self.channel5colour.setVisible(False)
+            self.channel6Button.setVisible(False)
+            self.channel6colour.setVisible(False)
+            self.channel7Button.setVisible(False)
+            self.channel7colour.setVisible(False)
+            self.channel8Button.setVisible(False)
+            self.channel8colour.setVisible(False)
         elif self.data_store.channel_count == 2:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel1Button.setEnabled(True)
-            self.ui.channel1Button.setChecked(True)
-            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel1Button.setEnabled(True)
+            self.channel1Button.setChecked(True)
+            self.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[1] + '; }')
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel1Button.setText(translated.channel_names[1])
-            self.ui.channel0Button.setVisible(True)
-            self.ui.channel0colour.setVisible(True)
-            self.ui.channel1Button.setVisible(True)
-            self.ui.channel1colour.setVisible(True)
-            self.ui.channel2Button.setVisible(False)
-            self.ui.channel2colour.setVisible(False)
-            self.ui.channel3Button.setVisible(False)
-            self.ui.channel3colour.setVisible(False)
-            self.ui.channel4Button.setVisible(False)
-            self.ui.channel4colour.setVisible(False)
-            self.ui.channel5Button.setVisible(False)
-            self.ui.channel5colour.setVisible(False)
-            self.ui.channel6Button.setVisible(False)
-            self.ui.channel6colour.setVisible(False)
-            self.ui.channel7Button.setVisible(False)
-            self.ui.channel7colour.setVisible(False)
-            self.ui.channel8Button.setVisible(False)
-            self.ui.channel8colour.setVisible(False)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel1Button.setText(translated.channel_names[1])
+            self.channel0Button.setVisible(True)
+            self.channel0colour.setVisible(True)
+            self.channel1Button.setVisible(True)
+            self.channel1colour.setVisible(True)
+            self.channel2Button.setVisible(False)
+            self.channel2colour.setVisible(False)
+            self.channel3Button.setVisible(False)
+            self.channel3colour.setVisible(False)
+            self.channel4Button.setVisible(False)
+            self.channel4colour.setVisible(False)
+            self.channel5Button.setVisible(False)
+            self.channel5colour.setVisible(False)
+            self.channel6Button.setVisible(False)
+            self.channel6colour.setVisible(False)
+            self.channel7Button.setVisible(False)
+            self.channel7colour.setVisible(False)
+            self.channel8Button.setVisible(False)
+            self.channel8colour.setVisible(False)
         elif self.data_store.channel_count == 3:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel1Button.setEnabled(True)
-            self.ui.channel1Button.setChecked(True)
-            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel1Button.setEnabled(True)
+            self.channel1Button.setChecked(True)
+            self.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[1] + '; }')
-            self.ui.channel2Button.setEnabled(True)
-            self.ui.channel2Button.setChecked(True)
-            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel2Button.setEnabled(True)
+            self.channel2Button.setChecked(True)
+            self.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[2] + '; }')
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel1Button.setText(translated.channel_names[1])
-            self.ui.channel2Button.setText(translated.channel_names[2])
-            self.ui.channel0Button.setVisible(True)
-            self.ui.channel0colour.setVisible(True)
-            self.ui.channel1Button.setVisible(True)
-            self.ui.channel1colour.setVisible(True)
-            self.ui.channel2Button.setVisible(True)
-            self.ui.channel2colour.setVisible(True)
-            self.ui.channel3Button.setVisible(False)
-            self.ui.channel3colour.setVisible(False)
-            self.ui.channel4Button.setVisible(False)
-            self.ui.channel4colour.setVisible(False)
-            self.ui.channel5Button.setVisible(False)
-            self.ui.channel5colour.setVisible(False)
-            self.ui.channel6Button.setVisible(False)
-            self.ui.channel6colour.setVisible(False)
-            self.ui.channel7Button.setVisible(False)
-            self.ui.channel7colour.setVisible(False)
-            self.ui.channel8Button.setVisible(False)
-            self.ui.channel8colour.setVisible(False)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel1Button.setText(translated.channel_names[1])
+            self.channel2Button.setText(translated.channel_names[2])
+            self.channel0Button.setVisible(True)
+            self.channel0colour.setVisible(True)
+            self.channel1Button.setVisible(True)
+            self.channel1colour.setVisible(True)
+            self.channel2Button.setVisible(True)
+            self.channel2colour.setVisible(True)
+            self.channel3Button.setVisible(False)
+            self.channel3colour.setVisible(False)
+            self.channel4Button.setVisible(False)
+            self.channel4colour.setVisible(False)
+            self.channel5Button.setVisible(False)
+            self.channel5colour.setVisible(False)
+            self.channel6Button.setVisible(False)
+            self.channel6colour.setVisible(False)
+            self.channel7Button.setVisible(False)
+            self.channel7colour.setVisible(False)
+            self.channel8Button.setVisible(False)
+            self.channel8colour.setVisible(False)
         elif self.data_store.channel_count == 4:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel1Button.setEnabled(True)
-            self.ui.channel1Button.setChecked(True)
-            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel1Button.setEnabled(True)
+            self.channel1Button.setChecked(True)
+            self.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[1] + '; }')
-            self.ui.channel2Button.setEnabled(True)
-            self.ui.channel2Button.setChecked(True)
-            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel2Button.setEnabled(True)
+            self.channel2Button.setChecked(True)
+            self.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[2] + '; }')
-            self.ui.channel3Button.setEnabled(True)
-            self.ui.channel3Button.setChecked(True)
-            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel3Button.setEnabled(True)
+            self.channel3Button.setChecked(True)
+            self.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[3] + '; }')
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel1Button.setText(translated.channel_names[1])
-            self.ui.channel2Button.setText(translated.channel_names[2])
-            self.ui.channel3Button.setText(translated.channel_names[3])
-            self.ui.channel4Button.setVisible(False)
-            self.ui.channel4colour.setVisible(False)
-            self.ui.channel5Button.setVisible(False)
-            self.ui.channel5colour.setVisible(False)
-            self.ui.channel6Button.setVisible(False)
-            self.ui.channel6colour.setVisible(False)
-            self.ui.channel7Button.setVisible(False)
-            self.ui.channel7colour.setVisible(False)
-            self.ui.channel8Button.setVisible(False)
-            self.ui.channel8colour.setVisible(False)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel1Button.setText(translated.channel_names[1])
+            self.channel2Button.setText(translated.channel_names[2])
+            self.channel3Button.setText(translated.channel_names[3])
+            self.channel4Button.setVisible(False)
+            self.channel4colour.setVisible(False)
+            self.channel5Button.setVisible(False)
+            self.channel5colour.setVisible(False)
+            self.channel6Button.setVisible(False)
+            self.channel6colour.setVisible(False)
+            self.channel7Button.setVisible(False)
+            self.channel7colour.setVisible(False)
+            self.channel8Button.setVisible(False)
+            self.channel8colour.setVisible(False)
         elif self.data_store.channel_count == 5:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel1Button.setEnabled(True)
-            self.ui.channel1Button.setChecked(True)
-            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel1Button.setEnabled(True)
+            self.channel1Button.setChecked(True)
+            self.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[1] + '; }')
-            self.ui.channel2Button.setEnabled(True)
-            self.ui.channel2Button.setChecked(True)
-            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel2Button.setEnabled(True)
+            self.channel2Button.setChecked(True)
+            self.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[2] + '; }')
-            self.ui.channel3Button.setEnabled(True)
-            self.ui.channel3Button.setChecked(True)
-            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel3Button.setEnabled(True)
+            self.channel3Button.setChecked(True)
+            self.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[3] + '; }')
-            self.ui.channel4Button.setEnabled(True)
-            self.ui.channel4Button.setChecked(True)
-            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel4Button.setEnabled(True)
+            self.channel4Button.setChecked(True)
+            self.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[4] + '; }')
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel1Button.setText(translated.channel_names[1])
-            self.ui.channel2Button.setText(translated.channel_names[2])
-            self.ui.channel3Button.setText(translated.channel_names[3])
-            self.ui.channel4Button.setText(translated.channel_names[4])
-            self.ui.channel0Button.setVisible(True)
-            self.ui.channel0colour.setVisible(True)
-            self.ui.channel1Button.setVisible(True)
-            self.ui.channel1colour.setVisible(True)
-            self.ui.channel2Button.setVisible(True)
-            self.ui.channel2colour.setVisible(True)
-            self.ui.channel3Button.setVisible(True)
-            self.ui.channel3colour.setVisible(True)
-            self.ui.channel4Button.setVisible(True)
-            self.ui.channel4colour.setVisible(True)
-            self.ui.channel5Button.setVisible(False)
-            self.ui.channel5colour.setVisible(False)
-            self.ui.channel6Button.setVisible(False)
-            self.ui.channel6colour.setVisible(False)
-            self.ui.channel7Button.setVisible(False)
-            self.ui.channel7colour.setVisible(False)
-            self.ui.channel8Button.setVisible(False)
-            self.ui.channel8colour.setVisible(False)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel1Button.setText(translated.channel_names[1])
+            self.channel2Button.setText(translated.channel_names[2])
+            self.channel3Button.setText(translated.channel_names[3])
+            self.channel4Button.setText(translated.channel_names[4])
+            self.channel0Button.setVisible(True)
+            self.channel0colour.setVisible(True)
+            self.channel1Button.setVisible(True)
+            self.channel1colour.setVisible(True)
+            self.channel2Button.setVisible(True)
+            self.channel2colour.setVisible(True)
+            self.channel3Button.setVisible(True)
+            self.channel3colour.setVisible(True)
+            self.channel4Button.setVisible(True)
+            self.channel4colour.setVisible(True)
+            self.channel5Button.setVisible(False)
+            self.channel5colour.setVisible(False)
+            self.channel6Button.setVisible(False)
+            self.channel6colour.setVisible(False)
+            self.channel7Button.setVisible(False)
+            self.channel7colour.setVisible(False)
+            self.channel8Button.setVisible(False)
+            self.channel8colour.setVisible(False)
         elif self.data_store.channel_count == 6:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel1Button.setEnabled(True)
-            self.ui.channel1Button.setChecked(True)
-            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel1Button.setEnabled(True)
+            self.channel1Button.setChecked(True)
+            self.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[1] + '; }')
-            self.ui.channel2Button.setEnabled(True)
-            self.ui.channel2Button.setChecked(True)
-            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel2Button.setEnabled(True)
+            self.channel2Button.setChecked(True)
+            self.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[2] + '; }')
-            self.ui.channel3Button.setEnabled(True)
-            self.ui.channel3Button.setChecked(True)
-            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel3Button.setEnabled(True)
+            self.channel3Button.setChecked(True)
+            self.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[3] + '; }')
-            self.ui.channel4Button.setEnabled(True)
-            self.ui.channel4Button.setChecked(True)
-            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel4Button.setEnabled(True)
+            self.channel4Button.setChecked(True)
+            self.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[4] + '; }')
-            self.ui.channel5Button.setEnabled(True)
-            self.ui.channel5Button.setChecked(True)
-            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel5Button.setEnabled(True)
+            self.channel5Button.setChecked(True)
+            self.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[5] + '; }')
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel1Button.setText(translated.channel_names[1])
-            self.ui.channel2Button.setText(translated.channel_names[2])
-            self.ui.channel3Button.setText(translated.channel_names[3])
-            self.ui.channel4Button.setText(translated.channel_names[4])
-            self.ui.channel5Button.setText(translated.channel_names[5])
-            self.ui.channel0Button.setVisible(True)
-            self.ui.channel0colour.setVisible(True)
-            self.ui.channel1Button.setVisible(True)
-            self.ui.channel1colour.setVisible(True)
-            self.ui.channel2Button.setVisible(True)
-            self.ui.channel2colour.setVisible(True)
-            self.ui.channel3Button.setVisible(True)
-            self.ui.channel3colour.setVisible(True)
-            self.ui.channel4Button.setVisible(True)
-            self.ui.channel4colour.setVisible(True)
-            self.ui.channel5Button.setVisible(True)
-            self.ui.channel5colour.setVisible(True)
-            self.ui.channel6Button.setVisible(False)
-            self.ui.channel6colour.setVisible(False)
-            self.ui.channel7Button.setVisible(False)
-            self.ui.channel7colour.setVisible(False)
-            self.ui.channel8Button.setVisible(False)
-            self.ui.channel8colour.setVisible(False)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel1Button.setText(translated.channel_names[1])
+            self.channel2Button.setText(translated.channel_names[2])
+            self.channel3Button.setText(translated.channel_names[3])
+            self.channel4Button.setText(translated.channel_names[4])
+            self.channel5Button.setText(translated.channel_names[5])
+            self.channel0Button.setVisible(True)
+            self.channel0colour.setVisible(True)
+            self.channel1Button.setVisible(True)
+            self.channel1colour.setVisible(True)
+            self.channel2Button.setVisible(True)
+            self.channel2colour.setVisible(True)
+            self.channel3Button.setVisible(True)
+            self.channel3colour.setVisible(True)
+            self.channel4Button.setVisible(True)
+            self.channel4colour.setVisible(True)
+            self.channel5Button.setVisible(True)
+            self.channel5colour.setVisible(True)
+            self.channel6Button.setVisible(False)
+            self.channel6colour.setVisible(False)
+            self.channel7Button.setVisible(False)
+            self.channel7colour.setVisible(False)
+            self.channel8Button.setVisible(False)
+            self.channel8colour.setVisible(False)
         elif self.data_store.channel_count == 7:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel1Button.setEnabled(True)
-            self.ui.channel1Button.setChecked(True)
-            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel1Button.setEnabled(True)
+            self.channel1Button.setChecked(True)
+            self.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[1] + '; }')
-            self.ui.channel2Button.setEnabled(True)
-            self.ui.channel2Button.setChecked(True)
-            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel2Button.setEnabled(True)
+            self.channel2Button.setChecked(True)
+            self.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[2] + '; }')
-            self.ui.channel3Button.setEnabled(True)
-            self.ui.channel3Button.setChecked(True)
-            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel3Button.setEnabled(True)
+            self.channel3Button.setChecked(True)
+            self.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[3] + '; }')
-            self.ui.channel4Button.setEnabled(True)
-            self.ui.channel4Button.setChecked(True)
-            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel4Button.setEnabled(True)
+            self.channel4Button.setChecked(True)
+            self.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[4] + '; }')
-            self.ui.channel5Button.setEnabled(True)
-            self.ui.channel5Button.setChecked(True)
-            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel5Button.setEnabled(True)
+            self.channel5Button.setChecked(True)
+            self.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[5] + '; }')
-            self.ui.channel6Button.setEnabled(True)
-            self.ui.channel6Button.setChecked(True)
-            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel6Button.setEnabled(True)
+            self.channel6Button.setChecked(True)
+            self.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[6] + '; }')
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel1Button.setText(translated.channel_names[1])
-            self.ui.channel2Button.setText(translated.channel_names[2])
-            self.ui.channel3Button.setText(translated.channel_names[3])
-            self.ui.channel4Button.setText(translated.channel_names[4])
-            self.ui.channel5Button.setText(translated.channel_names[5])
-            self.ui.channel6Button.setText(translated.channel_names[6])
-            self.ui.channel0Button.setVisible(True)
-            self.ui.channel0colour.setVisible(True)
-            self.ui.channel1Button.setVisible(True)
-            self.ui.channel1colour.setVisible(True)
-            self.ui.channel2Button.setVisible(True)
-            self.ui.channel2colour.setVisible(True)
-            self.ui.channel3Button.setVisible(True)
-            self.ui.channel3colour.setVisible(True)
-            self.ui.channel4Button.setVisible(True)
-            self.ui.channel4colour.setVisible(True)
-            self.ui.channel5Button.setVisible(True)
-            self.ui.channel5colour.setVisible(True)
-            self.ui.channel6Button.setVisible(True)
-            self.ui.channel6colour.setVisible(True)
-            self.ui.channel7Button.setVisible(False)
-            self.ui.channel7colour.setVisible(False)
-            self.ui.channel8Button.setVisible(False)
-            self.ui.channel8colour.setVisible(False)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel1Button.setText(translated.channel_names[1])
+            self.channel2Button.setText(translated.channel_names[2])
+            self.channel3Button.setText(translated.channel_names[3])
+            self.channel4Button.setText(translated.channel_names[4])
+            self.channel5Button.setText(translated.channel_names[5])
+            self.channel6Button.setText(translated.channel_names[6])
+            self.channel0Button.setVisible(True)
+            self.channel0colour.setVisible(True)
+            self.channel1Button.setVisible(True)
+            self.channel1colour.setVisible(True)
+            self.channel2Button.setVisible(True)
+            self.channel2colour.setVisible(True)
+            self.channel3Button.setVisible(True)
+            self.channel3colour.setVisible(True)
+            self.channel4Button.setVisible(True)
+            self.channel4colour.setVisible(True)
+            self.channel5Button.setVisible(True)
+            self.channel5colour.setVisible(True)
+            self.channel6Button.setVisible(True)
+            self.channel6colour.setVisible(True)
+            self.channel7Button.setVisible(False)
+            self.channel7colour.setVisible(False)
+            self.channel8Button.setVisible(False)
+            self.channel8colour.setVisible(False)
         elif self.data_store.channel_count == 8:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel1Button.setEnabled(True)
-            self.ui.channel1Button.setChecked(True)
-            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel1Button.setEnabled(True)
+            self.channel1Button.setChecked(True)
+            self.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[1] + '; }')
-            self.ui.channel2Button.setEnabled(True)
-            self.ui.channel2Button.setChecked(True)
-            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel2Button.setEnabled(True)
+            self.channel2Button.setChecked(True)
+            self.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[2] + '; }')
-            self.ui.channel3Button.setEnabled(True)
-            self.ui.channel3Button.setChecked(True)
-            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel3Button.setEnabled(True)
+            self.channel3Button.setChecked(True)
+            self.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[3] + '; }')
-            self.ui.channel4Button.setEnabled(True)
-            self.ui.channel4Button.setChecked(True)
-            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel4Button.setEnabled(True)
+            self.channel4Button.setChecked(True)
+            self.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[4] + '; }')
-            self.ui.channel5Button.setEnabled(True)
-            self.ui.channel5Button.setChecked(True)
-            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel5Button.setEnabled(True)
+            self.channel5Button.setChecked(True)
+            self.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[5] + '; }')
-            self.ui.channel6Button.setEnabled(True)
-            self.ui.channel6Button.setChecked(True)
-            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel6Button.setEnabled(True)
+            self.channel6Button.setChecked(True)
+            self.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[6] + '; }')
-            self.ui.channel7Button.setEnabled(True)
-            self.ui.channel7Button.setChecked(True)
-            self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel7Button.setEnabled(True)
+            self.channel7Button.setChecked(True)
+            self.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[7] + '; }')
-            self.ui.channel0Button.setVisible(True)
-            self.ui.channel0colour.setVisible(True)
-            self.ui.channel1Button.setVisible(True)
-            self.ui.channel1colour.setVisible(True)
-            self.ui.channel2Button.setVisible(True)
-            self.ui.channel2colour.setVisible(True)
-            self.ui.channel3Button.setVisible(True)
-            self.ui.channel3colour.setVisible(True)
-            self.ui.channel4Button.setVisible(True)
-            self.ui.channel4colour.setVisible(True)
-            self.ui.channel5Button.setVisible(True)
-            self.ui.channel5colour.setVisible(True)
-            self.ui.channel6Button.setVisible(True)
-            self.ui.channel6colour.setVisible(True)
-            self.ui.channel7Button.setVisible(True)
-            self.ui.channel7colour.setVisible(True)
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel1Button.setText(translated.channel_names[1])
-            self.ui.channel2Button.setText(translated.channel_names[2])
-            self.ui.channel3Button.setText(translated.channel_names[3])
-            self.ui.channel4Button.setText(translated.channel_names[4])
-            self.ui.channel5Button.setText(translated.channel_names[5])
-            self.ui.channel6Button.setText(translated.channel_names[6])
-            self.ui.channel7Button.setText(translated.channel_names[7])
-            self.ui.channel8Button.setVisible(False)
-            self.ui.channel8colour.setVisible(False)
+            self.channel0Button.setVisible(True)
+            self.channel0colour.setVisible(True)
+            self.channel1Button.setVisible(True)
+            self.channel1colour.setVisible(True)
+            self.channel2Button.setVisible(True)
+            self.channel2colour.setVisible(True)
+            self.channel3Button.setVisible(True)
+            self.channel3colour.setVisible(True)
+            self.channel4Button.setVisible(True)
+            self.channel4colour.setVisible(True)
+            self.channel5Button.setVisible(True)
+            self.channel5colour.setVisible(True)
+            self.channel6Button.setVisible(True)
+            self.channel6colour.setVisible(True)
+            self.channel7Button.setVisible(True)
+            self.channel7colour.setVisible(True)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel1Button.setText(translated.channel_names[1])
+            self.channel2Button.setText(translated.channel_names[2])
+            self.channel3Button.setText(translated.channel_names[3])
+            self.channel4Button.setText(translated.channel_names[4])
+            self.channel5Button.setText(translated.channel_names[5])
+            self.channel6Button.setText(translated.channel_names[6])
+            self.channel7Button.setText(translated.channel_names[7])
+            self.channel8Button.setVisible(False)
+            self.channel8colour.setVisible(False)
         elif self.data_store.channel_count == 9:
-            self.ui.channel0Button.setEnabled(True)
-            self.ui.channel0Button.setChecked(True)
-            self.ui.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel0Button.setEnabled(True)
+            self.channel0Button.setChecked(True)
+            self.channel0colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[0] + '; }')
-            self.ui.channel1Button.setEnabled(True)
-            self.ui.channel1Button.setChecked(True)
-            self.ui.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel1Button.setEnabled(True)
+            self.channel1Button.setChecked(True)
+            self.channel1colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[1] + '; }')
-            self.ui.channel2Button.setEnabled(True)
-            self.ui.channel2Button.setChecked(True)
-            self.ui.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel2Button.setEnabled(True)
+            self.channel2Button.setChecked(True)
+            self.channel2colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[2] + '; }')
-            self.ui.channel3Button.setEnabled(True)
-            self.ui.channel3Button.setChecked(True)
-            self.ui.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel3Button.setEnabled(True)
+            self.channel3Button.setChecked(True)
+            self.channel3colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[3] + '; }')
-            self.ui.channel4Button.setEnabled(True)
-            self.ui.channel4Button.setChecked(True)
-            self.ui.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel4Button.setEnabled(True)
+            self.channel4Button.setChecked(True)
+            self.channel4colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[4] + '; }')
-            self.ui.channel5Button.setEnabled(True)
-            self.ui.channel5Button.setChecked(True)
-            self.ui.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel5Button.setEnabled(True)
+            self.channel5Button.setChecked(True)
+            self.channel5colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[5] + '; }')
-            self.ui.channel6Button.setEnabled(True)
-            self.ui.channel6Button.setChecked(True)
-            self.ui.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel6Button.setEnabled(True)
+            self.channel6Button.setChecked(True)
+            self.channel6colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[6] + '; }')
-            self.ui.channel7Button.setEnabled(True)
-            self.ui.channel7Button.setChecked(True)
-            self.ui.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel7Button.setEnabled(True)
+            self.channel7Button.setChecked(True)
+            self.channel7colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[7] + '; }')
-            self.ui.channel8Button.setEnabled(True)
-            self.ui.channel8Button.setChecked(True)
-            self.ui.channel8colour.setStyleSheet('QCheckBox::indicator {background-color: '
+            self.channel8Button.setEnabled(True)
+            self.channel8Button.setChecked(True)
+            self.channel8colour.setStyleSheet('QCheckBox::indicator {background-color: '
                                                  + translated.channel_colours[8] + '; }')
-            self.ui.channel0Button.setText(translated.channel_names[0])
-            self.ui.channel1Button.setText(translated.channel_names[1])
-            self.ui.channel2Button.setText(translated.channel_names[2])
-            self.ui.channel3Button.setText(translated.channel_names[3])
-            self.ui.channel4Button.setText(translated.channel_names[4])
-            self.ui.channel5Button.setText(translated.channel_names[5])
-            self.ui.channel6Button.setText(translated.channel_names[6])
-            self.ui.channel7Button.setText(translated.channel_names[7])
-            self.ui.channel8Button.setText(translated.channel_names[8])
-            self.ui.channel0Button.setVisible(True)
-            self.ui.channel0colour.setVisible(True)
-            self.ui.channel1Button.setVisible(True)
-            self.ui.channel1colour.setVisible(True)
-            self.ui.channel2Button.setVisible(True)
-            self.ui.channel2colour.setVisible(True)
-            self.ui.channel3Button.setVisible(True)
-            self.ui.channel3colour.setVisible(True)
-            self.ui.channel4Button.setVisible(True)
-            self.ui.channel4colour.setVisible(True)
-            self.ui.channel5Button.setVisible(True)
-            self.ui.channel5colour.setVisible(True)
-            self.ui.channel6Button.setVisible(True)
-            self.ui.channel6colour.setVisible(True)
-            self.ui.channel7Button.setVisible(True)
-            self.ui.channel7colour.setVisible(True)
-            self.ui.channel8Button.setVisible(True)
-            self.ui.channel8colour.setVisible(True)
+            self.channel0Button.setText(translated.channel_names[0])
+            self.channel1Button.setText(translated.channel_names[1])
+            self.channel2Button.setText(translated.channel_names[2])
+            self.channel3Button.setText(translated.channel_names[3])
+            self.channel4Button.setText(translated.channel_names[4])
+            self.channel5Button.setText(translated.channel_names[5])
+            self.channel6Button.setText(translated.channel_names[6])
+            self.channel7Button.setText(translated.channel_names[7])
+            self.channel8Button.setText(translated.channel_names[8])
+            self.channel0Button.setVisible(True)
+            self.channel0colour.setVisible(True)
+            self.channel1Button.setVisible(True)
+            self.channel1colour.setVisible(True)
+            self.channel2Button.setVisible(True)
+            self.channel2colour.setVisible(True)
+            self.channel3Button.setVisible(True)
+            self.channel3colour.setVisible(True)
+            self.channel4Button.setVisible(True)
+            self.channel4colour.setVisible(True)
+            self.channel5Button.setVisible(True)
+            self.channel5colour.setVisible(True)
+            self.channel6Button.setVisible(True)
+            self.channel6colour.setVisible(True)
+            self.channel7Button.setVisible(True)
+            self.channel7colour.setVisible(True)
+            self.channel8Button.setVisible(True)
+            self.channel8colour.setVisible(True)
         else:
             self.status_message('system', 'ERROR', 'Number of channels out of bounds.', None)
             # self.logger.warning('Index Error, Number of channels out of bounds. %s' % number_of_channels)
@@ -2102,7 +2091,7 @@ class StarbaseMini(QtWidgets.QMainWindow):
     # ----------------------------------------
 
     def chart_show_legend_triggered(self):
-        if self.ui.showLegend.isChecked():
+        if self.showLegend.isChecked():
             self.chart.chart_legend(True)
         else:
             self.chart.chart_legend(False)
@@ -2113,27 +2102,27 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         logger.info('Instrument control panel disabled.')
 
-        self.ui.commandCombobox.blockSignals(True)
+        self.commandCombobox.blockSignals(True)
 
         logger.debug('Blocked command combobox signals')
 
-        self.ui.moduleCombobox.blockSignals(True)
+        self.moduleCombobox.blockSignals(True)
 
         logger.debug('Blocked module combobox signals')
 
-        self.ui.commandParameter.blockSignals(True)
+        self.commandParameter.blockSignals(True)
 
         logger.debug('Blocked command parameter lineedit signals')
 
-        self.ui.moduleCombobox.setEnabled(False)
+        self.moduleCombobox.setEnabled(False)
 
-        self.ui.commandCombobox.setEnabled(False)
+        self.commandCombobox.setEnabled(False)
 
-        self.ui.commandParameter.setEnabled(False)
+        self.commandParameter.setEnabled(False)
 
-        self.ui.choicesComboBox.setEnabled(False)
+        self.choicesComboBox.setEnabled(False)
 
-        self.ui.executeButton.setEnabled(False)
+        self.executeButton.setEnabled(False)
 
         self.status_message('system', 'INFO', 'Instrument control panel disabled.', None)
 
@@ -2145,30 +2134,30 @@ class StarbaseMini(QtWidgets.QMainWindow):
 
         dateTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        self.ui.statusMessage.insertRow(self.statusMessageIndex)
+        self.statusMessage.insertRow(self.statusMessageIndex)
 
-        self.ui.statusMessage.setItem(self.statusMessageIndex, 0, QtWidgets.QTableWidgetItem(dateTime))
+        self.statusMessage.setItem(self.statusMessageIndex, 0, QtWidgets.QTableWidgetItem(dateTime))
 
         if ident is not None:
 
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 1, QtWidgets.QTableWidgetItem(ident))
+            self.statusMessage.setItem(self.statusMessageIndex, 1, QtWidgets.QTableWidgetItem(ident))
 
         if status is not None:
 
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 2, QtWidgets.QTableWidgetItem(status))
+            self.statusMessage.setItem(self.statusMessageIndex, 2, QtWidgets.QTableWidgetItem(status))
 
         if units is not None:
 
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 3, QtWidgets.QTableWidgetItem(units))
+            self.statusMessage.setItem(self.statusMessageIndex, 3, QtWidgets.QTableWidgetItem(units))
 
         if response_value is not None:
 
             response_value = response_value.replace(constants.RS, '  ')
 
-            self.ui.statusMessage.setItem(self.statusMessageIndex, 4, QtWidgets.QTableWidgetItem(response_value))
+            self.statusMessage.setItem(self.statusMessageIndex, 4, QtWidgets.QTableWidgetItem(response_value))
 
         # Make sure the last item set is visible.
-        self.ui.statusMessage.scrollToBottom()
+        self.statusMessage.scrollToBottom()
 
         self.statusMessageIndex += 1
 
