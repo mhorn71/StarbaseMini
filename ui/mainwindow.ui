@@ -194,7 +194,7 @@ QToolBox::tab:!selected {
 }</string>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="tabSpacing">
            <number>4</number>
@@ -204,8 +204,8 @@ QToolBox::tab:!selected {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>129</width>
+             <height>521</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -309,9 +309,9 @@ QToolBox::tab:!selected {
             <property name="geometry">
              <rect>
               <x>-3</x>
-              <y>30</y>
+              <y>6</y>
               <width>121</width>
-              <height>327</height>
+              <height>351</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
@@ -331,7 +331,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel7colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
@@ -347,7 +347,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel6colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
@@ -402,7 +402,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel1colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
@@ -434,7 +434,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel2colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
@@ -466,7 +466,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel3colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
@@ -498,7 +498,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel4colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
@@ -530,7 +530,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel5colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
@@ -594,7 +594,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel8colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
