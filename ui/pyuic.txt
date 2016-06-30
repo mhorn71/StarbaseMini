@@ -1,4 +1,0 @@
-Note : The UI is created using QT Designer on Xubuntu.  To generate the py file from the ui you
-       would normally use pyuic4 however since PyQt5-dev-tools version 4.11.4 setMargins isn't
-       set, apparently this is depreciated, to get around this use pyside-uic instead and manually
-       the file to import PyQt5 instead of PySide.
