@@ -193,6 +193,7 @@ class Ui_InstrumentAttributesDialog(object):
         self.label_10.setObjectName("label_10")
         self.gridLayout.addWidget(self.label_10, 9, 0, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.groupBox)
