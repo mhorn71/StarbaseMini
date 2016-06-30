@@ -51,6 +51,21 @@
        <string>Status</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>9</number>
+       </property>
+       <property name="spacing">
+        <number>6</number>
+       </property>
        <item row="0" column="0">
         <widget class="QTableWidget" name="statusMessage">
          <property name="styleSheet">
@@ -283,8 +298,8 @@ QToolBox::tab:!selected {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>129</width>
+             <height>521</height>
             </rect>
            </property>
            <attribute name="label">
@@ -300,6 +315,18 @@ QToolBox::tab:!selected {
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item row="0" column="0">
               <layout class="QVBoxLayout" name="verticalLayout_2">
                <item>
@@ -683,7 +710,23 @@ QToolBox::tab:!selected {
          <property name="styleSheet">
           <string notr="true"/>
          </property>
-         <layout class="QVBoxLayout" name="mplvl"/>
+         <layout class="QVBoxLayout" name="mplvl">
+          <property name="spacing">
+           <number>9</number>
+          </property>
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+         </layout>
         </widget>
        </item>
       </layout>
