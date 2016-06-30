@@ -62,6 +62,8 @@ class InstrumentAttrib(QtWidgets.QDialog, Ui_InstrumentAttributesDialog):
             with open(stylesheet, 'r') as style:
                 self.setStyleSheet(style.read())
 
+        self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
+
         # Get the current application background colour and set self.background_colour
 
         colour = self.palette().color(QtGui.QPalette.Background)

@@ -20,7 +20,7 @@ __author__ = 'mark'
 import os
 import sys
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 
 from ui import Ui_Dialog
 
@@ -49,6 +49,8 @@ class ReleaseNote(QtWidgets.QDialog, Ui_Dialog):
             with open('css/nixStyle.css', 'r') as style:
 
                 self.setStyleSheet(style.read())
+
+        self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
 
         if os.path.isfile("ReleaseNotes"):
             file = open('ReleaseNotes', 'r')

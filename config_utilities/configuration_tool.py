@@ -52,6 +52,8 @@ class ConfigManager(QtWidgets.QDialog, Ui_ConfigurationDialog):
             with open(stylesheet, 'r') as style:
                 self.setStyleSheet(style.read())
 
+        self.setWindowIcon(QtGui.QIcon('images/starbase.png'))
+
         # Initialise application configuration class
         self.application_conf = config_utilities.ConfigLoader()
 

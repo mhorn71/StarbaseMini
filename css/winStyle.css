@@ -93,3 +93,91 @@ QLineEdit#metadataNotesEdit {
 QTextEdit#releasenotesText {
         font-size: 10pt;
 }
+
+QLineEdit#commandParameter {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#StaribusPortLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan0ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan1ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan2ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan3ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan4ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan5ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan6ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan7ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan8ColourLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan0LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan1LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan2LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan3LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan4LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan5LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan6LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan7LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#Chan8LabelEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#StarinetAddressLineEdit {
+        border: 1px solid #d3d3d3;
+}
+
+QLineEdit#StarinetPortLineEdit {
+        border: 1px solid #d3d3d3;
+}
