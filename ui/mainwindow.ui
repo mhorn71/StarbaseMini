@@ -146,6 +146,9 @@ QTableWidget QHeaderView::section {
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QToolBox" name="toolBox">
           <property name="sizePolicy">
@@ -209,6 +212,9 @@ QToolBox::tab:!selected {
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
              <item row="0" column="0">
               <widget class="QLabel" name="label">
                <property name="text">
@@ -277,8 +283,8 @@ QToolBox::tab:!selected {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>129</width>
-             <height>521</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <attribute name="label">
