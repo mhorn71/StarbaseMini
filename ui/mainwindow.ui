@@ -194,7 +194,7 @@ QToolBox::tab:!selected {
 }</string>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="tabSpacing">
            <number>4</number>
