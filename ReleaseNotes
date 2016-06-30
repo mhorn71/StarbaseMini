@@ -31,6 +31,8 @@ Update - Set all Staribus instruments to auto detect serial port as default.
 
 Update - Set coloured heading text on QToolBox tab to indicate selection.
 
+Update - Moved from the PyQt4 framework to PyQt5.
+
 ===============
 Version : 3.0.0
 ===============
