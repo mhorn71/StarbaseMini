@@ -35,7 +35,7 @@
       <property name="minimumSize">
        <size>
         <width>621</width>
-        <height>61</height>
+        <height>111</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -298,8 +298,8 @@ QToolBox::tab:!selected {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>129</width>
-             <height>521</height>
+             <width>127</width>
+             <height>345</height>
             </rect>
            </property>
            <attribute name="label">
