@@ -194,7 +194,7 @@ QToolBox::tab:!selected {
 }</string>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="tabSpacing">
            <number>4</number>
@@ -204,8 +204,8 @@ QToolBox::tab:!selected {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>129</width>
-             <height>521</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -309,7 +309,7 @@ QToolBox::tab:!selected {
             <property name="geometry">
              <rect>
               <x>-3</x>
-              <y>9</y>
+              <y>30</y>
               <width>121</width>
               <height>327</height>
              </rect>
@@ -370,7 +370,7 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel0colour">
                <property name="maximumSize">
                 <size>
-                 <width>5</width>
+                 <width>10</width>
                  <height>22</height>
                 </size>
                </property>
