@@ -89,3 +89,13 @@ QLineEdit#metadataNotesEdit {
 QTextEdit#releasenotesText {
         font-size: 10pt;
 }
+
+/* QScrollBar#toolBox:horizontal {
+height: 0px;
+width: 0px;
+}
+
+QScrollBar#toolBox:vertical {
+height: 0px;
+width: 0px;
+} */

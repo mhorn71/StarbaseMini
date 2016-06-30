@@ -116,7 +116,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -205,7 +205,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -294,7 +294,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -400,7 +400,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -483,7 +483,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -547,7 +547,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -777,7 +777,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -860,7 +860,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -943,7 +943,7 @@
         <property name="minimumSize">
          <size>
           <width>107</width>
-          <height>0</height>
+          <height>22</height>
          </size>
         </property>
         <property name="maximumSize">
