@@ -206,13 +206,19 @@ class Chart:
 
         channels = []
 
-        for i in range(number_of_channels):
+        try:
 
-            channels.append([n[i + 1] for n in data])
+            for i in range(number_of_channels):
 
-        for i in range(0, number_of_channels):
+                channels.append([n[i + 1] for n in data])
 
-            self.ax1f1.plot(epoch, channels[i], channel_colours[i], label=channel_names[i])
+            for i in range(0, number_of_channels):
+
+                self.ax1f1.plot(epoch, channels[i], channel_colours[i], label=channel_names[i])
+
+        except ValueError:
+
+            return 'PREMATURE_TERMINATION', 'No data to display.'
 
         self.add_mpl()
 
