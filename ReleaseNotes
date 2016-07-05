@@ -25,6 +25,12 @@ Fixed - Issue where you couldn't use arror keys to scroll DataViewer.
 
 Fixed - Issue on Mac OSX where when you clicked on application icon the application failed to show / appear on top.
 
+Fixed - Issue when no data present we still tried to load a chart.
+
+Fixed - Issue where ValueError was raised when chart had no data to display.
+
+Fixed - Issue where by data blocks passed regex check even when a single data sample was missing.
+
 Updated - Chart figure border colour to be the same as the status window.
 
 Update - Set all Staribus instruments to auto detect serial port as default.
