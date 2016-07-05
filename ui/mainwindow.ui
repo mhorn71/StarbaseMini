@@ -30,12 +30,27 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
+    <property name="leftMargin">
+     <number>9</number>
+    </property>
+    <property name="topMargin">
+     <number>9</number>
+    </property>
+    <property name="rightMargin">
+     <number>9</number>
+    </property>
+    <property name="bottomMargin">
+     <number>9</number>
+    </property>
+    <property name="spacing">
+     <number>6</number>
+    </property>
     <item row="0" column="0">
      <widget class="QGroupBox" name="groupBox_3">
       <property name="minimumSize">
        <size>
         <width>621</width>
-        <height>111</height>
+        <height>61</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -43,9 +58,6 @@
         <width>16777215</width>
         <height>111</height>
        </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
       </property>
       <property name="title">
        <string>Status</string>
@@ -164,6 +176,15 @@ QTableWidget QHeaderView::section {
         <property name="leftMargin">
          <number>0</number>
         </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QToolBox" name="toolBox">
           <property name="sizePolicy">
@@ -228,6 +249,15 @@ QToolBox::tab:!selected {
             </property>
             <layout class="QGridLayout" name="gridLayout">
              <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
               <number>0</number>
              </property>
              <item row="0" column="0">
@@ -308,13 +338,16 @@ QToolBox::tab:!selected {
            <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
-              <x>-3</x>
-              <y>6</y>
-              <width>121</width>
-              <height>351</height>
+              <x>0</x>
+              <y>0</y>
+              <width>128</width>
+              <height>331</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -327,159 +360,11 @@ QToolBox::tab:!selected {
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item row="8" column="0">
-              <widget class="QCheckBox" name="channel7colour">
-               <property name="maximumSize">
-                <size>
-                 <width>10</width>
-                 <height>22</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="0">
-              <widget class="QCheckBox" name="channel6colour">
-               <property name="maximumSize">
-                <size>
-                 <width>10</width>
-                 <height>22</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0" colspan="2">
-              <widget class="QCheckBox" name="showLegend">
-               <property name="text">
-                <string>Show Legend</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QCheckBox" name="channel0colour">
-               <property name="maximumSize">
-                <size>
-                 <width>10</width>
-                 <height>22</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QPushButton" name="channel0Button">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>PushButton</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QCheckBox" name="channel1colour">
-               <property name="maximumSize">
-                <size>
-                 <width>10</width>
-                 <height>22</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QPushButton" name="channel1Button">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>PushButton</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QCheckBox" name="channel2colour">
-               <property name="maximumSize">
-                <size>
-                 <width>10</width>
-                 <height>22</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
+             <property name="horizontalSpacing">
+              <number>6</number>
+             </property>
              <item row="3" column="1">
               <widget class="QPushButton" name="channel2Button">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>PushButton</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QCheckBox" name="channel3colour">
-               <property name="maximumSize">
-                <size>
-                 <width>10</width>
-                 <height>22</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QPushButton" name="channel3Button">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -498,7 +383,52 @@ QToolBox::tab:!selected {
               <widget class="QCheckBox" name="channel4colour">
                <property name="maximumSize">
                 <size>
-                 <width>10</width>
+                 <width>5</width>
+                 <height>22</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" colspan="2">
+              <widget class="QCheckBox" name="showLegend">
+               <property name="text">
+                <string>Show Legend</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="channel0Button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QCheckBox" name="channel3colour">
+               <property name="maximumSize">
+                <size>
+                 <width>5</width>
                  <height>22</height>
                 </size>
                </property>
@@ -526,11 +456,11 @@ QToolBox::tab:!selected {
                </property>
               </widget>
              </item>
-             <item row="6" column="0">
-              <widget class="QCheckBox" name="channel5colour">
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="channel0colour">
                <property name="maximumSize">
                 <size>
-                 <width>10</width>
+                 <width>5</width>
                  <height>22</height>
                 </size>
                </property>
@@ -542,24 +472,8 @@ QToolBox::tab:!selected {
                </property>
               </widget>
              </item>
-             <item row="6" column="1">
-              <widget class="QPushButton" name="channel5Button">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>PushButton</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="1">
-              <widget class="QPushButton" name="channel6Button">
+             <item row="9" column="1">
+              <widget class="QPushButton" name="channel8Button">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -590,11 +504,27 @@ QToolBox::tab:!selected {
                </property>
               </widget>
              </item>
+             <item row="6" column="1">
+              <widget class="QPushButton" name="channel5Button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
              <item row="9" column="0">
               <widget class="QCheckBox" name="channel8colour">
                <property name="maximumSize">
                 <size>
-                 <width>10</width>
+                 <width>5</width>
                  <height>22</height>
                 </size>
                </property>
@@ -606,8 +536,120 @@ QToolBox::tab:!selected {
                </property>
               </widget>
              </item>
-             <item row="9" column="1">
-              <widget class="QPushButton" name="channel8Button">
+             <item row="4" column="1">
+              <widget class="QPushButton" name="channel3Button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QPushButton" name="channel6Button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QCheckBox" name="channel5colour">
+               <property name="maximumSize">
+                <size>
+                 <width>5</width>
+                 <height>22</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QCheckBox" name="channel7colour">
+               <property name="maximumSize">
+                <size>
+                 <width>5</width>
+                 <height>22</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="channel1colour">
+               <property name="maximumSize">
+                <size>
+                 <width>5</width>
+                 <height>22</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QCheckBox" name="channel2colour">
+               <property name="maximumSize">
+                <size>
+                 <width>5</width>
+                 <height>22</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QCheckBox" name="channel6colour">
+               <property name="maximumSize">
+                <size>
+                 <width>5</width>
+                 <height>22</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="channel1Button">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -630,7 +672,7 @@ QToolBox::tab:!selected {
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>18</height>
+                 <height>40</height>
                 </size>
                </property>
               </spacer>
@@ -652,13 +694,25 @@ QToolBox::tab:!selected {
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
       <property name="title">
        <string>Chart</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>9</number>
+       </property>
+       <property name="spacing">
+        <number>6</number>
+       </property>
        <item row="0" column="0">
         <widget class="QWidget" name="mplwindow" native="true">
          <property name="sizePolicy">
@@ -672,7 +726,7 @@ QToolBox::tab:!selected {
          </property>
          <layout class="QVBoxLayout" name="mplvl">
           <property name="spacing">
-           <number>9</number>
+           <number>6</number>
           </property>
           <property name="leftMargin">
            <number>9</number>
