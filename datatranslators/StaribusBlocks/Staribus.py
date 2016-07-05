@@ -54,35 +54,35 @@ class StaribusBlockParser:
 
         elif data_store.channel_count == 2:
 
-            sample_length = '\d{4}'
+            sample_length = '.{4}'
 
         elif data_store.channel_count == 3:
 
-            sample_length = '([+|\-]\d{3}[+\-]\d{3})|\d{8}'
+            sample_length = '.{8}'
 
         elif data_store.channel_count == 4:
 
-            sample_length = '\d{12}'
+            sample_length = '.{12}'
 
         elif data_store.channel_count == 5:
 
-            sample_length = '\d{16}'
+            sample_length = '.{16}'
 
         elif data_store.channel_count == 6:
 
-            sample_length = '\d{20}'
+            sample_length = '.{20}'
 
         elif data_store.channel_count == 7:
 
-            sample_length = '\d{24}'
+            sample_length = '.{24}'
 
         elif data_store.channel_count == 8:
 
-            sample_length = '\d{28}'
+            sample_length = '.{28}'
 
         elif data_store.channel_count == 9:
 
-            sample_length = '\d{32}'
+            sample_length = '.{32}'
 
         else:
 
@@ -154,4 +154,10 @@ class StaribusBlockParser:
 
                 logger.warning('Failed Staribus Block : %s' % repr(data))
 
-        return True
+        if len(self.parsed_data_list) == 0:
+
+            return False
+
+        else:
+
+            return True
