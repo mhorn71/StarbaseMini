@@ -1488,6 +1488,8 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
 
     def execute_triggered(self):
+        
+        test()
 
         logger = logging.getLogger('StarbaseMini.execute_triggered')
 
@@ -1662,7 +1664,6 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
 
     ############################  BELOW MIGHT GET CHANGED IT'S FROM STARBASEMINI II ##############################
-
 
     def channel_triggered(self, channel, state):
 
