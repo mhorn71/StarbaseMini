@@ -54,33 +54,49 @@ class StaribusBlockParser:
 
         elif data_store.channel_count == 2:
 
+            logger.debug('sample_length = 4')
+
             sample_length = '.{4}'
 
         elif data_store.channel_count == 3:
+
+            logger.debug('sample_length = 8')
 
             sample_length = '.{8}'
 
         elif data_store.channel_count == 4:
 
+            logger.debug('sample_length = 12')
+
             sample_length = '.{12}'
 
         elif data_store.channel_count == 5:
+
+            logger.debug('sample_length = 16')
 
             sample_length = '.{16}'
 
         elif data_store.channel_count == 6:
 
+            logger.debug('sample_length = 20')
+
             sample_length = '.{20}'
 
         elif data_store.channel_count == 7:
+
+            logger.debug('sample_length = 24')
 
             sample_length = '.{24}'
 
         elif data_store.channel_count == 8:
 
+            logger.debug('sample_length = 28')
+
             sample_length = '.{28}'
 
         elif data_store.channel_count == 9:
+
+            logger.debug('sample_length = 32')
 
             sample_length = '.{32}'
 
@@ -96,19 +112,28 @@ class StaribusBlockParser:
         for lista in reversed(data_store.RawDataBlocks):
 
             data = lista.split(' ')
+
+            logger.debug('data list length : %s' % str(len(data)))
     
             try:
                 # create datetime object
                 date = str(data[0]).split('-')  # split date field up
                 time = str(data[1]).split(':')  # split time field up
                 epoch = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
-    
-                for datum in re.findall(sample_length, data[6]):  # for every group of sample length
+
+                # TODO check that data[5] works for all controller versions and instruments.
+
+                for datum in re.findall(sample_length, data[5]):  # for every group of sample length
     
                     if len(datum) == 0:
+
+                        logger.warning('datum list length is zero.')
+
                         return False
     
                     dat = re.findall('....', str(datum))   # split each sample_length into groups of 4
+
+                    logger.debug('dat length : %s' % str(len(dat)))
 
                     # logger.debug('Sample dat list : %s' % repr(dat))
 
