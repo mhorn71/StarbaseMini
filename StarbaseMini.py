@@ -1488,8 +1488,6 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
 
     def execute_triggered(self):
-        
-        test()
 
         logger = logging.getLogger('StarbaseMini.execute_triggered')
 
@@ -2271,6 +2269,7 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyle(QtWidgets.QStyleFactory.create('fusion'))
     myapp = StarbaseMini()
     myapp.showMaximized()
     myapp.show()

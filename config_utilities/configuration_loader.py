@@ -53,7 +53,7 @@ class ConfigLoader:
                 raise FileNotFoundError("Fatal error unable to open user_home.txt!!\nContact developer for help.")
             else:
                 # This looks a little weird as we strip the path sep and then added it back this is so we don't end
-                # up with a double seperater
+                # up with a double separator
                 self.user_home = file.read()
                 self.user_home.strip(path.sep)
                 self.user_home = self.user_home + path.sep

@@ -532,7 +532,6 @@ class ConfigManager(QtWidgets.QDialog, Ui_ConfigurationDialog):
         if not re.match(constants.starinet_ip, self.ipAddressLineEdit.text()):
             trip -= 1
 
-
         if not re.match(constants.starinet_port, self.portLineEdit.text()):
             trip -= 1
 
