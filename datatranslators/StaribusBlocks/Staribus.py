@@ -121,8 +121,6 @@ class StaribusBlockParser:
                 time = str(data[1]).split(':')  # split time field up
                 epoch = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
 
-                # TODO check that data[5] works for all controller versions and instruments.
-
                 for datum in re.findall(sample_length, data[6]):  # for every group of sample length
     
                     if len(datum) == 0:
