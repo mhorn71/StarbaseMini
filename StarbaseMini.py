@@ -165,6 +165,7 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         # Initialise data viewer dialog class
 
         self.raw_data_viewer = data_viewer.RawDataViewer(self.data_store, self.instrument)
+        self.process_data_viewer = data_viewer.RawDataViewer(self.data_store, self.instrument)
 
         # Initialise command interpreter class
 
@@ -177,6 +178,10 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         # Initialise mpl chart class
 
         self.chart = charting.Chart(self)
+
+        # Initialise running average filter
+
+        self.running_average_filter = filters.RunningAverage(self.data_store)
 
         # Menu items
 
@@ -1646,7 +1651,9 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
         elif filter_ == 'RunningAverage':
 
-            response = filters.RunningAverage.running_average(self.data_store)
+            self.running_average_filter.exec_()
+
+            response = self.running_average_filter.response_message
 
         elif filter_ == 'WeightedRunningAverage':
 
@@ -1657,6 +1664,10 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
             response = 'PREMATURE_TERMINATION', 'Unknown filter type'
 
         # TODO if response is success then run chart routine.
+
+        if response[0] == 'SUCCESS':
+            response = self.chart.add_data('processed')
+            self.process_data_viewer.load('processed', self.metadata)
 
         self.status_message(filter_indentifer, response[0], response[1], None)
 
@@ -2264,7 +2275,8 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
         elif data_style_type == 'processed':
 
-            self.status_message('ProcessedDataViewer', 'PREMATURE_TERMINATION', 'Not yet implemented!', None)
+            self.process_data_viewer.exec_()
+
 
 
 def main():
