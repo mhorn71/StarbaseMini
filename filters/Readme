@@ -13,6 +13,11 @@ You can use any number of points from 2 up, you drop one each time and add the n
 
 X(i)= (X(i-3)+X(i-2)+X(i-1)+X(i))/4
 
+example :
+
+sample 1  is I(1)+I(2)+I(3)+I(4)+I(5)\5
+sample 2  is I(2)+I(3)+I(4)+I(5)+I(6)\5
+
 ---------------------------------------------
 
 Weighted running average
