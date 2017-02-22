@@ -62,15 +62,17 @@ def exporter(type, metadata, data_store, user_home, data_home):
 
     file_name = QtWidgets.QFileDialog.getSaveFileName(None, 'Export File', data_file, "CSV files (*.csv)")
 
+    print(file_name)
+
     # Return ABORT if no File selected.
 
-    if file_name == '':
+    if file_name[0] == '':
 
         return 'ABORT', None
 
     else:
 
-        with open(file_name, 'w', newline='') as csv_file:
+        with open(file_name[0], "w", newline='') as csv_file:
 
             data_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
@@ -89,7 +91,7 @@ def exporter(type, metadata, data_store, user_home, data_home):
 
         csv_file.close()
 
-        logger.info('File Exported : %s' % file_name)
+        logger.info('File Exported : %s' % file_name[0])
 
         if type == 'processed':
 
@@ -103,4 +105,4 @@ def exporter(type, metadata, data_store, user_home, data_home):
 
             logger.info('RawDataSaved set to True')
 
-        return 'SUCCESS', file_name
+        return 'SUCCESS', file_name[0]
