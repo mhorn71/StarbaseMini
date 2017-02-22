@@ -42,7 +42,9 @@ class RunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
     def on_accepted_clicked(self):
 
-        # print(self.datastore.RawData.shape)
+        logger = logging.getLogger('filters.RunningAverage.on_accepted_clicked')
+
+        logger.debug(self.datastore.RawData.shape)
 
         # shape format number of samples in row, number of elements in array
 
@@ -57,18 +59,20 @@ class RunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
     def average(self):
 
+        logger = logging.getLogger('filters.RunningAverage.average')
+
         # 'Average over N sequential samples'
 
         average_over_n_samples = int(self.spinBox.text())
 
-        print('average_over_n_samples : %s' % str(average_over_n_samples))
+        logger.debug('average_over_n_samples : %s' % str(average_over_n_samples))
 
         # Get shape of numpy array.
 
         number_of_rows, number_of_cols = self.datastore.RawData.shape
 
-        print('number_of_rows : %s' % str(number_of_rows))
-        print('number_of_cols : %s' % str(number_of_cols))
+        logger.debug('number_of_rows : %s' % str(number_of_rows))
+        logger.debug('number_of_cols : %s' % str(number_of_cols))
 
         # Convert numpy array to list
 
