@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_RunningAverageDialog(object):
     def setupUi(self, RunningAverageDialog):
         RunningAverageDialog.setObjectName("RunningAverageDialog")
-        RunningAverageDialog.resize(205, 84)
+        RunningAverageDialog.resize(275, 84)
         self.gridLayout = QtWidgets.QGridLayout(RunningAverageDialog)
         self.gridLayout.setObjectName("gridLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -38,5 +38,5 @@ class Ui_RunningAverageDialog(object):
     def retranslateUi(self, RunningAverageDialog):
         _translate = QtCore.QCoreApplication.translate
         RunningAverageDialog.setWindowTitle(_translate("RunningAverageDialog", "Running Average"))
-        self.label.setText(_translate("RunningAverageDialog", "Average over n groups"))
+        self.label.setText(_translate("RunningAverageDialog", "Average over n sequential samples"))
 

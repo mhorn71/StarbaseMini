@@ -2241,7 +2241,7 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
     def help_about_triggered(self):
 
         QtWidgets.QMessageBox.information(None, None,
-                                      "<p align='center'>StarbaseMini " + version + "<br><br>(c) 2016 Mark Horn<br>"
+                                      "<p align='center'>StarbaseMini " + version + "<br><br>(c) 2017 Mark Horn<br>"
                                       "<br>mhorn71@gmail.com</p>")
 
     def release_notes_triggered(self):
