@@ -93,7 +93,14 @@ class DataStore(object):
 
         logger = logging.getLogger('datastore.DataStore.data_state')
 
-        if len(self.ProcessedData) != 0 and self.ProcessedDataSaved is False:
+        if len(self.RawData) != 0 and self.RawDataSaved is False and self.DataSource == 'Controller' and \
+           len(self.ProcessedData) != 0 and self.ProcessedDataSaved is False:
+
+            logger.debug("We have both Raw and Processed Data but it isn't saved yet.")
+
+            return False, "You have unsaved raw and processed data."
+
+        elif len(self.ProcessedData) != 0 and self.ProcessedDataSaved is False:
 
             logger.debug("We have Processed Data but it isn't saved yet.")
 

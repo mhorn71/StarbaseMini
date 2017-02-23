@@ -41,7 +41,7 @@ def data_state_check(data_store, type):
 
     if data_store.data_state()[0] is False:
 
-        message = ('WARNING:  ' + data_store.data_state()[1] + submessage)
+        message = ('WARNING:\n\n' + data_store.data_state()[1] + submessage)
         header = ''
 
         result = QtWidgets.QMessageBox.question(None,
