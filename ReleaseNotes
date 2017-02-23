@@ -39,6 +39,8 @@ Update - Set coloured heading text on QToolBox tab to indicate selection.
 
 Update - Moved from the PyQt4 framework to PyQt5.
 
+Feature - Added four filters, Running Average, Weighted Running Average, Non-Linear Static Remover, Peak Extractor.
+
 ===============
 Version : 3.0.0
 ===============
