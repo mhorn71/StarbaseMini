@@ -48,11 +48,11 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
         logger = logging.getLogger('filters.RunningAverage.on_accepted_clicked')
 
-        logger.debug(self.datastore.RawData.shape)
-
         # shape format number of samples in row, number of elements in array
 
         if len(self.datastore.RawData) != 0:
+
+            logger.debug(self.datastore.RawData.shape)
 
             self.average()
 
