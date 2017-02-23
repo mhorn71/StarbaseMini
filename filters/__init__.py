@@ -1,4 +1,4 @@
 from filters import NonLinearStaticRemover
 from filters import PeakExtractor
 from filters.RunningAverage import RunningAverage
-from filters import WeightedRunningAverage
+from filters.WeightedRunningAverage import WeightedRunningAverage

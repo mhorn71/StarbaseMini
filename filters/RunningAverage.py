@@ -1,6 +1,6 @@
 __author__ = 'mark'
 # StarbaseMini Staribus/Starinet Client for the British Astronomical Association Staribus Protocol
-# Copyright (C) 2015  Mark Horn
+# Copyright (C) 2017  Mark Horn
 #
 # This file is part of StarbaseMini.
 #
@@ -26,6 +26,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
 
 import numpy as np
+
 
 class RunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
     def __init__(self, datastore):
