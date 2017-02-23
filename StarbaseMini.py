@@ -183,6 +183,8 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
         self.running_average_filter = filters.RunningAverage(self.data_store)
         self.weighted_running_average_filter = filters.WeightedRunningAverage(self.data_store)
+        self.nonlinear_static_remover_filter = filters.NonlinearStaticRemover(self.data_store)
+        self.peak_extractor_filter = filters.PeakExtractor(self.data_store)
 
         # Menu items
 
@@ -199,9 +201,11 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         self.actionAbout.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/help-about.png')))
 
         self.actionReleaseNotes.triggered.connect(self.release_notes_triggered)
+        # TODO Fix sRGB profile for documents-properties.png
         self.actionReleaseNotes.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-properties.png')))
 
         self.actionOpen.triggered.connect(self.open_csv_file)
+        # TODO Fix sRGB profile for document-import.png
         self.actionOpen.setIcon(QtGui.QIcon(QtGui.QPixmap('icons/document-import.png')))
 
         self.actionSave_RawData.triggered.connect(lambda: self.save_data('raw'))
@@ -1644,11 +1648,15 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
         if filter_ == 'NonLinearStaticRemover':
 
-            response = filters.NonLinearStaticRemover.non_linear_static_remover(self.data_store)
+            self.nonlinear_static_remover_filter.exec_()
+
+            response = self.nonlinear_static_remover_filter.response_message
 
         elif filter_ == 'PeakExtractor':
 
-            response = filters.PeakExtractor.peak_extractor(self.data_store)
+            self.peak_extractor_filter.exec_()
+
+            response = self.peak_extractor_filter.response_message
 
         elif filter_ == 'RunningAverage':
 

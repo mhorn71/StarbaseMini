@@ -45,7 +45,6 @@ running average to work well. "predicts" next value from average of old data and
 Might run better with a reverse weighted average i.e giving less weight to most recent sample (cos it might be start of
 a flare)
 
-
 X(i) = X(i)-running average
 
 
