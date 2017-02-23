@@ -145,6 +145,14 @@ class DataStore(object):
 
             return True
 
+    def clear_processed(self):
+
+        # This only time this should be called is from the filters so we can process processed data more than once.
+
+        del self.ProcessedData  # Delete instead of clear as we could have a numpy array.
+
+        self.ProcessedData = []  # Recreate deleted variable.
+
     def clear(self):
 
         ''' Set all attributes back to default state.'''
