@@ -39,6 +39,8 @@ class RunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
         self.spinBox.setRange(2, 10)
 
+        self.spinBox.setValue(4)
+
         self.response_message = 'ABORT', None
 
     def on_accepted_clicked(self):
