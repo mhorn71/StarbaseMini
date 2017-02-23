@@ -75,9 +75,23 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
         logger.debug('average_over_n_samples : %s' % str(average_over_n_samples))
 
-        # Get shape of numpy array.
+        # Get shape of numpy array, and convert array to data list.
 
-        number_of_rows, number_of_cols = self.datastore.RawData.shape
+        if self.checkBox.isChecked() and len(self.datastore.ProcessedData) != 0:
+
+            number_of_rows, number_of_cols = self.datastore.ProcessedData.shape
+
+            datalist = self.datastore.ProcessedData.tolist()
+
+            processed_state = True
+
+        else:
+
+            number_of_rows, number_of_cols = self.datastore.RawData.shape
+
+            datalist = self.datastore.RawData.tolist()
+
+            processed_state = False
 
         logger.debug('number_of_rows : %s' % str(number_of_rows))
         logger.debug('number_of_cols : %s' % str(number_of_cols))
@@ -95,10 +109,6 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
             inital_weight += step_weight
 
         print('weights set : %s' % str(data_weights))
-
-        # Convert numpy array to list
-
-        datalist = self.datastore.RawData.tolist()
 
         # Create new data lists
 
@@ -162,6 +172,9 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
                 processed_data_list.append(temp_list)
 
             self.datastore.ProcessedDataSaved = False
+
+            if processed_state:
+                self.datastore.clear_processed()
 
             self.datastore.ProcessedData = np.array(processed_data_list)
 
