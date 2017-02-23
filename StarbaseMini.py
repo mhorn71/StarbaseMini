@@ -179,9 +179,10 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
         self.chart = charting.Chart(self)
 
-        # Initialise running average filter
+        # Initialise filters
 
         self.running_average_filter = filters.RunningAverage(self.data_store)
+        self.weighted_running_average_filter = filters.WeightedRunningAverage(self.data_store)
 
         # Menu items
 
@@ -262,7 +263,7 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
         self.statusMessage.setHorizontalHeaderLabels(headers)
 
-        self.statusMessage.setColumnWidth(0, 115)  # Datetime Column
+        self.statusMessage.setColumnWidth(0, 120)  # Datetime Column
 
         self.statusMessage.setColumnWidth(1, 175)  # Ident Column
 
@@ -1657,7 +1658,9 @@ class StarbaseMini(QtWidgets.QMainWindow, ui.Ui_MainWindow):
 
         elif filter_ == 'WeightedRunningAverage':
 
-            response = filters.WeightedRunningAverage.weighted_running_average(self.data_store)
+            self.weighted_running_average_filter.exec_()
+
+            response = self.weighted_running_average_filter.response_message
 
         else:
 
