@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_RunningAverageDialog(object):
     def setupUi(self, RunningAverageDialog):
         RunningAverageDialog.setObjectName("RunningAverageDialog")
-        RunningAverageDialog.resize(275, 84)
+        RunningAverageDialog.resize(400, 84)
         self.gridLayout = QtWidgets.QGridLayout(RunningAverageDialog)
         self.gridLayout.setObjectName("gridLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -22,6 +22,10 @@ class Ui_RunningAverageDialog(object):
         self.spinBox = QtWidgets.QSpinBox(RunningAverageDialog)
         self.spinBox.setObjectName("spinBox")
         self.horizontalLayout.addWidget(self.spinBox)
+        self.checkBox = QtWidgets.QCheckBox(RunningAverageDialog)
+        self.checkBox.setToolTip("")
+        self.checkBox.setObjectName("checkBox")
+        self.horizontalLayout.addWidget(self.checkBox)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.buttonBox = QtWidgets.QDialogButtonBox(RunningAverageDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
@@ -39,4 +43,5 @@ class Ui_RunningAverageDialog(object):
         _translate = QtCore.QCoreApplication.translate
         RunningAverageDialog.setWindowTitle(_translate("RunningAverageDialog", "Running Average"))
         self.label.setText(_translate("RunningAverageDialog", "Average over n sequential samples"))
+        self.checkBox.setText(_translate("RunningAverageDialog", "Processed Data"))
 

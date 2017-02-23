@@ -23,7 +23,6 @@ import logging
 from ui import Ui_RunningAverageDialog
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSlot
 
 import numpy as np
 
@@ -38,6 +37,11 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
         self.apply = self.buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
         self.apply.clicked.connect(self.on_accepted_clicked)
 
+        self.cancelled = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        self.cancelled.clicked.connect(self.on_rejected_clicked)
+
+        self.checkBox.setToolTip('Apply filter to processed data?')
+
         self.spinBox.setRange(2, 10)
 
         self.spinBox.setValue(4)
@@ -46,7 +50,7 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
     def on_accepted_clicked(self):
 
-        logger = logging.getLogger('filters.RunningAverage.on_accepted_clicked')
+        logger = logging.getLogger('filters.WeightedRunningAverage.on_accepted_clicked')
 
         # shape format number of samples in row, number of elements in array
 
@@ -57,13 +61,13 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
             self.average()
 
         else:
-
+            self.checkBox.setChecked(False)
             self.response_message = 'PREMATURE_TERMINATION', 'NO_DATA.'
             self.hide()
 
     def average(self):
 
-        logger = logging.getLogger('filters.RunningAverage.average')
+        logger = logging.getLogger('filters.WeightedRunningAverage.average')
 
         # 'Average over N sequential samples'
 
@@ -82,15 +86,15 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
         data_weights = []
 
-        inital_weight = 0.0
+        step_weight = 1.0 / average_over_n_samples
+
+        inital_weight = step_weight
 
         for i in range(average_over_n_samples):
             data_weights.append(inital_weight)
-            inital_weight += 0.2
+            inital_weight += step_weight
 
         print('weights set : %s' % str(data_weights))
-
-
 
         # Convert numpy array to list
 
@@ -138,6 +142,7 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
         if not all(len(i) == len(processed_data_columns[0]) for i in processed_data_columns) or \
                         len(processed_data_columns[0]) == 0:
 
+            self.checkBox.setChecked(False)
             self.response_message = 'PREMATURE_TERMINATION', 'NO_DATA.'
             self.hide()
 
@@ -162,10 +167,12 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
             self.response_message = 'SUCCESS', None
 
+            self.checkBox.setChecked(False)
+
             self.hide()
 
+    def on_rejected_clicked(self):
 
-    @pyqtSlot()
-    def on_rejected_clicked(self, event):
+        self.checkBox.setChecked(False)
 
         self.response_message = 'ABORT', None

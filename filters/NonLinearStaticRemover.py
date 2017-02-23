@@ -23,7 +23,6 @@ import logging
 from ui import Ui_RunningAverageDialog
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSlot
 
 import numpy as np
 
@@ -35,9 +34,15 @@ class NonlinearStaticRemover(QtWidgets.QDialog, Ui_RunningAverageDialog):
         self.datastore = datastore
 
         self.setWindowTitle('Non-Linear Static Remover')
+        self.label.setText('Remove highest peak over n sequential samples')
 
         self.apply = self.buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
         self.apply.clicked.connect(self.on_accepted_clicked)
+
+        self.cancelled = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        self.cancelled.clicked.connect(self.on_rejected_clicked)
+
+        self.checkBox.setToolTip('Apply filter to processed data?')
 
         self.spinBox.setRange(2, 10)
 
@@ -47,7 +52,7 @@ class NonlinearStaticRemover(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
     def on_accepted_clicked(self):
 
-        logger = logging.getLogger('filters.RunningAverage.on_accepted_clicked')
+        logger = logging.getLogger('filters.NonlinearStaticRemover.on_accepted_clicked')
 
         # shape format number of samples in row, number of elements in array
 
@@ -59,12 +64,13 @@ class NonlinearStaticRemover(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
         else:
 
+            self.checkBox.setChecked(False)
             self.response_message = 'PREMATURE_TERMINATION', 'NO_DATA.'
             self.hide()
 
     def average(self):
 
-        logger = logging.getLogger('filters.RunningAverage.average')
+        logger = logging.getLogger('filters.NonlinearStaticRemover.average')
 
         # 'Average over N sequential samples'
 
@@ -123,6 +129,7 @@ class NonlinearStaticRemover(QtWidgets.QDialog, Ui_RunningAverageDialog):
         if not all(len(i) == len(processed_data_columns[0]) for i in processed_data_columns) or \
                         len(processed_data_columns[0]) == 0:
 
+            self.checkBox.setChecked(False)
             self.response_message = 'PREMATURE_TERMINATION', 'NO_DATA.'
             self.hide()
 
@@ -145,12 +152,14 @@ class NonlinearStaticRemover(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
             self.datastore.ProcessedData = np.array(processed_data_list)
 
+            self.checkBox.setChecked(False)
+
             self.response_message = 'SUCCESS', None
 
             self.hide()
 
+    def on_rejected_clicked(self):
 
-    @pyqtSlot()
-    def on_rejected_clicked(self, event):
+        self.checkBox.setChecked(False)
 
         self.response_message = 'ABORT', None
