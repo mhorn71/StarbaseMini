@@ -62,8 +62,6 @@ def exporter(type, metadata, data_store, user_home, data_home):
 
     file_name = QtWidgets.QFileDialog.getSaveFileName(None, 'Export File', data_file, "CSV files (*.csv)")
 
-    print(file_name)
-
     # Return ABORT if no File selected.
 
     if file_name[0] == '':
