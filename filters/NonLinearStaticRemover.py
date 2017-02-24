@@ -44,7 +44,7 @@ class NonlinearStaticRemover(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
         self.checkBox.setToolTip('Apply filter to processed data?')
 
-        self.spinBox.setRange(2, 10)
+        self.spinBox.setRange(2, 20)
 
         self.response_message = 'ABORT', None
 
@@ -128,7 +128,7 @@ class NonlinearStaticRemover(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
             else:
 
-                processed_data_columns.append([np.amax(preprocessed_data_columns[x][i:i + average_over_n_samples]) for i in range(0, len(preprocessed_data_columns[x]), 1)
+                processed_data_columns.append([np.amin(preprocessed_data_columns[x][i:i + average_over_n_samples]) for i in range(0, len(preprocessed_data_columns[x]), 1)
                                                if i + average_over_n_samples <= len(preprocessed_data_columns[x])])
 
 
