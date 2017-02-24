@@ -19,6 +19,7 @@ __author__ = 'mark'
 
 import datetime
 import logging
+from decimal import getcontext, Decimal
 
 from ui import Ui_RunningAverageDialog
 
@@ -98,17 +99,19 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
 
         # Set weights depending on number of sequential samples.
 
+        getcontext().prec = 1
+
         data_weights = []
 
-        step_weight = 1.0 / average_over_n_samples
+        step_weight = Decimal(1.0) / Decimal(average_over_n_samples)
 
         inital_weight = step_weight
 
         for i in range(average_over_n_samples):
-            data_weights.append(inital_weight)
-            inital_weight += step_weight
+            data_weights.append(float(inital_weight))
+            inital_weight = Decimal(inital_weight) + Decimal(step_weight)
 
-        print('weights set : %s' % str(data_weights))
+        logger.debug('weights set : %s' % str(data_weights))
 
         # Create new data lists
 
@@ -174,6 +177,7 @@ class WeightedRunningAverage(QtWidgets.QDialog, Ui_RunningAverageDialog):
             self.datastore.ProcessedDataSaved = False
 
             if processed_state:
+                logger.debug('Clearing current processed data set.')
                 self.datastore.clear_processed()
 
             self.datastore.ProcessedData = np.array(processed_data_list)
